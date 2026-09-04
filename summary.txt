@@ -1,5 +1,4 @@
-Week 1 slate written to cfb-slate-week1.html (132 games, pulled Fri 9/4, 3:56 PM ET, lines DraftKings via ESPN)
-  artifact copy written to cfb-slate-artifact.html
+Week 1 slate written to cfb-slate-week1.html (132 games, pulled Fri 9/4, 4:38 PM ET, lines DraftKings via ESPN)
   web copy written to index.html
   Thu 9/3: 6 on TV, 8 not
   Fri 9/4: 5 on TV, 4 not
