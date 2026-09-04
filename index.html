@@ -239,14 +239,11 @@
       <div class="seg">
         <button type="button" id="printBtn" title="One landscape page of the day on screen, as filtered">Print</button>
       </div>
-      <div class="seg">
-        <button type="button" id="hmBtn" aria-pressed="true" title="Team logos on the blocks">Logos</button>
-      </div>
     </div>
     <div class="panel" id="panel" hidden>
       <h2>Packages <span>tap to add or drop a whole package</span></h2>
       <div class="chips" id="presets"></div>
-      <h2>Channels <span>on = in your package, off = moves to the bottom</span></h2>
+      <h2>Channels <span>everything is on until you turn a channel or package off; off = moves to the bottom</span></h2>
       <div class="chips" id="chans"></div>
     </div>
     <div class="panel" id="cpanel" hidden>
@@ -284,12 +281,12 @@ const SLATE = {
   "week": "Week 1",
   "main": "2026-09-05",
   "mainLabel": "Sat, Sep 5",
-  "pulled": "Fri 9/4, 4:24 PM ET",
-  "lines": "Draft Kings via ESPN",
+  "pulled": "Fri 9/4, 3:56 PM ET",
+  "lines": "DraftKings via ESPN",
   "networks": ["ABC","CBS","FOX","NBC","CW","ESPN","ESPN2","TNT","ESPNU","FS1","USA","ACCN","SECN","BTN","CBSSN"],
   "order": ["ABC","CBS","FOX","NBC","CW","ESPN","ESPN2","TNT","ESPNU","FS1","USA","ACCN","SECN","BTN","CBSSN","Peacock","Disney+","SECN+","ACCNX","MW+","YouTube","HBCU Go","ESPN+","CIAA Network","FloSports","MEAC Network","Midco Sports Net","NEC Front Row","SNY","Scripps Sports","UConn+"],
   "packages": {"YouTube TV":["ABC","CBS","FOX","NBC","CW","ESPN","ESPN2","ESPNU","ESPNEWS","SECN","ACCN","BTN","FS1","FS2","CBSSN","USA","TNT","TBS","TRUTV","NBCSN"],"Hulu + Live TV":["ABC","CBS","FOX","NBC","ESPN","ESPN2","ESPNU","ESPNEWS","SECN","ACCN","BTN","FS1","FS2","CBSSN","USA","TNT","TBS","TRUTV","NBCSN","ESPN+","Disney+"],"Fubo":["ABC","CBS","FOX","NBC","CW","ESPN","ESPN2","ESPNU","ESPNEWS","SECN","ACCN","BTN","FS1","FS2","CBSSN","USA","NBCSN"],"Cable / satellite":["ABC","CBS","FOX","NBC","CW","ESPN","ESPN2","ESPNU","ESPNEWS","SECN","ACCN","BTN","FS1","FS2","CBSSN","USA","TNT","TBS","TRUTV","NBCSN"],"Antenna":["ABC","CBS","FOX","NBC","CW"],"ESPN Unlimited":["ESPN","ESPN2","ESPNU","ESPNEWS","SECN","ACCN","ESPN+","SECN+","ACCNX","ESPN3"],"ESPN+ only":["ESPN+","ESPN3"],"Peacock":["Peacock","NBC"],"Paramount+":["Paramount+","CBS"],"Disney+":["Disney+"],"HBO Max":["HBO Max","TNT"],"Fox One":["FOX","FS1","FS2"],"MW+":["MW+"],"Free apps":["CW","YouTube","HBCU Go"]},
-  "have": ["ABC","ACCN","ACCNX","BTN","CBS","CBSSN","CW","ESPN","ESPN+","ESPN2","ESPN3","ESPNEWS","ESPNU","FOX","FS1","FS2","NBC","NBCSN","Peacock","SECN","SECN+","TBS","TNT","TRUTV","USA"],
+  "have": ["ABC","ACCN","ACCNX","BTN","CBS","CBSSN","CIAA Network","CW","Disney+","ESPN","ESPN+","ESPN2","ESPNU","FOX","FS1","FloSports","HBCU Go","MEAC Network","MW+","Midco Sports Net","NBC","NEC Front Row","Peacock","SECN","SECN+","SNY","Scripps Sports","TNT","UConn+","USA","YouTube"],
   "days": [
     {"label": "Thu 9/3", "date": "2026-09-03", "games": [
       {"id":"401858423","n":"BTN","tv":true,"k":"18:00","a":"UMass","h":"Rutgers","ar":0,"hr":0,"neu":false,"note":"","sp":null,"ou":null,"live":{"st":"post","as":37,"hs":21,"clk":"Final"}},
@@ -716,7 +713,7 @@ const TEAMS = {
                       MAC:"MAC", SBC:"Sun Belt", CUSA:"CUSA", IND:"Ind", FCS:"FCS", OTHER:"Non-D1" };
   const NONE = "No broadcast";
   /* confs: conferences picked in the Conf panel; empty means no conference filter */
-  const S = { tz:"AZ", view:"grid", show:"all", day:"", open:{}, have: new Set(SLATE.have), confs: new Set(), hm: true };
+  const S = { tz:"AZ", view:"grid", show:"all", day:"", open:{}, have: new Set(SLATE.have), confs: new Set() };
   let G = null, scrolled = false;
 
   /* "now" on the slate's clock: ET, with anything before 6 AM counted as the previous day, same as the script */
@@ -737,7 +734,7 @@ const TEAMS = {
   const KEY = "cfb-slate", ZONES = ["AZ", "PT", "MT", "CT", "ET"], MAX_VIEWS = 5;
   let VIEWS = [];
   const snapshot = () => ({ tz: S.tz, on: [...S.have].filter(n => !SLATE.have.includes(n)), off: SLATE.have.filter(n => !S.have.has(n)),
-                            confs: CONF_ORDER.filter(c => S.confs.has(c)), show: S.show, view: S.view, hm: S.hm });
+                            confs: CONF_ORDER.filter(c => S.confs.has(c)), show: S.show, view: S.view });
   function applySnapshot(v){
     if (!v) return;
     if (ZONES.includes(v.tz)) S.tz = v.tz;
@@ -745,7 +742,6 @@ const TEAMS = {
     S.confs = new Set((v.confs || []).filter(c => CONF_ORDER.includes(c)));
     if (["all", "fbs", "top25"].includes(v.show)) S.show = v.show;
     if (["grid", "list"].includes(v.view)) S.view = v.view;
-    if (typeof v.hm === "boolean") S.hm = v.hm;
   }
   const sameView = (a, b) => JSON.stringify([a.tz, [...a.on].sort(), [...a.off].sort(), a.confs, a.show, a.view]) ===
                              JSON.stringify([b.tz, [...b.on].sort(), [...b.off].sort(), b.confs, b.show, b.view]);
@@ -840,7 +836,7 @@ const TEAMS = {
   }
   function bar(t, rank, line, cls, home){
     const d = el("div", "team"); d.style.background = t.bg; d.style.color = t.fg;
-    if (S.hm){ const lg = logoPlate(t); if (lg) d.appendChild(lg); }
+    const lg = logoPlate(t); if (lg) d.appendChild(lg);
     if (rank) d.appendChild(el("span", "rk", rank));
     d.appendChild(el("span", "nm", t.label));
     if (line) d.appendChild(el("span", "ln" + (cls ? " " + cls : ""), line));
@@ -893,7 +889,7 @@ const TEAMS = {
           b.style.left = x(g.kick) + "px"; b.style.width = (x(g.end) - x(g.kick) - 2) + "px";
           b.style.top = (i * LANE + 2) + "px"; b.style.height = (LANE - 4) + "px";
           b.style.borderLeft = "4px solid " + g.away.bg; b.style.borderRight = "4px solid " + g.home.bg;
-          if (S.hm && LANE >= 18){ [g.away, g.home].forEach(t => { const lg = logoPlate(t); if (lg) b.appendChild(lg); }); }
+          if (LANE >= 18){ [g.away, g.home].forEach(t => { const lg = logoPlate(t); if (lg) b.appendChild(lg); }); }
           b.appendChild(el("span", "c1", (g.ar ? "#" + g.ar + " " : "") + g.away.label + (g.neu ? " vs " : " at ") + (g.hr ? "#" + g.hr + " " : "") + g.home.label));
           const txt = lv ? clockText(lv) + " " + lv.as + "-" + lv.hs
                          : lp ? (lp.fav ? (lp.fav === "home" ? g.home.ab : g.away.ab) + " " + lp.spread : "PK") + (lp.ou ? " " + lp.ou : "") : "";
@@ -1184,8 +1180,6 @@ const TEAMS = {
   }
   pkgBtn.addEventListener("click", () => showPanel(panel));
   confBtn.addEventListener("click", () => showPanel(cpanel));
-  const hmBtn = document.getElementById("hmBtn");
-  hmBtn.addEventListener("click", () => { S.hm = !S.hm; remember(); render(); });
 
   /* ---- render ---- */
   function render(){
@@ -1206,7 +1200,6 @@ const TEAMS = {
     const first = SLATE.days[0], last = SLATE.days[SLATE.days.length - 1];
     document.getElementById("sub").textContent = SLATE.week + " - " + (first === last ? first.label : first.label + " to " + last.label);
     document.querySelectorAll(".seg button[data-key]").forEach(b => b.setAttribute("aria-pressed", String(S[b.dataset.key] === b.dataset.v)));
-    hmBtn.setAttribute("aria-pressed", String(S.hm));
     refreshPanel();
     refreshConfs();
     refreshViews();

@@ -59,7 +59,8 @@ PACKAGES = {
     "MW+":               ["MW+"],
     "Free apps":         ["CW", "YouTube", "HBCU Go"],
 }
-DEFAULT_PACKAGES = ["YouTube TV", "Peacock", "ESPN Unlimited"]   # what the file opens with
+DEFAULT_PACKAGES = "everything"   # what the file opens with: "everything" = every channel and service with a game that week,
+                                  # or a list of PACKAGES names, e.g. ["YouTube TV", "Peacock", "ESPN Unlimited"]
 NAME_ALIAS = {"Hawai'i": "Hawaii", "California": "Cal", "Pittsburgh": "Pitt", "Miami": "Miami (FL)",
               "Long Island University": "LIU", "Massachusetts": "UMass"}
 STREAM_TYPES = {"Streaming", "Web"}
@@ -234,7 +235,7 @@ def main():
         odds = (c.get("odds") or [None])[0]
         sp = ou = None
         if odds:
-            provider = provider or (odds.get("provider") or {}).get("name")
+            provider = provider or ((odds.get("provider") or {}).get("name") or "").replace("Draft Kings", "DraftKings")
             sp, ou = odds.get("spread"), odds.get("overUnder")
 
         v = c.get("venue") or {}
@@ -266,7 +267,7 @@ def main():
     nets_present = {g["n"] for gs in days.values() for g in gs if g["tv"]}
     networks = [n for n in TV_ORDER if n in nets_present] + sorted(n for n in nets_present if n not in TV_ORDER)
     order = networks + [n for n in STREAM_ORDER if n in all_present] + sorted(n for n in all_present if n not in networks and n not in STREAM_ORDER)
-    have = sorted({n for p in DEFAULT_PACKAGES for n in PACKAGES.get(p, [])})
+    have = sorted(all_present) if DEFAULT_PACKAGES == "everything" else sorted({n for p in DEFAULT_PACKAGES for n in PACKAGES.get(p, [])})
     pulled = datetime.now(ET).strftime("%a %-m/%-d, %-I:%M %p ET")
     slate = {
         "week": f"Week {week_no}" if week_no is not None else main_day.strftime("Week of %b %-d"),
