@@ -16,7 +16,7 @@
   .app{display:flex;flex-direction:column;height:100%;overflow:hidden}
 
   .bar{padding:8px 12px 7px;background:var(--bg2);border-bottom:1px solid var(--hour);overflow:hidden;flex:none}
-  .top{display:flex;align-items:center;gap:10px}
+  .top{display:flex;align-items:center;gap:6px 10px;flex-wrap:wrap}
   .ttl{display:flex;flex-direction:column;min-width:0;flex:1}
   .bar h1{margin:0;font-size:16px;line-height:1.15;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
   .bar .sub{font-size:12px;line-height:1.2;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -38,6 +38,15 @@
   .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
   .chip.grp{border-style:dashed}
   .chip small{font-weight:600;opacity:.7;margin-left:3px}
+  .chip[disabled]{opacity:.4;cursor:default}
+  .views{margin-top:7px}
+  .views:empty{display:none}
+  .views .chip{color:var(--ink);border-color:rgba(255,255,255,.3)}
+  .views .chip[aria-pressed="true"]{background:#ffd23f;border-color:#ffd23f;color:#0b1a33}
+  .views .chip.grp{color:var(--muted);border-color:var(--hour)}
+  .panel input{font:inherit;font-size:12px;font-weight:600;padding:3px 9px;border-radius:12px;border:1px solid var(--hour);background:transparent;color:var(--ink);width:160px;max-width:100%}
+  .panel input:focus{outline:2px solid #ffd23f;outline-offset:-2px}
+  .panel .note{font-size:11px;color:var(--muted);align-self:center}
 
   .wrap{flex:1;overflow:auto;position:relative}
 
@@ -133,13 +142,17 @@
     <div class="top">
       <div class="ttl"><h1>College Football</h1><span class="sub" id="sub"></span></div>
       <div class="seg" role="group" aria-label="Time zone">
-        <button type="button" data-key="tz" data-v="ET">ET</button>
         <button type="button" data-key="tz" data-v="AZ">AZ</button>
+        <button type="button" data-key="tz" data-v="PT">PT</button>
+        <button type="button" data-key="tz" data-v="MT">MT</button>
+        <button type="button" data-key="tz" data-v="CT">CT</button>
+        <button type="button" data-key="tz" data-v="ET">ET</button>
       </div>
     </div>
     <div class="ctrls">
       <div class="seg days" id="days" role="group" aria-label="Day"></div>
     </div>
+    <div class="chips views" id="views" role="group" aria-label="Saved views"></div>
     <div class="ctrls">
       <div class="seg" role="group" aria-label="View">
         <button type="button" data-key="view" data-v="grid">Grid</button>
@@ -153,12 +166,29 @@
       <div class="seg">
         <button type="button" id="pkgBtn" aria-pressed="false" aria-controls="panel">Package<small id="pkgN"></small></button>
       </div>
+      <div class="seg">
+        <button type="button" id="confBtn" aria-pressed="false" aria-controls="cpanel">Conf<small id="confN"></small></button>
+      </div>
     </div>
     <div class="panel" id="panel" hidden>
       <h2>Packages <span>tap to add or drop a whole package</span></h2>
       <div class="chips" id="presets"></div>
       <h2>Channels <span>on = in your package, off = moves to the bottom</span></h2>
       <div class="chips" id="chans"></div>
+    </div>
+    <div class="panel" id="cpanel" hidden>
+      <h2>Conferences <span>tap to show only games involving these; none on = everything</span></h2>
+      <div class="chips" id="confs"></div>
+    </div>
+    <div class="panel" id="vpanel" hidden>
+      <h2>Save this view <span>keeps the current package, conferences, filter, grid or list, and time zone under a name; up to 5</span></h2>
+      <div class="chips">
+        <input type="text" id="vname" maxlength="18" placeholder="Name this view" aria-label="View name" autocomplete="off">
+        <button type="button" class="chip" id="vsave">Save</button>
+        <span class="note" id="vnote"></span>
+      </div>
+      <h2>Saved views <span>tap one here to delete it</span></h2>
+      <div class="chips" id="vlist"></div>
     </div>
   </div>
   <div class="wrap" id="wrap"></div>
@@ -173,7 +203,7 @@ const SLATE = {
   "week": "Week 1",
   "main": "2026-09-05",
   "mainLabel": "Sat, Sep 5",
-  "pulled": "Fri 9/4, 9:54 AM ET",
+  "pulled": "Fri 9/4, 10:27 AM ET",
   "lines": "DraftKings via ESPN",
   "networks": ["ABC","CBS","FOX","NBC","CW","ESPN","ESPN2","TNT","ESPNU","FS1","USA","ACCN","SECN","BTN","CBSSN"],
   "order": ["ABC","CBS","FOX","NBC","CW","ESPN","ESPN2","TNT","ESPNU","FS1","USA","ACCN","SECN","BTN","CBSSN","Peacock","Disney+","SECN+","ACCNX","MW+","YouTube","HBCU Go","ESPN+","CIAA Network","FloSports","MEAC Network","Midco Sports Net","NEC Front Row","SNY","Scripps Sports","UConn+"],
@@ -199,10 +229,10 @@ const SLATE = {
     {"label": "Fri 9/4", "date": "2026-09-04", "games": [
       {"n":"ESPN+","tv":false,"k":"18:30","a":"San José State","h":"Eastern Michigan","ar":0,"hr":0,"neu":false,"note":"","sp":-3.0,"ou":56.5},
       {"n":"BTN","tv":true,"k":"19:00","a":"Indiana State","h":"Purdue","ar":0,"hr":0,"neu":false,"note":"","sp":-35.5,"ou":56.5},
-      {"n":"ESPN+","tv":false,"k":"19:00","a":"North Carolina A&T","h":"Georgia State","ar":0,"hr":0,"neu":false,"note":"","sp":-29.5,"ou":61.5,"hc":["#ffffff","#111"]},
+      {"n":"ESPN+","tv":false,"k":"19:00","a":"North Carolina A&T","h":"Georgia State","ar":0,"hr":0,"neu":false,"note":"","sp":-27.5,"ou":60.5,"hc":["#ffffff","#111"]},
       {"n":"ESPN+","tv":false,"k":"19:00","a":"Franklin Pierce","h":"Marist","ar":0,"hr":0,"neu":false,"note":"","sp":null,"ou":null},
       {"n":"ESPNU","tv":true,"k":"20:00","a":"LIU","h":"Kansas","ar":0,"hr":0,"neu":false,"note":"","sp":-42.5,"ou":54.5},
-      {"n":"FS1","tv":true,"k":"20:00","a":"Toledo","h":"Michigan State","ar":0,"hr":0,"neu":false,"note":"","sp":-10.0,"ou":46.5,"hc":["#ffffff","#111"]},
+      {"n":"FS1","tv":true,"k":"20:00","a":"Toledo","h":"Michigan State","ar":0,"hr":0,"neu":false,"note":"","sp":-10.0,"ou":48.5,"hc":["#ffffff","#111"]},
       {"n":"SECN+","tv":false,"k":"20:00","a":"UTEP","h":"Oklahoma","ar":0,"hr":10,"neu":false,"note":"","sp":-40.5,"ou":51.5},
       {"n":"ESPN","tv":true,"k":"21:00","a":"Miami (FL)","h":"Stanford","ar":7,"hr":0,"neu":false,"note":"","sp":24.5,"ou":48.5},
       {"n":"FOX","tv":true,"k":"21:00","a":"Fresno State","h":"USC","ar":0,"hr":14,"neu":false,"note":"","sp":-22.5,"ou":51.5,"hc":["#ffc72c","#111"]}
@@ -319,7 +349,7 @@ const SLATE = {
       {"n":"NBC","tv":true,"k":"19:30","a":"Wisconsin","h":"Notre Dame","ar":0,"hr":4,"neu":true,"note":"Green Bay, WI","sp":-20.5,"ou":46.5}
     ]},
     {"label": "Mon 9/7", "date": "2026-09-07", "games": [
-      {"n":"ESPN","tv":true,"k":"19:30","a":"SMU","h":"Florida State","ar":19,"hr":0,"neu":false,"note":"","sp":3.0,"ou":53.5}
+      {"n":"ESPN","tv":true,"k":"19:30","a":"SMU","h":"Florida State","ar":19,"hr":0,"neu":false,"note":"","sp":2.5,"ou":53.5}
     ]}
   ]
 };
@@ -597,8 +627,12 @@ const TEAMS = {
   const cssPx = v => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(v)) || 0;
   function measure(){ COL = cssPx("--col") || COL; LANE = cssPx("--lane") || LANE; LABEL = cssPx("--label") || LABEL; }
   const FBS = ["SEC","B1G","ACC","B12","AAC","PAC","MWC","MAC","SBC","CUSA","IND"];
+  const CONF_ORDER = FBS.concat(["FCS","OTHER"]);
+  const CONF_NAME = { SEC:"SEC", B1G:"Big Ten", ACC:"ACC", B12:"Big 12", AAC:"AAC", PAC:"Pac-12", MWC:"MWC",
+                      MAC:"MAC", SBC:"Sun Belt", CUSA:"CUSA", IND:"Ind", FCS:"FCS", OTHER:"Non-D1" };
   const NONE = "No broadcast";
-  const S = { tz:"ET", view:"grid", show:"all", day:"", open:{}, have: new Set(SLATE.have) };
+  /* confs: conferences picked in the Conf panel; empty means no conference filter */
+  const S = { tz:"AZ", view:"grid", show:"all", day:"", open:{}, have: new Set(SLATE.have), confs: new Set() };
   let G = null, scrolled = false;
 
   /* "now" on the slate's clock: ET, with anything before 6 AM counted as the previous day, same as the script */
@@ -612,21 +646,33 @@ const TEAMS = {
   /* opens on today; if today has no games, the next day that does; once the week is over, its last day */
   S.day = (SLATE.days.find(d => d.date >= etNow().date) || SLATE.days[SLATE.days.length - 1] || {}).date || "";
 
-  /* package changes and the time zone are remembered per browser, as differences from the script's defaults so a
-     channel that first appears in a later week still follows its package. Storage is blocked in the in-chat preview,
-     so every access is guarded. */
-  const KEY = "cfb-slate";
+  /* Selections are remembered per browser: time zone, package (as differences from the script's defaults, so a
+     channel that first appears in a later week still follows its package), conferences, filter, grid or list, plus
+     up to five named views of the same. The day on screen is not remembered. Storage is blocked in the in-chat
+     preview, so every access is guarded. */
+  const KEY = "cfb-slate", ZONES = ["AZ", "PT", "MT", "CT", "ET"], MAX_VIEWS = 5;
+  let VIEWS = [];
+  const snapshot = () => ({ tz: S.tz, on: [...S.have].filter(n => !SLATE.have.includes(n)), off: SLATE.have.filter(n => !S.have.has(n)),
+                            confs: CONF_ORDER.filter(c => S.confs.has(c)), show: S.show, view: S.view });
+  function applySnapshot(v){
+    if (!v) return;
+    if (ZONES.includes(v.tz)) S.tz = v.tz;
+    S.have = new Set(SLATE.have); (v.on || []).forEach(n => S.have.add(n)); (v.off || []).forEach(n => S.have.delete(n));
+    S.confs = new Set((v.confs || []).filter(c => CONF_ORDER.includes(c)));
+    if (["all", "fbs", "top25"].includes(v.show)) S.show = v.show;
+    if (["grid", "list"].includes(v.view)) S.view = v.view;
+  }
+  const sameView = (a, b) => JSON.stringify([a.tz, [...a.on].sort(), [...a.off].sort(), a.confs, a.show, a.view]) ===
+                             JSON.stringify([b.tz, [...b.on].sort(), [...b.off].sort(), b.confs, b.show, b.view]);
   try {
     const saved = JSON.parse(localStorage.getItem(KEY) || "null");
     if (saved){
-      if (saved.tz === "AZ" || saved.tz === "ET") S.tz = saved.tz;
-      (saved.on || []).forEach(n => S.have.add(n)); (saved.off || []).forEach(n => S.have.delete(n));
+      applySnapshot(saved);
+      VIEWS = (saved.views || []).filter(v => v && typeof v.name === "string").slice(0, MAX_VIEWS);
     }
   } catch (e) {}
   function remember(){
-    try {
-      localStorage.setItem(KEY, JSON.stringify({ tz: S.tz, on: [...S.have].filter(n => !SLATE.have.includes(n)), off: SLATE.have.filter(n => !S.have.has(n)) }));
-    } catch (e) {}
+    try { localStorage.setItem(KEY, JSON.stringify(Object.assign(snapshot(), { views: VIEWS }))); } catch (e) {}
   }
 
   const mins = t => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
@@ -644,8 +690,10 @@ const TEAMS = {
     };
     return hm(zone) - hm("America/New_York");
   }
-  const OFFSET = { ET: 0, AZ: zoneOffset(SLATE.main, "America/Phoenix") };
-  const off = () => OFFSET[S.tz];
+  /* minutes from ET for each zone on the grid date; ESPN's times are ET, so ET is 0. DST is handled by the zone rules. */
+  const OFFSET = { ET: 0, AZ: zoneOffset(SLATE.main, "America/Phoenix"), CT: zoneOffset(SLATE.main, "America/Chicago"),
+                   MT: zoneOffset(SLATE.main, "America/Denver"), PT: zoneOffset(SLATE.main, "America/Los_Angeles") };
+  const off = () => OFFSET[S.tz] || 0;
   const dayName = date => new Date(date + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" });
 
   /* day buttons: one per day that has games */
@@ -672,7 +720,8 @@ const TEAMS = {
     const disp = carriers.find(n => S.have.has(n)) || "";
     return Object.assign({}, g, { kick: g.tbd ? 9999 : mins(g.k), away: T(g.a), home, day, carriers, disp, ok: !!disp, dtv: isTV(disp) });
   });
-  const keep = g => S.show === "top25" ? !!(g.ar || g.hr) : S.show === "fbs" ? FBS.includes(g.home.conf) : true;
+  const keep = g => (S.show === "top25" ? !!(g.ar || g.hr) : S.show === "fbs" ? FBS.includes(g.home.conf) : true)
+                 && (!S.confs.size || S.confs.has(g.home.conf) || S.confs.has(g.away.conf));
   const sortG = (a, b) => a.kick - b.kick || (b.dtv - a.dtv) || chanRank(a.disp || a.n) - chanRank(b.disp || b.n) || a.home.name.localeCompare(b.home.name);
 
   function lineParts(g){
@@ -847,8 +896,77 @@ const TEAMS = {
     chansEl.querySelectorAll("[data-chan]").forEach(c => c.setAttribute("aria-pressed", String(S.have.has(c.dataset.chan))));
     document.getElementById("pkgN").textContent = channels.filter(n => S.have.has(n)).length + "/" + channels.length;
   }
+  /* ---- conference panel ---- */
+  const confsEl = document.getElementById("confs");
+  const confCount = new Map();   /* games this week involving each conference */
+  SLATE.days.forEach(d => d.games.forEach(g => {
+    new Set([T(g.h).conf || "OTHER", T(g.a).conf || "OTHER"]).forEach(c => confCount.set(c, (confCount.get(c) || 0) + 1));
+  }));
+  const confList = CONF_ORDER.filter(c => confCount.has(c));
+  const allChip = el("button", "chip grp", "All"); allChip.type = "button";
+  allChip.addEventListener("click", () => { S.confs.clear(); remember(); render(); });
+  confsEl.appendChild(allChip);
+  confList.forEach(c => {
+    const chip = el("button", "chip", CONF_NAME[c] || c); chip.type = "button"; chip.dataset.conf = c;
+    chip.appendChild(el("small", null, confCount.get(c)));
+    chip.addEventListener("click", () => { S.confs.has(c) ? S.confs.delete(c) : S.confs.add(c); remember(); render(); });
+    confsEl.appendChild(chip);
+  });
+  function refreshConfs(){
+    allChip.setAttribute("aria-pressed", String(S.confs.size === 0));
+    confsEl.querySelectorAll("[data-conf]").forEach(chip => chip.setAttribute("aria-pressed", String(S.confs.has(chip.dataset.conf))));
+    const picked = CONF_ORDER.filter(c => S.confs.has(c)).map(c => CONF_NAME[c] || c);
+    document.getElementById("confN").textContent = !picked.length ? "All" : picked.length <= 2 ? picked.join(", ") : picked.length + " picked";
+  }
+
+  /* ---- saved views ---- */
+  const viewsEl = document.getElementById("views"), vlist = document.getElementById("vlist");
+  const vname = document.getElementById("vname"), vnote = document.getElementById("vnote");
+  function refreshViews(){
+    const cur = snapshot();
+    viewsEl.innerHTML = "";
+    VIEWS.forEach(v => {
+      const chip = el("button", "chip", v.name); chip.type = "button";
+      chip.setAttribute("aria-pressed", String(sameView(cur, v)));
+      chip.addEventListener("click", () => { applySnapshot(v); remember(); render(); });
+      viewsEl.appendChild(chip);
+    });
+    const add = el("button", "chip grp", VIEWS.length ? "+ Save view" : "+ Save this view"); add.type = "button";
+    add.setAttribute("aria-pressed", String(!vpanel.hidden));
+    add.addEventListener("click", () => { showPanel(vpanel); if (!vpanel.hidden) vname.focus(); });
+    viewsEl.appendChild(add);
+    vlist.innerHTML = "";
+    if (!VIEWS.length) vlist.appendChild(el("span", "note", "none yet"));
+    VIEWS.forEach(v => {
+      const chip = el("button", "chip", v.name); chip.type = "button"; chip.appendChild(el("small", null, "✕"));
+      chip.title = "Delete " + v.name;
+      chip.addEventListener("click", () => { VIEWS = VIEWS.filter(x => x !== v); remember(); refreshViews(); });
+      vlist.appendChild(chip);
+    });
+  }
+  document.getElementById("vsave").addEventListener("click", () => {
+    const name = vname.value.trim().slice(0, 18) || ("View " + (VIEWS.length + 1));
+    const existing = VIEWS.find(v => v.name.toLowerCase() === name.toLowerCase());
+    if (!existing && VIEWS.length >= MAX_VIEWS){ vnote.textContent = "5 is the limit; delete one first."; return; }
+    const snap = Object.assign(snapshot(), { name });
+    if (existing) VIEWS[VIEWS.indexOf(existing)] = snap; else VIEWS.push(snap);
+    vname.value = ""; vnote.textContent = "";
+    remember(); showPanel(null); refreshViews();
+  });
+  vname.addEventListener("keydown", e => { if (e.key === "Enter") document.getElementById("vsave").click(); });
+
+  /* one panel open at a time */
   const pkgBtn = document.getElementById("pkgBtn"), panel = document.getElementById("panel");
-  pkgBtn.addEventListener("click", () => { panel.hidden = !panel.hidden; pkgBtn.setAttribute("aria-pressed", String(!panel.hidden)); });
+  const confBtn = document.getElementById("confBtn"), cpanel = document.getElementById("cpanel");
+  const vpanel = document.getElementById("vpanel");
+  function showPanel(which){
+    [panel, cpanel, vpanel].forEach(p => { p.hidden = p !== which || !p.hidden; });
+    pkgBtn.setAttribute("aria-pressed", String(!panel.hidden));
+    confBtn.setAttribute("aria-pressed", String(!cpanel.hidden));
+    const add = viewsEl.querySelector(".chip.grp"); if (add) add.setAttribute("aria-pressed", String(!vpanel.hidden));
+  }
+  pkgBtn.addEventListener("click", () => showPanel(panel));
+  confBtn.addEventListener("click", () => showPanel(cpanel));
 
   /* ---- render ---- */
   function render(){
@@ -870,12 +988,14 @@ const TEAMS = {
     document.getElementById("sub").textContent = SLATE.week + " - " + (first === last ? first.label : first.label + " to " + last.label);
     document.querySelectorAll(".seg button[data-key]").forEach(b => b.setAttribute("aria-pressed", String(S[b.dataset.key] === b.dataset.v)));
     refreshPanel();
+    refreshConfs();
+    refreshViews();
     nowLine();
   }
   document.querySelectorAll(".seg button[data-key]").forEach(b => b.addEventListener("click", () => {
     S[b.dataset.key] = b.dataset.v;
-    if (b.dataset.key === "tz") remember();
     if (b.dataset.key === "day"){ const w = document.getElementById("wrap"); w.scrollTop = 0; w.scrollLeft = 0; scrolled = false; }
+    else remember();
     render();
   }));
   /* crossing the phone/desktop breakpoint changes the grid metrics, so redraw */
@@ -884,7 +1004,7 @@ const TEAMS = {
   document.getElementById("foot").textContent =
     "Schedule and TV from ESPN, lines " + SLATE.lines + ", pulled " + SLATE.pulled + ". Lines move, check before betting. " +
     "Grid: visitor on top. Channel rows end a block when the next game starts; streaming rows stack simultaneous games. " +
-    "Package sets which channels count as yours; everything else, plus games with no broadcast, sits greyed at the bottom. Package and time zone are remembered on this device.";
+    "Package sets which channels count as yours; everything else, plus games with no broadcast, sits greyed at the bottom. Your package, conferences, filters, time zone, and saved views are remembered on this device.";
   render();
 })();
 </script>
