@@ -110,6 +110,23 @@ def norm_net(n):
     return NET_ALIAS.get(n, n)
 
 
+def live_state(event, comp):
+    """{'st': 'in'|'post', 'as': away score, 'hs': home score, 'clk': 'Final' or '8:41 - 2nd'} for a started game,
+    else None. Same shape the page builds from ESPN in the browser, so the build is just the opening snapshot."""
+    st = (event.get("status") or comp.get("status") or {})
+    typ = st.get("type") or {}
+    state = typ.get("state")
+    if state not in ("in", "post"):
+        return None
+    scores = {}
+    for side in comp.get("competitors", []):
+        try:
+            scores[side["homeAway"]] = int(float(side.get("score") or 0))
+        except (TypeError, ValueError):
+            scores[side["homeAway"]] = 0
+    return {"st": state, "as": scores.get("away", 0), "hs": scores.get("home", 0), "clk": typ.get("shortDetail") or ("Final" if state == "post" else "")}
+
+
 def artifact_copy(html, title="CFB Slate"):
     """The hosted artifact viewer supplies doctype, html, head and body, so keep only the title, the styles and the
     body content. The title stays fixed so the artifact keeps its name from week to week."""
@@ -133,7 +150,13 @@ def main():
     args = ap.parse_args()
 
     today = datetime.now(ET).date()
-    main_day = date.fromisoformat(args.main) if args.main else today + timedelta(days=(5 - today.weekday()) % 7)
+    if args.main:
+        main_day = date.fromisoformat(args.main)
+    else:
+        # Sunday and Monday still belong to the weekend just played (their games are on that slate);
+        # Tuesday rolls forward to the coming Saturday. Matters for the daily rebuild.
+        wd = today.weekday()  # Mon=0 .. Sun=6
+        main_day = today - timedelta(days=1 if wd == 6 else 2) if wd in (6, 0) else today + timedelta(days=(5 - wd) % 7)
     start = date.fromisoformat(args.start) if args.start else main_day - timedelta(days=2)
     end = date.fromisoformat(args.end) if args.end else main_day + timedelta(days=2)
     dates = [start + timedelta(days=i) for i in range((end - start).days + 1)]
@@ -171,6 +194,8 @@ def main():
             if name not in teams:
                 bg, fg = colors(t)
                 teams[name] = {"l": label(name), "c": code, "ab": t.get("abbreviation", name), "bg": bg, "fg": fg}
+                if t.get("logo") and t.get("id"):
+                    teams[name]["lg"] = str(t["id"])   # ESPN team id; the page builds the logo URL from it
                 alt_c = (t.get("alternateColor") or "").lower()
                 if len(alt_c) == 6 and alt_c != bg.lstrip("#"):
                     teams[name]["_alt"] = "#" + alt_c
@@ -218,11 +243,15 @@ def main():
         if c.get("neutralSite"):
             note = ", ".join(x for x in (adr.get("city"), adr.get("state")) if x) or v.get("fullName", "")
 
-        game = {"n": chosen, "tv": bool(tv_nat), "k": f"{hh:02d}:{dt.minute:02d}", "a": away["name"], "h": home["name"],
+        game = {"id": e["id"], "n": chosen, "tv": bool(tv_nat), "k": f"{hh:02d}:{dt.minute:02d}", "a": away["name"], "h": home["name"],
                 "ar": away["rank"], "hr": home["rank"], "neu": bool(c.get("neutralSite")), "note": note,
                 "sp": sp, "ou": ou}
         if alt:
             game["alt"] = alt
+        # build-time snapshot of a started game: state (in/post), scores, clock text. The page refreshes these live.
+        live = live_state(e, c)
+        if live:
+            game["live"] = live
         hb, ab_ = teams[home["name"]], teams[away["name"]]
         if dist(hb["bg"], ab_["bg"]) < 70 and hb.get("_alt") and dist(hb["_alt"], ab_["bg"]) >= 70:
             game["hc"] = [hb["_alt"], "#111" if lum(hb["_alt"]) > 0.2 else "#fff"]
