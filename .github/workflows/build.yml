@@ -2,8 +2,7 @@ name: Build slate
 
 on:
   schedule:
-    - cron: "15 13 * * 4"
-    - cron: "0 13 * * 6"
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -17,11 +16,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
