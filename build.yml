@@ -1,12 +1,11 @@
 # Builds the college football slate from ESPN and publishes it to GitHub Pages.
-# Runs Thursday 6:15 AM Arizona (13:15 UTC) and again Saturday 6:00 AM Arizona for fresher lines.
+# Runs every hour at :30 so lines, TV changes, and the build-time scores stay current (free on a public repo).
 # Run it by hand any time: Actions tab, "Build slate", "Run workflow".
 name: Build slate
 
 on:
   schedule:
-    - cron: "15 13 * * 4"
-    - cron: "0 13 * * 6"
+    - cron: "30 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -20,11 +19,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
