@@ -1,0 +1,26 @@
+NFL Week 1 (16 games, pulled Sat 9/5, 4:38 PM ET, lines DraftKings via ESPN)
+  weekly file written to nfl-slate-week1.html
+  web copy written to nfl/index.html
+  Wed 9/9: 1 on TV, 0 not
+  Thu 9/10: 0 on TV, 1 not
+  Sun 9/13: 13 on TV, 0 not
+  Mon 9/14: 1 on TV, 0 not
+  every game with its line:
+    Wed 20:20 ET  New England Patriots at Seattle Seahawks  [NBC]  SEA -3.5, o/u 44.5
+    Thu 20:35 ET  San Francisco 49ers vs Los Angeles Rams  [Netflix]  LAR -3.5, o/u 48.5
+    Sun 13:00 ET  Buffalo Bills at Houston Texans  [CBS]  BUF -1.5, o/u 44.5
+    Sun 13:00 ET  Baltimore Ravens at Indianapolis Colts  [CBS]  BAL -3.5, o/u 48.5
+    Sun 13:00 ET  Cleveland Browns at Jacksonville Jaguars  [CBS]  JAX -7.5, o/u 40.5
+    Sun 13:00 ET  New York Jets at Tennessee Titans  [CBS]  TEN -1.5, o/u 39.5
+    Sun 13:00 ET  Chicago Bears at Carolina Panthers  [FOX]  CHI -2.5, o/u 47.5
+    Sun 13:00 ET  Tampa Bay Buccaneers at Cincinnati Bengals  [FOX]  CIN -3.5, o/u 50.5
+    Sun 13:00 ET  New Orleans Saints at Detroit Lions  [FOX]  DET -7.0, o/u 49.5
+    Sun 13:00 ET  Atlanta Falcons at Pittsburgh Steelers  [FOX]  PIT -3.5, o/u 42.5
+    Sun 16:25 ET  Arizona Cardinals at Los Angeles Chargers  [CBS]  LAC -10.5, o/u 46.5
+    Sun 16:25 ET  Green Bay Packers at Minnesota Vikings  [CBS]  MIN -1.5, o/u 46.5
+    Sun 16:25 ET  Miami Dolphins at Las Vegas Raiders  [FOX]  LV -3.5, o/u 40.5
+    Sun 16:25 ET  Washington Commanders at Philadelphia Eagles  [FOX]  PHI -5.5, o/u 44.5
+    Sun 20:20 ET  Dallas Cowboys at New York Giants  [NBC]  DAL -2.5, o/u 48.5
+    Mon 20:15 ET  Denver Broncos at Kansas City Chiefs  [ESPN]  KC -3.0, o/u 42.5
+  TV games without a line: 0
+  time TBD: 0
