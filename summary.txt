@@ -1,4 +1,4 @@
-Week 1 slate written to cfb-slate-week1.html (132 games, pulled Fri 9/4, 8:36 PM ET, lines DraftKings via ESPN)
+Week 1 slate written to cfb-slate-week1.html (132 games, pulled Fri 9/4, 8:53 PM ET, lines DraftKings via ESPN)
   web copy written to index.html
   Thu 9/3: 6 on TV, 8 not
   Fri 9/4: 5 on TV, 4 not
@@ -10,7 +10,7 @@ Week 1 slate written to cfb-slate-week1.html (132 games, pulled Fri 9/4, 8:36 PM
     Thu 21:00 ET  Idaho at #21 Utah  [ESPNU]
     Fri 20:00 ET  UTEP at #10 Oklahoma  [SECN+]
     Fri 21:00 ET  #7 Miami (FL) at Stanford  [ESPN]  MIA -24.5, o/u 46.5
-    Fri 21:00 ET  Fresno State at #14 USC  [FOX]  USC -22.5, o/u 51.5
+    Fri 21:00 ET  Fresno State at #14 USC  [FOX]  USC -21.5, o/u 51.5
     Sat 12:00 ET  East Carolina at #13 Alabama  [ABC]  ALA -27.5, o/u 52.5
     Sat 12:00 ET  Oregon State at #23 Houston  [ESPN]  HOU -21.0, o/u 50.5
     Sat 12:00 ET  North Texas at #6 Indiana  [FOX]  IU -40.5, o/u 56.5
