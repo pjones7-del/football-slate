@@ -1,11 +1,17 @@
-# CFB Slate
+# Football Slate
 
-Phil's weekly college football TV guide: every FBS and FCS game Thursday through Monday, with channel, kickoff, and the DraftKings line, sorted by his streaming package. One day on screen at a time.
+Phil's weekly football TV guides: every game with channel, kickoff, and the DraftKings line, laid out like a TV grid, one day on screen at a time, with live scores on game days.
 
-- `index.html` is the live page (GitHub Pages serves it at the repo's Pages URL).
-- `build_slate.py` pulls ESPN's public scoreboard API and writes the page. No keys, nothing to install.
-- `cfb-slate-weekN.html` is each week's build; the newest one is also the template for the next.
-- `summary.txt` is the last build's summary: counts by day, ranked matchups with lines, anything missing.
-- `.github/workflows/build.yml` rebuilds Thursday 6:15 AM Arizona and Saturday 6:00 AM Arizona, and on demand from the Actions tab.
+- College: https://pjones7-del.github.io/football-slate/cfb/ (every FBS and FCS game, Thursday through Monday)
+- NFL: https://pjones7-del.github.io/football-slate/nfl/ (Wednesday through Monday, with a Market setting for the regional Sunday games on CBS and FOX)
+- The root page just links to both.
 
-Package defaults, carriage assumptions, and channel names live at the top of `build_slate.py`.
+Files:
+
+- `build_slate.py` pulls ESPN's public scoreboard API and writes both boards. No keys, nothing to install. `--league cfb` or `--league nfl` builds one.
+- `cfb-slate-weekN.html` is the college board for week N and the renderer template for both boards; renderer changes go in the newest one.
+- `nfl-slate-weekN.html` is the NFL board for week N (an output, not a template).
+- `cfb/index.html` and `nfl/index.html` are the live pages; `cfb/summary.txt` and `nfl/summary.txt` are each board's last build summary, `summary.txt` has both.
+- `.github/workflows/build.yml` rebuilds every 15 minutes and on demand from the Actions tab.
+
+Package defaults, carriage assumptions, channel names, and the conference and division tables live at the top of `build_slate.py`.
