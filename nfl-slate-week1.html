@@ -12,6 +12,7 @@
     --font:"Avenir Next Condensed","Roboto Condensed","Arial Narrow","Helvetica Neue",Arial,sans-serif;
   }
   *{box-sizing:border-box}
+  [hidden]{display:none!important}   /* the segs and panels set display themselves, which would otherwise beat the hidden attribute */
   html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font-family:var(--font)}
   .app{display:flex;flex-direction:column;height:100%;overflow:hidden}
 
@@ -379,7 +380,7 @@ const SLATE = {
   "week": "Week 1",
   "main": "2026-09-13",
   "mainLabel": "Sun, Sep 13",
-  "pulled": "Sat 9/5, 4:38 PM ET",
+  "pulled": "Sat 9/5, 4:43 PM ET",
   "lines": "DraftKings via ESPN",
   "networks": ["CBS","FOX","NBC","ESPN"],
   "order": ["CBS","FOX","NBC","ESPN","Netflix","ABC"],
