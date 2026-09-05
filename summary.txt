@@ -1,4 +1,4 @@
-Week 1 slate written to cfb-slate-week1.html (132 games, pulled Sat 9/5, 1:35 PM ET, lines DraftKings via ESPN)
+Week 1 slate written to cfb-slate-week1.html (132 games, pulled Sat 9/5, 1:49 PM ET, lines DraftKings via ESPN)
   web copy written to index.html
   Thu 9/3: 6 on TV, 8 not
   Fri 9/4: 5 on TV, 4 not
@@ -15,9 +15,9 @@ Week 1 slate written to cfb-slate-week1.html (132 games, pulled Sat 9/5, 1:35 PM
     Sat 12:00 ET  Oregon State at #23 Houston  [ESPN]  HOU -21.0, o/u 50.5
     Sat 12:00 ET  North Texas at #6 Indiana  [FOX]  IU -39.5, o/u 56.5
     Sat 12:30 ET  Ball State at #1 Ohio State  [BTN]  OSU -49.5, o/u 55.5
-    Sat 15:00 ET  Tennessee State at #3 Georgia  [SECN+]  UGA -48.5, o/u 55.5
+    Sat 15:00 ET  Tennessee State at #3 Georgia  [SECN+]  UGA -49.5, o/u 55.5
     Sat 15:30 ET  Boise State at #2 Oregon  [CBS]  ORE -24.5, o/u 51.5
-    Sat 15:30 ET  Texas State at #5 Texas  [ESPN]  TEX -29.5, o/u 59.5
+    Sat 15:30 ET  Texas State at #5 Texas  [ESPN]  TEX -29.5, o/u 60.5
     Sat 15:30 ET  Marshall at #18 Penn State  [FS1]  PSU -23.5, o/u 52.5
     Sat 15:30 ET  Furman at #20 Tennessee  [SECN+]  TENN -48.5, o/u 66.5
     Sat 16:15 ET  Northern Illinois at #22 Iowa  [BTN]  IOWA -31.5, o/u 44.5
