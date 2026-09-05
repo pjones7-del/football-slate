@@ -1,10 +1,10 @@
-College Football Week 1 (132 games, pulled Sat 9/5, 6:35 PM ET, lines DraftKings via ESPN)
+College Football Week 1 (133 games, pulled Sat 9/5, 6:49 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week1.html
   web copy written to cfb/index.html
   Thu 9/3: 6 on TV, 8 not
   Fri 9/4: 5 on TV, 4 not
   Sat 9/5: 37 on TV, 66 not
-  Sun 9/6: 5 on TV, 0 not
+  Sun 9/6: 5 on TV, 1 not
   Mon 9/7: 1 on TV, 0 not
   ranked matchups:
     Thu 20:00 ET  Arkansas-Pine Bluff at #25 Missouri  [SECN]
@@ -35,7 +35,7 @@ College Football Week 1 (132 games, pulled Sat 9/5, 6:35 PM ET, lines DraftKings
   time TBD: 0
   non-Division I or unknown conference ids: none: Central Washington, Franklin Pierce, Kentucky Christian, Southern Connecticut State, Texas Wesleyan, Webber International, West Virginia State; 139: Tusculum; 104: Elizabeth City State; 136: Central State (OH), Edward Waters, Kentucky State, Lane, Miles College
 
-NFL Week 1 (16 games, pulled Sat 9/5, 6:35 PM ET, lines DraftKings via ESPN)
+NFL Week 1 (16 games, pulled Sat 9/5, 6:49 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week1.html
   web copy written to nfl/index.html
   Wed 9/9: 1 on TV, 0 not
