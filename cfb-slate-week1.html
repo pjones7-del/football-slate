@@ -17,6 +17,10 @@
 
   .bar{padding:8px 12px 7px;background:var(--bg2);border-bottom:1px solid var(--hour);overflow:hidden;flex:none}
   .top{display:flex;align-items:center;gap:6px 10px;flex-wrap:wrap}
+  .top .ttl{order:1}
+  .top .tz{order:2}
+  .top .dayrow{order:3;flex-basis:100%;display:flex}
+  .ctrls .views{flex-basis:100%;order:-1;display:flex;flex-wrap:wrap;gap:5px;margin:0 0 1px}
   .ttl{display:flex;flex-direction:column;min-width:0;flex:1}
   .bar h1{margin:0;font-size:16px;line-height:1.15;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
   .bar .sub{font-size:12px;line-height:1.2;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -39,14 +43,18 @@
   .chip.grp{border-style:dashed}
   .chip small{font-weight:600;opacity:.7;margin-left:3px}
   .chip[disabled]{opacity:.4;cursor:default}
-  .views{margin-top:7px}
-  .views:empty{display:none}
   .views .chip{color:var(--ink);border-color:rgba(255,255,255,.3)}
   .views .chip[aria-pressed="true"]{background:#ffd23f;border-color:#ffd23f;color:#0b1a33}
   .views .chip.grp{color:var(--muted);border-color:var(--hour)}
   .panel input{font:inherit;font-size:12px;font-weight:600;padding:3px 9px;border-radius:12px;border:1px solid var(--hour);background:transparent;color:var(--ink);width:160px;max-width:100%}
   .panel input:focus{outline:2px solid #ffd23f;outline-offset:-2px}
   .panel .note{font-size:11px;color:var(--muted);align-self:center}
+  .chips.fcs{margin-top:5px;padding-top:5px;border-top:1px dashed var(--line)}
+  .chip.star{color:var(--ink);border-color:rgba(255,210,63,.6)}
+  .chip.star[aria-pressed="true"]{background:#ffd23f;border-color:#ffd23f;color:#0b1a33}
+  .chip .cf{font-weight:600;opacity:.6;margin-left:4px;font-size:10px;letter-spacing:0}
+  .seg button.mine{color:#ffd23f}
+  .seg button[disabled]{opacity:.4;cursor:default}
 
   .wrap{flex:1;overflow:auto;position:relative}
 
@@ -63,11 +71,12 @@
   .row{display:flex;width:max-content;min-width:100%;border-bottom:1px solid var(--hour)}
   .net{position:sticky;left:0;z-index:2;width:var(--label);flex:none;background:var(--bg2);border-right:1px solid var(--hour)}
   .netlab{position:sticky;top:36px;padding:14px 4px 8px;text-align:center;font-weight:700;font-size:12px;letter-spacing:.03em}
+  .netlab a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--muted)}
   .netlab small{display:block;font-size:9px;color:var(--muted);font-weight:600;margin-top:2px}
   .track{position:relative;flex:none;background:
      repeating-linear-gradient(to right,var(--hour) 0 1px,transparent 1px calc(var(--col)*2)),
      repeating-linear-gradient(to right,var(--line) 0 1px,transparent 1px var(--col))}
-  .game{position:absolute;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 0 rgba(0,0,0,.45)}
+  .game{position:absolute;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 0 rgba(0,0,0,.45);cursor:pointer}
   .team{flex:1;display:flex;align-items:center;min-width:0;padding:0 6px 0 24px;font-size:11.5px;font-weight:700;letter-spacing:.03em}
   .team .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
   .team .ln{flex:none;margin-left:auto;padding-left:8px;font-size:10px;font-weight:700;opacity:.85;letter-spacing:0}
@@ -89,6 +98,13 @@
   .g .scr{font-weight:800;margin-left:4px}
   .g .scr.dim{opacity:.55}
 
+  /* starred teams: gold frame on the block (drawn over the bars, with a dark inner line so it reads on gold teams too), star by the name */
+  .game.fav{box-shadow:0 0 8px rgba(255,210,63,.55)}
+  .game.fav::after{content:"";position:absolute;inset:0;border:2px solid #ffd23f;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.45);pointer-events:none}
+  .team .star,.g .star{flex:none;margin-right:3px;font-size:10px;opacity:.95}
+  .g.fav{box-shadow:inset 3px 0 0 #ffd23f}
+  .g .star{color:#ffd23f}
+
   /* sections + lists */
   .sec{position:sticky;left:0}
   .sh{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:8px;width:100%;height:34px;padding:0 12px;background:var(--bg2);border:0;border-top:1px solid var(--hour);border-bottom:1px solid var(--hour);color:var(--ink);font:inherit;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;text-align:left;cursor:pointer}
@@ -99,7 +115,7 @@
   .sec.static .sh{cursor:default}
   .gh{position:sticky;top:34px;z-index:2;height:24px;line-height:24px;padding:0 12px;background:var(--bg);color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--line)}
   .n2{font-weight:600;opacity:.8}
-  .g{display:flex;align-items:center;gap:10px;max-width:760px;padding:6px 12px;border-bottom:1px solid var(--line);min-height:40px}
+  .g{display:flex;align-items:center;gap:10px;max-width:760px;padding:6px 12px;border-bottom:1px solid var(--line);min-height:40px;cursor:pointer}
   .g .tm{flex:none;width:56px;font-weight:700;font-size:13px;line-height:1}
   .g .tm small{display:block;font-size:9px;color:var(--muted);font-weight:600;margin-top:2px;letter-spacing:.03em}
   .g .mu{flex:1;min-width:0;font-size:13.5px;line-height:1.3}
@@ -109,13 +125,40 @@
   .g .sub2 span{margin-right:10px}
   .g .sub2 b{font-weight:700;color:var(--ink);opacity:.85}
   .dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
-  .ch{flex:none;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.13);white-space:nowrap}
+  .ch{flex:none;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.13);white-space:nowrap;color:inherit;text-decoration:none}
+  a.ch{border-bottom:1px dotted var(--muted)}
   .ch.st{background:transparent;border:1px solid var(--hour);color:var(--muted)}
   .ch.none{background:transparent;border:1px dashed var(--hour);color:var(--muted);font-weight:600}
   .sec.dim .g{opacity:.5}
   .sec.dim .g .sub2 b{color:var(--muted)}
   .empty{padding:14px 12px;color:var(--muted);font-size:12px}
-  .foot{padding:6px 12px 8px;font-size:11px;line-height:1.35;color:var(--muted);background:var(--bg2);border-top:1px solid var(--hour);overflow:hidden;flex:none}
+  .foot{padding:5px 12px 6px;font-size:11px;line-height:1.35;color:var(--muted);background:var(--bg2);border-top:1px solid var(--hour);overflow:hidden;flex:none;position:relative}
+  .foot .fline{display:flex;align-items:center;gap:8px}
+  .foot .fline span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fbtn{flex:none;font:inherit;font-size:11px;font-weight:700;width:22px;height:20px;border-radius:10px;border:1px solid var(--hour);background:transparent;color:var(--muted);cursor:pointer;padding:0;line-height:18px}
+  .fbtn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .fnotes{margin-top:4px}
+  .fshow{display:none;font:inherit;font-size:10px;line-height:10px;padding:0;border:0;background:transparent;color:var(--muted);cursor:pointer;width:100%}
+  .foot.off{padding:0}
+  .foot.off .fline,.foot.off .fnotes{display:none}
+  .foot.off .fshow{display:block;height:12px}
+
+  /* short screens (a phone on its side): drop the title, put the day and time zone rows on one line, views next to the controls, slimmer everything */
+  @media (max-height: 520px){
+    .bar{padding:5px 10px 4px}
+    .bar .ttl{display:none}
+    .top{gap:4px 8px}
+    .top .dayrow{order:1;flex-basis:auto}
+    .top .tz{order:2;margin-left:auto}
+    .ctrls{margin-top:4px;gap:4px 6px}
+    .ctrls .views{flex-basis:auto;order:10;margin-left:auto}
+    .seg button{padding:3px 7px}
+    .seg.days button{font-size:11px;padding:3px 8px}
+    .seg.days button small{display:inline;margin-left:3px;font-size:9px}
+    .chip{padding:2px 8px}
+    .panel{max-height:60vh}
+    .foot{padding:3px 10px 4px;font-size:10px}
+  }
 
   /* print sheet: a white, landscape, one-page version of the grid on screen */
   .printbox{position:fixed;inset:0;z-index:20;background:#1b2436;overflow:auto;display:flex;flex-direction:column}
@@ -157,6 +200,9 @@
   .sheet.tight .game.compact .c1{font-size:7px}
   .sheet.tight .game.compact .c2{font-size:6.5px}
   .sheet.tight .netlab{font-size:8px;padding:3px 2px 2px}
+  .sheet .game.fav{box-shadow:none}
+  .sheet .game.fav::after{border:1.5px solid #b8860b;box-shadow:none;border-radius:2px}
+  .sheet .game.compact.fav{background:#fff1b8}
   @media print{
     @page{size:letter landscape;margin:0.2in}
     html,body{height:auto;overflow:visible;background:#fff}
@@ -211,19 +257,17 @@
   <div class="bar">
     <div class="top">
       <div class="ttl"><h1>College Football</h1><span class="sub" id="sub"></span></div>
-      <div class="seg" role="group" aria-label="Time zone">
+      <div class="seg tz" role="group" aria-label="Time zone">
         <button type="button" data-key="tz" data-v="AZ">AZ</button>
         <button type="button" data-key="tz" data-v="PT">PT</button>
         <button type="button" data-key="tz" data-v="MT">MT</button>
         <button type="button" data-key="tz" data-v="CT">CT</button>
         <button type="button" data-key="tz" data-v="ET">ET</button>
       </div>
+      <div class="dayrow"><div class="seg days" id="days" role="group" aria-label="Day"></div></div>
     </div>
     <div class="ctrls">
-      <div class="seg days" id="days" role="group" aria-label="Day"></div>
-    </div>
-    <div class="chips views" id="views" role="group" aria-label="Saved views"></div>
-    <div class="ctrls">
+      <div class="chips views" id="views" role="group" aria-label="Saved views"></div>
       <div class="seg" role="group" aria-label="View">
         <button type="button" data-key="view" data-v="grid">Grid</button>
         <button type="button" data-key="view" data-v="list">List</button>
@@ -234,10 +278,16 @@
         <button type="button" data-key="show" data-v="top25">Top 25</button>
       </div>
       <div class="seg">
+        <button type="button" id="nowBtn" aria-pressed="false" title="Only the games in progress right now">On now<small id="nowN"></small></button>
+      </div>
+      <div class="seg">
         <button type="button" id="pkgBtn" aria-pressed="false" aria-controls="panel">Package<small id="pkgN"></small></button>
       </div>
       <div class="seg">
         <button type="button" id="confBtn" aria-pressed="false" aria-controls="cpanel">Conf<small id="confN"></small></button>
+      </div>
+      <div class="seg">
+        <button type="button" id="teamBtn" aria-pressed="false" aria-controls="tpanel">Teams<small id="teamN"></small></button>
       </div>
       <div class="seg">
         <button type="button" id="printBtn" title="One landscape page of the day on screen, as filtered">Print</button>
@@ -250,11 +300,22 @@
       <div class="chips" id="chans"></div>
     </div>
     <div class="panel" id="cpanel" hidden>
-      <h2>Conferences <span>tap to show only games involving these; none on = everything</span></h2>
+      <h2>Conferences <span>tap to show only games involving these; none on = everything; an FCS pick shows even with FBS on</span></h2>
       <div class="chips" id="confs"></div>
+      <div class="chips fcs" id="fconfs" hidden></div>
+    </div>
+    <div class="panel" id="tpanel" hidden>
+      <h2>My teams <span>starred teams get a gold outline on the board; tap one here to drop it</span></h2>
+      <div class="chips" id="stars"></div>
+      <h2>Find a team <span>type part of a name, tap to star</span></h2>
+      <div class="chips">
+        <input type="text" id="tfind" placeholder="Team name" aria-label="Find a team" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <span class="note" id="tnote"></span>
+      </div>
+      <div class="chips" id="tlist"></div>
     </div>
     <div class="panel" id="vpanel" hidden>
-      <h2>Save this view <span>keeps the current package, conferences, filter, grid or list, and time zone under a name; up to 5</span></h2>
+      <h2>Save this view <span>keeps the current package, conferences, filters, grid or list, and time zone under a name; up to 5</span></h2>
       <div class="chips">
         <input type="text" id="vname" maxlength="18" placeholder="Name this view" aria-label="View name" autocomplete="off">
         <button type="button" class="chip" id="vsave">Save</button>
@@ -265,7 +326,15 @@
     </div>
   </div>
   <div class="wrap" id="wrap"></div>
-  <div class="foot" id="foot"></div>
+  <div class="foot" id="foot">
+    <div class="fline">
+      <span id="fstamp"></span>
+      <button type="button" class="fbtn" id="fmore" title="How to read the grid">?</button>
+      <button type="button" class="fbtn" id="fhide" title="Hide">&#x2715;</button>
+    </div>
+    <div class="fnotes" id="fnotes" hidden></div>
+    <button type="button" class="fshow" id="fshow" title="Show the footer">&#x25B4;</button>
+  </div>
 </div>
 <div class="printbox" id="printbox" hidden>
   <div class="printbar">
@@ -284,12 +353,13 @@ const SLATE = {
   "week": "Week 1",
   "main": "2026-09-05",
   "mainLabel": "Sat, Sep 5",
-  "pulled": "Sat 9/5, 1:49 PM ET",
+  "pulled": "Sat 9/5, 1:58 PM ET",
   "lines": "DraftKings via ESPN",
   "networks": ["ABC","CBS","FOX","NBC","CW","ESPN","ESPN2","TNT","ESPNU","FS1","USA","ACCN","SECN","BTN","CBSSN"],
   "order": ["ABC","CBS","FOX","NBC","CW","ESPN","ESPN2","TNT","ESPNU","FS1","USA","ACCN","SECN","BTN","CBSSN","Peacock","Disney+","SECN+","ACCNX","MW+","YouTube","HBCU Go","ESPN+","CIAA Network","FloSports","MEAC Network","Midco Sports Net","NEC Front Row","SNY","Scripps Sports","UConn+"],
   "packages": {"YouTube TV":["ABC","CBS","FOX","NBC","CW","ESPN","ESPN2","ESPNU","ESPNEWS","SECN","ACCN","BTN","FS1","FS2","CBSSN","USA","TNT","TBS","TRUTV","NBCSN"],"Hulu + Live TV":["ABC","CBS","FOX","NBC","ESPN","ESPN2","ESPNU","ESPNEWS","SECN","ACCN","BTN","FS1","FS2","CBSSN","USA","TNT","TBS","TRUTV","NBCSN","ESPN+","Disney+"],"Fubo":["ABC","CBS","FOX","NBC","CW","ESPN","ESPN2","ESPNU","ESPNEWS","SECN","ACCN","BTN","FS1","FS2","CBSSN","USA","NBCSN"],"Cable / satellite":["ABC","CBS","FOX","NBC","CW","ESPN","ESPN2","ESPNU","ESPNEWS","SECN","ACCN","BTN","FS1","FS2","CBSSN","USA","TNT","TBS","TRUTV","NBCSN"],"Antenna":["ABC","CBS","FOX","NBC","CW"],"ESPN Unlimited":["ESPN","ESPN2","ESPNU","ESPNEWS","SECN","ACCN","ESPN+","SECN+","ACCNX","ESPN3"],"ESPN+ only":["ESPN+","ESPN3"],"Peacock":["Peacock","NBC"],"Paramount+":["Paramount+","CBS"],"Disney+":["Disney+"],"HBO Max":["HBO Max","TNT"],"Fox One":["FOX","FS1","FS2"],"MW+":["MW+"],"Free apps":["CW","YouTube","HBCU Go"]},
   "have": ["ABC","ACCN","ACCNX","BTN","CBS","CBSSN","CIAA Network","CW","Disney+","ESPN","ESPN+","ESPN2","ESPNU","FOX","FS1","FloSports","HBCU Go","MEAC Network","MW+","Midco Sports Net","NBC","NEC Front Row","Peacock","SECN","SECN+","SNY","Scripps Sports","TNT","UConn+","USA","YouTube"],
+  "confs": [["SEC","SEC","fbs"],["B1G","Big Ten","fbs"],["ACC","ACC","fbs"],["B12","Big 12","fbs"],["AAC","AAC","fbs"],["PAC","Pac-12","fbs"],["MWC","MWC","fbs"],["MAC","MAC","fbs"],["SBC","Sun Belt","fbs"],["CUSA","CUSA","fbs"],["IND","Ind","fbs"],["BSKY","Big Sky","fcs"],["BSO","Big South-OVC","fcs"],["CAA","CAA","fcs"],["FCSI","FCS Ind","fcs"],["IVY","Ivy","fcs"],["MEAC","MEAC","fcs"],["MVFC","MVFC","fcs"],["NEC","NEC","fcs"],["PAT","Patriot","fcs"],["PFL","Pioneer","fcs"],["SOCON","SoCon","fcs"],["SLC","Southland","fcs"],["SWAC","SWAC","fcs"],["UAC","UAC","fcs"],["OTHER","Non-D1","other"]],
   "days": [
     {"label": "Thu 9/3", "date": "2026-09-03", "games": [
       {"id":"401858423","n":"BTN","tv":true,"k":"18:00","a":"UMass","h":"Rutgers","ar":0,"hr":0,"neu":false,"note":"","sp":null,"ou":null,"live":{"st":"post","as":37,"hs":21,"clk":"Final"}},
@@ -321,35 +391,35 @@ const SLATE = {
     {"label": "Sat 9/5", "date": "2026-09-05", "games": [
       {"id":"401868284","n":"YouTube","tv":false,"k":"11:00","a":"Webber International","h":"Stetson","ar":0,"hr":0,"neu":false,"note":"","sp":null,"ou":null,"live":{"st":"post","as":10,"hs":45,"clk":"Final"}},
       {"id":"401856634","n":"ABC","tv":true,"k":"12:00","a":"East Carolina","h":"Alabama","ar":0,"hr":13,"neu":false,"note":"","sp":-27.5,"ou":52.5,"live":{"st":"in","as":7,"hs":38,"clk":"Halftime"},"cl":true},
-      {"id":"401858208","n":"ACCN","tv":true,"k":"12:00","a":"New Hampshire","h":"Syracuse","ar":0,"hr":0,"neu":false,"note":"","sp":-35.5,"ou":56.5,"alt":["ACCNX"],"live":{"st":"in","as":0,"hs":41,"clk":"Halftime"},"cl":true},
-      {"id":"401862701","n":"CBSSN","tv":true,"k":"12:00","a":"Bryant","h":"Army","ar":0,"hr":0,"neu":false,"note":"","sp":-37.5,"ou":51.5,"live":{"st":"in","as":3,"hs":31,"clk":"Halftime"},"cl":true,"hc":["#d3bc8d","#111"]},
+      {"id":"401858208","n":"ACCN","tv":true,"k":"12:00","a":"New Hampshire","h":"Syracuse","ar":0,"hr":0,"neu":false,"note":"","sp":-34.5,"ou":55.5,"alt":["ACCNX"],"live":{"st":"in","as":0,"hs":41,"clk":"Halftime"},"cl":true},
+      {"id":"401862701","n":"CBSSN","tv":true,"k":"12:00","a":"Bryant","h":"Army","ar":0,"hr":0,"neu":false,"note":"","sp":-36.5,"ou":50.5,"live":{"st":"in","as":3,"hs":31,"clk":"Halftime"},"cl":true,"hc":["#d3bc8d","#111"]},
       {"id":"401856778","n":"ESPN","tv":true,"k":"12:00","a":"Oregon State","h":"Houston","ar":0,"hr":23,"neu":false,"note":"","sp":-21.0,"ou":50.5,"alt":["Disney+"],"live":{"st":"in","as":7,"hs":19,"clk":"Halftime"},"cl":true,"hc":["#ffffff","#111"]},
       {"id":"401869960","n":"ESPNU","tv":true,"k":"12:00","a":"Liberty","h":"James Madison","ar":0,"hr":0,"neu":false,"note":"","sp":-6.0,"ou":50.5,"live":{"st":"in","as":6,"hs":17,"clk":"Halftime"},"cl":true},
-      {"id":"401858425","n":"FOX","tv":true,"k":"12:00","a":"North Texas","h":"Indiana","ar":0,"hr":6,"neu":false,"note":"","sp":-39.5,"ou":56.5,"live":{"st":"in","as":6,"hs":24,"clk":"Halftime"},"cl":true},
-      {"id":"401858430","n":"FS1","tv":true,"k":"12:00","a":"Ohio","h":"Nebraska","ar":0,"hr":0,"neu":false,"note":"","sp":-23.5,"ou":47.5,"live":{"st":"in","as":13,"hs":14,"clk":"Halftime"},"cl":true},
-      {"id":"401856780","n":"TNT","tv":true,"k":"12:00","a":"Coastal Carolina","h":"West Virginia","ar":0,"hr":0,"neu":false,"note":"","sp":-21.0,"ou":54.5,"live":{"st":"in","as":0,"hs":24,"clk":"Halftime"},"cl":true},
-      {"id":"401866410","n":"ESPN+","tv":false,"k":"12:00","a":"Tarleton State","h":"Bowling Green","ar":0,"hr":0,"neu":false,"note":"","sp":-1.5,"ou":49.5,"live":{"st":"in","as":17,"hs":7,"clk":"15:00 - 3rd"},"cl":true},
-      {"id":"401867924","n":"NEC Front Row","tv":false,"k":"12:00","a":"Stonehill","h":"New Haven","ar":0,"hr":0,"neu":false,"note":"","sp":-6.5,"ou":42.5,"live":{"st":"in","as":21,"hs":3,"clk":"Halftime"},"cl":true},
-      {"id":"401867928","n":"NEC Front Row","tv":false,"k":"12:00","a":"Southern Connecticut State","h":"Wagner","ar":0,"hr":0,"neu":false,"note":"","sp":null,"ou":null,"live":{"st":"in","as":0,"hs":24,"clk":"7:57 - 3rd"}},
-      {"id":"401861962","n":"UConn+","tv":false,"k":"12:00","a":"Lafayette","h":"UConn","ar":0,"hr":0,"neu":false,"note":"","sp":-21.5,"ou":51.5,"live":{"st":"in","as":0,"hs":35,"clk":"Halftime"},"cl":true},
-      {"id":"401858432","n":"BTN","tv":true,"k":"12:30","a":"Ball State","h":"Ohio State","ar":0,"hr":1,"neu":false,"note":"","sp":-49.5,"ou":55.5,"live":{"st":"in","as":0,"hs":21,"clk":"3:59 - 2nd"},"cl":true,"hc":["#a8adb4","#111"]},
-      {"id":"401858207","n":"CW","tv":true,"k":"12:30","a":"Miami (OH)","h":"Pitt","ar":0,"hr":0,"neu":false,"note":"","sp":-16.5,"ou":47.5,"live":{"st":"in","as":7,"hs":21,"clk":"8:20 - 2nd"},"cl":true},
-      {"id":"401868017","n":"ESPN+","tv":false,"k":"12:30","a":"Lehigh","h":"Georgetown","ar":0,"hr":0,"neu":false,"note":"","sp":22.5,"ou":46.5,"live":{"st":"in","as":21,"hs":7,"clk":"1:15 - 2nd"},"cl":true},
-      {"id":"401856665","n":"SECN","tv":true,"k":"12:45","a":"Kent State","h":"South Carolina","ar":0,"hr":0,"neu":false,"note":"","sp":-35.5,"ou":53.5,"live":{"st":"in","as":0,"hs":15,"clk":"8:14 - 2nd"},"cl":true},
-      {"id":"401868000","n":"ESPN+","tv":false,"k":"13:00","a":"Holy Cross","h":"Colgate","ar":0,"hr":0,"neu":false,"note":"","sp":-4.5,"ou":49.5,"live":{"st":"in","as":3,"hs":21,"clk":"12:51 - 2nd"},"cl":true},
-      {"id":"401856779","n":"ESPN+","tv":false,"k":"13:00","a":"Southeast Missouri State","h":"Iowa State","ar":0,"hr":0,"neu":false,"note":"","sp":-29.5,"ou":52.5,"live":{"st":"in","as":0,"hs":7,"clk":"10:08 - 1st"},"cl":true,"hc":["#ffc72a","#111"]},
-      {"id":"401864496","n":"MW+","tv":false,"k":"13:00","a":"Duquesne","h":"Air Force","ar":0,"hr":0,"neu":false,"note":"","sp":-31.5,"ou":55.5,"live":{"st":"in","as":0,"hs":17,"clk":"9:33 - 2nd"},"cl":true,"hc":["#ffffff","#111"]},
-      {"id":"401856659","n":"SECN+","tv":false,"k":"13:00","a":"Youngstown State","h":"Kentucky","ar":0,"hr":0,"neu":false,"note":"","sp":-22.5,"ou":61.5,"live":{"st":"in","as":0,"hs":21,"clk":"11:22 - 2nd"},"cl":true},
-      {"id":"401868186","n":"ESPN+","tv":false,"k":"13:30","a":"Gardner-Webb","h":"Wofford","ar":0,"hr":0,"neu":false,"note":"","sp":-8.5,"ou":50.5,"live":{"st":"in","as":0,"hs":7,"clk":"6:25 - 1st"},"cl":true},
+      {"id":"401858425","n":"FOX","tv":true,"k":"12:00","a":"North Texas","h":"Indiana","ar":0,"hr":6,"neu":false,"note":"","sp":-40.5,"ou":56.5,"live":{"st":"in","as":6,"hs":24,"clk":"Halftime"},"cl":true},
+      {"id":"401858430","n":"FS1","tv":true,"k":"12:00","a":"Ohio","h":"Nebraska","ar":0,"hr":0,"neu":false,"note":"","sp":-23.5,"ou":46.5,"live":{"st":"in","as":13,"hs":14,"clk":"Halftime"},"cl":true},
+      {"id":"401856780","n":"TNT","tv":true,"k":"12:00","a":"Coastal Carolina","h":"West Virginia","ar":0,"hr":0,"neu":false,"note":"","sp":-21.0,"ou":54.5,"live":{"st":"in","as":0,"hs":24,"clk":"12:48 - 3rd"},"cl":true},
+      {"id":"401866410","n":"ESPN+","tv":false,"k":"12:00","a":"Tarleton State","h":"Bowling Green","ar":0,"hr":0,"neu":false,"note":"","sp":-1.5,"ou":48.5,"live":{"st":"in","as":17,"hs":7,"clk":"10:00 - 3rd"},"cl":true},
+      {"id":"401867924","n":"NEC Front Row","tv":false,"k":"12:00","a":"Stonehill","h":"New Haven","ar":0,"hr":0,"neu":false,"note":"","sp":-7.0,"ou":41.5,"live":{"st":"in","as":21,"hs":3,"clk":"12:12 - 3rd"},"cl":true},
+      {"id":"401867928","n":"NEC Front Row","tv":false,"k":"12:00","a":"Southern Connecticut State","h":"Wagner","ar":0,"hr":0,"neu":false,"note":"","sp":null,"ou":null,"live":{"st":"in","as":0,"hs":24,"clk":"3:46 - 3rd"}},
+      {"id":"401861962","n":"UConn+","tv":false,"k":"12:00","a":"Lafayette","h":"UConn","ar":0,"hr":0,"neu":false,"note":"","sp":-19.5,"ou":51.5,"live":{"st":"in","as":0,"hs":35,"clk":"Halftime"},"cl":true},
+      {"id":"401858432","n":"BTN","tv":true,"k":"12:30","a":"Ball State","h":"Ohio State","ar":0,"hr":1,"neu":false,"note":"","sp":-49.5,"ou":56.5,"live":{"st":"in","as":3,"hs":21,"clk":"1:15 - 2nd"},"cl":true,"hc":["#a8adb4","#111"]},
+      {"id":"401858207","n":"CW","tv":true,"k":"12:30","a":"Miami (OH)","h":"Pitt","ar":0,"hr":0,"neu":false,"note":"","sp":-16.5,"ou":47.5,"live":{"st":"in","as":7,"hs":27,"clk":"4:44 - 2nd"},"cl":true},
+      {"id":"401868017","n":"ESPN+","tv":false,"k":"12:30","a":"Lehigh","h":"Georgetown","ar":0,"hr":0,"neu":false,"note":"","sp":22.5,"ou":49.5,"live":{"st":"in","as":24,"hs":7,"clk":"Halftime"},"cl":true},
+      {"id":"401856665","n":"SECN","tv":true,"k":"12:45","a":"Kent State","h":"South Carolina","ar":0,"hr":0,"neu":false,"note":"","sp":-35.5,"ou":53.5,"live":{"st":"in","as":0,"hs":22,"clk":"6:25 - 2nd"},"cl":true},
+      {"id":"401868000","n":"ESPN+","tv":false,"k":"13:00","a":"Holy Cross","h":"Colgate","ar":0,"hr":0,"neu":false,"note":"","sp":-4.5,"ou":47.5,"live":{"st":"in","as":3,"hs":21,"clk":"9:33 - 2nd"},"cl":true},
+      {"id":"401856779","n":"ESPN+","tv":false,"k":"13:00","a":"Southeast Missouri State","h":"Iowa State","ar":0,"hr":0,"neu":false,"note":"","sp":-30.5,"ou":53.5,"live":{"st":"in","as":0,"hs":7,"clk":"7:13 - 1st"},"cl":true,"hc":["#ffc72a","#111"]},
+      {"id":"401864496","n":"MW+","tv":false,"k":"13:00","a":"Duquesne","h":"Air Force","ar":0,"hr":0,"neu":false,"note":"","sp":-29.5,"ou":57.5,"live":{"st":"in","as":0,"hs":17,"clk":"7:19 - 2nd"},"cl":true,"hc":["#ffffff","#111"]},
+      {"id":"401856659","n":"SECN+","tv":false,"k":"13:00","a":"Youngstown State","h":"Kentucky","ar":0,"hr":0,"neu":false,"note":"","sp":-22.5,"ou":62.5,"live":{"st":"in","as":0,"hs":21,"clk":"5:03 - 2nd"},"cl":true},
+      {"id":"401868186","n":"ESPN+","tv":false,"k":"13:30","a":"Gardner-Webb","h":"Wofford","ar":0,"hr":0,"neu":false,"note":"","sp":-7.0,"ou":47.5,"live":{"st":"in","as":0,"hs":7,"clk":"6:25 - 1st"},"cl":true},
       {"id":"401862698","n":"ESPN+","tv":false,"k":"14:00","a":"Rhode Island","h":"Temple","ar":0,"hr":0,"neu":false,"note":"","sp":-14.5,"ou":51.5},
-      {"id":"401866624","n":"FloSports","tv":false,"k":"14:00","a":"Sacred Heart","h":"Monmouth","ar":0,"hr":0,"neu":false,"note":"","sp":-12.5,"ou":58.5},
+      {"id":"401866624","n":"FloSports","tv":false,"k":"14:00","a":"Sacred Heart","h":"Monmouth","ar":0,"hr":0,"neu":false,"note":"","sp":-11.5,"ou":58.5},
       {"id":"401868111","n":"ESPN+","tv":false,"k":"15:00","a":"Drake","h":"Montana","ar":0,"hr":0,"neu":false,"note":"","sp":-35.5,"ou":60.5},
       {"id":"401856658","n":"SECN+","tv":false,"k":"15:00","a":"Tennessee State","h":"Georgia","ar":0,"hr":3,"neu":false,"note":"","sp":-49.5,"ou":55.5},
       {"id":"401856636","n":"ABC","tv":true,"k":"15:30","a":"Baylor","h":"Auburn","ar":0,"hr":0,"neu":true,"note":"Atlanta, GA","sp":-6.5,"ou":58.5,"alt":["Disney+"],"hc":["#f26522","#111"]},
       {"id":"401858209","n":"ACCN","tv":true,"k":"15:30","a":"Tulane","h":"Duke","ar":0,"hr":0,"neu":false,"note":"","sp":-7.5,"ou":50.5,"alt":["ACCNX"]},
       {"id":"401858433","n":"CBS","tv":true,"k":"15:30","a":"Boise State","h":"Oregon","ar":0,"hr":2,"neu":false,"note":"","sp":-24.5,"ou":51.5},
       {"id":"401862696","n":"CBSSN","tv":true,"k":"15:30","a":"Towson","h":"Navy","ar":0,"hr":0,"neu":false,"note":"","sp":-31.5,"ou":50.5},
-      {"id":"401856667","n":"ESPN","tv":true,"k":"15:30","a":"Texas State","h":"Texas","ar":0,"hr":5,"neu":false,"note":"","sp":-29.5,"ou":60.5},
+      {"id":"401856667","n":"ESPN","tv":true,"k":"15:30","a":"Texas State","h":"Texas","ar":0,"hr":5,"neu":false,"note":"","sp":-29.5,"ou":59.5},
       {"id":"401856777","n":"FOX","tv":true,"k":"15:30","a":"Boston College","h":"Cincinnati","ar":0,"hr":0,"neu":false,"note":"","sp":-7.0,"ou":51.5},
       {"id":"401858434","n":"FS1","tv":true,"k":"15:30","a":"Marshall","h":"Penn State","ar":0,"hr":18,"neu":false,"note":"","sp":-23.5,"ou":52.5},
       {"id":"401866627","n":"ESPN+","tv":false,"k":"15:30","a":"Maine","h":"App State","ar":0,"hr":0,"neu":false,"note":"","sp":-20.5,"ou":53.5},
@@ -436,97 +506,97 @@ const SLATE = {
   ]
 };
 const TEAMS = {
-  "Abilene Christian": {"l":"ABILENE CHRISTIAN","c":"FCS","ab":"ACU","bg":"#592d82","fg":"#fff","lg":"2000"},
+  "Abilene Christian": {"l":"ABILENE CHRISTIAN","c":"UAC","ab":"ACU","bg":"#592d82","fg":"#fff","lg":"2000"},
   "Air Force": {"l":"AIR FORCE","c":"MWC","ab":"AFA","bg":"#003594","fg":"#fff","lg":"2005"},
   "Akron": {"l":"AKRON","c":"MAC","ab":"AKR","bg":"#041e42","fg":"#fff","lg":"2006"},
   "Alabama": {"l":"ALABAMA","c":"SEC","ab":"ALA","bg":"#9e1b32","fg":"#fff","lg":"333"},
-  "Alabama A&M": {"l":"ALABAMA A&M","c":"FCS","ab":"AAMU","bg":"#790000","fg":"#fff","lg":"2010"},
-  "Alabama State": {"l":"ALABAMA ST","c":"FCS","ab":"ALST","bg":"#e9a900","fg":"#111","lg":"2011"},
-  "Alcorn State": {"l":"ALCORN ST","c":"FCS","ab":"ALCN","bg":"#4b0058","fg":"#fff","lg":"2016"},
+  "Alabama A&M": {"l":"ALABAMA A&M","c":"SWAC","ab":"AAMU","bg":"#790000","fg":"#fff","lg":"2010"},
+  "Alabama State": {"l":"ALABAMA ST","c":"SWAC","ab":"ALST","bg":"#e9a900","fg":"#111","lg":"2011"},
+  "Alcorn State": {"l":"ALCORN ST","c":"SWAC","ab":"ALCN","bg":"#4b0058","fg":"#fff","lg":"2016"},
   "App State": {"l":"APP ST","c":"SBC","ab":"APP","bg":"#000000","fg":"#fff","lg":"2026"},
   "Arizona": {"l":"ARIZONA","c":"B12","ab":"ARIZ","bg":"#cc0033","fg":"#fff","lg":"12"},
   "Arizona State": {"l":"ARIZONA ST","c":"B12","ab":"ASU","bg":"#ffc627","fg":"#111","lg":"9"},
   "Arkansas": {"l":"ARKANSAS","c":"SEC","ab":"ARK","bg":"#a32136","fg":"#fff","lg":"8"},
   "Arkansas State": {"l":"ARKANSAS ST","c":"SBC","ab":"ARST","bg":"#cc092f","fg":"#fff","lg":"2032"},
-  "Arkansas-Pine Bluff": {"l":"ARKANSAS-PINE BLUFF","c":"FCS","ab":"UAPB","bg":"#e0aa0f","fg":"#111","lg":"2029"},
+  "Arkansas-Pine Bluff": {"l":"ARKANSAS-PINE BLUFF","c":"SWAC","ab":"UAPB","bg":"#e0aa0f","fg":"#111","lg":"2029"},
   "Army": {"l":"ARMY","c":"AAC","ab":"ARMY","bg":"#000000","fg":"#fff","lg":"349"},
   "Auburn": {"l":"AUBURN","c":"SEC","ab":"AUB","bg":"#002b5c","fg":"#fff","lg":"2"},
-  "Austin Peay": {"l":"AUSTIN PEAY","c":"FCS","ab":"APSU","bg":"#8e0b0b","fg":"#fff","lg":"2046"},
+  "Austin Peay": {"l":"AUSTIN PEAY","c":"UAC","ab":"APSU","bg":"#8e0b0b","fg":"#fff","lg":"2046"},
   "BYU": {"l":"BYU","c":"B12","ab":"BYU","bg":"#0047ba","fg":"#fff","lg":"252"},
   "Ball State": {"l":"BALL ST","c":"MAC","ab":"BALL","bg":"#ba0c2f","fg":"#fff","lg":"2050"},
   "Baylor": {"l":"BAYLOR","c":"B12","ab":"BAY","bg":"#154734","fg":"#fff","lg":"239"},
-  "Bethune-Cookman": {"l":"BETHUNE-COOKMAN","c":"FCS","ab":"BCU","bg":"#7b1831","fg":"#fff","lg":"2065"},
+  "Bethune-Cookman": {"l":"BETHUNE-COOKMAN","c":"SWAC","ab":"BCU","bg":"#7b1831","fg":"#fff","lg":"2065"},
   "Boise State": {"l":"BOISE ST","c":"PAC","ab":"BOIS","bg":"#0033a0","fg":"#fff","lg":"68"},
   "Boston College": {"l":"BOSTON COLLEGE","c":"ACC","ab":"BC","bg":"#8c2232","fg":"#fff","lg":"103"},
   "Bowling Green": {"l":"BOWLING GREEN","c":"MAC","ab":"BGSU","bg":"#fd5000","fg":"#111","lg":"189"},
-  "Bryant": {"l":"BRYANT","c":"FCS","ab":"BRY","bg":"#000000","fg":"#fff","lg":"2803"},
-  "Bucknell": {"l":"BUCKNELL","c":"FCS","ab":"BUCK","bg":"#000060","fg":"#fff","lg":"2083"},
+  "Bryant": {"l":"BRYANT","c":"CAA","ab":"BRY","bg":"#000000","fg":"#fff","lg":"2803"},
+  "Bucknell": {"l":"BUCKNELL","c":"PAT","ab":"BUCK","bg":"#000060","fg":"#fff","lg":"2083"},
   "Buffalo": {"l":"BUFFALO","c":"MAC","ab":"BUFF","bg":"#005bbb","fg":"#fff","lg":"2084"},
-  "Butler": {"l":"BUTLER","c":"FCS","ab":"BTLR","bg":"#0d1361","fg":"#fff","lg":"2086"},
+  "Butler": {"l":"BUTLER","c":"PFL","ab":"BTLR","bg":"#0d1361","fg":"#fff","lg":"2086"},
   "Cal": {"l":"CAL","c":"ACC","ab":"CAL","bg":"#041e42","fg":"#fff","lg":"25"},
-  "Cal Poly": {"l":"CAL POLY","c":"FCS","ab":"CP","bg":"#1e4d2b","fg":"#fff","lg":"13"},
-  "Campbell": {"l":"CAMPBELL","c":"FCS","ab":"CAM","bg":"#000000","fg":"#fff","lg":"2097"},
-  "Central Arkansas": {"l":"CENTRAL ARKANSAS","c":"FCS","ab":"CARK","bg":"#a7a9ac","fg":"#111","lg":"2110"},
+  "Cal Poly": {"l":"CAL POLY","c":"BSKY","ab":"CP","bg":"#1e4d2b","fg":"#fff","lg":"13"},
+  "Campbell": {"l":"CAMPBELL","c":"CAA","ab":"CAM","bg":"#000000","fg":"#fff","lg":"2097"},
+  "Central Arkansas": {"l":"CENTRAL ARKANSAS","c":"UAC","ab":"CARK","bg":"#a7a9ac","fg":"#111","lg":"2110"},
   "Central Michigan": {"l":"CENTRAL MICHIGAN","c":"MAC","ab":"CMU","bg":"#4c0027","fg":"#fff","lg":"2117"},
   "Central State (OH)": {"l":"CENTRAL ST (OH)","c":"OTHER","ab":"CEN","bg":"#000000","fg":"#fff","lg":"2119"},
   "Central Washington": {"l":"CENTRAL WASHINGTON","c":"OTHER","ab":"CEN","bg":"#000000","fg":"#fff","lg":"2120"},
-  "Charleston Southern": {"l":"CHARLESTON SOUTHERN","c":"FCS","ab":"CHSO","bg":"#2e3192","fg":"#fff","lg":"2127"},
+  "Charleston Southern": {"l":"CHARLESTON SOUTHERN","c":"BSO","ab":"CHSO","bg":"#2e3192","fg":"#fff","lg":"2127"},
   "Charlotte": {"l":"CHARLOTTE","c":"AAC","ab":"CLT","bg":"#005035","fg":"#fff","lg":"2429"},
-  "Chattanooga": {"l":"CHATTANOOGA","c":"FCS","ab":"UTC","bg":"#00386b","fg":"#fff","lg":"236"},
-  "Chicago State": {"l":"CHICAGO ST","c":"FCS","ab":"CHST","bg":"#3b4560","fg":"#fff","lg":"2130"},
+  "Chattanooga": {"l":"CHATTANOOGA","c":"SOCON","ab":"UTC","bg":"#00386b","fg":"#fff","lg":"236"},
+  "Chicago State": {"l":"CHICAGO ST","c":"FCSI","ab":"CHST","bg":"#3b4560","fg":"#fff","lg":"2130"},
   "Cincinnati": {"l":"CINCINNATI","c":"B12","ab":"CIN","bg":"#000000","fg":"#fff","lg":"2132"},
   "Clemson": {"l":"CLEMSON","c":"ACC","ab":"CLEM","bg":"#f56600","fg":"#111","lg":"228"},
   "Coastal Carolina": {"l":"COASTAL CAROLINA","c":"SBC","ab":"CCU","bg":"#006f71","fg":"#fff","lg":"324"},
-  "Colgate": {"l":"COLGATE","c":"FCS","ab":"COLG","bg":"#821019","fg":"#fff","lg":"2142"},
+  "Colgate": {"l":"COLGATE","c":"PAT","ab":"COLG","bg":"#821019","fg":"#fff","lg":"2142"},
   "Colorado": {"l":"COLORADO","c":"B12","ab":"COLO","bg":"#cfb87c","fg":"#111","lg":"38"},
   "Colorado State": {"l":"COLORADO ST","c":"PAC","ab":"CSU","bg":"#004c23","fg":"#fff","lg":"36"},
-  "Davidson": {"l":"DAVIDSON","c":"FCS","ab":"DAV","bg":"#000000","fg":"#fff","lg":"2166"},
+  "Davidson": {"l":"DAVIDSON","c":"PFL","ab":"DAV","bg":"#000000","fg":"#fff","lg":"2166"},
   "Delaware": {"l":"DELAWARE","c":"CUSA","ab":"DEL","bg":"#00539f","fg":"#fff","lg":"48"},
-  "Delaware State": {"l":"DELAWARE ST","c":"FCS","ab":"DSU","bg":"#009cdb","fg":"#111","lg":"2169"},
-  "Drake": {"l":"DRAKE","c":"FCS","ab":"DRKE","bg":"#005596","fg":"#fff","lg":"2181"},
+  "Delaware State": {"l":"DELAWARE ST","c":"MEAC","ab":"DSU","bg":"#009cdb","fg":"#111","lg":"2169"},
+  "Drake": {"l":"DRAKE","c":"PFL","ab":"DRKE","bg":"#005596","fg":"#fff","lg":"2181"},
   "Duke": {"l":"DUKE","c":"ACC","ab":"DUKE","bg":"#00539b","fg":"#fff","lg":"150"},
-  "Duquesne": {"l":"DUQUESNE","c":"FCS","ab":"DUQ","bg":"#002d62","fg":"#fff","lg":"2184"},
+  "Duquesne": {"l":"DUQUESNE","c":"NEC","ab":"DUQ","bg":"#002d62","fg":"#fff","lg":"2184"},
   "East Carolina": {"l":"EAST CAROLINA","c":"AAC","ab":"ECU","bg":"#582c83","fg":"#fff","lg":"151"},
-  "East Tennessee State": {"l":"EAST TENNESSEE ST","c":"FCS","ab":"ETSU","bg":"#002d61","fg":"#fff","lg":"2193"},
-  "East Texas A&M": {"l":"EAST TEXAS A&M","c":"FCS","ab":"ETAM","bg":"#000000","fg":"#fff","lg":"2837"},
-  "Eastern Illinois": {"l":"EASTERN ILLINOIS","c":"FCS","ab":"EIU","bg":"#000000","fg":"#fff","lg":"2197"},
-  "Eastern Kentucky": {"l":"EASTERN KENTUCKY","c":"FCS","ab":"EKU","bg":"#660819","fg":"#fff","lg":"2198"},
+  "East Tennessee State": {"l":"EAST TENNESSEE ST","c":"SOCON","ab":"ETSU","bg":"#002d61","fg":"#fff","lg":"2193"},
+  "East Texas A&M": {"l":"EAST TEXAS A&M","c":"SLC","ab":"ETAM","bg":"#000000","fg":"#fff","lg":"2837"},
+  "Eastern Illinois": {"l":"EASTERN ILLINOIS","c":"BSO","ab":"EIU","bg":"#000000","fg":"#fff","lg":"2197"},
+  "Eastern Kentucky": {"l":"EASTERN KENTUCKY","c":"UAC","ab":"EKU","bg":"#660819","fg":"#fff","lg":"2198"},
   "Eastern Michigan": {"l":"EASTERN MICHIGAN","c":"MAC","ab":"EMU","bg":"#006938","fg":"#fff","lg":"2199"},
-  "Eastern Washington": {"l":"EASTERN WASHINGTON","c":"FCS","ab":"EWU","bg":"#a10022","fg":"#fff","lg":"331"},
+  "Eastern Washington": {"l":"EASTERN WASHINGTON","c":"BSKY","ab":"EWU","bg":"#a10022","fg":"#fff","lg":"331"},
   "Edward Waters": {"l":"EDWARD WATERS","c":"OTHER","ab":"EAU","bg":"#3b4560","fg":"#fff","lg":"2206"},
   "Elizabeth City State": {"l":"ELIZABETH CITY ST","c":"OTHER","ab":"ELIZ","bg":"#000000","fg":"#fff","lg":"2207"},
-  "Elon": {"l":"ELON","c":"FCS","ab":"ELON","bg":"#020303","fg":"#fff","lg":"2210"},
+  "Elon": {"l":"ELON","c":"CAA","ab":"ELON","bg":"#020303","fg":"#fff","lg":"2210"},
   "Florida": {"l":"FLORIDA","c":"SEC","ab":"FLA","bg":"#0021a5","fg":"#fff","lg":"57"},
-  "Florida A&M": {"l":"FLORIDA A&M","c":"FCS","ab":"FAMU","bg":"#f89728","fg":"#111","lg":"50"},
+  "Florida A&M": {"l":"FLORIDA A&M","c":"SWAC","ab":"FAMU","bg":"#f89728","fg":"#111","lg":"50"},
   "Florida Atlantic": {"l":"FLORIDA ATLANTIC","c":"AAC","ab":"FAU","bg":"#003366","fg":"#fff","lg":"2226"},
   "Florida International": {"l":"FLORIDA INTERNATIONAL","c":"CUSA","ab":"FIU","bg":"#091f3f","fg":"#fff","lg":"2229"},
   "Florida State": {"l":"FLORIDA ST","c":"ACC","ab":"FSU","bg":"#782f40","fg":"#fff","lg":"52"},
-  "Fordham": {"l":"FORDHAM","c":"FCS","ab":"FOR","bg":"#830032","fg":"#fff","lg":"2230"},
+  "Fordham": {"l":"FORDHAM","c":"PAT","ab":"FOR","bg":"#830032","fg":"#fff","lg":"2230"},
   "Franklin Pierce": {"l":"FRANKLIN PIERCE","c":"OTHER","ab":"FP","bg":"#3b4560","fg":"#fff","lg":"112334"},
   "Fresno State": {"l":"FRESNO ST","c":"PAC","ab":"FRES","bg":"#b1102b","fg":"#fff","lg":"278"},
-  "Furman": {"l":"FURMAN","c":"FCS","ab":"FUR","bg":"#582c83","fg":"#fff","lg":"231"},
-  "Gardner-Webb": {"l":"GARDNER-WEBB","c":"FCS","ab":"GWEB","bg":"#c12535","fg":"#fff","lg":"2241"},
-  "Georgetown": {"l":"GEORGETOWN","c":"FCS","ab":"GTWN","bg":"#110e42","fg":"#fff","lg":"46"},
+  "Furman": {"l":"FURMAN","c":"SOCON","ab":"FUR","bg":"#582c83","fg":"#fff","lg":"231"},
+  "Gardner-Webb": {"l":"GARDNER-WEBB","c":"BSO","ab":"GWEB","bg":"#c12535","fg":"#fff","lg":"2241"},
+  "Georgetown": {"l":"GEORGETOWN","c":"PAT","ab":"GTWN","bg":"#110e42","fg":"#fff","lg":"46"},
   "Georgia": {"l":"GEORGIA","c":"SEC","ab":"UGA","bg":"#ba0c2f","fg":"#fff","lg":"61"},
   "Georgia Southern": {"l":"GEORGIA SOUTHERN","c":"SBC","ab":"GASO","bg":"#041e42","fg":"#fff","lg":"290"},
   "Georgia State": {"l":"GEORGIA ST","c":"SBC","ab":"GAST","bg":"#0039a6","fg":"#fff","lg":"2247"},
   "Georgia Tech": {"l":"GEORGIA TECH","c":"ACC","ab":"GT","bg":"#b3a369","fg":"#111","lg":"59"},
-  "Grambling": {"l":"GRAMBLING","c":"FCS","ab":"GRAM","bg":"#ee8601","fg":"#111","lg":"2755"},
-  "Hampton": {"l":"HAMPTON","c":"FCS","ab":"HAMP","bg":"#0067ac","fg":"#fff","lg":"2261"},
+  "Grambling": {"l":"GRAMBLING","c":"SWAC","ab":"GRAM","bg":"#ee8601","fg":"#111","lg":"2755"},
+  "Hampton": {"l":"HAMPTON","c":"CAA","ab":"HAMP","bg":"#0067ac","fg":"#fff","lg":"2261"},
   "Hawaii": {"l":"HAWAII","c":"MWC","ab":"HAW","bg":"#005737","fg":"#fff","lg":"62"},
-  "Holy Cross": {"l":"HOLY CROSS","c":"FCS","ab":"HC","bg":"#582c83","fg":"#fff","lg":"107"},
+  "Holy Cross": {"l":"HOLY CROSS","c":"PAT","ab":"HC","bg":"#582c83","fg":"#fff","lg":"107"},
   "Houston": {"l":"HOUSTON","c":"B12","ab":"HOU","bg":"#c8102e","fg":"#fff","lg":"248"},
-  "Houston Christian": {"l":"HOUSTON CHRISTIAN","c":"FCS","ab":"HCU","bg":"#00539c","fg":"#fff","lg":"2277"},
-  "Howard": {"l":"HOWARD","c":"FCS","ab":"HOW","bg":"#003a63","fg":"#fff","lg":"47"},
-  "Idaho": {"l":"IDAHO","c":"FCS","ab":"IDHO","bg":"#000000","fg":"#fff","lg":"70"},
-  "Idaho State": {"l":"IDAHO ST","c":"FCS","ab":"IDST","bg":"#ef8c00","fg":"#111","lg":"304"},
+  "Houston Christian": {"l":"HOUSTON CHRISTIAN","c":"SLC","ab":"HCU","bg":"#00539c","fg":"#fff","lg":"2277"},
+  "Howard": {"l":"HOWARD","c":"MEAC","ab":"HOW","bg":"#003a63","fg":"#fff","lg":"47"},
+  "Idaho": {"l":"IDAHO","c":"BSKY","ab":"IDHO","bg":"#000000","fg":"#fff","lg":"70"},
+  "Idaho State": {"l":"IDAHO ST","c":"BSKY","ab":"IDST","bg":"#ef8c00","fg":"#111","lg":"304"},
   "Illinois": {"l":"ILLINOIS","c":"B1G","ab":"ILL","bg":"#ff5f05","fg":"#111","lg":"356"},
-  "Illinois State": {"l":"ILLINOIS ST","c":"FCS","ab":"ILST","bg":"#ce1126","fg":"#fff","lg":"2287"},
+  "Illinois State": {"l":"ILLINOIS ST","c":"MVFC","ab":"ILST","bg":"#ce1126","fg":"#fff","lg":"2287"},
   "Indiana": {"l":"INDIANA","c":"B1G","ab":"IU","bg":"#970310","fg":"#fff","lg":"84"},
-  "Indiana State": {"l":"INDIANA ST","c":"FCS","ab":"INST","bg":"#00669a","fg":"#fff","lg":"282"},
+  "Indiana State": {"l":"INDIANA ST","c":"MVFC","ab":"INST","bg":"#00669a","fg":"#fff","lg":"282"},
   "Iowa": {"l":"IOWA","c":"B1G","ab":"IOWA","bg":"#231f20","fg":"#fff","lg":"2294"},
   "Iowa State": {"l":"IOWA ST","c":"B12","ab":"ISU","bg":"#ae192d","fg":"#fff","lg":"66"},
-  "Jackson State": {"l":"JACKSON ST","c":"FCS","ab":"JKST","bg":"#123297","fg":"#fff","lg":"2296"},
+  "Jackson State": {"l":"JACKSON ST","c":"SWAC","ab":"JKST","bg":"#123297","fg":"#fff","lg":"2296"},
   "Jacksonville State": {"l":"JACKSONVILLE ST","c":"CUSA","ab":"JVST","bg":"#cc0000","fg":"#fff","lg":"55"},
   "James Madison": {"l":"JAMES MADISON","c":"SBC","ab":"JMU","bg":"#450084","fg":"#fff","lg":"256"},
   "Kansas": {"l":"KANSAS","c":"B12","ab":"KU","bg":"#0051ba","fg":"#fff","lg":"2305"},
@@ -536,26 +606,26 @@ const TEAMS = {
   "Kentucky": {"l":"KENTUCKY","c":"SEC","ab":"UK","bg":"#0033a0","fg":"#fff","lg":"96"},
   "Kentucky Christian": {"l":"KENTUCKY CHRISTIAN","c":"OTHER","ab":"KYCH","bg":"#000000","fg":"#fff"},
   "Kentucky State": {"l":"KENTUCKY ST","c":"OTHER","ab":"KYST","bg":"#000000","fg":"#fff","lg":"2310"},
-  "LIU": {"l":"LIU","c":"FCS","ab":"LIU","bg":"#3b4560","fg":"#fff","lg":"2341"},
+  "LIU": {"l":"LIU","c":"NEC","ab":"LIU","bg":"#3b4560","fg":"#fff","lg":"2341"},
   "LSU": {"l":"LSU","c":"SEC","ab":"LSU","bg":"#461d76","fg":"#fff","lg":"99"},
-  "Lafayette": {"l":"LAFAYETTE","c":"FCS","ab":"LAF","bg":"#790000","fg":"#fff","lg":"322"},
-  "Lamar": {"l":"LAMAR","c":"FCS","ab":"LAM","bg":"#000000","fg":"#fff","lg":"2320"},
+  "Lafayette": {"l":"LAFAYETTE","c":"PAT","ab":"LAF","bg":"#790000","fg":"#fff","lg":"322"},
+  "Lamar": {"l":"LAMAR","c":"SLC","ab":"LAM","bg":"#000000","fg":"#fff","lg":"2320"},
   "Lane": {"l":"LANE","c":"OTHER","ab":"LAC","bg":"#000000","fg":"#fff","lg":"2323"},
-  "Lehigh": {"l":"LEHIGH","c":"FCS","ab":"LEH","bg":"#6c2b2a","fg":"#fff","lg":"2329"},
+  "Lehigh": {"l":"LEHIGH","c":"PAT","ab":"LEH","bg":"#6c2b2a","fg":"#fff","lg":"2329"},
   "Liberty": {"l":"LIBERTY","c":"CUSA","ab":"LIB","bg":"#0a254e","fg":"#fff","lg":"2335"},
-  "Lindenwood": {"l":"LINDENWOOD","c":"FCS","ab":"LIN","bg":"#000000","fg":"#fff","lg":"2815"},
+  "Lindenwood": {"l":"LINDENWOOD","c":"BSO","ab":"LIN","bg":"#000000","fg":"#fff","lg":"2815"},
   "Louisiana": {"l":"LOUISIANA","c":"SBC","ab":"UL","bg":"#ce181e","fg":"#fff","lg":"309"},
   "Louisiana Tech": {"l":"LOUISIANA TECH","c":"SBC","ab":"LT","bg":"#003087","fg":"#fff","lg":"2348"},
   "Louisville": {"l":"LOUISVILLE","c":"ACC","ab":"LOU","bg":"#c9001f","fg":"#fff","lg":"97"},
-  "Maine": {"l":"MAINE","c":"FCS","ab":"ME","bg":"#127dbe","fg":"#fff","lg":"311"},
-  "Marist": {"l":"MARIST","c":"FCS","ab":"MRST","bg":"#e53730","fg":"#fff","lg":"2368"},
+  "Maine": {"l":"MAINE","c":"CAA","ab":"ME","bg":"#127dbe","fg":"#fff","lg":"311"},
+  "Marist": {"l":"MARIST","c":"PFL","ab":"MRST","bg":"#e53730","fg":"#fff","lg":"2368"},
   "Marshall": {"l":"MARSHALL","c":"SBC","ab":"MRSH","bg":"#00b140","fg":"#111","lg":"276"},
   "Maryland": {"l":"MARYLAND","c":"B1G","ab":"MD","bg":"#ce1126","fg":"#fff","lg":"120"},
-  "McNeese": {"l":"MCNEESE","c":"FCS","ab":"MCN","bg":"#00529c","fg":"#fff","lg":"2377"},
+  "McNeese": {"l":"MCNEESE","c":"SLC","ab":"MCN","bg":"#00529c","fg":"#fff","lg":"2377"},
   "Memphis": {"l":"MEMPHIS","c":"AAC","ab":"MEM","bg":"#004991","fg":"#fff","lg":"235"},
-  "Mercer": {"l":"MERCER","c":"FCS","ab":"MER","bg":"#ff7f29","fg":"#111","lg":"2382"},
-  "Mercyhurst": {"l":"MERCYHURST","c":"FCS","ab":"MERC","bg":"#000000","fg":"#fff","lg":"2385"},
-  "Merrimack": {"l":"MERRIMACK","c":"FCS","ab":"MRMK","bg":"#000000","fg":"#fff","lg":"2771"},
+  "Mercer": {"l":"MERCER","c":"SOCON","ab":"MER","bg":"#ff7f29","fg":"#111","lg":"2382"},
+  "Mercyhurst": {"l":"MERCYHURST","c":"NEC","ab":"MERC","bg":"#000000","fg":"#fff","lg":"2385"},
+  "Merrimack": {"l":"MERRIMACK","c":"FCSI","ab":"MRMK","bg":"#000000","fg":"#fff","lg":"2771"},
   "Miami (FL)": {"l":"MIAMI (FL)","c":"ACC","ab":"MIA","bg":"#f47423","fg":"#111","lg":"2390"},
   "Miami (OH)": {"l":"MIAMI (OH)","c":"MAC","ab":"M-OH","bg":"#c41230","fg":"#fff","lg":"193"},
   "Michigan": {"l":"MICHIGAN","c":"B1G","ab":"MICH","bg":"#00274c","fg":"#fff","lg":"130"},
@@ -564,36 +634,36 @@ const TEAMS = {
   "Miles College": {"l":"MILES COLLEGE","c":"OTHER","ab":"MIL","bg":"#000000","fg":"#fff","lg":"2396"},
   "Minnesota": {"l":"MINNESOTA","c":"B1G","ab":"MINN","bg":"#5e0a2f","fg":"#fff","lg":"135"},
   "Mississippi State": {"l":"MISSISSIPPI ST","c":"SEC","ab":"MSST","bg":"#5d1725","fg":"#fff","lg":"344"},
-  "Mississippi Valley State": {"l":"MISSISSIPPI VALLEY ST","c":"FCS","ab":"MVSU","bg":"#005328","fg":"#fff","lg":"2400"},
+  "Mississippi Valley State": {"l":"MISSISSIPPI VALLEY ST","c":"SWAC","ab":"MVSU","bg":"#005328","fg":"#fff","lg":"2400"},
   "Missouri": {"l":"MISSOURI","c":"SEC","ab":"MIZ","bg":"#f1b82d","fg":"#111","lg":"142"},
   "Missouri State": {"l":"MISSOURI ST","c":"CUSA","ab":"MOST","bg":"#5e0009","fg":"#fff","lg":"2623"},
-  "Monmouth": {"l":"MONMOUTH","c":"FCS","ab":"MONM","bg":"#051844","fg":"#fff","lg":"2405"},
-  "Montana": {"l":"MONTANA","c":"FCS","ab":"MONT","bg":"#751d4a","fg":"#fff","lg":"149"},
-  "Montana State": {"l":"MONTANA ST","c":"FCS","ab":"MTST","bg":"#00205c","fg":"#fff","lg":"147"},
-  "Morehead State": {"l":"MOREHEAD ST","c":"FCS","ab":"MORE","bg":"#094fa3","fg":"#fff","lg":"2413"},
-  "Morgan State": {"l":"MORGAN ST","c":"FCS","ab":"MORG","bg":"#014786","fg":"#fff","lg":"2415"},
-  "Murray State": {"l":"MURRAY ST","c":"FCS","ab":"MUR","bg":"#002148","fg":"#fff","lg":"93"},
+  "Monmouth": {"l":"MONMOUTH","c":"CAA","ab":"MONM","bg":"#051844","fg":"#fff","lg":"2405"},
+  "Montana": {"l":"MONTANA","c":"BSKY","ab":"MONT","bg":"#751d4a","fg":"#fff","lg":"149"},
+  "Montana State": {"l":"MONTANA ST","c":"BSKY","ab":"MTST","bg":"#00205c","fg":"#fff","lg":"147"},
+  "Morehead State": {"l":"MOREHEAD ST","c":"PFL","ab":"MORE","bg":"#094fa3","fg":"#fff","lg":"2413"},
+  "Morgan State": {"l":"MORGAN ST","c":"MEAC","ab":"MORG","bg":"#014786","fg":"#fff","lg":"2415"},
+  "Murray State": {"l":"MURRAY ST","c":"MVFC","ab":"MUR","bg":"#002148","fg":"#fff","lg":"93"},
   "Navy": {"l":"NAVY","c":"AAC","ab":"NAVY","bg":"#00225b","fg":"#fff","lg":"2426"},
   "Nebraska": {"l":"NEBRASKA","c":"B1G","ab":"NEB","bg":"#e31937","fg":"#fff","lg":"158"},
   "Nevada": {"l":"NEVADA","c":"MWC","ab":"NEV","bg":"#041e42","fg":"#fff","lg":"2440"},
-  "New Hampshire": {"l":"NEW HAMPSHIRE","c":"FCS","ab":"UNH","bg":"#004990","fg":"#fff","lg":"160"},
-  "New Haven": {"l":"NEW HAVEN","c":"FCS","ab":"NH","bg":"#041e42","fg":"#fff","lg":"2441"},
+  "New Hampshire": {"l":"NEW HAMPSHIRE","c":"CAA","ab":"UNH","bg":"#004990","fg":"#fff","lg":"160"},
+  "New Haven": {"l":"NEW HAVEN","c":"NEC","ab":"NH","bg":"#041e42","fg":"#fff","lg":"2441"},
   "New Mexico": {"l":"NEW MEXICO","c":"MWC","ab":"UNM","bg":"#ba0c2f","fg":"#fff","lg":"167"},
   "New Mexico State": {"l":"NEW MEXICO ST","c":"CUSA","ab":"NMSU","bg":"#7e141b","fg":"#fff","lg":"166"},
-  "Nicholls": {"l":"NICHOLLS","c":"FCS","ab":"NICH","bg":"#c41230","fg":"#fff","lg":"2447"},
-  "Norfolk State": {"l":"NORFOLK ST","c":"FCS","ab":"NORF","bg":"#0c8968","fg":"#fff","lg":"2450"},
-  "North Alabama": {"l":"NORTH ALABAMA","c":"FCS","ab":"UNA","bg":"#000000","fg":"#fff","lg":"2453"},
-  "North Carolina A&T": {"l":"NORTH CAROLINA A&T","c":"FCS","ab":"NCAT","bg":"#0505aa","fg":"#fff","lg":"2448"},
-  "North Carolina Central": {"l":"NORTH CAROLINA CENTRAL","c":"FCS","ab":"NCCU","bg":"#880023","fg":"#fff","lg":"2428"},
-  "North Dakota": {"l":"NORTH DAKOTA","c":"FCS","ab":"UND","bg":"#00a26b","fg":"#111","lg":"155"},
+  "Nicholls": {"l":"NICHOLLS","c":"SLC","ab":"NICH","bg":"#c41230","fg":"#fff","lg":"2447"},
+  "Norfolk State": {"l":"NORFOLK ST","c":"MEAC","ab":"NORF","bg":"#0c8968","fg":"#fff","lg":"2450"},
+  "North Alabama": {"l":"NORTH ALABAMA","c":"UAC","ab":"UNA","bg":"#000000","fg":"#fff","lg":"2453"},
+  "North Carolina A&T": {"l":"NORTH CAROLINA A&T","c":"CAA","ab":"NCAT","bg":"#0505aa","fg":"#fff","lg":"2448"},
+  "North Carolina Central": {"l":"NORTH CAROLINA CENTRAL","c":"MEAC","ab":"NCCU","bg":"#880023","fg":"#fff","lg":"2428"},
+  "North Dakota": {"l":"NORTH DAKOTA","c":"MVFC","ab":"UND","bg":"#00a26b","fg":"#111","lg":"155"},
   "North Dakota State": {"l":"NORTH DAKOTA ST","c":"MWC","ab":"NDSU","bg":"#01402a","fg":"#fff","lg":"2449"},
   "North Texas": {"l":"NORTH TEXAS","c":"AAC","ab":"UNT","bg":"#068f33","fg":"#fff","lg":"249"},
-  "Northern Arizona": {"l":"NORTHERN ARIZONA","c":"FCS","ab":"NAU","bg":"#003976","fg":"#fff","lg":"2464"},
-  "Northern Colorado": {"l":"NORTHERN COLORADO","c":"FCS","ab":"UNCO","bg":"#13558d","fg":"#fff","lg":"2458"},
+  "Northern Arizona": {"l":"NORTHERN ARIZONA","c":"BSKY","ab":"NAU","bg":"#003976","fg":"#fff","lg":"2464"},
+  "Northern Colorado": {"l":"NORTHERN COLORADO","c":"BSKY","ab":"UNCO","bg":"#13558d","fg":"#fff","lg":"2458"},
   "Northern Illinois": {"l":"NORTHERN ILLINOIS","c":"MWC","ab":"NIU","bg":"#c8102e","fg":"#fff","lg":"2459"},
-  "Northern Iowa": {"l":"NORTHERN IOWA","c":"FCS","ab":"UNI","bg":"#473282","fg":"#fff","lg":"2460"},
+  "Northern Iowa": {"l":"NORTHERN IOWA","c":"MVFC","ab":"UNI","bg":"#473282","fg":"#fff","lg":"2460"},
   "Northwestern": {"l":"NORTHWESTERN","c":"B1G","ab":"NU","bg":"#492f92","fg":"#fff","lg":"77"},
-  "Northwestern State": {"l":"NORTHWESTERN ST","c":"FCS","ab":"NWST","bg":"#492f91","fg":"#fff","lg":"2466"},
+  "Northwestern State": {"l":"NORTHWESTERN ST","c":"SLC","ab":"NWST","bg":"#492f91","fg":"#fff","lg":"2466"},
   "Notre Dame": {"l":"NOTRE DAME","c":"IND","ab":"ND","bg":"#062340","fg":"#fff","lg":"87"},
   "Ohio": {"l":"OHIO","c":"MAC","ab":"OHIO","bg":"#154734","fg":"#fff","lg":"195"},
   "Ohio State": {"l":"OHIO ST","c":"B1G","ab":"OSU","bg":"#ba0c2f","fg":"#fff","lg":"194"},
@@ -605,64 +675,64 @@ const TEAMS = {
   "Oregon State": {"l":"OREGON ST","c":"PAC","ab":"ORST","bg":"#dc4405","fg":"#fff","lg":"204"},
   "Penn State": {"l":"PENN ST","c":"B1G","ab":"PSU","bg":"#061440","fg":"#fff","lg":"213"},
   "Pitt": {"l":"PITT","c":"ACC","ab":"PITT","bg":"#003594","fg":"#fff","lg":"221"},
-  "Portland State": {"l":"PORTLAND ST","c":"FCS","ab":"PRST","bg":"#00311e","fg":"#fff","lg":"2502"},
-  "Prairie View A&M": {"l":"PRAIRIE VIEW A&M","c":"FCS","ab":"PV","bg":"#582c83","fg":"#fff","lg":"2504"},
-  "Presbyterian": {"l":"PRESBYTERIAN","c":"FCS","ab":"PRES","bg":"#194896","fg":"#fff","lg":"2506"},
+  "Portland State": {"l":"PORTLAND ST","c":"BSKY","ab":"PRST","bg":"#00311e","fg":"#fff","lg":"2502"},
+  "Prairie View A&M": {"l":"PRAIRIE VIEW A&M","c":"SWAC","ab":"PV","bg":"#582c83","fg":"#fff","lg":"2504"},
+  "Presbyterian": {"l":"PRESBYTERIAN","c":"PFL","ab":"PRES","bg":"#194896","fg":"#fff","lg":"2506"},
   "Purdue": {"l":"PURDUE","c":"B1G","ab":"PUR","bg":"#ceb888","fg":"#111","lg":"2509"},
-  "Rhode Island": {"l":"RHODE ISLAND","c":"FCS","ab":"URI","bg":"#091f3f","fg":"#fff","lg":"227"},
+  "Rhode Island": {"l":"RHODE ISLAND","c":"CAA","ab":"URI","bg":"#091f3f","fg":"#fff","lg":"227"},
   "Rice": {"l":"RICE","c":"AAC","ab":"RICE","bg":"#00205b","fg":"#fff","lg":"242"},
-  "Richmond": {"l":"RICHMOND","c":"FCS","ab":"RICH","bg":"#9e0712","fg":"#fff","lg":"257"},
-  "Robert Morris": {"l":"ROBERT MORRIS","c":"FCS","ab":"RMU","bg":"#00214d","fg":"#fff","lg":"2523"},
+  "Richmond": {"l":"RICHMOND","c":"PAT","ab":"RICH","bg":"#9e0712","fg":"#fff","lg":"257"},
+  "Robert Morris": {"l":"ROBERT MORRIS","c":"NEC","ab":"RMU","bg":"#00214d","fg":"#fff","lg":"2523"},
   "Rutgers": {"l":"RUTGERS","c":"B1G","ab":"RUTG","bg":"#ce0e2d","fg":"#fff","lg":"164"},
-  "SE Louisiana": {"l":"SE LOUISIANA","c":"FCS","ab":"SELA","bg":"#215732","fg":"#fff","lg":"2545"},
+  "SE Louisiana": {"l":"SE LOUISIANA","c":"SLC","ab":"SELA","bg":"#215732","fg":"#fff","lg":"2545"},
   "SMU": {"l":"SMU","c":"ACC","ab":"SMU","bg":"#a80000","fg":"#fff","lg":"2567"},
   "Sacramento State": {"l":"SACRAMENTO ST","c":"MAC","ab":"SAC","bg":"#00573c","fg":"#fff","lg":"16"},
-  "Sacred Heart": {"l":"SACRED HEART","c":"FCS","ab":"SHU","bg":"#a40012","fg":"#fff","lg":"2529"},
+  "Sacred Heart": {"l":"SACRED HEART","c":"CAA","ab":"SHU","bg":"#a40012","fg":"#fff","lg":"2529"},
   "Sam Houston": {"l":"SAM HOUSTON","c":"CUSA","ab":"SHSU","bg":"#f56423","fg":"#111","lg":"2534"},
-  "Samford": {"l":"SAMFORD","c":"FCS","ab":"SAM","bg":"#005485","fg":"#fff","lg":"2535"},
-  "San Diego": {"l":"SAN DIEGO","c":"FCS","ab":"USD","bg":"#2f99d4","fg":"#111","lg":"301"},
+  "Samford": {"l":"SAMFORD","c":"SOCON","ab":"SAM","bg":"#005485","fg":"#fff","lg":"2535"},
+  "San Diego": {"l":"SAN DIEGO","c":"PFL","ab":"USD","bg":"#2f99d4","fg":"#111","lg":"301"},
   "San Diego State": {"l":"SAN DIEGO ST","c":"PAC","ab":"SDSU","bg":"#a6192e","fg":"#fff","lg":"21"},
   "San José State": {"l":"SAN JOSÉ ST","c":"MWC","ab":"SJSU","bg":"#0038a8","fg":"#fff","lg":"23"},
   "South Alabama": {"l":"SOUTH ALABAMA","c":"SBC","ab":"USA","bg":"#00205b","fg":"#fff","lg":"6"},
   "South Carolina": {"l":"SOUTH CAROLINA","c":"SEC","ab":"SC","bg":"#73000a","fg":"#fff","lg":"2579"},
-  "South Carolina State": {"l":"SOUTH CAROLINA ST","c":"FCS","ab":"SCST","bg":"#7d1315","fg":"#fff","lg":"2569"},
-  "South Dakota": {"l":"SOUTH DAKOTA","c":"FCS","ab":"SDAK","bg":"#cd1241","fg":"#fff","lg":"233"},
-  "South Dakota State": {"l":"SOUTH DAKOTA ST","c":"FCS","ab":"SDST","bg":"#0033a0","fg":"#fff","lg":"2571"},
+  "South Carolina State": {"l":"SOUTH CAROLINA ST","c":"MEAC","ab":"SCST","bg":"#7d1315","fg":"#fff","lg":"2569"},
+  "South Dakota": {"l":"SOUTH DAKOTA","c":"MVFC","ab":"SDAK","bg":"#cd1241","fg":"#fff","lg":"233"},
+  "South Dakota State": {"l":"SOUTH DAKOTA ST","c":"MVFC","ab":"SDST","bg":"#0033a0","fg":"#fff","lg":"2571"},
   "South Florida": {"l":"SOUTH FLORIDA","c":"AAC","ab":"USF","bg":"#006747","fg":"#fff","lg":"58"},
-  "Southeast Missouri State": {"l":"SOUTHEAST MISSOURI ST","c":"FCS","ab":"SEMO","bg":"#c8102e","fg":"#fff","lg":"2546"},
-  "Southern": {"l":"SOUTHERN","c":"FCS","ab":"SOU","bg":"#004b97","fg":"#fff","lg":"2582"},
+  "Southeast Missouri State": {"l":"SOUTHEAST MISSOURI ST","c":"BSO","ab":"SEMO","bg":"#c8102e","fg":"#fff","lg":"2546"},
+  "Southern": {"l":"SOUTHERN","c":"SWAC","ab":"SOU","bg":"#004b97","fg":"#fff","lg":"2582"},
   "Southern Connecticut State": {"l":"SOUTHERN CONNECTICUT ST","c":"OTHER","ab":"SCSU","bg":"#000000","fg":"#fff","lg":"2583"},
-  "Southern Illinois": {"l":"SOUTHERN ILLINOIS","c":"FCS","ab":"SIU","bg":"#85283d","fg":"#fff","lg":"79"},
+  "Southern Illinois": {"l":"SOUTHERN ILLINOIS","c":"MVFC","ab":"SIU","bg":"#85283d","fg":"#fff","lg":"79"},
   "Southern Miss": {"l":"SOUTHERN MISS","c":"SBC","ab":"USM","bg":"#ffc72c","fg":"#111","lg":"2572"},
-  "Southern Utah": {"l":"SOUTHERN UTAH","c":"FCS","ab":"SUU","bg":"#c72026","fg":"#fff","lg":"253"},
-  "St. Thomas": {"l":"ST. THOMAS","c":"FCS","ab":"STMN","bg":"#000000","fg":"#fff","lg":"2900"},
+  "Southern Utah": {"l":"SOUTHERN UTAH","c":"BSKY","ab":"SUU","bg":"#c72026","fg":"#fff","lg":"253"},
+  "St. Thomas": {"l":"ST. THOMAS","c":"PFL","ab":"STMN","bg":"#000000","fg":"#fff","lg":"2900"},
   "Stanford": {"l":"STANFORD","c":"ACC","ab":"STAN","bg":"#8c1515","fg":"#fff","lg":"24"},
-  "Stephen F. Austin": {"l":"STEPHEN F. AUSTIN","c":"FCS","ab":"SFA","bg":"#393996","fg":"#fff","lg":"2617"},
-  "Stetson": {"l":"STETSON","c":"FCS","ab":"STET","bg":"#0a5640","fg":"#fff","lg":"56"},
-  "Stonehill": {"l":"STONEHILL","c":"FCS","ab":"STO","bg":"#000000","fg":"#fff","lg":"284"},
-  "Stony Brook": {"l":"STONY BROOK","c":"FCS","ab":"STBK","bg":"#990000","fg":"#fff","lg":"2619"},
+  "Stephen F. Austin": {"l":"STEPHEN F. AUSTIN","c":"SLC","ab":"SFA","bg":"#393996","fg":"#fff","lg":"2617"},
+  "Stetson": {"l":"STETSON","c":"PFL","ab":"STET","bg":"#0a5640","fg":"#fff","lg":"56"},
+  "Stonehill": {"l":"STONEHILL","c":"NEC","ab":"STO","bg":"#000000","fg":"#fff","lg":"284"},
+  "Stony Brook": {"l":"STONY BROOK","c":"CAA","ab":"STBK","bg":"#990000","fg":"#fff","lg":"2619"},
   "Syracuse": {"l":"SYRACUSE","c":"ACC","ab":"SYR","bg":"#000e54","fg":"#fff","lg":"183"},
-  "Tarleton State": {"l":"TARLETON ST","c":"FCS","ab":"TAR","bg":"#000000","fg":"#fff","lg":"2627"},
+  "Tarleton State": {"l":"TARLETON ST","c":"UAC","ab":"TAR","bg":"#000000","fg":"#fff","lg":"2627"},
   "Temple": {"l":"TEMPLE","c":"AAC","ab":"TEM","bg":"#a41e35","fg":"#fff","lg":"218"},
   "Tennessee": {"l":"TENNESSEE","c":"SEC","ab":"TENN","bg":"#ff8200","fg":"#111","lg":"2633"},
-  "Tennessee State": {"l":"TENNESSEE ST","c":"FCS","ab":"TNST","bg":"#171796","fg":"#fff","lg":"2634"},
-  "Tennessee Tech": {"l":"TENNESSEE TECH","c":"FCS","ab":"TNTC","bg":"#5a4099","fg":"#fff","lg":"2635"},
+  "Tennessee State": {"l":"TENNESSEE ST","c":"BSO","ab":"TNST","bg":"#171796","fg":"#fff","lg":"2634"},
+  "Tennessee Tech": {"l":"TENNESSEE TECH","c":"SOCON","ab":"TNTC","bg":"#5a4099","fg":"#fff","lg":"2635"},
   "Texas": {"l":"TEXAS","c":"SEC","ab":"TEX","bg":"#af5c37","fg":"#fff","lg":"251"},
   "Texas A&M": {"l":"TEXAS A&M","c":"SEC","ab":"TA&M","bg":"#500000","fg":"#fff","lg":"245"},
-  "Texas Southern": {"l":"TEXAS SOUTHERN","c":"FCS","ab":"TXSO","bg":"#860038","fg":"#fff","lg":"2640"},
+  "Texas Southern": {"l":"TEXAS SOUTHERN","c":"SWAC","ab":"TXSO","bg":"#860038","fg":"#fff","lg":"2640"},
   "Texas State": {"l":"TEXAS ST","c":"PAC","ab":"TXST","bg":"#501214","fg":"#fff","lg":"326"},
   "Texas Tech": {"l":"TEXAS TECH","c":"B12","ab":"TTU","bg":"#da291c","fg":"#fff","lg":"2641"},
   "Texas Wesleyan": {"l":"TEXAS WESLEYAN","c":"OTHER","ab":"TWES","bg":"#3b4560","fg":"#fff"},
-  "The Citadel": {"l":"THE CITADEL","c":"FCS","ab":"CIT","bg":"#7badd3","fg":"#111","lg":"2643"},
+  "The Citadel": {"l":"THE CITADEL","c":"SOCON","ab":"CIT","bg":"#7badd3","fg":"#111","lg":"2643"},
   "Toledo": {"l":"TOLEDO","c":"MAC","ab":"TOL","bg":"#0b2240","fg":"#fff","lg":"2649"},
-  "Towson": {"l":"TOWSON","c":"FCS","ab":"TOW","bg":"#ffc229","fg":"#111","lg":"119"},
+  "Towson": {"l":"TOWSON","c":"CAA","ab":"TOW","bg":"#ffc229","fg":"#111","lg":"119"},
   "Troy": {"l":"TROY","c":"SBC","ab":"TROY","bg":"#862633","fg":"#fff","lg":"2653"},
   "Tulane": {"l":"TULANE","c":"AAC","ab":"TULN","bg":"#006747","fg":"#fff","lg":"2655"},
   "Tulsa": {"l":"TULSA","c":"AAC","ab":"TLSA","bg":"#003595","fg":"#fff","lg":"202"},
   "Tusculum": {"l":"TUSCULUM","c":"OTHER","ab":"TUSC","bg":"#f2682a","fg":"#111","lg":"2839"},
   "UAB": {"l":"UAB","c":"AAC","ab":"UAB","bg":"#1a5632","fg":"#fff","lg":"5"},
-  "UAlbany": {"l":"UALBANY","c":"FCS","ab":"ALB","bg":"#3d2777","fg":"#fff","lg":"399"},
-  "UC Davis": {"l":"UC DAVIS","c":"FCS","ab":"UCD","bg":"#002855","fg":"#fff","lg":"302"},
+  "UAlbany": {"l":"UALBANY","c":"CAA","ab":"ALB","bg":"#3d2777","fg":"#fff","lg":"399"},
+  "UC Davis": {"l":"UC DAVIS","c":"BSKY","ab":"UCD","bg":"#002855","fg":"#fff","lg":"302"},
   "UCF": {"l":"UCF","c":"B12","ab":"UCF","bg":"#000000","fg":"#fff","lg":"2116"},
   "UCLA": {"l":"UCLA","c":"B1G","ab":"UCLA","bg":"#2774ae","fg":"#fff","lg":"26"},
   "UConn": {"l":"UCONN","c":"IND","ab":"CONN","bg":"#0c2340","fg":"#fff","lg":"41"},
@@ -670,36 +740,36 @@ const TEAMS = {
   "UMass": {"l":"UMASS","c":"MAC","ab":"MASS","bg":"#881c1c","fg":"#fff","lg":"113"},
   "UNLV": {"l":"UNLV","c":"MWC","ab":"UNLV","bg":"#cf0a2c","fg":"#fff","lg":"2439"},
   "USC": {"l":"USC","c":"B1G","ab":"USC","bg":"#9d2235","fg":"#fff","lg":"30"},
-  "UT Martin": {"l":"UT MARTIN","c":"FCS","ab":"UTM","bg":"#ff6700","fg":"#111","lg":"2630"},
-  "UT Rio Grande Valley": {"l":"UT RIO GRANDE VALLEY","c":"FCS","ab":"RGV","bg":"#3b4560","fg":"#fff","lg":"292"},
+  "UT Martin": {"l":"UT MARTIN","c":"BSO","ab":"UTM","bg":"#ff6700","fg":"#111","lg":"2630"},
+  "UT Rio Grande Valley": {"l":"UT RIO GRANDE VALLEY","c":"SLC","ab":"RGV","bg":"#3b4560","fg":"#fff","lg":"292"},
   "UTEP": {"l":"UTEP","c":"MWC","ab":"UTEP","bg":"#ff8200","fg":"#111","lg":"2638"},
   "UTSA": {"l":"UTSA","c":"AAC","ab":"UTSA","bg":"#0c2340","fg":"#fff","lg":"2636"},
   "Utah": {"l":"UTAH","c":"B12","ab":"UTAH","bg":"#be0000","fg":"#fff","lg":"254"},
   "Utah State": {"l":"UTAH ST","c":"PAC","ab":"USU","bg":"#0f2439","fg":"#fff","lg":"328"},
-  "Utah Tech": {"l":"UTAH TECH","c":"FCS","ab":"UTU","bg":"#000000","fg":"#fff","lg":"3101"},
-  "VMI": {"l":"VMI","c":"FCS","ab":"VMI","bg":"#ae122a","fg":"#fff","lg":"2678"},
+  "Utah Tech": {"l":"UTAH TECH","c":"BSKY","ab":"UTU","bg":"#000000","fg":"#fff","lg":"3101"},
+  "VMI": {"l":"VMI","c":"SOCON","ab":"VMI","bg":"#ae122a","fg":"#fff","lg":"2678"},
   "Vanderbilt": {"l":"VANDERBILT","c":"SEC","ab":"VAN","bg":"#000000","fg":"#fff","lg":"238"},
-  "Villanova": {"l":"VILLANOVA","c":"FCS","ab":"VILL","bg":"#00205b","fg":"#fff","lg":"222"},
+  "Villanova": {"l":"VILLANOVA","c":"PAT","ab":"VILL","bg":"#00205b","fg":"#fff","lg":"222"},
   "Virginia Tech": {"l":"VIRGINIA TECH","c":"ACC","ab":"VT","bg":"#6a2c3e","fg":"#fff","lg":"259"},
-  "Wagner": {"l":"WAGNER","c":"FCS","ab":"WAG","bg":"#00483a","fg":"#fff","lg":"2681"},
+  "Wagner": {"l":"WAGNER","c":"NEC","ab":"WAG","bg":"#00483a","fg":"#fff","lg":"2681"},
   "Wake Forest": {"l":"WAKE FOREST","c":"ACC","ab":"WAKE","bg":"#ceb888","fg":"#111","lg":"154"},
   "Washington": {"l":"WASHINGTON","c":"B1G","ab":"WASH","bg":"#33006f","fg":"#fff","lg":"264"},
   "Washington State": {"l":"WASHINGTON ST","c":"PAC","ab":"WSU","bg":"#a60f2d","fg":"#fff","lg":"265"},
   "Webber International": {"l":"WEBBER INTERNATIONAL","c":"OTHER","ab":"WEBB","bg":"#bf2f38","fg":"#fff"},
-  "Weber State": {"l":"WEBER ST","c":"FCS","ab":"WEB","bg":"#18005a","fg":"#fff","lg":"2692"},
-  "West Florida": {"l":"WEST FLORIDA","c":"FCS","ab":"UWF","bg":"#3b4560","fg":"#fff","lg":"110242"},
-  "West Georgia": {"l":"WEST GEORGIA","c":"FCS","ab":"WES","bg":"#0033a1","fg":"#fff","lg":"2698"},
+  "Weber State": {"l":"WEBER ST","c":"BSKY","ab":"WEB","bg":"#18005a","fg":"#fff","lg":"2692"},
+  "West Florida": {"l":"WEST FLORIDA","c":"UAC","ab":"UWF","bg":"#3b4560","fg":"#fff","lg":"110242"},
+  "West Georgia": {"l":"WEST GEORGIA","c":"UAC","ab":"WES","bg":"#0033a1","fg":"#fff","lg":"2698"},
   "West Virginia": {"l":"WEST VIRGINIA","c":"B12","ab":"WVU","bg":"#eaaa00","fg":"#111","lg":"277"},
   "West Virginia State": {"l":"WEST VIRGINIA ST","c":"OTHER","ab":"WVST","bg":"#000000","fg":"#fff","lg":"2707"},
-  "Western Carolina": {"l":"WESTERN CAROLINA","c":"FCS","ab":"WCU","bg":"#492f91","fg":"#fff","lg":"2717"},
-  "Western Illinois": {"l":"WESTERN ILLINOIS","c":"FCS","ab":"WIU","bg":"#4e1e8a","fg":"#fff","lg":"2710"},
+  "Western Carolina": {"l":"WESTERN CAROLINA","c":"SOCON","ab":"WCU","bg":"#492f91","fg":"#fff","lg":"2717"},
+  "Western Illinois": {"l":"WESTERN ILLINOIS","c":"BSO","ab":"WIU","bg":"#4e1e8a","fg":"#fff","lg":"2710"},
   "Western Kentucky": {"l":"WESTERN KENTUCKY","c":"CUSA","ab":"WKU","bg":"#e13a3e","fg":"#fff","lg":"98"},
   "Western Michigan": {"l":"WESTERN MICHIGAN","c":"MAC","ab":"WMU","bg":"#532e1f","fg":"#fff","lg":"2711"},
-  "William & Mary": {"l":"WILLIAM & MARY","c":"FCS","ab":"W&M","bg":"#115740","fg":"#fff","lg":"2729"},
+  "William & Mary": {"l":"WILLIAM & MARY","c":"PAT","ab":"W&M","bg":"#115740","fg":"#fff","lg":"2729"},
   "Wisconsin": {"l":"WISCONSIN","c":"B1G","ab":"WIS","bg":"#a00000","fg":"#fff","lg":"275"},
-  "Wofford": {"l":"WOFFORD","c":"FCS","ab":"WOF","bg":"#533b23","fg":"#fff","lg":"2747"},
+  "Wofford": {"l":"WOFFORD","c":"SOCON","ab":"WOF","bg":"#533b23","fg":"#fff","lg":"2747"},
   "Wyoming": {"l":"WYOMING","c":"MWC","ab":"WYO","bg":"#492f24","fg":"#fff","lg":"2751"},
-  "Youngstown State": {"l":"YOUNGSTOWN ST","c":"FCS","ab":"YSU","bg":"#e51936","fg":"#fff","lg":"2754"}
+  "Youngstown State": {"l":"YOUNGSTOWN ST","c":"MVFC","ab":"YSU","bg":"#e51936","fg":"#fff","lg":"2754"}
 };
 /*DATA-END*/
 
@@ -710,13 +780,27 @@ const TEAMS = {
   let COL = 56, LANE = 46, LABEL = 70;
   const cssPx = v => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(v)) || 0;
   function measure(){ COL = cssPx("--col") || COL; LANE = cssPx("--lane") || LANE; LABEL = cssPx("--label") || LABEL; }
-  const FBS = ["SEC","B1G","ACC","B12","AAC","PAC","MWC","MAC","SBC","CUSA","IND"];
-  const CONF_ORDER = FBS.concat(["FCS","OTHER"]);
-  const CONF_NAME = { SEC:"SEC", B1G:"Big Ten", ACC:"ACC", B12:"Big 12", AAC:"AAC", PAC:"Pac-12", MWC:"MWC",
-                      MAC:"MAC", SBC:"Sun Belt", CUSA:"CUSA", IND:"Ind", FCS:"FCS", OTHER:"Non-D1" };
+  /* conferences come from the script: [code, name, "fbs" | "fcs" | "other"], in picker order */
+  const CONFS = SLATE.confs || [];
+  const FBS = CONFS.filter(c => c[2] === "fbs").map(c => c[0]);
+  const CONF_ORDER = CONFS.map(c => c[0]);
+  const CONF_NAME = {}; CONFS.forEach(c => { CONF_NAME[c[0]] = c[1]; });
+  /* tap a game for ESPN's gamecast (opens the ESPN app where it's installed); tap a channel for its live stream page (same idea) */
+  const GAMECAST = id => "https://www.espn.com/college-football/game/_/gameId/" + id;
+  const ESPNW = "https://www.espn.com/watch/", FOXS = "https://www.foxsports.com/live";
+  const WATCH = { ABC: "https://abc.com/watch-live", CBS: "https://www.cbs.com/live-tv/stream/tveverywhere/", FOX: FOXS, NBC: "https://www.nbc.com/live", CW: "https://www.cwtv.com/",
+                  ESPN: ESPNW, ESPN2: ESPNW, ESPNU: ESPNW, ESPNEWS: ESPNW, SECN: ESPNW, ACCN: ESPNW, "ESPN+": ESPNW, "SECN+": ESPNW, ACCNX: ESPNW, ESPN3: ESPNW,
+                  FS1: FOXS, FS2: FOXS, BTN: FOXS, "Fox One": "https://www.fox.com/", TNT: "https://www.tntdrama.com/watchtnt", TBS: "https://www.tbs.com/watchtbs", TRUTV: "https://www.trutv.com/watchtrutv",
+                  "HBO Max": "https://play.hbomax.com/", USA: "https://www.usanetwork.com/live", NBCSN: "https://www.nbc.com/live", Peacock: "https://www.peacocktv.com/",
+                  "Paramount+": "https://www.paramountplus.com/live-tv/", "Disney+": "https://www.disneyplus.com/", CBSSN: "https://www.cbssports.com/watch/live",
+                  YouTube: "https://www.youtube.com/", "HBCU Go": "https://hbcugo.tv/", FloSports: "https://www.flosports.tv/", SNY: "https://sny.tv/", "NEC Front Row": "https://necfrontrow.com/",
+                  "UConn+": "https://uconnhuskies.com/watch" };
+  const openNew = url => { const w = window.open(url, "_blank"); if (w) w.opener = null; else location.href = url; };
   const NONE = "No broadcast";
-  /* confs: conferences picked in the Conf panel; empty means no conference filter */
-  const S = { tz:"AZ", view:"grid", show:"all", day:"", open:{}, have: new Set(SLATE.have), confs: new Set() };
+  /* confs: conferences picked in the Conf panel; empty means no conference filter. stars: teams of interest (highlighted);
+     mine: show only their games; now: show only games in progress. show opens on FBS. */
+  const S = { tz:"AZ", view:"grid", show:"fbs", day:"", open:{}, have: new Set(SLATE.have), confs: new Set(), foot:"on",
+              now:false, mine:false, stars: new Set() };
   let G = null, scrolled = false;
 
   /* "now" on the slate's clock: ET, with anything before 6 AM counted as the previous day, same as the script */
@@ -737,7 +821,7 @@ const TEAMS = {
   const KEY = "cfb-slate", ZONES = ["AZ", "PT", "MT", "CT", "ET"], MAX_VIEWS = 5;
   let VIEWS = [];
   const snapshot = () => ({ tz: S.tz, on: [...S.have].filter(n => !SLATE.have.includes(n)), off: SLATE.have.filter(n => !S.have.has(n)),
-                            confs: CONF_ORDER.filter(c => S.confs.has(c)), show: S.show, view: S.view });
+                            confs: CONF_ORDER.filter(c => S.confs.has(c)), show: S.show, view: S.view, mine: S.mine });
   function applySnapshot(v){
     if (!v) return;
     if (ZONES.includes(v.tz)) S.tz = v.tz;
@@ -745,18 +829,23 @@ const TEAMS = {
     S.confs = new Set((v.confs || []).filter(c => CONF_ORDER.includes(c)));
     if (["all", "fbs", "top25"].includes(v.show)) S.show = v.show;
     if (["grid", "list"].includes(v.view)) S.view = v.view;
+    S.mine = !!v.mine;
   }
-  const sameView = (a, b) => JSON.stringify([a.tz, [...a.on].sort(), [...a.off].sort(), a.confs, a.show, a.view]) ===
-                             JSON.stringify([b.tz, [...b.on].sort(), [...b.off].sort(), b.confs, b.show, b.view]);
+  const sameView = (a, b) => JSON.stringify([a.tz, [...a.on].sort(), [...a.off].sort(), a.confs, a.show, a.view, !!a.mine]) ===
+                             JSON.stringify([b.tz, [...b.on].sort(), [...b.off].sort(), b.confs, b.show, b.view, !!b.mine]);
   try {
     const saved = JSON.parse(localStorage.getItem(KEY) || "null");
     if (saved){
+      if (!saved.v) delete saved.show;   /* version 1 stored All as its default; the default is FBS now, saved views keep their own */
       applySnapshot(saved);
       VIEWS = (saved.views || []).filter(v => v && typeof v.name === "string").slice(0, MAX_VIEWS);
+      if (saved.foot === "off") S.foot = "off";
+      S.now = !!saved.now;
+      S.stars = new Set((saved.stars || []).filter(n => typeof n === "string"));   /* kept even on a bye week */
     }
   } catch (e) {}
   function remember(){
-    try { localStorage.setItem(KEY, JSON.stringify(Object.assign(snapshot(), { views: VIEWS }))); } catch (e) {}
+    try { localStorage.setItem(KEY, JSON.stringify(Object.assign(snapshot(), { v: 2, views: VIEWS, foot: S.foot, now: S.now, stars: [...S.stars] }))); } catch (e) {}
   }
 
   const mins = t => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
@@ -804,8 +893,17 @@ const TEAMS = {
     const disp = carriers.find(n => S.have.has(n)) || "";
     return Object.assign({}, g, { kick: g.tbd ? 9999 : mins(g.k), away: T(g.a), home, day, carriers, disp, ok: !!disp, dtv: isTV(disp) });
   });
-  const keep = g => (S.show === "top25" ? !!(g.ar || g.hr) : S.show === "fbs" ? FBS.includes(g.home.conf) : true)
-                 && (!S.confs.size || S.confs.has(g.home.conf) || S.confs.has(g.away.conf));
+  const isLive = g => { const l = LIVE[g.id]; return !!l && l.st === "in"; };
+  const starred = g => S.stars.has(g.home.name) || S.stars.has(g.away.name);
+  /* FBS is the default level, so it steps aside when a conference pick or "only my teams" narrows the board on purpose
+     (an FCS conference or a starred FCS team would otherwise show nothing). Top 25 is an explicit choice and stays. */
+  function passes(g, ignoreNow){
+    const narrowed = S.confs.size > 0 || (S.mine && S.stars.size > 0);
+    const level = S.show === "top25" ? !!(g.ar || g.hr) : (S.show === "fbs" && !narrowed) ? FBS.includes(g.home.conf) : true;
+    return level && (!S.confs.size || S.confs.has(g.home.conf) || S.confs.has(g.away.conf))
+        && (!S.mine || starred(g)) && (ignoreNow || !S.now || isLive(g));
+  }
+  const keep = g => passes(g, false);
   const sortG = (a, b) => a.kick - b.kick || (b.dtv - a.dtv) || chanRank(a.disp || a.n) - chanRank(b.disp || b.n) || a.home.name.localeCompare(b.home.name);
 
   function lineParts(g){
@@ -837,13 +935,35 @@ const TEAMS = {
     im.addEventListener("error", () => p.remove());
     p.appendChild(im); return p;
   }
+  const STAR = "★";
+  const starLabel = t => (S.stars.has(t.name) ? STAR + " " : "") + t.label;
   function bar(t, rank, line, cls, score, dim){
     const d = el("div", "team"); d.style.background = t.bg; d.style.color = t.fg;
     if (score != null) d.appendChild(el("span", "scl" + (dim ? " dim" : ""), String(score)));
     const lg = logoPlate(t); if (lg) d.appendChild(lg);
     if (rank) d.appendChild(el("span", "rk", rank));
+    if (S.stars.has(t.name)) d.appendChild(el("span", "star", STAR));
     d.appendChild(el("span", "nm", t.label));
     if (line) d.appendChild(el("span", "ln" + (cls ? " " + cls : ""), line));
+    return d;
+  }
+  /* what an empty board says depends on which filter emptied it */
+  function emptyEl(day){
+    const d = el("div", "empty");
+    let msg;
+    if (S.now){
+      const n = etNow();
+      const next = n.date === day.date ? prep(day).filter(g => !g.tbd && g.kick > n.m && passes(g, true)).sort((a, b) => a.kick - b.kick)[0] : null;
+      msg = "Nothing is in progress right now." + (next ? " Next kickoff " + fmt(next.kick + off()).join(" ") + " " + S.tz + "." : "");
+    } else if (S.mine){
+      msg = S.stars.size ? "None of your teams play " + day.label + " with these filters." : "No starred teams yet. Open Teams and star a few.";
+    } else msg = "Nothing on your channels matches this filter.";
+    d.appendChild(document.createTextNode(msg));
+    if (S.now || S.mine){
+      const b = el("button", "chip", "Show all games"); b.type = "button"; b.style.marginLeft = "8px";
+      b.addEventListener("click", () => { S.now = false; S.mine = false; remember(); render(); });
+      d.appendChild(b);
+    }
     return d;
   }
   function pack(games, truncate, end){
@@ -858,7 +978,7 @@ const TEAMS = {
   }
   function renderGrid(games, day, compact){
     const box = el("div", "gridbox");
-    if (!games.length){ G = null; box.appendChild(el("div", "empty", "Nothing on your channels matches this filter.")); return box; }
+    if (!games.length){ G = null; box.appendChild(compact ? el("div", "empty", "Nothing on your channels matches this filter.") : emptyEl(day)); return box; }
     const start = Math.floor(Math.min(...games.map(g => g.kick)) / 60) * 60;
     const end = Math.ceil((Math.max(...games.map(g => g.kick)) + 180) / 30) * 30;
     const cols = (end - start) / 30, trackW = cols * COL, x = m => (m - start) / 30 * COL;
@@ -881,7 +1001,9 @@ const TEAMS = {
       const gs = byNet[net].sort((a, b) => a.kick - b.kick);
       const lanes = pack(gs, isTV(net), end);
       const row = el("div", "row");
-      const lab = el("div", "net"), inner = el("div", "netlab", net);
+      const lab = el("div", "net"), inner = el("div", "netlab");
+      if (WATCH[net] && !compact){ const a = el("a", null, net); a.href = WATCH[net]; a.target = "_blank"; a.rel = "noopener"; a.title = "Open " + net; inner.appendChild(a); }
+      else inner.appendChild(document.createTextNode(net));
       if (lanes.length > 1) inner.appendChild(el("small", null, gs.length + " games"));
       lab.appendChild(inner); row.appendChild(lab);
       const track = el("div", "track"); track.style.width = trackW + "px"; track.style.height = lanes.length * LANE + "px";
@@ -889,19 +1011,19 @@ const TEAMS = {
         if (g.end <= g.kick) return;
         const lp = lineParts(g), lv = LIVE[g.id];
         if (compact){   /* print: one bar per game, away color on the left edge, home color on the right */
-          const b = el("div", "game compact");
+          const b = el("div", "game compact" + (starred(g) ? " fav" : ""));
           b.style.left = x(g.kick) + "px"; b.style.width = (x(g.end) - x(g.kick) - 2) + "px";
           b.style.top = (i * LANE + 2) + "px"; b.style.height = (LANE - 4) + "px";
           b.style.borderLeft = "4px solid " + g.away.bg; b.style.borderRight = "4px solid " + g.home.bg;
           if (LANE >= 18){ [g.away, g.home].forEach(t => { const lg = logoPlate(t); if (lg) b.appendChild(lg); }); }
-          b.appendChild(el("span", "c1", (g.ar ? "#" + g.ar + " " : "") + g.away.label + (g.neu ? " vs " : " at ") + (g.hr ? "#" + g.hr + " " : "") + g.home.label));
+          b.appendChild(el("span", "c1", (g.ar ? "#" + g.ar + " " : "") + starLabel(g.away) + (g.neu ? " vs " : " at ") + (g.hr ? "#" + g.hr + " " : "") + starLabel(g.home)));
           const txt = lv ? clockText(lv) + " " + lv.as + "-" + lv.hs
                          : lp ? (lp.fav ? (lp.fav === "home" ? g.home.ab : g.away.ab) + " " + lp.spread : "PK") + (lp.ou ? " " + lp.ou : "") : "";
           if (txt) b.appendChild(el("span", "c2", txt));
           track.appendChild(b);
           return;
         }
-        const b = el("div", "game");
+        const b = el("div", "game" + (starred(g) ? " fav" : ""));
         b.style.left = x(g.kick) + "px"; b.style.width = (x(g.end) - x(g.kick) - 3) + "px";
         b.style.top = (i * LANE + 3) + "px"; b.style.height = (LANE - 6) + "px";
         const aLine = lp ? (lp.fav === "away" ? lp.spread : (lp.fav === "home" ? lp.ou : lp.spread)) : "";
@@ -920,6 +1042,8 @@ const TEAMS = {
           b.appendChild(bar(g.away, g.ar, aLine, "")); b.appendChild(bar(g.home, g.hr, hLine, ""));
           b.appendChild(el("span", "tag", g.neu ? "VS" : "AT"));
         }
+        b.title += ". Tap for the gamecast.";
+        b.addEventListener("click", () => openNew(GAMECAST(g.id)));
         track.appendChild(b);
       }));
       row.appendChild(track); rows.appendChild(row);
@@ -934,12 +1058,13 @@ const TEAMS = {
     const sp = el("span", "tn");
     const dot = el("i", "dot"); dot.style.background = t.bg; sp.appendChild(dot);
     if (rank) sp.appendChild(el("span", "rkl", "#" + rank));
+    if (S.stars.has(t.name)) sp.appendChild(el("span", "star", STAR));
     sp.appendChild(document.createTextNode(t.name));
     if (score != null) sp.appendChild(el("b", "scr" + (dim ? " dim" : ""), score));
     return sp;
   }
   function row(g){
-    const r = el("div", "g"), lv = LIVE[g.id];
+    const r = el("div", "g" + (starred(g) ? " fav" : "")), lv = LIVE[g.id];
     const tm = el("div", "tm" + (lv && lv.st === "in" ? " live" : ""), lv ? clockText(lv) : g.tbd ? "TBD" : fmt(g.kick + off())[0]);
     tm.appendChild(el("small", null, lv || g.tbd ? (lv ? fmt(g.kick + off()).join(" ") : "") : fmt(g.kick + off())[1] + " " + S.tz)); r.appendChild(tm);
     const mu = el("div", "mu");
@@ -952,7 +1077,11 @@ const TEAMS = {
     if (others.length) bits.push(el("span", null, "also " + others.join(", ")));
     if (bits.length){ const sub = el("span", "sub2"); bits.forEach(b => sub.appendChild(b)); mu.appendChild(sub); }
     r.appendChild(mu);
-    r.appendChild(el("div", "ch" + (shown ? (isTV(shown) ? "" : " st") : " none"), shown || NONE));
+    const cls = "ch" + (shown ? (isTV(shown) ? "" : " st") : " none");
+    if (shown && WATCH[shown]){ const a = el("a", cls, shown); a.href = WATCH[shown]; a.target = "_blank"; a.rel = "noopener"; a.title = "Open " + shown; a.addEventListener("click", e => e.stopPropagation()); r.appendChild(a); }
+    else r.appendChild(el("div", cls, shown || NONE));
+    r.title = "Tap for the gamecast";
+    r.addEventListener("click", () => openNew(GAMECAST(g.id)));
     return r;
   }
   function listGrouped(games, body){
@@ -971,7 +1100,7 @@ const TEAMS = {
     h.appendChild(el("span", null, label)); h.appendChild(el("span", "n", "(" + games.length + ")"));
     if (!opts.fixed) h.appendChild(el("span", "car", "\u25BC"));
     const body = el("div", "sb");
-    if (!games.length) body.appendChild(el("div", "empty", opts.emptyText || "No games match this filter."));
+    if (!games.length) body.appendChild(opts.emptyEl || el("div", "empty", opts.emptyText || "No games match this filter."));
     else build(games, body);
     body.hidden = !open;
     if (!opts.fixed) h.addEventListener("click", () => { const o = body.hidden; body.hidden = !o; S.open[id] = o; h.setAttribute("aria-expanded", String(o)); });
@@ -1049,7 +1178,10 @@ const TEAMS = {
     ph.appendChild(el("span", null, games.length + " games on your channels"));
     const picked = CONF_ORDER.filter(c => S.confs.has(c)).map(c => CONF_NAME[c] || c);
     if (picked.length) ph.appendChild(el("span", null, "Conferences: " + picked.join(", ")));
-    if (S.show !== "all") ph.appendChild(el("span", null, S.show === "fbs" ? "FBS only" : "Top 25 only"));
+    if (S.show === "top25") ph.appendChild(el("span", null, "Top 25 only"));
+    else if (S.show === "fbs" && !picked.length && !(S.mine && S.stars.size)) ph.appendChild(el("span", null, "FBS only"));
+    if (S.mine && S.stars.size) ph.appendChild(el("span", null, "My teams only"));
+    if (S.now) ph.appendChild(el("span", null, "In progress as of " + fmt(etNow().m + off()).join(" ") + " " + S.tz));
     ph.appendChild(el("span", null, "Lines " + SLATE.lines + ", pulled " + SLATE.pulled));
     sheet.appendChild(ph);
     /* fit the page: 1000px wide, about 760px tall inside the margins */
@@ -1120,21 +1252,99 @@ const TEAMS = {
   SLATE.days.forEach(d => d.games.forEach(g => {
     new Set([T(g.h).conf || "OTHER", T(g.a).conf || "OTHER"]).forEach(c => confCount.set(c, (confCount.get(c) || 0) + 1));
   }));
+  /* FBS conferences up top; FCS (and the non-D1 bucket) behind an FCS chip so the list stays short */
   const confList = CONF_ORDER.filter(c => confCount.has(c));
+  const fbsList = confList.filter(c => FBS.includes(c)), fcsList = confList.filter(c => !FBS.includes(c));
+  const fconfsEl = document.getElementById("fconfs");
+  let fcsOpen = false;
   const allChip = el("button", "chip grp", "All"); allChip.type = "button";
   allChip.addEventListener("click", () => { S.confs.clear(); remember(); render(); });
   confsEl.appendChild(allChip);
-  confList.forEach(c => {
+  const confChip = (c, into) => {
     const chip = el("button", "chip", CONF_NAME[c] || c); chip.type = "button"; chip.dataset.conf = c;
     chip.appendChild(el("small", null, confCount.get(c)));
     chip.addEventListener("click", () => { S.confs.has(c) ? S.confs.delete(c) : S.confs.add(c); remember(); render(); });
-    confsEl.appendChild(chip);
-  });
+    into.appendChild(chip);
+  };
+  fbsList.forEach(c => confChip(c, confsEl));
+  const fcsChip = el("button", "chip grp", "FCS"); fcsChip.type = "button"; fcsChip.appendChild(el("small", null, "▾"));
+  fcsChip.title = "Show the FCS conferences";
+  fcsChip.addEventListener("click", () => { fcsOpen = !fcsOpen; refreshConfs(); });
+  if (fcsList.length) confsEl.appendChild(fcsChip);
+  fcsList.forEach(c => confChip(c, fconfsEl));
   function refreshConfs(){
     allChip.setAttribute("aria-pressed", String(S.confs.size === 0));
-    confsEl.querySelectorAll("[data-conf]").forEach(chip => chip.setAttribute("aria-pressed", String(S.confs.has(chip.dataset.conf))));
+    const open = fcsOpen || fcsList.some(c => S.confs.has(c));
+    fconfsEl.hidden = !open;
+    fcsChip.setAttribute("aria-pressed", String(open));
+    document.getElementById("cpanel").querySelectorAll("[data-conf]").forEach(chip => chip.setAttribute("aria-pressed", String(S.confs.has(chip.dataset.conf))));
     const picked = CONF_ORDER.filter(c => S.confs.has(c)).map(c => CONF_NAME[c] || c);
     document.getElementById("confN").textContent = !picked.length ? "All" : picked.length <= 2 ? picked.join(", ") : picked.length + " picked";
+  }
+
+  /* ---- teams of interest ---- */
+  const starsEl = document.getElementById("stars"), tlist = document.getElementById("tlist"), tfind = document.getElementById("tfind"), tnote = document.getElementById("tnote");
+  const teamBtn = document.getElementById("teamBtn");
+  const ranked = new Map();   /* team -> best rank this week */
+  SLATE.days.forEach(d => d.games.forEach(g => { if (g.ar) ranked.set(g.a, Math.min(g.ar, ranked.get(g.a) || 99)); if (g.hr) ranked.set(g.h, Math.min(g.hr, ranked.get(g.h) || 99)); }));
+  const teamNames = Object.keys(TEAMS).sort((a, b) => a.localeCompare(b));
+  function toggleStar(name){ S.stars.has(name) ? S.stars.delete(name) : S.stars.add(name); remember(); render(); }
+  function teamChip(name, on){
+    const t = TEAMS[name] || {};
+    const chip = el("button", "chip star", (on ? STAR + " " : "") + name); chip.type = "button"; chip.setAttribute("aria-pressed", String(on));
+    const tag = ranked.has(name) ? "#" + ranked.get(name) : t.c ? (CONF_NAME[t.c] || t.c) : "";
+    if (tag) chip.appendChild(el("span", "cf", tag));
+    chip.addEventListener("click", () => toggleStar(name));
+    return chip;
+  }
+  function findTeams(q){
+    q = q.trim().toLowerCase();
+    if (!q){ tnote.textContent = ranked.size ? "Ranked this week" : ""; return [...ranked.keys()].sort((a, b) => ranked.get(a) - ranked.get(b)); }
+    const hit = n => { const t = TEAMS[n] || {}; return [n, t.l || "", t.ab || ""].some(s => s.toLowerCase().includes(q)); };
+    const list = teamNames.filter(hit).sort((a, b) => (b.toLowerCase().startsWith(q) - a.toLowerCase().startsWith(q)) || a.localeCompare(b));
+    tnote.textContent = list.length ? (list.length > 40 ? "First 40 of " + list.length : "") : "No team this week matches";
+    return list.slice(0, 40);
+  }
+  function refreshTeams(){
+    starsEl.innerHTML = "";
+    const mine = el("button", "chip grp", "Only my teams"); mine.type = "button"; mine.setAttribute("aria-pressed", String(S.mine));
+    mine.title = "Show just the games your starred teams play";
+    mine.addEventListener("click", () => { S.mine = !S.mine; remember(); render(); });
+    starsEl.appendChild(mine);
+    if (!S.stars.size) starsEl.appendChild(el("span", "note", "none yet"));
+    [...S.stars].sort((a, b) => a.localeCompare(b)).forEach(n => {
+      const chip = teamChip(n, true);
+      if (!TEAMS[n]) chip.appendChild(el("span", "cf", "idle this week"));
+      starsEl.appendChild(chip);
+    });
+    tlist.innerHTML = "";
+    findTeams(tfind.value).forEach(n => tlist.appendChild(teamChip(n, S.stars.has(n))));
+    document.getElementById("teamN").textContent = S.stars.size ? STAR + S.stars.size : "";
+    teamBtn.classList.toggle("mine", S.mine && S.stars.size > 0);
+  }
+  tfind.addEventListener("input", () => { tlist.innerHTML = ""; findTeams(tfind.value).forEach(n => tlist.appendChild(teamChip(n, S.stars.has(n)))); });
+  tfind.addEventListener("keydown", e => { if (e.key === "Enter"){ const first = tlist.querySelector(".chip"); if (first && tfind.value.trim()) first.click(); } });
+
+  /* ---- on now ---- */
+  const nowBtn = document.getElementById("nowBtn");
+  const liveCount = date => { const d = SLATE.days.find(x => x.date === date); return d ? d.games.filter(isLive).length : 0; };
+  nowBtn.addEventListener("click", () => {
+    const today = etNow().date;
+    S.now = !S.now;
+    if (S.now && S.day !== today && SLATE.days.some(d => d.date === today)) S.day = today;
+    /* live-only grid starts at the first kickoff in progress, so show its left edge; back to the full day, find the now line again */
+    const w = document.getElementById("wrap"); w.scrollLeft = 0; w.scrollTop = 0; scrolled = S.now;
+    remember(); render();
+    if (S.now) pollLive(true);
+  });
+  function refreshNow(){
+    const today = etNow().date, hasToday = SLATE.days.some(d => d.date === today);
+    if (!hasToday && S.now){ S.now = false; remember(); }
+    nowBtn.disabled = !hasToday;
+    nowBtn.setAttribute("aria-pressed", String(S.now));
+    const n = hasToday ? liveCount(today) : 0;
+    document.getElementById("nowN").textContent = n ? String(n) : "";
+    nowBtn.title = hasToday ? (n ? n + " in progress right now" : "Nothing in progress right now") : "No games today";
   }
 
   /* ---- saved views ---- */
@@ -1176,15 +1386,17 @@ const TEAMS = {
   /* one panel open at a time */
   const pkgBtn = document.getElementById("pkgBtn"), panel = document.getElementById("panel");
   const confBtn = document.getElementById("confBtn"), cpanel = document.getElementById("cpanel");
-  const vpanel = document.getElementById("vpanel");
+  const vpanel = document.getElementById("vpanel"), tpanel = document.getElementById("tpanel");
   function showPanel(which){
-    [panel, cpanel, vpanel].forEach(p => { p.hidden = p !== which || !p.hidden; });
+    [panel, cpanel, vpanel, tpanel].forEach(p => { p.hidden = p !== which || !p.hidden; });
     pkgBtn.setAttribute("aria-pressed", String(!panel.hidden));
     confBtn.setAttribute("aria-pressed", String(!cpanel.hidden));
+    teamBtn.setAttribute("aria-pressed", String(!tpanel.hidden));
     const add = viewsEl.querySelector(".chip.grp"); if (add) add.setAttribute("aria-pressed", String(!vpanel.hidden));
   }
   pkgBtn.addEventListener("click", () => showPanel(panel));
   confBtn.addEventListener("click", () => showPanel(cpanel));
+  teamBtn.addEventListener("click", () => { showPanel(tpanel); if (!tpanel.hidden && !S.stars.size && matchMedia("(min-width: 900px)").matches) tfind.focus(); });
 
   /* ---- render ---- */
   function render(){
@@ -1192,6 +1404,7 @@ const TEAMS = {
     const wrap = document.getElementById("wrap"); wrap.innerHTML = "";
     const day = SLATE.days.find(d => d.date === S.day) || SLATE.days[0];
     if (!day){ wrap.appendChild(el("div", "empty", "No games loaded.")); return; }
+    refreshNow();
     const list = prep(day).filter(keep);
     if (S.view === "grid"){
       wrap.appendChild(renderGrid(list.filter(g => g.ok && !g.tbd), day));
@@ -1199,21 +1412,26 @@ const TEAMS = {
       if (tbd.length) wrap.appendChild(section("tbd", day.label + ", time TBD", tbd, listFlat));
     } else {
       G = null;
-      wrap.appendChild(section("main", day.label, list.filter(g => g.ok), listGrouped, { fixed: true }));
+      wrap.appendChild(section("main", day.label, list.filter(g => g.ok), listGrouped, { fixed: true, emptyEl: emptyEl(day) }));
     }
-    wrap.appendChild(section("no", "Not in your package", list.filter(g => !g.ok), listGrouped, { dim: true, emptyText: "Everything on " + day.label + " is on a channel you have." }));
+    wrap.appendChild(section("no", "Not in your package", list.filter(g => !g.ok), listGrouped,
+                     { dim: true, emptyText: S.now || S.mine ? "Nothing else matches." : "Everything on " + day.label + " is on a channel you have." }));
     const first = SLATE.days[0], last = SLATE.days[SLATE.days.length - 1];
     document.getElementById("sub").textContent = SLATE.week + " - " + (first === last ? first.label : first.label + " to " + last.label);
     document.querySelectorAll(".seg button[data-key]").forEach(b => b.setAttribute("aria-pressed", String(S[b.dataset.key] === b.dataset.v)));
     refreshPanel();
     refreshConfs();
+    refreshTeams();
     refreshViews();
     footer();
     nowLine();
   }
   document.querySelectorAll(".seg button[data-key]").forEach(b => b.addEventListener("click", () => {
     S[b.dataset.key] = b.dataset.v;
-    if (b.dataset.key === "day"){ const w = document.getElementById("wrap"); w.scrollTop = 0; w.scrollLeft = 0; scrolled = false; }
+    if (b.dataset.key === "day"){
+      const w = document.getElementById("wrap"); w.scrollTop = 0; w.scrollLeft = 0; scrolled = false;
+      if (S.now && b.dataset.v !== etNow().date){ S.now = false; remember(); }   /* On now only means today */
+    }
     else remember();
     render();
     if (b.dataset.key === "day") pollLive(true);
@@ -1221,13 +1439,19 @@ const TEAMS = {
   /* crossing the phone/desktop breakpoint changes the grid metrics, so redraw */
   let resizeTimer = null;
   window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (cssPx("--col") !== COL) render(); }, 150); });
+  const footEl = document.getElementById("foot"), fnotes = document.getElementById("fnotes"), fmore = document.getElementById("fmore");
   function footer(){
-    document.getElementById("foot").textContent =
-      (liveStamp ? "Scores from ESPN as of " + liveStamp + ". " : "") +
-      "Schedule and TV from ESPN, lines " + SLATE.lines + ", pulled " + SLATE.pulled + ". Lines move, check before betting. " +
-      "Grid: visitor on top. Channel rows end a block when the next game starts; streaming rows stack simultaneous games. " +
-      "Package sets which channels count as yours; everything else, plus games with no broadcast, sits greyed at the bottom. Your package, conferences, filters, time zone, and saved views are remembered on this device.";
+    document.getElementById("fstamp").textContent =
+      (liveStamp ? "Scores as of " + liveStamp + ". " : "") + "Lines " + SLATE.lines + ", pulled " + SLATE.pulled + ". Lines move, check before betting.";
+    fnotes.textContent = "Schedule and TV from ESPN. Grid: visitor on top. Channel rows end a block when the next game starts; streaming rows stack simultaneous games. " +
+      "Tap a game for its gamecast, tap a channel name to open that network's stream. Package sets which channels count as yours; everything else, plus games with no broadcast, " +
+      "sits greyed at the bottom. On now keeps just the games in progress. Teams stars your teams (gold frame) and can limit the board to them. " +
+      "Your package, conferences, filters, teams, time zone, and saved views are remembered on this device.";
+    footEl.classList.toggle("off", S.foot === "off");
   }
+  fmore.addEventListener("click", () => { fnotes.hidden = !fnotes.hidden; fmore.setAttribute("aria-pressed", String(!fnotes.hidden)); });
+  document.getElementById("fhide").addEventListener("click", () => { S.foot = "off"; remember(); footer(); });
+  document.getElementById("fshow").addEventListener("click", () => { S.foot = "on"; remember(); footer(); });
   footer();
   render();
   pollLive(true);

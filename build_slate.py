@@ -27,10 +27,27 @@ ET = ZoneInfo("America/New_York")
 API = "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates={d}&groups={g}&limit=300"
 GROUPS = ("80", "81")  # 80 = FBS, 81 = FCS
 
-# ESPN conferenceId -> code used by the renderer
-FBS_CONF = {"8": "SEC", "5": "B1G", "1": "ACC", "4": "B12", "151": "AAC", "9": "PAC", "17": "MWC",
-            "15": "MAC", "37": "SBC", "12": "CUSA", "18": "IND"}
-FCS_CONF = {"20", "21", "22", "24", "25", "26", "27", "28", "29", "30", "31", "32", "40", "48", "177", "179"}
+# ESPN conferenceId -> (code, name) used by the renderer. The page's Conf picker lists FBS and FCS as two groups,
+# in the order below (FCS alphabetical). 26 and 40 are the old OVC and Big South ids, kept in case ESPN still uses them.
+FBS_CONF = {"8": ("SEC", "SEC"), "5": ("B1G", "Big Ten"), "1": ("ACC", "ACC"), "4": ("B12", "Big 12"), "151": ("AAC", "AAC"),
+            "9": ("PAC", "Pac-12"), "17": ("MWC", "MWC"), "15": ("MAC", "MAC"), "37": ("SBC", "Sun Belt"), "12": ("CUSA", "CUSA"),
+            "18": ("IND", "Ind")}
+FCS_CONF = {"20": ("BSKY", "Big Sky"), "179": ("BSO", "Big South-OVC"), "26": ("BSO", "Big South-OVC"), "40": ("BSO", "Big South-OVC"),
+            "48": ("CAA", "CAA"), "32": ("FCSI", "FCS Ind"), "22": ("IVY", "Ivy"), "24": ("MEAC", "MEAC"), "21": ("MVFC", "MVFC"),
+            "25": ("NEC", "NEC"), "27": ("PAT", "Patriot"), "28": ("PFL", "Pioneer"), "29": ("SOCON", "SoCon"),
+            "30": ("SLC", "Southland"), "31": ("SWAC", "SWAC"), "177": ("UAC", "UAC")}
+
+
+def conf_table():
+    """[[code, name, level], ...] in picker order: FBS as listed, FCS alphabetical, then the non-Division I bucket."""
+    rows = [[c, n, "fbs"] for c, n in FBS_CONF.values()]
+    seen = set()
+    for c, n in sorted(FCS_CONF.values(), key=lambda x: x[1].lower()):
+        if c not in seen:
+            seen.add(c)
+            rows.append([c, n, "fcs"])
+    rows.append(["OTHER", "Non-D1", "other"])
+    return rows
 
 # grid row order for national TV channels; anything else national-TV is appended alphabetically
 TV_ORDER = ["ABC", "CBS", "FOX", "NBC", "CW", "ESPN", "ESPN2", "TNT", "ESPNU", "FS1", "FS2", "USA", "ACCN", "SECN", "BTN", "CBSSN"]
@@ -101,9 +118,9 @@ def label(name):
 
 def conf_code(cid):
     if cid in FBS_CONF:
-        return FBS_CONF[cid]
+        return FBS_CONF[cid][0]
     if cid in FCS_CONF:
-        return "FCS"
+        return FCS_CONF[cid][0]
     return "OTHER"
 
 
@@ -313,13 +330,14 @@ def main():
         "order": order,
         "packages": PACKAGES,
         "have": have,
+        "confs": conf_table(),
         "days": [{"label": d.strftime("%a %-m/%-d"), "date": d.isoformat(), "games": days[d]} for d in dates if days[d]],
     }
 
     def js(o):
         return json.dumps(o, ensure_ascii=False, separators=(",", ":"))
     lines = ["const SLATE = {"]
-    for k in ("week", "main", "mainLabel", "pulled", "lines", "networks", "order", "packages", "have"):
+    for k in ("week", "main", "mainLabel", "pulled", "lines", "networks", "order", "packages", "have", "confs"):
         lines.append(f"  {js(k)}: {js(slate[k])},")
     lines.append('  "days": [')
     for i, d in enumerate(slate["days"]):
