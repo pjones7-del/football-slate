@@ -1,4 +1,4 @@
-NFL Week 1 (16 games, pulled Sun 9/6, 5:50 PM ET, lines DraftKings via ESPN)
+NFL Week 1 (16 games, pulled Sun 9/6, 6:07 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week1.html
   web copy written to nfl/index.html
   Wed 9/9: 1 on TV, 0 not
@@ -15,7 +15,7 @@ NFL Week 1 (16 games, pulled Sun 9/6, 5:50 PM ET, lines DraftKings via ESPN)
     Sun 13:00 ET  Chicago Bears at Carolina Panthers  [FOX]  CHI -2.5, o/u 47.5
     Sun 13:00 ET  Tampa Bay Buccaneers at Cincinnati Bengals  [FOX]  CIN -3.5, o/u 50.5
     Sun 13:00 ET  New Orleans Saints at Detroit Lions  [FOX]  DET -7.0, o/u 49.5
-    Sun 13:00 ET  Atlanta Falcons at Pittsburgh Steelers  [FOX]  PIT -3.5, o/u 42.5
+    Sun 13:00 ET  Atlanta Falcons at Pittsburgh Steelers  [FOX]  PIT -3.5, o/u 41.5
     Sun 16:25 ET  Arizona Cardinals at Los Angeles Chargers  [CBS]  LAC -10.5, o/u 46.5
     Sun 16:25 ET  Green Bay Packers at Minnesota Vikings  [CBS]  MIN -1.5, o/u 46.5
     Sun 16:25 ET  Miami Dolphins at Las Vegas Raiders  [FOX]  LV -3.5, o/u 40.5
