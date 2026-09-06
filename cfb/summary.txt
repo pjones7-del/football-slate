@@ -1,4 +1,4 @@
-College Football Week 1 (133 games, pulled Sun 9/6, 2:26 PM ET, lines DraftKings via ESPN)
+College Football Week 1 (133 games, pulled Sun 9/6, 2:39 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week1.html
   web copy written to cfb/index.html
   Thu 9/3: 6 on TV, 8 not
@@ -27,7 +27,7 @@ College Football Week 1 (133 games, pulled Sun 9/6, 2:26 PM ET, lines DraftKings
     Sat 19:30 ET  Western Michigan at #16 Michigan  [NBC]  MICH -27.5, o/u 49.5
     Sat 20:00 ET  Utah Tech at #14 BYU  [ESPN+]  BYU -50.5, o/u 61.5
     Sat 21:40 ET  Clemson at #11 LSU  [ABC]  LSU -10.0, o/u 48.5
-    Sun 16:00 ET  Washington State at #17 Washington  [NBC]  WASH -23.5, o/u 51.5
+    Sun 16:00 ET  Washington State at #17 Washington  [NBC]  WASH -24.5, o/u 51.5
     Sun 19:30 ET  #24 Louisville vs #9 Ole Miss  [ABC]  MISS -6.5, o/u 55.5
     Sun 19:30 ET  Wisconsin vs #4 Notre Dame  [NBC]  ND -21.0, o/u 46.5
     Mon 19:30 ET  #19 SMU at Florida State  [ESPN]  SMU -3.0, o/u 52.5
