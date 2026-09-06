@@ -1,4 +1,4 @@
-NFL Week 1 (16 games, pulled Sun 9/6, 2:46 AM ET, lines DraftKings via ESPN)
+NFL Week 1 (16 games, pulled Sun 9/6, 3:07 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week1.html
   web copy written to nfl/index.html
   Wed 9/9: 1 on TV, 0 not
