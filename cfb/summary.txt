@@ -1,4 +1,4 @@
-College Football Week 1 (133 games, pulled Sun 9/6, 9:52 PM ET, lines DraftKings via ESPN)
+College Football Week 1 (133 games, pulled Sun 9/6, 10:08 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week1.html
   web copy written to cfb/index.html
   Thu 9/3: 6 on TV, 8 not
