@@ -1,4 +1,4 @@
-College Football Week 2 (131 games, pulled Tue 9/8, 10:28 AM ET, lines DraftKings via ESPN)
+College Football Week 2 (131 games, pulled Tue 9/8, 10:46 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week2.html
   web copy written to cfb/index.html
   Thu 9/10: 1 on TV, 0 not
@@ -8,7 +8,7 @@ College Football Week 2 (131 games, pulled Tue 9/8, 10:28 AM ET, lines DraftKing
     Thu 20:00 ET  Florida A&M at #7 Miami (FL)  [ACCN]  MIA -55.5, o/u 61.5
     Fri 19:00 ET  Villanova at #24 Louisville  [ACCN]  LOU -36.5, o/u 56.5
     Fri 20:00 ET  #25 Missouri at Kansas  [FOX]  MIZ -5.5, o/u 50.5
-    Sat 12:00 ET  Arizona State at #8 Texas A&M  [ABC]  TA&M -14.5, o/u 51.5
+    Sat 12:00 ET  Arizona State at #8 Texas A&M  [ABC]  TA&M -14.5, o/u 50.5
     Sat 12:00 ET  Howard at #6 Indiana  [BTN]
     Sat 12:00 ET  #2 Oregon at Oklahoma State  [ESPN]  ORE -22.5, o/u 57.5
     Sat 12:00 ET  #18 Penn State at Temple  [ESPN2]  PSU -23.5, o/u 49.5
