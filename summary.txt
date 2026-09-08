@@ -1,4 +1,4 @@
-College Football Week 2 (131 games, pulled Tue 9/8, 4:25 PM ET, lines DraftKings via ESPN)
+College Football Week 2 (131 games, pulled Tue 9/8, 4:40 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week2.html
   web copy written to cfb/index.html
   Thu 9/10: 1 on TV, 0 not
@@ -10,7 +10,7 @@ College Football Week 2 (131 games, pulled Tue 9/8, 4:25 PM ET, lines DraftKings
     Fri 19:00 ET  Norfolk State at #25 Virginia  [ACCNX]  UVA -44.5, o/u 54.5
     Fri 20:00 ET  #23 Missouri at Kansas  [FOX]  MIZ -5.5, o/u 50.5
     Sat 12:00 ET  Arizona State at #10 Texas A&M  [ABC]  TA&M -14.5, o/u 50.5
-    Sat 12:00 ET  Howard at #5 Indiana  [BTN]
+    Sat 12:00 ET  Howard at #5 Indiana  [BTN]  IU -56.5, o/u 64.5
     Sat 12:00 ET  #6 Oregon at Oklahoma State  [ESPN]  ORE -22.5, o/u 57.5
     Sat 12:00 ET  #16 Penn State at Temple  [ESPN2]  PSU -23.5, o/u 49.5
     Sat 12:00 ET  #11 Oklahoma at Michigan  [FOX]  OU -5.5, o/u 43.5
@@ -21,7 +21,7 @@ College Football Week 2 (131 games, pulled Tue 9/8, 4:25 PM ET, lines DraftKings
     Sat 15:30 ET  Rice at #3 Notre Dame  [NBC]  ND -44.5, o/u 55.5
     Sat 16:00 ET  UC Davis at #17 SMU  [ACCNX]
     Sat 19:00 ET  #18 Tennessee at Georgia Tech  [ESPN]  TENN -12.5, o/u 55.5
-    Sat 19:00 ET  Southern at #22 Houston  [ESPN+]
+    Sat 19:00 ET  Southern at #22 Houston  [ESPN+]  HOU -51.5, o/u 60.5
     Sat 19:30 ET  #1 Ohio State at #4 Texas  [ABC]  TEX -1.5, o/u 48.5
     Sat 19:30 ET  #13 Texas Tech at Oregon State  [CBS]  TTU -26.5, o/u 53.5
     Sat 19:30 ET  Iowa State at #21 Iowa  [NBC]  IOWA -14.0, o/u 40.5
@@ -29,11 +29,11 @@ College Football Week 2 (131 games, pulled Tue 9/8, 4:25 PM ET, lines DraftKings
     Sat 19:45 ET  Charlotte at #9 Ole Miss  [ESPN2]  MISS -47.5, o/u 61.5
     Sat 22:15 ET  Arkansas at #20 Utah  [ESPN]  UTAH -12.5, o/u 54.5
     Sat 23:00 ET  Louisiana at #14 USC  [BTN]  USC -30.5, o/u 59.5
-  TV games without a line: 5
+  TV games without a line: 4
   time TBD: 0
   non-Division I or unknown conference ids: none: Arkansas Baptist, Central Oklahoma, Dickinson (PA), Franklin, Kentucky Christian, Northern Michigan, Thomas More College, Virginia Lynchburg; 104: Bowie State, Lincoln (PA), Virginia State
 
-NFL Week 1 (16 games, pulled Tue 9/8, 4:25 PM ET, lines DraftKings via ESPN)
+NFL Week 1 (16 games, pulled Tue 9/8, 4:40 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week1.html
   web copy written to nfl/index.html
   Wed 9/9: 1 on TV, 0 not
