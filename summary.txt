@@ -1,4 +1,4 @@
-College Football Week 1 (133 games, pulled Mon 9/7, 10:54 PM ET, lines unavailable)
+College Football Week 1 (133 games, pulled Mon 9/7, 11:08 PM ET, lines unavailable)
   weekly file written to cfb-slate-week1.html
   web copy written to cfb/index.html
   Thu 9/3: 6 on TV, 8 not
@@ -35,7 +35,7 @@ College Football Week 1 (133 games, pulled Mon 9/7, 10:54 PM ET, lines unavailab
   time TBD: 0
   non-Division I or unknown conference ids: none: Central Washington, Franklin Pierce, Kentucky Christian, Southern Connecticut State, Texas Wesleyan, Webber International, West Virginia State; 139: Tusculum; 104: Elizabeth City State; 136: Central State (OH), Edward Waters, Kentucky State, Lane, Miles College
 
-NFL Week 1 (16 games, pulled Mon 9/7, 10:54 PM ET, lines DraftKings via ESPN)
+NFL Week 1 (16 games, pulled Mon 9/7, 11:08 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week1.html
   web copy written to nfl/index.html
   Wed 9/9: 1 on TV, 0 not
@@ -58,6 +58,6 @@ NFL Week 1 (16 games, pulled Mon 9/7, 10:54 PM ET, lines DraftKings via ESPN)
     Sun 16:25 ET  Miami Dolphins at Las Vegas Raiders  [FOX]  LV -3.5, o/u 41.5
     Sun 16:25 ET  Washington Commanders at Philadelphia Eagles  [FOX]  PHI -5.5, o/u 44.5
     Sun 20:20 ET  Dallas Cowboys at New York Giants  [NBC]  DAL -3.0, o/u 48.5
-    Mon 20:15 ET  Denver Broncos at Kansas City Chiefs  [ESPN]  KC -3.0, o/u 43.5
+    Mon 20:15 ET  Denver Broncos at Kansas City Chiefs  [ESPN]  KC -2.5, o/u 43.5
   TV games without a line: 0
   time TBD: 0
