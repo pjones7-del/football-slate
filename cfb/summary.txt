@@ -1,4 +1,4 @@
-College Football Week 2 (131 games, pulled Tue 9/8, 12:09 PM ET, lines DraftKings via ESPN)
+College Football Week 2 (131 games, pulled Tue 9/8, 12:29 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week2.html
   web copy written to cfb/index.html
   Thu 9/10: 1 on TV, 0 not
@@ -26,7 +26,7 @@ College Football Week 2 (131 games, pulled Tue 9/8, 12:09 PM ET, lines DraftKing
     Sat 19:30 ET  Iowa State at #22 Iowa  [NBC]  IOWA -14.0, o/u 40.5
     Sat 19:30 ET  Louisiana Tech at #11 LSU  [SECN+]  LSU -35.5, o/u 55.5
     Sat 19:45 ET  Charlotte at #9 Ole Miss  [ESPN2]  MISS -47.5, o/u 61.5
-    Sat 22:15 ET  Arkansas at #21 Utah  [ESPN]  UTAH -12.5, o/u 55.5
+    Sat 22:15 ET  Arkansas at #21 Utah  [ESPN]  UTAH -12.5, o/u 54.5
     Sat 23:00 ET  Louisiana at #14 USC  [BTN]  USC -31.5, o/u 60.5
   TV games without a line: 5
   time TBD: 0
