@@ -1,4 +1,4 @@
-College Football Week 2 (131 games, pulled Wed 9/9, 7:40 AM ET, lines DraftKings via ESPN)
+College Football Week 2 (131 games, pulled Wed 9/9, 7:52 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week2.html
   web copy written to cfb/index.html
   Thu 9/10: 1 on TV, 0 not
@@ -33,7 +33,7 @@ College Football Week 2 (131 games, pulled Wed 9/9, 7:40 AM ET, lines DraftKings
   time TBD: 0
   non-Division I or unknown conference ids: none: Arkansas Baptist, Central Oklahoma, Dickinson (PA), Franklin, Kentucky Christian, Northern Michigan, Thomas More College, Virginia Lynchburg; 104: Bowie State, Lincoln (PA), Virginia State
 
-NFL Week 1 (16 games, pulled Wed 9/9, 7:40 AM ET, lines DraftKings via ESPN)
+NFL Week 1 (16 games, pulled Wed 9/9, 7:52 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week1.html
   web copy written to nfl/index.html
   Wed 9/9: 1 on TV, 0 not
