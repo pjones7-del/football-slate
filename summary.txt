@@ -1,11 +1,11 @@
-College Football Week 2 (131 games, pulled Wed 9/9, 3:07 PM ET, lines DraftKings via ESPN)
+College Football Week 2 (131 games, pulled Wed 9/9, 3:24 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week2.html
   web copy written to cfb/index.html
   Thu 9/10: 1 on TV, 0 not
   Fri 9/11: 4 on TV, 1 not
   Sat 9/12: 43 on TV, 82 not
   ranked matchups:
-    Thu 20:00 ET  Florida A&M at #7 Miami (FL)  [ACCN]  MIA -56.5, o/u 62.5
+    Thu 20:00 ET  Florida A&M at #7 Miami (FL)  [ACCN]  MIA -57.5, o/u 62.5
     Fri 19:00 ET  Villanova at #24 Louisville  [ACCN]  LOU -36.5, o/u 56.5
     Fri 19:00 ET  Norfolk State at #25 Virginia  [ACCNX]  UVA -44.5, o/u 54.5
     Fri 20:00 ET  #23 Missouri at Kansas  [FOX]  MIZ -5.5, o/u 50.5
@@ -33,7 +33,7 @@ College Football Week 2 (131 games, pulled Wed 9/9, 3:07 PM ET, lines DraftKings
   time TBD: 0
   non-Division I or unknown conference ids: none: Arkansas Baptist, Central Oklahoma, Dickinson (PA), Franklin, Kentucky Christian, Northern Michigan, Thomas More College, Virginia Lynchburg; 104: Bowie State, Lincoln (PA), Virginia State
 
-NFL Week 1 (16 games, pulled Wed 9/9, 3:07 PM ET, lines DraftKings via ESPN)
+NFL Week 1 (16 games, pulled Wed 9/9, 3:24 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week1.html
   web copy written to nfl/index.html
   Wed 9/9: 1 on TV, 0 not
