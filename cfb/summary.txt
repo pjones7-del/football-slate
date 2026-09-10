@@ -1,11 +1,11 @@
-College Football Week 2 (131 games, pulled Thu 9/10, 10:55 AM ET, lines DraftKings via ESPN)
+College Football Week 2 (131 games, pulled Thu 9/10, 11:09 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week2.html
   web copy written to cfb/index.html
   Thu 9/10: 1 on TV, 0 not
   Fri 9/11: 4 on TV, 1 not
   Sat 9/12: 43 on TV, 82 not
   ranked matchups:
-    Thu 20:00 ET  Florida A&M at #7 Miami (FL)  [ACCN]  MIA -58.5, o/u 64.5
+    Thu 20:00 ET  Florida A&M at #7 Miami (FL)  [ACCN]  MIA -58.5, o/u 65.5
     Fri 19:00 ET  Villanova at #24 Louisville  [ACCN]  LOU -36.5, o/u 56.5
     Fri 19:00 ET  Norfolk State at #25 Virginia  [ACCNX]  UVA -44.5, o/u 54.5
     Fri 20:00 ET  #23 Missouri at Kansas  [FOX]  MIZ -5.5, o/u 50.5
@@ -18,7 +18,7 @@ College Football Week 2 (131 games, pulled Thu 9/10, 10:55 AM ET, lines DraftKin
     Sat 15:30 ET  #12 Alabama at Kentucky  [ABC]  ALA -10.5, o/u 49.5
     Sat 15:30 ET  Utah State at #19 Washington  [BTN]  WASH -26.5, o/u 55.5
     Sat 15:30 ET  Arizona at #15 BYU  [FOX]  BYU -7.5, o/u 47.5
-    Sat 15:30 ET  Rice at #3 Notre Dame  [NBC]  ND -44.5, o/u 54.5
+    Sat 15:30 ET  Rice at #3 Notre Dame  [NBC]  ND -44.5, o/u 55.5
     Sat 16:00 ET  UC Davis at #17 SMU  [ACCNX]  SMU -25.5, o/u 58.5
     Sat 19:00 ET  #18 Tennessee at Georgia Tech  [ESPN]  TENN -12.5, o/u 55.5
     Sat 19:00 ET  Southern at #22 Houston  [ESPN+]  HOU -51.5, o/u 60.5
