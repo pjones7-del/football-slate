@@ -1,4 +1,4 @@
-College Football Week 2 (131 games, pulled Thu 9/10, 6:37 PM ET, lines DraftKings via ESPN)
+College Football Week 2 (131 games, pulled Thu 9/10, 6:50 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week2.html
   web copy written to cfb/index.html
   Thu 9/10: 1 on TV, 0 not
@@ -23,7 +23,7 @@ College Football Week 2 (131 games, pulled Thu 9/10, 6:37 PM ET, lines DraftKing
     Sat 19:00 ET  #18 Tennessee at Georgia Tech  [ESPN]  TENN -12.5, o/u 55.5
     Sat 19:00 ET  Southern at #22 Houston  [ESPN+]  HOU -51.5, o/u 60.5
     Sat 19:30 ET  #1 Ohio State at #4 Texas  [ABC]  TEX -1.5, o/u 49.5
-    Sat 19:30 ET  #13 Texas Tech at Oregon State  [CBS]  TTU -25.5, o/u 53.5
+    Sat 19:30 ET  #13 Texas Tech at Oregon State  [CBS]  TTU -26.5, o/u 53.5
     Sat 19:30 ET  Iowa State at #21 Iowa  [NBC]  IOWA -14.0, o/u 40.5
     Sat 19:30 ET  Louisiana Tech at #8 LSU  [SECN+]  LSU -35.5, o/u 55.5
     Sat 19:45 ET  Charlotte at #9 Ole Miss  [ESPN2]  MISS -45.5, o/u 60.5
@@ -33,7 +33,7 @@ College Football Week 2 (131 games, pulled Thu 9/10, 6:37 PM ET, lines DraftKing
   time TBD: 0
   non-Division I or unknown conference ids: none: Arkansas Baptist, Central Oklahoma, Dickinson (PA), Franklin, Kentucky Christian, Northern Michigan, Thomas More College, Virginia Lynchburg; 104: Bowie State, Lincoln (PA), Virginia State
 
-NFL Week 1 (16 games, pulled Thu 9/10, 6:37 PM ET, lines DraftKings via ESPN)
+NFL Week 1 (16 games, pulled Thu 9/10, 6:50 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week1.html
   web copy written to nfl/index.html
   Wed 9/9: 1 on TV, 0 not
@@ -42,7 +42,7 @@ NFL Week 1 (16 games, pulled Thu 9/10, 6:37 PM ET, lines DraftKings via ESPN)
   Mon 9/14: 1 on TV, 0 not
   every game with its line:
     Wed 20:20 ET  New England Patriots at Seattle Seahawks  [NBC]  SEA -3.0, o/u 44.5
-    Thu 20:35 ET  San Francisco 49ers vs Los Angeles Rams  [Netflix]  LAR -3.5, o/u 48.5
+    Thu 20:35 ET  San Francisco 49ers vs Los Angeles Rams  [Netflix]  LAR -3.5, o/u 47.5
     Sun 13:00 ET  Buffalo Bills at Houston Texans  [CBS]  BUF -1.5, o/u 44.5
     Sun 13:00 ET  Baltimore Ravens at Indianapolis Colts  [CBS]  BAL -3.5, o/u 47.5
     Sun 13:00 ET  Cleveland Browns at Jacksonville Jaguars  [CBS]  JAX -8.5, o/u 39.5
