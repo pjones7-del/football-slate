@@ -1,4 +1,4 @@
-College Football Week 2 (131 games, pulled Thu 9/10, 8:34 PM ET, lines DraftKings via ESPN)
+College Football Week 2 (131 games, pulled Thu 9/10, 8:53 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week2.html
   web copy written to cfb/index.html
   Thu 9/10: 1 on TV, 0 not
@@ -16,9 +16,9 @@ College Football Week 2 (131 games, pulled Thu 9/10, 8:34 PM ET, lines DraftKing
     Sat 12:00 ET  #11 Oklahoma at Michigan  [FOX]  OU -5.5, o/u 43.5
     Sat 12:45 ET  Western Kentucky at #2 Georgia  [SECN]  UGA -40.5, o/u 55.5
     Sat 15:30 ET  #12 Alabama at Kentucky  [ABC]  ALA -10.0, o/u 49.5
-    Sat 15:30 ET  Utah State at #19 Washington  [BTN]  WASH -27.5, o/u 55.5
+    Sat 15:30 ET  Utah State at #19 Washington  [BTN]  WASH -26.5, o/u 55.5
     Sat 15:30 ET  Arizona at #15 BYU  [FOX]  BYU -7.5, o/u 48.5
-    Sat 15:30 ET  Rice at #3 Notre Dame  [NBC]  ND -44.5, o/u 54.5
+    Sat 15:30 ET  Rice at #3 Notre Dame  [NBC]  ND -44.5, o/u 55.5
     Sat 16:00 ET  UC Davis at #17 SMU  [ACCNX]  SMU -25.5, o/u 58.5
     Sat 19:00 ET  #18 Tennessee at Georgia Tech  [ESPN]  TENN -12.5, o/u 55.5
     Sat 19:00 ET  Southern at #22 Houston  [ESPN+]  HOU -51.5, o/u 60.5
@@ -33,7 +33,7 @@ College Football Week 2 (131 games, pulled Thu 9/10, 8:34 PM ET, lines DraftKing
   time TBD: 0
   non-Division I or unknown conference ids: none: Arkansas Baptist, Central Oklahoma, Dickinson (PA), Franklin, Kentucky Christian, Northern Michigan, Thomas More College, Virginia Lynchburg; 104: Bowie State, Lincoln (PA), Virginia State
 
-NFL Week 1 (16 games, pulled Thu 9/10, 8:34 PM ET, lines DraftKings via ESPN)
+NFL Week 1 (16 games, pulled Thu 9/10, 8:53 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week1.html
   web copy written to nfl/index.html
   Wed 9/9: 1 on TV, 0 not
