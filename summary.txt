@@ -1,4 +1,4 @@
-College Football Week 2 (131 games, pulled Sat 9/12, 12:08 PM ET, lines DraftKings via ESPN)
+College Football Week 2 (131 games, pulled Sat 9/12, 12:25 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week2.html
   web copy written to cfb/index.html
   Thu 9/10: 1 on TV, 0 not
@@ -15,7 +15,7 @@ College Football Week 2 (131 games, pulled Sat 9/12, 12:08 PM ET, lines DraftKin
     Sat 12:00 ET  #16 Penn State at Temple  [ESPN2]  PSU -23.5, o/u 50.5
     Sat 12:00 ET  #11 Oklahoma at Michigan  [FOX]  OU -5.5, o/u 43.5
     Sat 12:45 ET  Western Kentucky at #2 Georgia  [SECN]  UGA -40.5, o/u 55.5
-    Sat 15:30 ET  #12 Alabama at Kentucky  [ABC]  ALA -8.5, o/u 47.5
+    Sat 15:30 ET  #12 Alabama at Kentucky  [ABC]  ALA -8.5, o/u 46.5
     Sat 15:30 ET  Utah State at #19 Washington  [BTN]  WASH -28.5, o/u 55.5
     Sat 15:30 ET  Arizona at #15 BYU  [FOX]  BYU -7.0, o/u 48.5
     Sat 15:30 ET  Rice at #3 Notre Dame  [NBC]  ND -44.5, o/u 54.5
@@ -23,7 +23,7 @@ College Football Week 2 (131 games, pulled Sat 9/12, 12:08 PM ET, lines DraftKin
     Sat 19:00 ET  #18 Tennessee at Georgia Tech  [ESPN]  TENN -12.5, o/u 55.5
     Sat 19:00 ET  Southern at #22 Houston  [ESPN+]  HOU -51.5, o/u 61.5
     Sat 19:30 ET  #1 Ohio State at #4 Texas  [ABC]  TEX -1.5, o/u 49.5
-    Sat 19:30 ET  #13 Texas Tech at Oregon State  [CBS]  TTU -25.5, o/u 52.5
+    Sat 19:30 ET  #13 Texas Tech at Oregon State  [CBS]  TTU -25.5, o/u 53.5
     Sat 19:30 ET  Iowa State at #21 Iowa  [NBC]  IOWA -14.0, o/u 41.5
     Sat 19:30 ET  Louisiana Tech at #8 LSU  [SECN+]  LSU -35.5, o/u 55.5
     Sat 19:45 ET  Charlotte at #9 Ole Miss  [ESPN2]  MISS -45.5, o/u 59.5
@@ -33,7 +33,7 @@ College Football Week 2 (131 games, pulled Sat 9/12, 12:08 PM ET, lines DraftKin
   time TBD: 0
   non-Division I or unknown conference ids: none: Arkansas Baptist, Central Oklahoma, Dickinson (PA), Franklin, Kentucky Christian, Northern Michigan, Thomas More College, Virginia Lynchburg; 104: Bowie State, Lincoln (PA), Virginia State
 
-NFL Week 1 (16 games, pulled Sat 9/12, 12:08 PM ET, lines DraftKings via ESPN)
+NFL Week 1 (16 games, pulled Sat 9/12, 12:25 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week1.html
   web copy written to nfl/index.html
   Wed 9/9: 1 on TV, 0 not
@@ -52,7 +52,7 @@ NFL Week 1 (16 games, pulled Sat 9/12, 12:08 PM ET, lines DraftKings via ESPN)
     Sun 13:00 ET  New Orleans Saints at Detroit Lions  [FOX]  DET -7.0, o/u 49.5
     Sun 13:00 ET  Atlanta Falcons at Pittsburgh Steelers  [FOX]  PIT -6.0, o/u 41.5
     Sun 16:25 ET  Arizona Cardinals at Los Angeles Chargers  [CBS]  LAC -9.5, o/u 47.5
-    Sun 16:25 ET  Green Bay Packers at Minnesota Vikings  [CBS]  MIN -1.5, o/u 46.5
+    Sun 16:25 ET  Green Bay Packers at Minnesota Vikings  [CBS]  MIN -2.5, o/u 46.5
     Sun 16:25 ET  Miami Dolphins at Las Vegas Raiders  [FOX]  LV -3.0, o/u 40.5
     Sun 16:25 ET  Washington Commanders at Philadelphia Eagles  [FOX]  PHI -6.0, o/u 44.5
     Sun 20:20 ET  Dallas Cowboys at New York Giants  [NBC]  DAL -3.0, o/u 48.5
