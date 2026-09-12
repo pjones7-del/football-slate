@@ -1,4 +1,4 @@
-College Football Week 2 (131 games, pulled Sat 9/12, 9:49 AM ET, lines DraftKings via ESPN)
+College Football Week 2 (131 games, pulled Sat 9/12, 10:07 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week2.html
   web copy written to cfb/index.html
   Thu 9/10: 1 on TV, 0 not
@@ -18,12 +18,12 @@ College Football Week 2 (131 games, pulled Sat 9/12, 9:49 AM ET, lines DraftKing
     Sat 15:30 ET  #12 Alabama at Kentucky  [ABC]  ALA -10.0, o/u 48.5
     Sat 15:30 ET  Utah State at #19 Washington  [BTN]  WASH -27.5, o/u 55.5
     Sat 15:30 ET  Arizona at #15 BYU  [FOX]  BYU -7.0, o/u 48.5
-    Sat 15:30 ET  Rice at #3 Notre Dame  [NBC]  ND -45.5, o/u 55.5
+    Sat 15:30 ET  Rice at #3 Notre Dame  [NBC]  ND -45.5, o/u 54.5
     Sat 16:00 ET  UC Davis at #17 SMU  [ACCNX]  SMU -30.5, o/u 58.5
-    Sat 19:00 ET  #18 Tennessee at Georgia Tech  [ESPN]  TENN -12.5, o/u 55.5
+    Sat 19:00 ET  #18 Tennessee at Georgia Tech  [ESPN]  TENN -11.5, o/u 55.5
     Sat 19:00 ET  Southern at #22 Houston  [ESPN+]  HOU -51.5, o/u 60.5
     Sat 19:30 ET  #1 Ohio State at #4 Texas  [ABC]  TEX -1.5, o/u 49.5
-    Sat 19:30 ET  #13 Texas Tech at Oregon State  [CBS]  TTU -25.5, o/u 53.5
+    Sat 19:30 ET  #13 Texas Tech at Oregon State  [CBS]  TTU -25.5, o/u 52.5
     Sat 19:30 ET  Iowa State at #21 Iowa  [NBC]  IOWA -14.0, o/u 41.5
     Sat 19:30 ET  Louisiana Tech at #8 LSU  [SECN+]  LSU -35.5, o/u 55.5
     Sat 19:45 ET  Charlotte at #9 Ole Miss  [ESPN2]  MISS -44.5, o/u 59.5
@@ -33,7 +33,7 @@ College Football Week 2 (131 games, pulled Sat 9/12, 9:49 AM ET, lines DraftKing
   time TBD: 0
   non-Division I or unknown conference ids: none: Arkansas Baptist, Central Oklahoma, Dickinson (PA), Franklin, Kentucky Christian, Northern Michigan, Thomas More College, Virginia Lynchburg; 104: Bowie State, Lincoln (PA), Virginia State
 
-NFL Week 1 (16 games, pulled Sat 9/12, 9:49 AM ET, lines DraftKings via ESPN)
+NFL Week 1 (16 games, pulled Sat 9/12, 10:07 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week1.html
   web copy written to nfl/index.html
   Wed 9/9: 1 on TV, 0 not
