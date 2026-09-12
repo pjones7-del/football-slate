@@ -1,4 +1,4 @@
-College Football Week 2 (131 games, pulled Sat 9/12, 7:23 PM ET, lines DraftKings via ESPN)
+College Football Week 2 (131 games, pulled Sat 9/12, 7:35 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week2.html
   web copy written to cfb/index.html
   Thu 9/10: 1 on TV, 0 not
@@ -31,4 +31,4 @@ College Football Week 2 (131 games, pulled Sat 9/12, 7:23 PM ET, lines DraftKing
     Sat 23:00 ET  Louisiana at #14 USC  [BTN]  USC -30.5, o/u 58.5
   TV games without a line: 0
   time TBD: 0
-  non-Division I or unknown conference ids: 104: Bowie State, Lincoln (PA), Virginia State; none: Arkansas Baptist, Central Oklahoma, Dickinson (PA), Franklin, Kentucky Christian, Northern Michigan, Thomas More College, Virginia Lynchburg
+  non-Division I or unknown conference ids: none: Arkansas Baptist, Central Oklahoma, Dickinson (PA), Franklin, Kentucky Christian, Northern Michigan, Thomas More College, Virginia Lynchburg; 104: Bowie State, Lincoln (PA), Virginia State
