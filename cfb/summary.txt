@@ -1,4 +1,4 @@
-College Football Week 2 (131 games, pulled Sat 9/12, 11:36 AM ET, lines DraftKings via ESPN)
+College Football Week 2 (131 games, pulled Sat 9/12, 11:49 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week2.html
   web copy written to cfb/index.html
   Thu 9/10: 1 on TV, 0 not
@@ -12,11 +12,11 @@ College Football Week 2 (131 games, pulled Sat 9/12, 11:36 AM ET, lines DraftKin
     Sat 12:00 ET  Arizona State at #10 Texas A&M  [ABC]  TA&M -14.5, o/u 51.5
     Sat 12:00 ET  Howard at #5 Indiana  [BTN]  IU -57.5, o/u 66.5
     Sat 12:00 ET  #6 Oregon at Oklahoma State  [ESPN]  ORE -23.5, o/u 54.5
-    Sat 12:00 ET  #16 Penn State at Temple  [ESPN2]  PSU -24.5, o/u 50.5
+    Sat 12:00 ET  #16 Penn State at Temple  [ESPN2]  PSU -23.5, o/u 50.5
     Sat 12:00 ET  #11 Oklahoma at Michigan  [FOX]  OU -5.5, o/u 43.5
     Sat 12:45 ET  Western Kentucky at #2 Georgia  [SECN]  UGA -40.5, o/u 55.5
-    Sat 15:30 ET  #12 Alabama at Kentucky  [ABC]  ALA -8.5, o/u 47.5
-    Sat 15:30 ET  Utah State at #19 Washington  [BTN]  WASH -27.5, o/u 55.5
+    Sat 15:30 ET  #12 Alabama at Kentucky  [ABC]  ALA -9.5, o/u 47.5
+    Sat 15:30 ET  Utah State at #19 Washington  [BTN]  WASH -28.5, o/u 55.5
     Sat 15:30 ET  Arizona at #15 BYU  [FOX]  BYU -7.0, o/u 48.5
     Sat 15:30 ET  Rice at #3 Notre Dame  [NBC]  ND -45.5, o/u 54.5
     Sat 16:00 ET  UC Davis at #17 SMU  [ACCNX]  SMU -32.5, o/u 58.5
