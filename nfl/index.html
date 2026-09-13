@@ -118,6 +118,13 @@
   .seg.days button small{display:block;font-family:var(--body);font-weight:500;font-size:10px;letter-spacing:.02em;text-transform:none;opacity:.8;margin:0}
   .seg.days button.today{box-shadow:inset 0 -3px 0 var(--accent)}
   .row.two{margin-top:8px}
+  .stack{display:flex;flex-direction:column;gap:4px;align-items:stretch}
+  .stack .seg{justify-content:center}
+  .stack .seg button{flex:1}
+  #mktSeg button{font-size:12px;padding:3px 8px}
+  #mktSeg.hot{border-color:var(--accent)}
+  #mktSeg.hot button{background:var(--accent);color:var(--accent-ink)}
+  #mktSeg.hot button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
   .row.views{margin-top:8px;gap:5px}
 
   /* ---- chips and panels (package, conferences, teams, market, saved views) ---- */
@@ -382,9 +389,12 @@
   <div class="bar">
     <div class="row">
       <div class="brand"><span id="brand">Football Slate</span> <small id="sub"></small></div>
-      <div class="seg" role="group" aria-label="League" id="leagueSeg">
-        <button type="button" data-key="league" data-v="cfb">College</button>
-        <button type="button" data-key="league" data-v="nfl">NFL</button>
+      <div class="stack">
+        <div class="seg" role="group" aria-label="League" id="leagueSeg">
+          <button type="button" data-key="league" data-v="cfb">College</button>
+          <button type="button" data-key="league" data-v="nfl">NFL</button>
+        </div>
+        <div class="seg" id="mktSeg" hidden><button type="button" id="mktBtn" aria-pressed="false" aria-controls="mpanel" title="Your market: which Sunday afternoon CBS and FOX games your own stations carry">Set market</button></div>
       </div>
       <div class="seg days" id="days" role="group" aria-label="Day"></div>
     </div>
@@ -404,7 +414,6 @@
       <div class="seg"><button type="button" id="pkgBtn" aria-pressed="false" aria-controls="panel">Package<small id="pkgN"></small></button></div>
       <div class="seg"><button type="button" id="confBtn" aria-pressed="false" aria-controls="cpanel"><span id="confLbl">Conf</span><small id="confN"></small></button></div>
       <div class="seg"><button type="button" id="teamBtn" aria-pressed="false" aria-controls="tpanel">Teams<small id="teamN"></small></button></div>
-      <div class="seg" id="mktSeg" hidden><button type="button" id="mktBtn" aria-pressed="false" aria-controls="mpanel" title="Which Sunday CBS and FOX game is yours">Market<small id="mktN"></small></button></div>
       <div class="seg"><button type="button" id="printBtn" title="One landscape page of the day on screen, as filtered">Print</button></div>
       <div class="seg"><button type="button" id="moreBtn" aria-pressed="false" aria-controls="more" title="Time zone, style, theme, save a view">More</button></div>
     </div>
@@ -431,10 +440,6 @@
       <div class="chips" id="presets"></div>
       <h2>Channels <span>everything is on until you turn a channel or package off; off = moves to the bottom</span></h2>
       <div class="chips" id="chans"></div>
-      <div id="ticketBox" hidden>
-        <h2>Sunday afternoon games <span>your CBS and FOX stations carry one game per slot (set your Market to see which); the rest of those games need NFL Sunday Ticket</span></h2>
-        <div class="chips" id="ticket"></div>
-      </div>
     </div>
     <div class="panel" id="cpanel" hidden>
       <h2 id="chead">Conferences <span>tap to show only games involving these; none on = everything; an FCS pick shows even with FBS on</span></h2>
@@ -442,7 +447,7 @@
       <div class="chips fcs" id="fconfs" hidden></div>
     </div>
     <div class="panel" id="mpanel" hidden>
-      <h2>Your market <span>Sunday afternoon games on CBS and FOX are regional: each station carries one game per slot, and the networks decide which every week</span></h2>
+      <h2>Your market <span>Sunday afternoon CBS and FOX games are regional, one per slot per station; your ZIP tells the board which ones your stations carry</span></h2>
       <div class="chips">
         <input type="text" id="mzip" inputmode="numeric" maxlength="5" placeholder="ZIP code" aria-label="ZIP code" autocomplete="postal-code">
         <button type="button" class="chip" id="mset">Set</button>
@@ -500,7 +505,7 @@
 const SLATE = {
   "v": 2,
   "default": "nfl",
-  "pulled": "Sun 9/13, 2:54 AM ET",
+  "pulled": "Sun 9/13, 3:08 AM ET",
   "lines": "DraftKings via ESPN",
   "confIds": {"8":"SEC","5":"B1G","1":"ACC","4":"B12","151":"AAC","9":"PAC","17":"MWC","15":"MAC","37":"SBC","12":"CUSA","18":"IND","20":"BSKY","179":"BSO","26":"BSO","40":"BSO","48":"CAA","32":"FCSI","22":"IVY","24":"MEAC","21":"MVFC","25":"NEC","27":"PAT","28":"PFL","29":"SOCON","30":"SLC","31":"SWAC","177":"UAC"},
   "nflDiv": {"BUF":"AFCE","MIA":"AFCE","NE":"AFCE","NYJ":"AFCE","BAL":"AFCN","CIN":"AFCN","CLE":"AFCN","PIT":"AFCN","HOU":"AFCS","IND":"AFCS","JAX":"AFCS","TEN":"AFCS","DEN":"AFCW","KC":"AFCW","LV":"AFCW","LAC":"AFCW","DAL":"NFCE","NYG":"NFCE","PHI":"NFCE","WSH":"NFCE","CHI":"NFCN","DET":"NFCN","GB":"NFCN","MIN":"NFCN","ATL":"NFCS","CAR":"NFCS","NO":"NFCS","TB":"NFCS","ARI":"NFCW","LAR":"NFCW","SF":"NFCW","SEA":"NFCW"},
@@ -653,7 +658,7 @@ const SLATE = {
           {"id":"401864500","kick":"2026-09-13T02:30Z","tbd":false,"away":{"id":"147","ab":"MTST","name":"Montana State","short":"Montana State","color":"00205c","alt":"bc955c","logo":"147","rank":0,"rec":"3-0","conf":"BSKY","score":20,"winner":true,"line":[10,7,0,3]},"home":{"id":"2440","ab":"NEV","name":"Nevada","short":"Nevada","color":"041e42","alt":"8a8d8f","logo":"2440","rank":0,"rec":"1-1","conf":"MWC","score":7,"winner":false,"line":[0,0,0,7]},"neutral":false,"venue":"Reno, NV","carriers":["CW"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":2,"close":[4.5,51.5]},
           {"id":"401856670","kick":"2026-09-13T02:30Z","tbd":false,"away":{"id":"8","ab":"ARK","name":"Arkansas","short":"Arkansas","color":"a32136","alt":"ffffff","logo":"8","rank":0,"rec":"1-1","conf":"SEC","score":10,"winner":false,"line":[3,0,0,7]},"home":{"id":"254","ab":"UTAH","name":"Utah","short":"Utah","color":"be0000","alt":"ffffff","logo":"254","rank":20,"rec":"2-0","conf":"B12","score":43,"winner":true,"line":[7,22,7,7]},"neutral":false,"venue":"Salt Lake City, UT","carriers":["ESPN"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":2,"close":[-13.5,55.5]},
           {"id":"401858445","kick":"2026-09-13T03:00Z","tbd":false,"away":{"id":"309","ab":"UL","name":"Louisiana","short":"Louisiana","color":"ce181e","alt":"000000","logo":"309","rank":0,"rec":"1-1","conf":"SBC","score":30,"winner":false,"line":[3,7,7,13]},"home":{"id":"30","ab":"USC","name":"USC","short":"USC","color":"9d2235","alt":"ffc72c","logo":"30","rank":14,"rec":"3-0","conf":"B1G","score":49,"winner":true,"line":[7,21,7,14]},"neutral":false,"venue":"Los Angeles, CA","carriers":["BTN"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":2,"close":[-30.5,58.5]},
-          {"id":"401864578","kick":"2026-09-13T03:59Z","tbd":false,"away":{"id":"166","ab":"NMSU","name":"New Mexico State","short":"New Mexico State","color":"7e141b","alt":"231f20","logo":"166","rank":0,"rec":"1-1","conf":"CUSA","score":19,"winner":false,"line":[0,13,6,0]},"home":{"id":"62","ab":"HAW","name":"Hawaii","short":"Hawaii","color":"005737","alt":"000000","logo":"62","rank":0,"rec":"0-2","conf":"MWC","score":22,"winner":false,"line":[9,10,3,0]},"neutral":false,"venue":"Honolulu, HI","carriers":["MW+"],"tv":false,"spread":null,"ou":null,"provider":"","state":"in","detail":"9:10 - 4th","period":4,"clock":"9:10","sit":{"poss":"62","dd":"3rd & 5","at":"NMSU 24","yl":76,"rz":false,"ht":0,"at_":2,"last":"(09:17) Shotgun #1 D.Rice rush middle for 5 yards gain to the NMSU24 (#98 J.Gwan)"},"week":2,"close":[-7.5,50.5]}
+          {"id":"401864578","kick":"2026-09-13T03:59Z","tbd":false,"away":{"id":"166","ab":"NMSU","name":"New Mexico State","short":"New Mexico State","color":"7e141b","alt":"231f20","logo":"166","rank":0,"rec":"1-1","conf":"CUSA","score":19,"winner":false,"line":[0,13,6,0]},"home":{"id":"62","ab":"HAW","name":"Hawaii","short":"Hawaii","color":"005737","alt":"000000","logo":"62","rank":0,"rec":"0-2","conf":"MWC","score":29,"winner":false,"line":[9,10,3,7]},"neutral":false,"venue":"Honolulu, HI","carriers":["MW+"],"tv":false,"spread":null,"ou":null,"provider":"","state":"in","detail":"3:58 - 4th","period":4,"clock":"3:58","sit":{"poss":"62","dd":"1st & 10","at":"HAW 39","yl":39,"rz":false,"ht":0,"at_":1,"last":"(04:03) No Huddle-Shotgun #3 T.Hedden pass intercepted by #11 J.Otis at Hawaii23 #11 J.Otis return 16 yards to the Hawaii39 (#15 J.Thomas)"},"week":2,"close":[-7.5,50.5]}
         ]}
       ]
     },
@@ -663,9 +668,9 @@ const SLATE = {
       "main": "2026-09-13",
       "mainLabel": "Sun, Sep 13",
       "logo": "/i/teamlogos/nfl/500/{lg}.png",
-      "networks": ["CBS","FOX","NBC","ESPN"],
-      "order": ["CBS","FOX","NBC","ESPN","Netflix","ABC"],
-      "packages": {"YouTube TV":["CBS","FOX","NBC","ABC","ESPN","ESPN2","NFL Network"],"Hulu + Live TV":["CBS","FOX","NBC","ABC","ESPN","ESPN2","NFL Network","ESPN+"],"Fubo":["CBS","FOX","NBC","ABC","ESPN","ESPN2","NFL Network"],"Cable / satellite":["CBS","FOX","NBC","ABC","ESPN","ESPN2","NFL Network"],"Antenna":["CBS","FOX","NBC","ABC"],"ESPN Unlimited":["ESPN","ESPN2","ESPN+"],"Prime Video":["Prime Video"],"Peacock":["Peacock","NBC"],"Paramount+":["CBS"],"Netflix":["Netflix"],"Free apps":["YouTube"]},
+      "networks": ["CBS","FOX","NBC","ABC","ESPN"],
+      "order": ["CBS","FOX","NBC","ABC","ESPN","Netflix"],
+      "packages": {"Antenna":["CBS","FOX","NBC","ABC"],"Cable or live TV":["CBS","FOX","NBC","ABC","ESPN","ESPN2","NFL Network"],"ESPN Unlimited":["ESPN","ESPN2","ESPN+"],"Peacock":["Peacock","NBC"],"Paramount+":["Paramount+","CBS"],"Prime Video":["Prime Video"],"Netflix":["Netflix"],"YouTube":["YouTube"],"NFL+":["NFL+","NFL Network"]},
       "have": ["ABC","CBS","ESPN","FOX","NBC","Netflix"],
       "confs": [["AFCE","AFC East","afc"],["AFCN","AFC North","afc"],["AFCS","AFC South","afc"],["AFCW","AFC West","afc"],["NFCE","NFC East","nfc"],["NFCN","NFC North","nfc"],["NFCS","NFC South","nfc"],["NFCW","NFC West","nfc"]],
       "days": [
@@ -732,7 +737,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* ============================ state ============================ */
   const LG = SLATE.leagues || {};
   const has = lg => !!(LG[lg] && LG[lg].days && LG[lg].days.length);
-  const fresh = () => ({ on: new Set(), off: new Set(), confs: new Set(), show: "fbs", mine: false, now: false, stars: new Set(), views: [], mkt: "", zip: "", ticket: false });
+  const fresh = () => ({ on: new Set(), off: new Set(), confs: new Set(), show: "fbs", mine: false, now: false, stars: new Set(), views: [], mkt: "", zip: "" });
   const S = { league: "cfb", day: "", tz: "AZ", view: "timeline", open: "", odds: false, foot: "on", more: false, fold: {}, per: { cfb: fresh(), nfl: fresh() } };
   /* the page opens on its own league (cfb/ or nfl/), a ?league= or #nfl in the address wins; the switch inside is not remembered */
   const want = (new URLSearchParams(location.search).get("league") || location.hash.replace("#", "") || SLATE.default || "cfb").toLowerCase();
@@ -792,7 +797,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (["broadcast", "app", "dense"].includes(saved.skin)) document.documentElement.setAttribute("data-skin", saved.skin);
       ["cfb", "nfl"].forEach(lg => { const o = saved[lg]; if (!o) return; const p = S.per[lg];
         applySnapshot(lg, Object.assign({}, o, { tz: S.tz, view: S.view }));
-        p.now = !!o.now; p.stars = new Set((o.stars || []).filter(n => typeof n === "string")); if (typeof o.mkt === "string") p.mkt = o.mkt; if (/^\d{5}$/.test(o.zip || "")) p.zip = o.zip; p.ticket = !!o.ticket;
+        p.now = !!o.now; p.stars = new Set((o.stars || []).filter(n => typeof n === "string")); if (typeof o.mkt === "string") p.mkt = o.mkt; if (/^\d{5}$/.test(o.zip || "")) p.zip = o.zip;
         p.views = (o.views || []).filter(v => v && typeof v.name === "string").slice(0, MAX_VIEWS); });
     }
   } catch (e) {}
@@ -800,7 +805,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function remember(){
     try {
       const rec = { v: 3, tz: S.tz, view: S.view, odds: S.odds, foot: S.foot, more: S.more, theme: document.documentElement.getAttribute("data-theme") || "", skin: document.documentElement.getAttribute("data-skin") || "broadcast" };
-      ["cfb", "nfl"].forEach(lg => { const p = S.per[lg]; rec[lg] = { on: [...p.on], off: [...p.off], confs: confOrder(lg).filter(c => p.confs.has(c)), show: p.show, mine: p.mine, now: p.now, stars: [...p.stars], views: p.views, mkt: p.mkt, zip: p.zip, ticket: p.ticket }; });
+      ["cfb", "nfl"].forEach(lg => { const p = S.per[lg]; rec[lg] = { on: [...p.on], off: [...p.off], confs: confOrder(lg).filter(c => p.confs.has(c)), show: p.show, mine: p.mine, now: p.now, stars: [...p.stars], views: p.views, mkt: p.mkt, zip: p.zip }; });
       localStorage.setItem(KEY, JSON.stringify(rec));
     } catch (e) {}
   }
@@ -855,9 +860,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const disp = g.carriers.find(n => HAVE.has(n)) || "";
     const reg = isReg(g), mk = marketTeams(P().mkt), known = reg && LISTINGS.map && LISTINGS.key === listingsKey();
     const loc = known ? !!(LISTINGS.map[g.id] && LISTINGS.map[g.id].net === g.carriers[0]) : reg && (mk.includes(g.home.ab) || mk.includes(g.away.ab));
-    /* a regional game your stations aren't carrying is only watchable with Sunday Ticket */
-    const needTicket = !!(known && !loc && !S.per.nfl.ticket);
-    return Object.assign({}, g, { disp, ok: !!disp && !needTicket, reg, loc, needTicket, fav: starred(g) });
+    return Object.assign({}, g, { disp, ok: !!disp, reg, loc, fav: starred(g) });
   }
   /* FBS is the default level, so it steps aside when a conference pick or "only my teams" narrows the board on purpose
      (an FCS conference or a starred FCS team would otherwise show nothing). Top 25 is an explicit choice and stays. */
@@ -956,7 +959,6 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (st.sub) stat.appendChild(el("div", "sub", st.sub));
     if (st.sub2) stat.appendChild(el("div", "sub2", st.sub2));
     if (st.phase === "pre" && g.loc) stat.appendChild(el("div", "sub2 loc", "on your " + g.carriers[0] + " station"));
-    else if (g.needTicket) stat.appendChild(el("div", "sub2", "needs Sunday Ticket"));
     else if (st.phase === "pre" && g.reg) stat.appendChild(el("div", "sub2", "regional"));
     c.appendChild(stat);
     const foot = el("div", "foot");
@@ -994,7 +996,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     sec.appendChild(grid);
     into.appendChild(sec);
   }
-  const byKickoff = games => { const m = new Map(); games.slice().sort((a, b) => a.kickMin - b.kickMin || (b.tv - a.tv) || chanRank(a.disp || a.carriers[0]) - chanRank(b.disp || b.carriers[0])).forEach(g => { const k = g.tbd ? "TBD" : fmtTime(g.kick); if (!m.has(k)) m.set(k, []); m.get(k).push(g); }); return m; };
+  const byKickoff = games => { const m = new Map(); games.slice().sort((a, b) => a.kickMin - b.kickMin || (b.loc - a.loc) || (b.tv - a.tv) || chanRank(a.disp || a.carriers[0]) - chanRank(b.disp || b.carriers[0])).forEach(g => { const k = g.tbd ? "TBD" : fmtTime(g.kick); if (!m.has(k)) m.set(k, []); m.get(k).push(g); }); return m; };
   function renderCards(wrap, games){
     const live = games.filter(g => g.state === "in"), pre = games.filter(g => g.state !== "in" && g.state !== "post"), done = games.filter(g => g.state === "post");
     if (live.length) section(wrap, "live", "Live", live.sort((a, b) => a.kickMin - b.kickMin), { cls: "live" });
@@ -1100,7 +1102,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const byNet = {};
     list.forEach(g => { const n = g.disp || NONE; (byNet[n] = byNet[n] || []).push(g); });
     Object.keys(byNet).sort((a, b) => chanRank(a) - chanRank(b) || a.localeCompare(b)).forEach(net => {
-      const gs = byNet[net].sort((a, b) => a.kickMin - b.kickMin);
+      const gs = byNet[net].sort((a, b) => a.kickMin - b.kickMin || (b.loc - a.loc) || (b.fav - a.fav));   /* your station's game takes the top lane */
       const lanes = pack(gs, isTV(net), end);
       const row = el("div", "trow");
       row.appendChild(netLabel(net, lanes.length > 1 ? gs.length : 0));
@@ -1167,7 +1169,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     else if (!NFL() && p.show === "fbs" && !picked.length && !(p.mine && p.stars.size)) ph.appendChild(el("span", null, "FBS only"));
     if (p.mine && p.stars.size) ph.appendChild(el("span", null, "My teams only"));
     if (p.now) ph.appendChild(el("span", null, "In progress as of " + nowText()));
-    if (NFL()) ph.appendChild(el("span", null, (p.mkt ? "Market: " + marketLabel(p.mkt) + (p.ticket ? ", Sunday Ticket" : "") + ". " : "") + "LOCAL = on your CBS or FOX station, REG = regional game carried elsewhere"));
+    if (NFL()) ph.appendChild(el("span", null, (p.mkt ? "Market: " + marketLabel(p.mkt) + ". " : "") + "LOCAL = on your CBS or FOX station, REG = regional game carried elsewhere"));
     ph.appendChild(el("span", null, "Lines " + SLATE.lines + ", pulled " + SLATE.pulled));
     sheet.appendChild(ph);
     const grid = el("div", "pgrid");
@@ -1177,7 +1179,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const cols = (end - start) / 30;
     const byNet = {}; games.forEach(g => (byNet[g.disp] = byNet[g.disp] || []).push(g));
     const nets = Object.keys(byNet).sort((a, b) => chanRank(a) - chanRank(b) || a.localeCompare(b));
-    const laned = nets.map(net => [net, pack(byNet[net].sort((a, b) => a.kickMin - b.kickMin), isTV(net), end)]);
+    const laned = nets.map(net => [net, pack(byNet[net].sort((a, b) => a.kickMin - b.kickMin || (b.loc - a.loc)), isTV(net), end)]);
     const lanesN = laned.reduce((n, x) => n + x[1].length, 0);
     const LABEL = 58, COLW = Math.floor((1000 - 20 - LABEL) / cols), LANE = Math.max(12, Math.min(22, Math.floor(708 / Math.max(lanesN, 1))));
     sheet.style.setProperty("--pcol", COLW + "px"); sheet.style.setProperty("--plabel", LABEL + "px");
@@ -1234,14 +1236,15 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     presetsEl.innerHTML = ""; chansEl.innerHTML = "";
     groups = { tv: chs.filter(isTV), st: chs.filter(n => !isTV(n)), all: chs };
     [["All TV", "tv"], ["All streaming", "st"], ["Everything", "all"]].forEach(([label, k]) => {
+      if (groups[k].length < 2 || (k !== "all" && groups[k].length === chs.length)) return;   /* a group of one, or the whole list, is just the channel chips again */
       const c = el("button", "chip grp", label); c.type = "button"; c.dataset.grp = k;
       c.addEventListener("click", () => setChans(groups[k], !groups[k].every(n => HAVE.has(n))));
       presetsEl.appendChild(c);
     });
     Object.keys(L().packages || {}).forEach(name => {
       const list = presetChans(name);
+      if (!list.length) return;   /* a package with nothing on it this week (Netflix most weeks, Prime Video on a Sunday) stays out of the way */
       const c = el("button", "chip", name); c.type = "button"; c.dataset.preset = name;
-      if (!list.length) c.disabled = true;
       c.addEventListener("click", () => setChans(list, !list.every(n => HAVE.has(n))));
       presetsEl.appendChild(c);
     });
@@ -1271,12 +1274,6 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       fcsChip.addEventListener("click", () => { fcsOpen = !fcsOpen; refreshConfs(); }); confsEl.appendChild(fcsChip); }
     if (NFL() && row2.length) groupChip("NFC", row2, fconfsEl);
     row2.forEach(c => confChip(c, fconfsEl));
-    const tbox = document.getElementById("ticketBox"), tchips = document.getElementById("ticket");
-    tbox.hidden = !NFL(); tchips.innerHTML = "";
-    if (NFL()) [["Local stations only", false], ["NFL Sunday Ticket, every game", true]].forEach(([label, on]) => {
-      const c = el("button", "chip", label); c.type = "button"; c.dataset.ticket = on ? "1" : "0";
-      c.title = on ? "You have Sunday Ticket (or NFL+ Premium): every Sunday afternoon game counts as yours" : "Only the games your own CBS and FOX stations carry count as yours";
-      c.addEventListener("click", () => { S.per.nfl.ticket = on; remember(); render(); }); tchips.appendChild(c); });
     document.getElementById("confLbl").textContent = NFL() ? "Div" : "Conf";
     document.getElementById("chead").firstChild.textContent = NFL() ? "Divisions " : "Conferences ";
     document.querySelector("#chead span").textContent = NFL() ? "tap to show only games involving these; none on = everything" : "tap to show only games involving these; none on = everything; an FCS pick shows even with FBS on";
@@ -1288,7 +1285,6 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     presetsEl.querySelectorAll("[data-preset]").forEach(c => { const l = presetChans(c.dataset.preset); c.setAttribute("aria-pressed", String(l.length > 0 && l.every(n => HAVE.has(n)))); });
     presetsEl.querySelectorAll("[data-grp]").forEach(c => { const l = groups[c.dataset.grp]; c.setAttribute("aria-pressed", String(l.length > 0 && l.every(n => HAVE.has(n)))); });
     chansEl.querySelectorAll("[data-chan]").forEach(c => c.setAttribute("aria-pressed", String(HAVE.has(c.dataset.chan))));
-    document.querySelectorAll("#ticket [data-ticket]").forEach(c => c.setAttribute("aria-pressed", String((c.dataset.ticket === "1") === !!S.per.nfl.ticket)));
     const chs = groups.all;
     document.getElementById("pkgN").textContent = chs.filter(n => HAVE.has(n)).length + "/" + chs.length;
   }
@@ -1424,16 +1420,17 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function refreshMarket(){
     if (!NFL()) return;
     const mkt = S.per.nfl.mkt, zip = listingsZip(), known = LISTINGS.map && LISTINGS.key === listingsKey();
-    document.getElementById("mktN").textContent = mkt ? marketTeams(mkt).join("/") : "";
+    const seg = document.getElementById("mktSeg"); seg.classList.toggle("hot", !mkt);
+    mktBtn.textContent = mkt ? "Market " + (S.per.nfl.zip || marketTeams(mkt).join("/")) : "Set market";
     if (S.per.nfl.zip && !mzip.value) mzip.value = S.per.nfl.zip;
     mhelp.innerHTML = "";
     const add = (txt, cls) => mhelp.appendChild(el("span", cls, txt));
-    if (!mkt){ add("No market set. Type your ZIP and the board marks the Sunday afternoon CBS and FOX games your own stations carry as LOCAL; the rest of those regional games show as REG. Prime time, Thursday, Monday and streaming-only games are the same everywhere. The ZIP stays on this device and is only sent to the TV listings service for the lookup."); return; }
+    if (!mkt){ add("Type your ZIP (or use your location) and the Sunday afternoon CBS and FOX games your own stations carry get a LOCAL tag and the top lane of their channel row; the rest of those regional games show REG. Nothing is hidden either way. Prime time, Thursday, Monday and streaming games are the same everywhere. The ZIP stays on this device and is only sent to the TV listings service for the lookup."); return; }
     if (known && LISTINGS.stations.length){
       add("Your stations " + dayLabel(S.day).long + " (TV listings for ZIP " + zip + "): ", "loc");
       const byNet = {}; LISTINGS.stations.forEach(s => (byNet[s.net + " " + s.call] = byNet[s.net + " " + s.call] || []).push(s.g));
       Object.keys(byNet).forEach(k => add(k + ": " + byNet[k].map(g => g.away.short + " at " + g.home.short + " " + fmtClock(g.kickMin + tzOffset(S.day))).join(", ") + ". "));
-      add("Those show as LOCAL. The other Sunday afternoon CBS and FOX games aren't on your stations, so they sit under Not in your package unless Sunday Ticket is on in the Package panel. Listings can change late in the week; this refreshes every half hour. ");
+      add("Those are tagged LOCAL and sit in the top lane of their row; the other Sunday afternoon CBS and FOX games (REG) are the ones your stations aren't carrying. Listings can change late in the week; this refreshes every half hour. ");
     } else if (known){
       add("The TV listings for ZIP " + zip + " show no NFL game on a CBS or FOX station " + dayLabel(S.day).long + ", so only " + marketLabel(mkt) + "'s game is marked LOCAL. ", "loc");
     } else if (LISTINGS.failed && LISTINGS.key === listingsKey()){
@@ -1535,7 +1532,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       const tbd = main.filter(g => g.tbd);
       if (tbd.length) section(wrap, "tbd", "Time TBD", tbd, { fold: true });
     } else renderCards(wrap, main);
-    if (days.length) section(wrap, "no", "Not in your package", byKickoff(no).size ? [...byKickoff(no).values()].flat() : [], { fold: true, dim: true, emptyText: P().now || P().mine ? "Nothing else matches." : "Everything " + dayLabel(S.day).long + " is on a channel you have." });
+    if (days.length && no.length) section(wrap, "no", "Not in your package", [...byKickoff(no).values()].flat(), { fold: true, dim: true });
     if (sameView){ wrap.scrollLeft = keepX; wrap.scrollTop = keepY; }
     const xr = wrap.querySelector(".xrow");
     if (xr){
@@ -1665,7 +1662,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       "Tap a game to open its card (score by quarter, timeouts, last play), tap the card for ESPN's gamecast, tap a channel logo to open that network. Live games show possession (ball), down and distance, red for the red zone; " +
       "the closing line sits at the far right and Live odds adds DraftKings' in-game line. Finals are hatched. Package sets which channels count as yours; everything else, plus games with no broadcast, sits greyed at the bottom. " +
       "On now keeps just the games in progress. Teams stars your teams (gold frame) and can limit the board to them. " +
-      (NFL() ? "Sunday afternoon CBS and FOX games are regional (REG); set your Market (ZIP) and the games your own CBS and FOX stations carry show as LOCAL, from the TV listings, while the rest drop to Not in your package unless Sunday Ticket is on in Package. " : "") +
+      (NFL() ? "Sunday afternoon CBS and FOX games are regional (REG); set your Market (ZIP) and the games your own CBS and FOX stations carry are tagged LOCAL, from the TV listings, and take the top lane of their row. " : "") +
       "Each league keeps its own package, " + (NFL() ? "divisions" : "conferences") + ", filters, teams and saved views on this device; time zone, style and theme are shared.";
     fxEl.classList.toggle("off", S.foot === "off");
   }
