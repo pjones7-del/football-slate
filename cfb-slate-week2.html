@@ -233,7 +233,7 @@
   .lightpref .net .nl img.lt{display:block}
   .net .nl small{position:absolute;bottom:2px;left:0;right:0;text-align:center;font-family:var(--body);font-weight:500;font-size:10px;color:var(--dim)}
   .track{position:relative;flex:none;background:repeating-linear-gradient(to right,var(--line2) 0 1px,transparent 1px calc(var(--col)*2)),repeating-linear-gradient(to right,var(--line) 0 1px,transparent 1px var(--col))}
-  .gbar{position:absolute;top:4px;height:calc(var(--lane) - 8px);border-radius:calc(var(--r) * .7);box-shadow:var(--shadow);clip-path:inset(0 round calc(var(--r) * .7));cursor:pointer;background:linear-gradient(to bottom,var(--away) 0 50%,var(--home) 50% 100%)}
+  .gbar{position:absolute;top:4px;height:calc(var(--lane) - 8px);border-radius:calc(var(--r) * .7);box-shadow:var(--shadow);clip-path:inset(0 round calc(var(--r) * .7));cursor:pointer;background:linear-gradient(to bottom,var(--away) 0 50%,var(--home) 50% 100%);display:flex;align-items:stretch}
   .gbar.fav{box-shadow:inset 0 0 0 2px var(--accent)}
   .gbar.open{box-shadow:inset 0 0 0 3px var(--ink)}
   .gbar.loc::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--loc);z-index:2}
@@ -256,16 +256,17 @@
   .lightpref .gbar.final .tb .pl,.lightpref .gbar.final .tb .st{opacity:.7}
   .lightpref .gbar .cl{color:var(--ink);text-shadow:none}
   .gbar.live .tb .st .big::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--live);margin-right:5px;box-shadow:0 0 0 1px rgba(255,255,255,.5);animation:pulse 1.6s ease-in-out infinite}
-  .cl{position:absolute;right:10px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:2px;font-family:var(--cond);font-weight:600;font-size:12px;line-height:1;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.75);white-space:nowrap;pointer-events:none}
+  .cl{position:sticky;right:10px;margin-left:auto;padding-left:8px;flex:none;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:2px;font-family:var(--cond);font-weight:600;font-size:12px;line-height:1;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.75);white-space:nowrap;pointer-events:none}
   .cl b{font-weight:700;font-size:13px}
   .cl small{font-size:10px;opacity:.85}
   .gbar.short .cl{display:none}
+  .tb .pl .lg{width:18px;height:18px;flex:none;display:flex;align-items:center;justify-content:center}
   .tb .pl img{width:18px;height:18px;object-fit:contain;flex:none;filter:drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px rgba(255,255,255,.85))}
+  .tb .pl .nm{min-width:var(--abw,0);white-space:nowrap}
   .tb{position:sticky;left:var(--label);display:grid;grid-template-columns:auto auto;align-items:stretch;height:100%;width:max-content;max-width:100%}
   .tb .col{display:grid;grid-template-rows:1fr 1fr;height:100%}
   .tb .pl{display:flex;align-items:center;gap:5px;padding:0 6px 0 7px;font-family:var(--cond);font-weight:700;font-size:15px;letter-spacing:.02em;white-space:nowrap}
-  .gbar.loc .tb .pl{padding-left:11px}
-  .tb .pl .sc{font-variant-numeric:tabular-nums;margin-left:auto;padding-left:8px;font-size:16px;min-width:22px;text-align:right}
+  .tb .pl .sc{font-variant-numeric:tabular-nums;margin-left:auto;padding-left:8px;font-size:16px;min-width:22px;box-sizing:content-box;width:var(--scw,22px);text-align:right}
   .tb .pl .sc.spread{font-size:12px;font-weight:600;opacity:.9}
   .tb .pl .sc.dim{opacity:.55}
   .tb .pl .p{width:12px;height:12px;flex:none;visibility:hidden}
@@ -505,7 +506,7 @@
 const SLATE = {
   "v": 2,
   "default": "cfb",
-  "pulled": "Sun 9/13, 2:41 PM ET",
+  "pulled": "Sun 9/13, 2:26 PM ET",
   "lines": "DraftKings via ESPN",
   "confIds": {"8":"SEC","5":"B1G","1":"ACC","4":"B12","151":"AAC","9":"PAC","17":"MWC","15":"MAC","37":"SBC","12":"CUSA","18":"IND","20":"BSKY","179":"BSO","26":"BSO","40":"BSO","48":"CAA","32":"FCSI","22":"IVY","24":"MEAC","21":"MVFC","25":"NEC","27":"PAT","28":"PFL","29":"SOCON","30":"SLC","31":"SWAC","177":"UAC"},
   "nflDiv": {"BUF":"AFCE","MIA":"AFCE","NE":"AFCE","NYJ":"AFCE","BAL":"AFCN","CIN":"AFCN","CLE":"AFCN","PIT":"AFCN","HOU":"AFCS","IND":"AFCS","JAX":"AFCS","TEN":"AFCS","DEN":"AFCW","KC":"AFCW","LV":"AFCW","LAC":"AFCW","DAL":"NFCE","NYG":"NFCE","PHI":"NFCE","WSH":"NFCE","CHI":"NFCN","DET":"NFCN","GB":"NFCN","MIN":"NFCN","ATL":"NFCS","CAR":"NFCS","NO":"NFCS","TB":"NFCS","ARI":"NFCW","LAR":"NFCW","SF":"NFCW","SEA":"NFCW"},
@@ -681,14 +682,14 @@ const SLATE = {
           {"id":"401872657","kick":"2026-09-11T00:35Z","tbd":false,"away":{"id":"25","ab":"SF","name":"San Francisco 49ers","short":"49ers","color":"aa0000","alt":"b3995d","logo":"sf","rank":0,"rec":"1-0","conf":"NFCW","score":27,"winner":true,"line":[3,7,7,10]},"home":{"id":"14","ab":"LAR","name":"Los Angeles Rams","short":"Rams","color":"003594","alt":"ffd100","logo":"lar","rank":0,"rec":"0-1","conf":"NFCW","score":7,"winner":false,"line":[0,7,0,0]},"neutral":true,"venue":"Melbourne, Australia","carriers":["Netflix"],"tv":false,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":1,"close":[-3.5,47.5]}
         ]},
         {"label": "Sun 9/13", "date": "2026-09-13", "games": [
-          {"id":"401872660","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"2","ab":"BUF","name":"Buffalo Bills","short":"Bills","color":"00338d","alt":"d50a0a","logo":"buf","rank":0,"rec":"","conf":"AFCE","score":24,"winner":false,"line":[3,21]},"home":{"id":"34","ab":"HOU","name":"Houston Texans","short":"Texans","color":"021018","alt":"eb0028","logo":"hou","rank":0,"rec":"","conf":"AFCS","score":21,"winner":false,"line":[7,14]},"neutral":false,"venue":"Houston, TX","carriers":["CBS"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"Halftime","period":2,"clock":"0:00","sit":{"poss":null,"dd":null,"at":null,"yl":80,"rz":false,"ht":3,"at_":3,"last":"END QUARTER 2"},"week":1,"close":[1.5,44.5]},
-          {"id":"401872659","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"33","ab":"BAL","name":"Baltimore Ravens","short":"Ravens","color":"29126f","alt":"000000","logo":"bal","rank":0,"rec":"","conf":"AFCN","score":28,"winner":false,"line":[14,14]},"home":{"id":"11","ab":"IND","name":"Indianapolis Colts","short":"Colts","color":"003b75","alt":"ffffff","logo":"ind","rank":0,"rec":"","conf":"AFCS","score":13,"winner":false,"line":[6,7]},"neutral":false,"venue":"Indianapolis, IN","carriers":["CBS"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"0:33 - 2nd","period":2,"clock":"0:33","sit":{"poss":"33","dd":"1st & 10","at":"BAL 49","yl":51,"rz":false,"ht":2,"at_":2,"last":"(No Huddle, Shotgun) L.Jackson scrambles left end ran ob at BLT 49 for 19 yards."},"week":1,"close":[3.0,48.5]},
-          {"id":"401872922","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"5","ab":"CLE","name":"Cleveland Browns","short":"Browns","color":"472a08","alt":"ff3c00","logo":"cle","rank":0,"rec":"","conf":"AFCN","score":0,"winner":false,"line":[0,0,0]},"home":{"id":"30","ab":"JAX","name":"Jacksonville Jaguars","short":"Jaguars","color":"007487","alt":"d7a22a","logo":"jax","rank":0,"rec":"","conf":"AFCS","score":24,"winner":false,"line":[14,10,0]},"neutral":false,"venue":"Jacksonville, FL","carriers":["CBS"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"14:04 - 3rd","period":3,"clock":"14:04","sit":{"poss":"30","dd":"1st & 10","at":"CLE 23","yl":77,"rz":false,"ht":3,"at_":3,"last":" (Shotgun) T.Lawrence pass short left to B.Tuten to CLV 23 for 22 yards (G.Delpit; M.Collins)."},"week":1,"close":[-8.5,40.5]},
-          {"id":"401872924","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"20","ab":"NYJ","name":"New York Jets","short":"Jets","color":"115740","alt":"ffffff","logo":"nyj","rank":0,"rec":"","conf":"AFCE","score":10,"winner":false,"line":[7,3]},"home":{"id":"10","ab":"TEN","name":"Tennessee Titans","short":"Titans","color":"4495d2","alt":"001532","logo":"ten","rank":0,"rec":"","conf":"AFCS","score":3,"winner":false,"line":[3,0]},"neutral":false,"venue":"Nashville, TN","carriers":["CBS"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"Halftime","period":2,"clock":"0:00","sit":{"poss":null,"dd":null,"at":null,"yl":52,"rz":false,"ht":3,"at_":3,"last":"END QUARTER 2"},"week":1,"close":[-1.5,39.5]},
-          {"id":"401872661","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"3","ab":"CHI","name":"Chicago Bears","short":"Bears","color":"0b1c3a","alt":"e64100","logo":"chi","rank":0,"rec":"","conf":"NFCN","score":31,"winner":false,"line":[14,17]},"home":{"id":"29","ab":"CAR","name":"Carolina Panthers","short":"Panthers","color":"0085ca","alt":"000000","logo":"car","rank":0,"rec":"","conf":"NFCS","score":24,"winner":false,"line":[7,17]},"neutral":false,"venue":"Charlotte, NC","carriers":["FOX"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"0:22 - 2nd","period":2,"clock":"0:22","sit":{"poss":"3","dd":null,"at":null,"yl":65,"rz":false,"ht":3,"at_":1,"last":"(Cairo Santos Kick)"},"week":1,"close":[3.0,47.5]},
-          {"id":"401872925","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"27","ab":"TB","name":"Tampa Bay Buccaneers","short":"Buccaneers","color":"bd1c36","alt":"3e3a35","logo":"tb","rank":0,"rec":"","conf":"NFCS","score":10,"winner":false,"line":[3,7]},"home":{"id":"4","ab":"CIN","name":"Cincinnati Bengals","short":"Bengals","color":"fb4f14","alt":"000000","logo":"cin","rank":0,"rec":"","conf":"AFCN","score":24,"winner":false,"line":[14,10]},"neutral":false,"venue":"Cincinnati, OH","carriers":["FOX"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"Halftime","period":2,"clock":"0:00","sit":{"poss":null,"dd":null,"at":null,"yl":66,"rz":false,"ht":3,"at_":3,"last":"END QUARTER 2"},"week":1,"close":[-3.5,50.5]},
-          {"id":"401872923","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"18","ab":"NO","name":"New Orleans Saints","short":"Saints","color":"d3bc8d","alt":"000000","logo":"no","rank":0,"rec":"","conf":"NFCS","score":0,"winner":false,"line":[0,0]},"home":{"id":"8","ab":"DET","name":"Detroit Lions","short":"Lions","color":"0076b6","alt":"bbbbbb","logo":"det","rank":0,"rec":"","conf":"NFCN","score":7,"winner":false,"line":[7,0]},"neutral":false,"venue":"Detroit, MI","carriers":["FOX"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"Halftime","period":2,"clock":"0:00","sit":{"poss":null,"dd":null,"at":null,"yl":20,"rz":false,"ht":3,"at_":3,"last":"END QUARTER 2"},"week":1,"close":[-7.0,49.5]},
-          {"id":"401872658","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"1","ab":"ATL","name":"Atlanta Falcons","short":"Falcons","color":"a71930","alt":"000000","logo":"atl","rank":0,"rec":"","conf":"NFCS","score":7,"winner":false,"line":[7,0]},"home":{"id":"23","ab":"PIT","name":"Pittsburgh Steelers","short":"Steelers","color":"000000","alt":"ffb612","logo":"pit","rank":0,"rec":"","conf":"AFCN","score":13,"winner":false,"line":[3,10]},"neutral":false,"venue":"Pittsburgh, PA","carriers":["FOX"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"Halftime","period":2,"clock":"0:00","sit":{"poss":null,"dd":null,"at":null,"yl":32,"rz":false,"ht":3,"at_":3,"last":"END QUARTER 2"},"week":1,"close":[-6.5,40.5]},
+          {"id":"401872660","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"2","ab":"BUF","name":"Buffalo Bills","short":"Bills","color":"00338d","alt":"d50a0a","logo":"buf","rank":0,"rec":"","conf":"AFCE","score":24,"winner":false,"line":[3,21]},"home":{"id":"34","ab":"HOU","name":"Houston Texans","short":"Texans","color":"021018","alt":"eb0028","logo":"hou","rank":0,"rec":"","conf":"AFCS","score":14,"winner":false,"line":[7,7]},"neutral":false,"venue":"Houston, TX","carriers":["CBS"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"1:29 - 2nd","period":2,"clock":"1:29","sit":{"poss":null,"dd":null,"at":null,"yl":15,"rz":true,"ht":2,"at_":3,"last":"Official Timeout at 01:29."},"week":1,"close":[1.5,44.5]},
+          {"id":"401872659","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"33","ab":"BAL","name":"Baltimore Ravens","short":"Ravens","color":"29126f","alt":"000000","logo":"bal","rank":0,"rec":"","conf":"AFCN","score":28,"winner":false,"line":[14,14]},"home":{"id":"11","ab":"IND","name":"Indianapolis Colts","short":"Colts","color":"003b75","alt":"ffffff","logo":"ind","rank":0,"rec":"","conf":"AFCS","score":6,"winner":false,"line":[6,0]},"neutral":false,"venue":"Indianapolis, IN","carriers":["CBS"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"4:27 - 2nd","period":2,"clock":"4:27","sit":{"poss":"11","dd":"1st & 10","at":"BAL 15","yl":85,"rz":true,"ht":2,"at_":2,"last":" L.Jackson sacked at BLT 18 for -12 yards (A.Key). FUMBLES (A.Key) [A.Key], RECOVERED by IND-D.Buckner at BLT 15."},"week":1,"close":[3.5,47.5]},
+          {"id":"401872922","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"5","ab":"CLE","name":"Cleveland Browns","short":"Browns","color":"472a08","alt":"ff3c00","logo":"cle","rank":0,"rec":"","conf":"AFCN","score":0,"winner":false,"line":[0,0]},"home":{"id":"30","ab":"JAX","name":"Jacksonville Jaguars","short":"Jaguars","color":"007487","alt":"d7a22a","logo":"jax","rank":0,"rec":"","conf":"AFCS","score":24,"winner":false,"line":[14,10]},"neutral":false,"venue":"Jacksonville, FL","carriers":["CBS"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"Halftime","period":2,"clock":"0:00","sit":{"poss":null,"dd":null,"at":null,"yl":54,"rz":false,"ht":3,"at_":3,"last":"END QUARTER 2"},"week":1,"close":[-8.5,39.5]},
+          {"id":"401872924","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"20","ab":"NYJ","name":"New York Jets","short":"Jets","color":"115740","alt":"ffffff","logo":"nyj","rank":0,"rec":"","conf":"AFCE","score":10,"winner":false,"line":[7,3]},"home":{"id":"10","ab":"TEN","name":"Tennessee Titans","short":"Titans","color":"4495d2","alt":"001532","logo":"ten","rank":0,"rec":"","conf":"AFCS","score":3,"winner":false,"line":[3,0]},"neutral":false,"venue":"Nashville, TN","carriers":["CBS"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"0:32 - 2nd","period":2,"clock":"0:32","sit":{"poss":"20","dd":"1st & 10","at":"TEN 49","yl":49,"rz":false,"ht":1,"at_":0,"last":"Timeout #3 by NYJ at 00:32."},"week":1,"close":[-1.5,38.5]},
+          {"id":"401872661","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"3","ab":"CHI","name":"Chicago Bears","short":"Bears","color":"0b1c3a","alt":"e64100","logo":"chi","rank":0,"rec":"","conf":"NFCN","score":24,"winner":false,"line":[14,10]},"home":{"id":"29","ab":"CAR","name":"Carolina Panthers","short":"Panthers","color":"0085ca","alt":"000000","logo":"car","rank":0,"rec":"","conf":"NFCS","score":21,"winner":false,"line":[7,14]},"neutral":false,"venue":"Charlotte, NC","carriers":["FOX"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"4:11 - 2nd","period":2,"clock":"4:11","sit":{"poss":"29","dd":"2nd & 10","at":"CAR 26","yl":26,"rz":false,"ht":3,"at_":3,"last":"J.Brooks left end pushed ob at CAR 46 for 12 yards (T.Stevenson).PENALTY on CAR-R.Hunt, Offensive Holding, 10 yards, enforced at CAR 36."},"week":1,"close":[3.0,47.5]},
+          {"id":"401872925","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"27","ab":"TB","name":"Tampa Bay Buccaneers","short":"Buccaneers","color":"bd1c36","alt":"3e3a35","logo":"tb","rank":0,"rec":"","conf":"NFCS","score":10,"winner":false,"line":[3,7]},"home":{"id":"4","ab":"CIN","name":"Cincinnati Bengals","short":"Bengals","color":"fb4f14","alt":"000000","logo":"cin","rank":0,"rec":"","conf":"AFCN","score":21,"winner":false,"line":[14,7]},"neutral":false,"venue":"Cincinnati, OH","carriers":["FOX"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"0:21 - 2nd","period":2,"clock":"0:21","sit":{"poss":"4","dd":"2nd & Goal","at":"TB 2","yl":98,"rz":true,"ht":1,"at_":2,"last":"Timeout #2 by CIN at 00:21."},"week":1,"close":[-3.5,50.5]},
+          {"id":"401872923","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"18","ab":"NO","name":"New Orleans Saints","short":"Saints","color":"d3bc8d","alt":"000000","logo":"no","rank":0,"rec":"","conf":"NFCS","score":0,"winner":false,"line":[0,0]},"home":{"id":"8","ab":"DET","name":"Detroit Lions","short":"Lions","color":"0076b6","alt":"bbbbbb","logo":"det","rank":0,"rec":"","conf":"NFCN","score":7,"winner":false,"line":[7,0]},"neutral":false,"venue":"Detroit, MI","carriers":["FOX"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"2:33 - 2nd","period":2,"clock":"2:33","sit":{"poss":"18","dd":"3rd & 5","at":"NO 19","yl":81,"rz":false,"ht":3,"at_":2,"last":" (Shotgun) T.Shough pass short right to T.Etienne to NO 19 for 3 yards (J.Campbell; D.Reed)."},"week":1,"close":[-7.0,49.5]},
+          {"id":"401872658","kick":"2026-09-13T17:00Z","tbd":false,"away":{"id":"1","ab":"ATL","name":"Atlanta Falcons","short":"Falcons","color":"a71930","alt":"000000","logo":"atl","rank":0,"rec":"","conf":"NFCS","score":7,"winner":false,"line":[7,0]},"home":{"id":"23","ab":"PIT","name":"Pittsburgh Steelers","short":"Steelers","color":"000000","alt":"ffb612","logo":"pit","rank":0,"rec":"","conf":"AFCN","score":13,"winner":false,"line":[3,10]},"neutral":false,"venue":"Pittsburgh, PA","carriers":["FOX"],"tv":true,"spread":null,"ou":null,"provider":"","state":"in","detail":"1:56 - 2nd","period":2,"clock":"1:56","sit":{"poss":"23","dd":"3rd & 5","at":"PIT 49","yl":49,"rz":false,"ht":2,"at_":2,"last":"Two-Minute Warning"},"week":1,"close":[-6.0,40.5]},
           {"id":"401872926","kick":"2026-09-13T20:25Z","tbd":false,"away":{"id":"22","ab":"ARI","name":"Arizona Cardinals","short":"Cardinals","color":"a40227","alt":"ffffff","logo":"ari","rank":0,"rec":"","conf":"NFCW","score":0,"winner":false,"line":[]},"home":{"id":"24","ab":"LAC","name":"Los Angeles Chargers","short":"Chargers","color":"0080c6","alt":"ffc20e","logo":"lac","rank":0,"rec":"","conf":"AFCW","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Inglewood, CA","carriers":["CBS"],"tv":true,"spread":-9.5,"ou":47.5,"provider":"DraftKings","state":"pre","detail":"9/13 - 4:25 PM EDT","period":0,"clock":"0:00","sit":null,"week":1},
           {"id":"401872927","kick":"2026-09-13T20:25Z","tbd":false,"away":{"id":"9","ab":"GB","name":"Green Bay Packers","short":"Packers","color":"204e32","alt":"ffb612","logo":"gb","rank":0,"rec":"","conf":"NFCN","score":0,"winner":false,"line":[]},"home":{"id":"16","ab":"MIN","name":"Minnesota Vikings","short":"Vikings","color":"4f2683","alt":"ffc62f","logo":"min","rank":0,"rec":"","conf":"NFCN","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Minneapolis, MN","carriers":["CBS"],"tv":true,"spread":-1.5,"ou":46.5,"provider":"DraftKings","state":"pre","detail":"9/13 - 4:25 PM EDT","period":0,"clock":"0:00","sit":null,"week":1},
           {"id":"401872928","kick":"2026-09-13T20:25Z","tbd":false,"away":{"id":"15","ab":"MIA","name":"Miami Dolphins","short":"Dolphins","color":"008e97","alt":"fc4c02","logo":"mia","rank":0,"rec":"","conf":"AFCE","score":0,"winner":false,"line":[]},"home":{"id":"13","ab":"LV","name":"Las Vegas Raiders","short":"Raiders","color":"000000","alt":"a5acaf","logo":"lv","rank":0,"rec":"","conf":"AFCW","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Las Vegas, NV","carriers":["FOX"],"tv":true,"spread":-3.0,"ou":40.5,"provider":"DraftKings","state":"pre","detail":"9/13 - 4:25 PM EDT","period":0,"clock":"0:00","sit":null,"week":1},
@@ -1020,12 +1021,29 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
 
   /* ============================ timeline ============================ */
+  const plateLabel = t => (t.rank ? t.rank + " " : "") + t.ab;
+  /* the name slot on every plate is as wide as the widest label on the board, so the scores sit in one column down the screen */
+  const measurer = document.createElement("canvas").getContext("2d");
+  function slotWidths(games){
+    const nm = document.querySelector(".tb .pl .nm"), sc = document.querySelector(".tb .pl .sc"); if (!nm || !sc) return [0, 0];
+    const font = e => { const cs = getComputedStyle(e); return cs.fontWeight + " " + cs.fontSize + " " + cs.fontFamily; };
+    const stars = P().stars;
+    measurer.font = font(nm);
+    let w = 0; games.forEach(g => [g.away, g.home].forEach(t => { w = Math.max(w, measurer.measureText((stars.has(t.name) ? STAR + " " : "") + plateLabel(t)).width); }));
+    measurer.font = font(sc);
+    let v = 0; games.forEach(g => { const st = status(g); [g.away, g.home].forEach(t => { const txt = st.phase === "pre" ? (g.sp != null && g.sp !== 0 ? String(Math.abs(g.sp) * -1) : "") : String(t.score); v = Math.max(v, measurer.measureText(txt).width); }); });
+    return [Math.ceil(w) + 1, Math.ceil(v) + 1];
+  }
   function plate(g, side, st){
     const t = g[side], other = g[side === "home" ? "away" : "home"];
     const p = el("div", "pl " + side + (st.poss === side ? " has" : "") + (FLASH.has(g.id + side) ? " flash" : ""));
-    if (t.logo){ const im = document.createElement("img"); im.src = LOGO(g.league, t.logo); im.alt = ""; im.decoding = "async"; im.addEventListener("error", () => im.remove()); p.appendChild(im); }
-    if (P().stars.has(t.name)) p.appendChild(el("span", "star", STAR));
-    p.appendChild(el("span", null, (t.rank ? t.rank + " " : "") + t.ab));
+    const lg = el("span", "lg");
+    if (t.logo){ const im = document.createElement("img"); im.src = LOGO(g.league, t.logo); im.alt = ""; im.decoding = "async"; im.addEventListener("error", () => im.remove()); lg.appendChild(im); }
+    p.appendChild(lg);
+    const nm = el("span", "nm");
+    if (P().stars.has(t.name)) nm.appendChild(el("span", "star", STAR + " "));
+    nm.appendChild(document.createTextNode(plateLabel(t)));
+    p.appendChild(nm);
     const sc = el("span", "sc");
     if (st.phase === "pre"){ const fav = g.sp != null && g.sp !== 0 ? (g.sp < 0 ? "home" : "away") : null; if (fav === side){ sc.textContent = String(g.sp < 0 ? g.sp : -g.sp); sc.classList.add("spread"); } }
     else { sc.textContent = String(t.score); if (st.phase === "final" && t.score < other.score) sc.classList.add("dim"); }
@@ -1089,7 +1107,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   function renderTimeline(wrap, games, day){
     const cssPx = v => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(v)) || 0;
-    const COL = cssPx("--col"), LANE = cssPx("--lane");
+    const COL = cssPx("--col"), LANE = cssPx("--lane"), LABEL = cssPx("--label");
     const list = games.filter(g => !g.tbd);
     if (!list.length){ wrap.appendChild(emptyEl()); return; }
     const off = tzOffset(day);
@@ -1131,7 +1149,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         if (st.phase === "live" && (g.sp != null || g.ou != null || g.lsp != null)){
           const cl = el("div", "cl"); const lv = liveLine(g);
           if (lv){ cl.appendChild(el("b", null, "live " + lv)); const c = lineText(g, t => t.ab); if (c) cl.appendChild(el("small", null, c)); }
-          else cl.appendChild(el("span", null, lineText(g, t => t.ab)));
+          else { const sp = g.sp != null ? fmtLine(g, g.sp, null, t => t.ab) : "", ou = g.ou != null ? "o/u " + g.ou : "";   /* two short lines so it fits beside the bug on a phone */
+                 cl.appendChild(el("b", null, (g.close ? "close " : "") + (sp || ou))); if (sp && ou) cl.appendChild(el("small", null, ou)); }
           b.appendChild(cl);
         }
         b.title = g.away.name + (g.neutral ? " vs " : " at ") + g.home.name + (g.neutral && g.venue ? " (" + g.venue + ")" : "") + ", " + fmtTime(g.kick) + " " + S.tz + " on " + (g.carriers.join(" / ") || NONE) +
@@ -1145,9 +1164,13 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       tl.appendChild(row);
     });
     wrap.appendChild(tl);
+    const [abw, scw] = slotWidths(list); tl.style.setProperty("--abw", abw + "px"); tl.style.setProperty("--scw", scw + "px");
     /* as a bar scrolls out on the left, drop its status block first and then the plates, instead of showing a cut fragment */
-    const bars = [...tl.querySelectorAll(".gbar")].map(b => { const tb = b.querySelector(".tb"), cl = b.querySelector(".cl"); if (cl && b.offsetWidth < tb.offsetWidth + cl.offsetWidth + 24) b.classList.add("short"); return { el: b, right: b.offsetLeft + b.offsetWidth, full: tb.offsetWidth, plates: tb.querySelector(".col").offsetWidth + 6 }; });
-    wrap._trim = () => { const sl = wrap.scrollLeft; bars.forEach(b => { const rem = b.right - sl; b.el.classList.toggle("tight", rem < b.full); b.el.classList.toggle("gone", rem < b.plates); }); };
+    const seen = Math.max(120, wrap.clientWidth - LABEL);   /* the closing line rides the right edge of the screen, so it has to fit beside the bug in the visible width, not just the bar */
+    const bars = [...tl.querySelectorAll(".gbar")].map(b => { const tb = b.querySelector(".tb"), cl = b.querySelector(".cl"), clw = cl ? cl.offsetWidth : 0; const noRoom = !!cl && Math.min(b.offsetWidth, seen) < tb.offsetWidth + clw + 20; return { el: b, right: b.offsetLeft + b.offsetWidth, full: tb.offsetWidth, plates: tb.querySelector(".col").offsetWidth + 6, clw, noRoom }; });
+    wrap._trim = () => { const sl = wrap.scrollLeft; bars.forEach(b => { const rem = b.right - sl, tight = rem < b.full; b.el.classList.toggle("tight", tight); b.el.classList.toggle("gone", rem < b.plates);
+      /* the closing line goes when the bar's tail is too short to hold it beside the bug */
+      b.el.classList.toggle("short", b.noRoom || (b.clw > 0 && rem < (tight ? b.plates : b.full) + b.clw + 16)); }); };
     wrap._trim();
     const n = etNow();
     if (n.date === day && n.m >= start && n.m <= end){ tl.querySelectorAll(".track").forEach(t => { const line = el("div", "now"); line.style.left = x(n.m) + "px"; t.appendChild(line); }); if (!wrap._scrolled){ wrap.scrollLeft = Math.max(0, x(n.m) - 120); wrap._scrolled = true; } }
@@ -1671,6 +1694,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   document.getElementById("fshow").addEventListener("click", () => { S.foot = "on"; remember(); footer(); });
   render();
   if (migrated) remember();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (S.view === "timeline") render(); });   /* the name slot is measured in the real font once it lands */
   poll(true);
 })();
 </script>
