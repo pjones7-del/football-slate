@@ -110,18 +110,16 @@ NFL_CONFS = [["AFCE", "AFC East", "afc"], ["AFCN", "AFC North", "afc"], ["AFCS",
 NFL_TV_ORDER = ["CBS", "FOX", "NBC", "ABC", "ESPN", "ESPN2", "NFL Network"]
 NFL_STREAM_ORDER = ["Prime Video", "Peacock", "Netflix", "YouTube", "ESPN+", "NFL+"]
 NFL_LINEAR = ["CBS", "FOX", "NBC", "ABC", "ESPN", "ESPN2", "NFL Network"]
-NFL_PACKAGES = {
-    "YouTube TV":        NFL_LINEAR,
-    "Hulu + Live TV":    NFL_LINEAR + ["ESPN+"],
-    "Fubo":              NFL_LINEAR,
-    "Cable / satellite": NFL_LINEAR,
+NFL_PACKAGES = {   # fewer than college on purpose: the four live-TV services carry the same NFL channels, so they are one chip
     "Antenna":           ["CBS", "FOX", "NBC", "ABC"],
+    "Cable or live TV":  NFL_LINEAR,          # YouTube TV, Hulu + Live TV, Fubo, cable, satellite
     "ESPN Unlimited":    ["ESPN", "ESPN2", "ESPN+"],
-    "Prime Video":       ["Prime Video"],
     "Peacock":           ["Peacock", "NBC"],
-    "Paramount+":        ["CBS"],
+    "Paramount+":        ["Paramount+", "CBS"],
+    "Prime Video":       ["Prime Video"],
     "Netflix":           ["Netflix"],
-    "Free apps":         ["YouTube"],
+    "YouTube":           ["YouTube"],
+    "NFL+":              ["NFL+", "NFL Network"],
 }
 
 NET_ALIAS = {"SEC Network": "SECN", "ACC Network": "ACCN", "USA Net": "USA", "USA Network": "USA",
@@ -218,7 +216,7 @@ def game(e, L, nfl):
         "id": e["id"], "kick": c["date"], "tbd": c.get("timeValid") is False,
         "away": team(sides["away"], nfl), "home": team(sides["home"], nfl),
         "neutral": bool(c.get("neutralSite")), "venue": ", ".join(x for x in (adr.get("city"), where) if x) or v.get("fullName", ""),
-        "carriers": carriers, "tv": bool(tv_nat),
+        "carriers": carriers, "tv": bool(tv_nat), "_tv": tv_nat,
         "spread": odds.get("spread"), "ou": odds.get("overUnder"),
         "provider": ((odds.get("provider") or {}).get("name") or "").replace("Draft Kings", "DraftKings"),
         "state": typ.get("state"), "detail": typ.get("shortDetail"), "period": st.get("period"), "clock": st.get("displayClock"),
@@ -389,7 +387,7 @@ def build_league(league, prev_lines, main_day, start, end):
         days[d].sort(key=lambda g: (g["kick"], not g["tv"], g["carriers"][0] if g["carriers"] else "~", g["home"]["name"]))
 
     all_present = {n for gs in days.values() for g in gs for n in g["carriers"]}
-    nets_present = {g["carriers"][0] for gs in days.values() for g in gs if g["tv"] and g["carriers"]}
+    nets_present = {n for gs in days.values() for g in gs for n in g.pop("_tv", [])}   # every national TV channel, simulcasts included
     networks = [n for n in L["tv"] if n in nets_present] + sorted(n for n in nets_present if n not in L["tv"])
     order = networks + [n for n in L["stream"] if n in all_present] + sorted(n for n in all_present if n not in networks and n not in L["stream"])
     have = sorted(all_present) if DEFAULT_PACKAGES == "everything" else sorted({n for p in DEFAULT_PACKAGES for n in L["packages"].get(p, [])})
