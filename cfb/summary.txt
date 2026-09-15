@@ -1,34 +1,32 @@
-College Football Week 2 (131 games, pulled Mon 9/14, 11:54 PM ET, lines DraftKings via ESPN)
-  weekly file written to cfb-slate-week2.html
+College Football Week 3 (128 games, pulled Tue 9/15, 12:09 AM ET, lines DraftKings via ESPN)
+  weekly file written to cfb-slate-week3.html
   web copy written to cfb/index.html
-  Thu 9/10: 1 on TV, 0 not
-  Fri 9/11: 4 on TV, 1 not
-  Sat 9/12: 42 on TV, 83 not
+  Thu 9/17: 1 on TV, 0 not
+  Fri 9/18: 3 on TV, 0 not
+  Sat 9/19: 45 on TV, 79 not
   ranked matchups:
-    Thu 20:00 ET  Florida A&M at #7 Miami (FL)  [ACCN]  MIA -59.5, o/u 66.5
-    Fri 19:00 ET  Villanova at #24 Louisville  [ACCN]  LOU -38.5, o/u 56.5
-    Fri 19:00 ET  Norfolk State at #25 Virginia  [ACCNX]  UVA -46.5, o/u 56.5
-    Fri 20:00 ET  #23 Missouri at Kansas  [FOX]  MIZ -4.0, o/u 51.5
-    Sat 12:00 ET  Arizona State at #10 Texas A&M  [ABC]  TA&M -14.5, o/u 51.5
-    Sat 12:00 ET  Howard at #5 Indiana  [BTN]  IU -57.5, o/u 66.5
-    Sat 12:00 ET  #16 Penn State at Temple  [ESPN2]  PSU -23.5, o/u 50.5
-    Sat 12:00 ET  #11 Oklahoma at Michigan  [FOX]  OU -5.5, o/u 43.5
-    Sat 12:45 ET  Western Kentucky at #2 Georgia  [SECN]  UGA -40.5, o/u 55.5
-    Sat 13:30 ET  #6 Oregon at Oklahoma State  [ESPNEWS]  ORE -24.5, o/u 55.5
-    Sat 15:30 ET  #12 Alabama at Kentucky  [ABC]  ALA -8.5, o/u 46.5
-    Sat 15:30 ET  Utah State at #19 Washington  [BTN]  WASH -28.5, o/u 55.5
-    Sat 15:30 ET  Arizona at #15 BYU  [FOX]  BYU -6.5, o/u 48.5
-    Sat 15:30 ET  Rice at #3 Notre Dame  [NBC]  ND -44.5, o/u 54.5
-    Sat 16:00 ET  UC Davis at #17 SMU  [ACCNX]  SMU -32.5, o/u 58.5
-    Sat 19:00 ET  #18 Tennessee at Georgia Tech  [ESPN]  TENN -12.5, o/u 55.5
-    Sat 19:00 ET  Southern at #22 Houston  [ESPN+]  HOU -51.5, o/u 61.5
-    Sat 19:30 ET  #1 Ohio State at #4 Texas  [ABC]  TEX -2.5, o/u 50.5
-    Sat 19:30 ET  #13 Texas Tech at Oregon State  [CBS]  TTU -25.5, o/u 52.5
-    Sat 19:30 ET  Iowa State at #21 Iowa  [NBC]  IOWA -14.0, o/u 42.5
-    Sat 19:30 ET  Louisiana Tech at #8 LSU  [SECN+]  LSU -34.5, o/u 54.5
-    Sat 19:45 ET  Charlotte at #9 Ole Miss  [ESPN2]  MISS -44.5, o/u 59.5
-    Sat 22:30 ET  Arkansas at #20 Utah  [ESPN]  UTAH -13.5, o/u 55.5
-    Sat 23:00 ET  Louisiana at #14 USC  [BTN]  USC -30.5, o/u 58.5
-  TV games without a line: 0
+    Fri 19:30 ET  #5 Miami (FL) at Wake Forest  [ESPN]  MIA -20.5, o/u 55.5
+    Fri 20:00 ET  #22 Houston at #13 Texas Tech  [FOX]  TTU -7.5
+    Fri 22:30 ET  Portland State at #21 Oregon  [BTN]
+    Sat 12:00 ET  #2 Georgia at Arkansas  [ABC]  UGA -25.5, o/u 54.5
+    Sat 12:00 ET  Buffalo at #14 Penn State  [BTN]  PSU -39.5, o/u 48.5
+    Sat 12:00 ET  Kent State at #6 Ohio State  [FOX]  OSU -52.5, o/u 59.5
+    Sat 15:30 ET  Florida State at #10 Alabama  [ABC]  ALA -19.5, o/u 49.5
+    Sat 15:30 ET  UTEP at #19 Michigan  [BTN]  MICH -35.5, o/u 48.5
+    Sat 15:30 ET  #12 USC at Rutgers  [CBS]  USC -23.5, o/u 59.5
+    Sat 15:30 ET  Kentucky at #9 Texas A&M  [ESPN]  TA&M -16.5, o/u 49.5
+    Sat 15:30 ET  #16 SMU at #23 Louisville  [ESPN2]  LOU -1.5, o/u 59.5
+    Sat 15:30 ET  Utah State at #17 Utah  [FOX]  UTAH -28.5, o/u 56.5
+    Sat 16:00 ET  Northern Iowa at #18 Iowa  [FS1]
+    Sat 16:00 ET  Western Kentucky at #4 Indiana  [Peacock]  IU -44.5, o/u 60.5
+    Sat 19:00 ET  Troy at #20 Missouri  [SECN+]  MIZ -26.5, o/u 50.5
+    Sat 19:30 ET  #7 LSU at #8 Ole Miss  [ABC]  LSU -3.0, o/u 58.5
+    Sat 19:30 ET  West Virginia vs #25 Virginia  [ACCN]  UVA -10.0, o/u 52.5
+    Sat 19:30 ET  #11 BYU at Colorado State  [CBS]  BYU -17.5, o/u 52.5
+    Sat 19:30 ET  New Mexico at #24 Oklahoma  [ESPN2]  OU -22.5, o/u 46.5
+    Sat 19:30 ET  Michigan State at #3 Notre Dame  [NBC]  ND -29.5, o/u 52.5
+    Sat 19:45 ET  Kennesaw State at #15 Tennessee  [SECN]  TENN -35.5, o/u 59.5
+    Sat 20:00 ET  UTSA at #1 Texas  [SECN+]  TEX -30.5, o/u 58.5
+  TV games without a line: 9
   time TBD: 0
-  non-Division I or unknown conference ids: none: Arkansas Baptist, Central Oklahoma, Dickinson (PA), Franklin, Kentucky Christian, Northern Michigan, Thomas More College, Virginia Lynchburg; 104: Bowie State, Lincoln (PA), Virginia State
+  non-Division I or unknown conference ids: none: Delta State, Glenville State, Louisiana Christian, Point University, Virginia Lynchburg; 136: Central State (OH), Tuskegee; 104: Bowie State; 112: Northeastern State
