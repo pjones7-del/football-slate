@@ -1,4 +1,4 @@
-College Football Week 3 (128 games, pulled Tue 9/15, 4:25 PM ET, lines DraftKings via ESPN)
+College Football Week 3 (128 games, pulled Tue 9/15, 4:38 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week3.html
   web copy written to cfb/index.html
   Thu 9/17: 1 on TV, 0 not
@@ -20,7 +20,7 @@ College Football Week 3 (128 games, pulled Tue 9/15, 4:25 PM ET, lines DraftKing
     Sat 16:00 ET  Northern Iowa at #18 Iowa  [FS1]  IOWA -40.5, o/u 49.5
     Sat 16:00 ET  Western Kentucky at #4 Indiana  [Peacock]  IU -44.5, o/u 60.5
     Sat 19:00 ET  Troy at #20 Missouri  [SECN+]  MIZ -26.5, o/u 50.5
-    Sat 19:30 ET  #7 LSU at #8 Ole Miss  [ABC]  LSU -3.0, o/u 58.5
+    Sat 19:30 ET  #7 LSU at #8 Ole Miss  [ABC]  LSU -3.0, o/u 59.5
     Sat 19:30 ET  West Virginia vs #25 Virginia  [ACCN]  UVA -10.0, o/u 53.5
     Sat 19:30 ET  #11 BYU at Colorado State  [CBS]  BYU -17.5, o/u 52.5
     Sat 19:30 ET  New Mexico at #24 Oklahoma  [ESPN2]  OU -22.5, o/u 46.5
