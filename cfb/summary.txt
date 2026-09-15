@@ -1,4 +1,4 @@
-College Football Week 3 (128 games, pulled Tue 9/15, 12:41 PM ET, lines DraftKings via ESPN)
+College Football Week 3 (128 games, pulled Tue 9/15, 12:54 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week3.html
   web copy written to cfb/index.html
   Thu 9/17: 1 on TV, 0 not
@@ -17,7 +17,7 @@ College Football Week 3 (128 games, pulled Tue 9/15, 12:41 PM ET, lines DraftKin
     Sat 15:30 ET  Kentucky at #9 Texas A&M  [ESPN]  TA&M -16.5, o/u 50.5
     Sat 15:30 ET  #16 SMU at #23 Louisville  [ESPN2]  LOU -1.5, o/u 59.5
     Sat 15:30 ET  Utah State at #17 Utah  [FOX]  UTAH -28.5, o/u 56.5
-    Sat 16:00 ET  Northern Iowa at #18 Iowa  [FS1]
+    Sat 16:00 ET  Northern Iowa at #18 Iowa  [FS1]  IOWA -40.5, o/u 49.5
     Sat 16:00 ET  Western Kentucky at #4 Indiana  [Peacock]  IU -44.5, o/u 60.5
     Sat 19:00 ET  Troy at #20 Missouri  [SECN+]  MIZ -26.5, o/u 50.5
     Sat 19:30 ET  #7 LSU at #8 Ole Miss  [ABC]  LSU -3.0, o/u 59.5
@@ -27,6 +27,6 @@ College Football Week 3 (128 games, pulled Tue 9/15, 12:41 PM ET, lines DraftKin
     Sat 19:30 ET  Michigan State at #3 Notre Dame  [NBC]  ND -29.5, o/u 51.5
     Sat 19:45 ET  Kennesaw State at #15 Tennessee  [SECN]  TENN -35.5, o/u 59.5
     Sat 20:00 ET  UTSA at #1 Texas  [SECN+]  TEX -30.5, o/u 58.5
-  TV games without a line: 9
+  TV games without a line: 4
   time TBD: 0
   non-Division I or unknown conference ids: none: Delta State, Glenville State, Louisiana Christian, Point University, Virginia Lynchburg; 136: Central State (OH), Tuskegee; 104: Bowie State; 112: Northeastern State
