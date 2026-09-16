@@ -1,4 +1,4 @@
-College Football Week 3 (128 games, pulled Wed 9/16, 11:53 AM ET, lines DraftKings via ESPN)
+College Football Week 3 (128 games, pulled Wed 9/16, 12:09 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week3.html
   web copy written to cfb/index.html
   Thu 9/17: 1 on TV, 0 not
@@ -6,7 +6,7 @@ College Football Week 3 (128 games, pulled Wed 9/16, 11:53 AM ET, lines DraftKin
   Sat 9/19: 45 on TV, 79 not
   ranked matchups:
     Fri 19:30 ET  #5 Miami (FL) at Wake Forest  [ESPN]  MIA -20.5, o/u 55.5
-    Fri 20:00 ET  #22 Houston at #13 Texas Tech  [FOX]  TTU -7.5
+    Fri 20:00 ET  #22 Houston at #13 Texas Tech  [FOX]  TTU -7.5, o/u 53.5
     Fri 22:30 ET  Portland State at #21 Oregon  [BTN]  ORE -57.5, o/u 67.5
     Sat 12:00 ET  #2 Georgia at Arkansas  [ABC]  UGA -24.5, o/u 54.5
     Sat 12:00 ET  Buffalo at #14 Penn State  [BTN]  PSU -41.5, o/u 50.5
@@ -19,7 +19,7 @@ College Football Week 3 (128 games, pulled Wed 9/16, 11:53 AM ET, lines DraftKin
     Sat 15:30 ET  Utah State at #17 Utah  [FOX]  UTAH -28.5, o/u 56.5
     Sat 16:00 ET  Northern Iowa at #18 Iowa  [FS1]  IOWA -40.5, o/u 49.5
     Sat 16:00 ET  Western Kentucky at #4 Indiana  [Peacock]  IU -44.5, o/u 60.5
-    Sat 19:00 ET  Troy at #20 Missouri  [SECN+]  MIZ -26.5, o/u 50.5
+    Sat 19:00 ET  Troy at #20 Missouri  [SECN+]  MIZ -26.5, o/u 49.5
     Sat 19:30 ET  #7 LSU at #8 Ole Miss  [ABC]  LSU -3.0, o/u 58.5
     Sat 19:30 ET  West Virginia vs #25 Virginia  [ACCN]  UVA -10.5, o/u 53.5
     Sat 19:30 ET  #11 BYU at Colorado State  [CBS]  BYU -17.5, o/u 52.5
@@ -31,15 +31,15 @@ College Football Week 3 (128 games, pulled Wed 9/16, 11:53 AM ET, lines DraftKin
   time TBD: 0
   non-Division I or unknown conference ids: none: Delta State, Glenville State, Louisiana Christian, Point University, Virginia Lynchburg; 136: Central State (OH), Tuskegee; 104: Bowie State; 112: Northeastern State
 
-NFL Week 2 (16 games, pulled Wed 9/16, 11:53 AM ET, lines DraftKings via ESPN)
+NFL Week 2 (16 games, pulled Wed 9/16, 12:09 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week2.html
   web copy written to nfl/index.html
   Thu 9/17: 0 on TV, 1 not
   Sun 9/20: 14 on TV, 0 not
   Mon 9/21: 1 on TV, 0 not
   every game with its line:
-    Thu 20:15 ET  Detroit Lions at Buffalo Bills  [Prime Video]  BUF -5.5, o/u 54.5
-    Sun 13:00 ET  New Orleans Saints at Baltimore Ravens  [CBS]  BAL -7.5, o/u 47.5
+    Thu 20:15 ET  Detroit Lions at Buffalo Bills  [Prime Video]  BUF -4.5, o/u 54.5
+    Sun 13:00 ET  New Orleans Saints at Baltimore Ravens  [CBS]  BAL -8.5, o/u 46.5
     Sun 13:00 ET  Cincinnati Bengals at Houston Texans  [CBS]  HOU -3.0, o/u 46.5
     Sun 13:00 ET  Pittsburgh Steelers at New England Patriots  [CBS]  NE -5.5, o/u 41.5
     Sun 13:00 ET  Cleveland Browns at Tampa Bay Buccaneers  [CBS]  TB -8.5, o/u 41.5
