@@ -1,4 +1,4 @@
-NFL Week 2 (16 games, pulled Thu 9/17, 12:53 PM ET, lines DraftKings via ESPN)
+NFL Week 2 (16 games, pulled Thu 9/17, 1:07 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week2.html
   web copy written to nfl/index.html
   Thu 9/17: 0 on TV, 1 not
@@ -6,7 +6,7 @@ NFL Week 2 (16 games, pulled Thu 9/17, 12:53 PM ET, lines DraftKings via ESPN)
   Mon 9/21: 1 on TV, 0 not
   every game with its line:
     Thu 20:15 ET  Detroit Lions at Buffalo Bills  [Prime Video]  BUF -5.5, o/u 54.5
-    Sun 13:00 ET  New Orleans Saints at Baltimore Ravens  [CBS]  BAL -8.5, o/u 46.5
+    Sun 13:00 ET  New Orleans Saints at Baltimore Ravens  [CBS]  BAL -7.5, o/u 46.5
     Sun 13:00 ET  Cincinnati Bengals at Houston Texans  [CBS]  HOU -2.5, o/u 46.5
     Sun 13:00 ET  Pittsburgh Steelers at New England Patriots  [CBS]  NE -5.5, o/u 41.5
     Sun 13:00 ET  Cleveland Browns at Tampa Bay Buccaneers  [CBS]  TB -8.5, o/u 41.5
