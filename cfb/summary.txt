@@ -1,4 +1,4 @@
-College Football Week 3 (128 games, pulled Thu 9/17, 3:23 PM ET, lines DraftKings via ESPN)
+College Football Week 3 (128 games, pulled Thu 9/17, 3:37 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week3.html
   web copy written to cfb/index.html
   Thu 9/17: 1 on TV, 0 not
@@ -24,7 +24,7 @@ College Football Week 3 (128 games, pulled Thu 9/17, 3:23 PM ET, lines DraftKing
     Sat 19:30 ET  West Virginia vs #25 Virginia  [ACCN]  UVA -10.5, o/u 53.5
     Sat 19:30 ET  #11 BYU at Colorado State  [CBS]  BYU -17.5, o/u 52.5
     Sat 19:30 ET  New Mexico at #24 Oklahoma  [ESPN2]  OU -21.5, o/u 46.5
-    Sat 19:30 ET  Michigan State at #3 Notre Dame  [NBC]  ND -29.5, o/u 52.5
+    Sat 19:30 ET  Michigan State at #3 Notre Dame  [NBC]  ND -29.5, o/u 51.5
     Sat 19:45 ET  Kennesaw State at #15 Tennessee  [SECN]  TENN -35.5, o/u 59.5
     Sat 20:00 ET  UTSA at #1 Texas  [SECN+]  TEX -29.5, o/u 58.5
   TV games without a line: 1
