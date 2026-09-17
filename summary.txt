@@ -1,4 +1,4 @@
-College Football Week 3 (128 games, pulled Wed 9/16, 9:39 PM ET, lines DraftKings via ESPN)
+College Football Week 3 (128 games, pulled Wed 9/16, 9:53 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week3.html
   web copy written to cfb/index.html
   Thu 9/17: 1 on TV, 0 not
@@ -13,7 +13,7 @@ College Football Week 3 (128 games, pulled Wed 9/16, 9:39 PM ET, lines DraftKing
     Sat 12:00 ET  Kent State at #6 Ohio State  [FOX]  OSU -52.5, o/u 58.5
     Sat 15:30 ET  Florida State at #10 Alabama  [ABC]  ALA -19.5, o/u 48.5
     Sat 15:30 ET  UTEP at #19 Michigan  [BTN]  MICH -34.5, o/u 49.5
-    Sat 15:30 ET  #12 USC at Rutgers  [CBS]  USC -22.5, o/u 59.5
+    Sat 15:30 ET  #12 USC at Rutgers  [CBS]  USC -23.5, o/u 59.5
     Sat 15:30 ET  Kentucky at #9 Texas A&M  [ESPN]  TA&M -16.5, o/u 49.5
     Sat 15:30 ET  #16 SMU at #23 Louisville  [ESPN2]  LOU -1.5, o/u 59.5
     Sat 15:30 ET  Utah State at #17 Utah  [FOX]  UTAH -27.5, o/u 56.5
@@ -31,7 +31,7 @@ College Football Week 3 (128 games, pulled Wed 9/16, 9:39 PM ET, lines DraftKing
   time TBD: 0
   non-Division I or unknown conference ids: none: Delta State, Glenville State, Louisiana Christian, Point University, Virginia Lynchburg; 136: Central State (OH), Tuskegee; 104: Bowie State; 112: Northeastern State
 
-NFL Week 2 (16 games, pulled Wed 9/16, 9:39 PM ET, lines DraftKings via ESPN)
+NFL Week 2 (16 games, pulled Wed 9/16, 9:53 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week2.html
   web copy written to nfl/index.html
   Thu 9/17: 0 on TV, 1 not
