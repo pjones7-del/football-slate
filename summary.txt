@@ -1,4 +1,4 @@
-College Football Week 3 (128 games, pulled Thu 9/17, 7:25 AM ET, lines DraftKings via ESPN)
+College Football Week 3 (128 games, pulled Thu 9/17, 7:39 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week3.html
   web copy written to cfb/index.html
   Thu 9/17: 1 on TV, 0 not
@@ -6,7 +6,7 @@ College Football Week 3 (128 games, pulled Thu 9/17, 7:25 AM ET, lines DraftKing
   Sat 9/19: 45 on TV, 79 not
   ranked matchups:
     Fri 19:30 ET  #5 Miami (FL) at Wake Forest  [ESPN]  MIA -21.0, o/u 56.5
-    Fri 20:00 ET  #22 Houston at #13 Texas Tech  [FOX]  TTU -7.5, o/u 52.5
+    Fri 20:00 ET  #22 Houston at #13 Texas Tech  [FOX]  TTU -7.5, o/u 53.5
     Fri 22:30 ET  Portland State at #21 Oregon  [BTN]  ORE -57.5, o/u 67.5
     Sat 12:00 ET  #2 Georgia at Arkansas  [ABC]  UGA -24.5, o/u 54.5
     Sat 12:00 ET  Buffalo at #14 Penn State  [BTN]  PSU -41.5, o/u 50.5
@@ -14,7 +14,7 @@ College Football Week 3 (128 games, pulled Thu 9/17, 7:25 AM ET, lines DraftKing
     Sat 15:30 ET  Florida State at #10 Alabama  [ABC]  ALA -19.5, o/u 48.5
     Sat 15:30 ET  UTEP at #19 Michigan  [BTN]  MICH -34.5, o/u 48.5
     Sat 15:30 ET  #12 USC at Rutgers  [CBS]  USC -22.5, o/u 59.5
-    Sat 15:30 ET  Kentucky at #9 Texas A&M  [ESPN]  TA&M -16.5, o/u 49.5
+    Sat 15:30 ET  Kentucky at #9 Texas A&M  [ESPN]  TA&M -17.5, o/u 50.5
     Sat 15:30 ET  #16 SMU at #23 Louisville  [ESPN2]  LOU -1.5, o/u 59.5
     Sat 15:30 ET  Utah State at #17 Utah  [FOX]  UTAH -27.5, o/u 56.5
     Sat 16:00 ET  Northern Iowa at #18 Iowa  [FS1]  IOWA -40.5, o/u 49.5
@@ -31,7 +31,7 @@ College Football Week 3 (128 games, pulled Thu 9/17, 7:25 AM ET, lines DraftKing
   time TBD: 0
   non-Division I or unknown conference ids: none: Delta State, Glenville State, Louisiana Christian, Point University, Virginia Lynchburg; 136: Central State (OH), Tuskegee; 104: Bowie State; 112: Northeastern State
 
-NFL Week 2 (16 games, pulled Thu 9/17, 7:25 AM ET, lines DraftKings via ESPN)
+NFL Week 2 (16 games, pulled Thu 9/17, 7:39 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week2.html
   web copy written to nfl/index.html
   Thu 9/17: 0 on TV, 1 not
