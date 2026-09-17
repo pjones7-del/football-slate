@@ -1,4 +1,4 @@
-NFL Week 2 (16 games, pulled Thu 9/17, 1:52 AM ET, lines DraftKings via ESPN)
+NFL Week 2 (16 games, pulled Thu 9/17, 2:11 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week2.html
   web copy written to nfl/index.html
   Thu 9/17: 0 on TV, 1 not
