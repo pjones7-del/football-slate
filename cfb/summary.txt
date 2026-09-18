@@ -1,4 +1,4 @@
-College Football Week 3 (128 games, pulled Fri 9/18, 3:49 PM ET, lines DraftKings via ESPN)
+College Football Week 3 (128 games, pulled Fri 9/18, 4:08 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week3.html
   web copy written to cfb/index.html
   Thu 9/17: 1 on TV, 0 not
@@ -7,13 +7,13 @@ College Football Week 3 (128 games, pulled Fri 9/18, 3:49 PM ET, lines DraftKing
   ranked matchups:
     Fri 19:30 ET  #5 Miami (FL) at Wake Forest  [ESPN]  MIA -20.5, o/u 55.5
     Fri 20:00 ET  #22 Houston at #13 Texas Tech  [FOX]  TTU -7.5, o/u 52.5
-    Fri 22:30 ET  Portland State at #21 Oregon  [BTN]  ORE -58.5, o/u 70.5
+    Fri 22:30 ET  Portland State at #21 Oregon  [BTN]  ORE -58.5, o/u 71.5
     Sat 12:00 ET  #2 Georgia at Arkansas  [ABC]  UGA -24.5, o/u 54.5
     Sat 12:00 ET  Buffalo at #14 Penn State  [BTN]  PSU -40.5, o/u 49.5
     Sat 12:00 ET  Kent State at #6 Ohio State  [FOX]  OSU -52.5, o/u 59.5
     Sat 15:30 ET  Florida State at #10 Alabama  [ABC]  ALA -19.5, o/u 49.5
     Sat 15:30 ET  UTEP at #19 Michigan  [BTN]  MICH -34.5, o/u 48.5
-    Sat 15:30 ET  #12 USC at Rutgers  [CBS]  USC -21.5, o/u 57.5
+    Sat 15:30 ET  #12 USC at Rutgers  [CBS]  USC -21.5, o/u 58.5
     Sat 15:30 ET  Kentucky at #9 Texas A&M  [ESPN]  TA&M -16.5, o/u 49.5
     Sat 15:30 ET  #16 SMU at #23 Louisville  [ESPN2]  LOU -1.5, o/u 58.5
     Sat 15:30 ET  Utah State at #17 Utah  [FOX]  UTAH -27.5, o/u 56.5
