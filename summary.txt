@@ -1,4 +1,4 @@
-College Football Week 3 (128 games, pulled Fri 9/18, 4:41 AM ET, lines DraftKings via ESPN)
+College Football Week 3 (128 games, pulled Fri 9/18, 4:53 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week3.html
   web copy written to cfb/index.html
   Thu 9/17: 1 on TV, 0 not
@@ -14,7 +14,7 @@ College Football Week 3 (128 games, pulled Fri 9/18, 4:41 AM ET, lines DraftKing
     Sat 15:30 ET  Florida State at #10 Alabama  [ABC]  ALA -19.5, o/u 48.5
     Sat 15:30 ET  UTEP at #19 Michigan  [BTN]  MICH -34.5, o/u 48.5
     Sat 15:30 ET  #12 USC at Rutgers  [CBS]  USC -21.5, o/u 58.5
-    Sat 15:30 ET  Kentucky at #9 Texas A&M  [ESPN]  TA&M -17.5, o/u 49.5
+    Sat 15:30 ET  Kentucky at #9 Texas A&M  [ESPN]  TA&M -17.5, o/u 50.5
     Sat 15:30 ET  #16 SMU at #23 Louisville  [ESPN2]  LOU -1.5, o/u 58.5
     Sat 15:30 ET  Utah State at #17 Utah  [FOX]  UTAH -27.5, o/u 56.5
     Sat 16:00 ET  Northern Iowa at #18 Iowa  [FS1]  IOWA -40.5, o/u 49.5
@@ -24,14 +24,14 @@ College Football Week 3 (128 games, pulled Fri 9/18, 4:41 AM ET, lines DraftKing
     Sat 19:30 ET  West Virginia vs #25 Virginia  [ACCN]  UVA -10.5, o/u 53.5
     Sat 19:30 ET  #11 BYU at Colorado State  [CBS]  BYU -17.5, o/u 53.5
     Sat 19:30 ET  New Mexico at #24 Oklahoma  [ESPN2]  OU -21.5, o/u 44.5
-    Sat 19:30 ET  Michigan State at #3 Notre Dame  [NBC]  ND -29.5, o/u 52.5
+    Sat 19:30 ET  Michigan State at #3 Notre Dame  [NBC]  ND -29.5, o/u 51.5
     Sat 19:45 ET  Kennesaw State at #15 Tennessee  [SECN]  TENN -35.5, o/u 60.5
     Sat 20:00 ET  UTSA at #1 Texas  [SECN+]  TEX -30.5, o/u 58.5
   TV games without a line: 1
   time TBD: 0
   non-Division I or unknown conference ids: none: Delta State, Glenville State, Louisiana Christian, Point University, Virginia Lynchburg; 136: Central State (OH), Tuskegee; 104: Bowie State; 112: Northeastern State
 
-NFL Week 2 (16 games, pulled Fri 9/18, 4:41 AM ET, lines DraftKings via ESPN)
+NFL Week 2 (16 games, pulled Fri 9/18, 4:53 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week2.html
   web copy written to nfl/index.html
   Thu 9/17: 0 on TV, 1 not
