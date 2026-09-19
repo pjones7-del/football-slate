@@ -17,7 +17,10 @@ Usage:
   python3 build_slate.py --template cfb-slate-week2.html --index index.html --summary summary.txt --artifact none
 
 Template: any cfb-slate-week*.html (default: the newest here). Only the block between /*DATA-START*/ and /*DATA-END*/
-is replaced, so renderer changes go in that one file. Outputs:
+is replaced, so renderer changes go in that one file. The previous build (the web copy beside --index, else the newest
+weekly file) supplies each started game's closing line and each game's original channel and kickoff, so a game moved on
+game day (ESPNEWS when the one before it runs long, a start pushed by weather) carries "sched" and the page can say where
+it went. Outputs:
   cfb-slate-weekN.html / nfl-slate-weekN.html   the weekly files: the same page, opening on College and on the NFL
   cfb-slate-artifact.html / nfl-slate-artifact.html   the same without the document skeleton, for the hosted artifacts
                                                        (--artifact none to skip; --embed inlines the logos for them)
@@ -26,7 +29,7 @@ is replaced, so renderer changes go in that one file. Outputs:
 Needs Python 3.9+ and internet access. No packages to install (--embed wants Pillow, only used by hand).
 """
 import argparse, glob, json, os, re, sys, urllib.request
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 ET = ZoneInfo("America/New_York")
@@ -248,9 +251,9 @@ def closing_line(league, eid):
     return None
 
 
-def previous_lines(html):
-    """{event id: [spread, total]} from a slate file's data block, for games that had a line last build. Reads both this
-    page's one-game-per-line block and the old board's."""
+def previous_games(html):
+    """{event id: game} from a slate file's data block, one game per line, as the previous build wrote it (the old board's
+    format reads the same way). The lines carry forward from here, and so does each game's original channel and kick."""
     out = {}
     m = re.search(r"/\*DATA-START\*/(.*?)/\*DATA-END\*/", html, re.S)
     if not m:
@@ -262,12 +265,59 @@ def previous_lines(html):
                 g = json.loads(line)
             except ValueError:
                 continue
-            sp, ou = g.get("spread", g.get("sp")), g.get("ou")
-            if g.get("close"):
-                sp, ou = g["close"]
-            if sp is not None or ou is not None:
-                out[str(g["id"])] = [sp, ou]
+            out[str(g["id"])] = g
     return out
+
+
+def previous_lines(prev):
+    """{event id: [spread, total]} for the games that had a line last build."""
+    out = {}
+    for eid, g in prev.items():
+        sp, ou = g.get("spread", g.get("sp")), g.get("ou")
+        if g.get("close"):
+            sp, ou = g["close"]
+        if sp is not None or ou is not None:
+            out[eid] = [sp, ou]
+    return out
+
+
+def slate_date(dt_et):
+    """The slate's day for a moment in ET: anything before 6 AM belongs to the previous day."""
+    d = dt_et.date()
+    return d - timedelta(days=1) if dt_et.hour < 6 else d
+
+
+def schedule_change(g, prev, on_day, now_iso):
+    """The game's original channel and kickoff, kept once either changes on game day (a weather delay that pushes the
+    start, a game moved to ESPNEWS when the one before it runs long): {"chan": original first channel, "kick": original
+    kick, "at": when the channel was first seen elsewhere}. Carried forward build to build; dropped once the game is back
+    on its original channel and time. Changes seen before game day are the networks settling the schedule, not moves,
+    and are not tracked (the original simply becomes whatever the previous build had)."""
+    if not prev:
+        return None
+    sc = dict(prev.get("sched") or {})
+    oc = (prev.get("carriers") or [""])[0] or ""
+    nc = (g["carriers"] or [""])[0] or ""
+    if oc and nc != oc and (sc or on_day):
+        if not sc.get("chan"):
+            sc["chan"] = oc
+            sc.setdefault("kick", prev.get("kick"))
+        if not sc.get("at") or oc == sc.get("chan"):
+            sc["at"] = now_iso
+    if prev.get("kick") and kick_gap(prev["kick"], g["kick"]) >= 20 and (sc or on_day):
+        sc.setdefault("chan", oc)
+        sc.setdefault("kick", prev["kick"])
+    if sc and (sc.get("chan") or "") == nc and (not sc.get("kick") or kick_gap(sc["kick"], g["kick"]) < 20):
+        return None
+    return sc or None
+
+
+def kick_gap(a, b):
+    """Minutes between two kick stamps. Under 20 is ESPN posting the actual kickoff (3:30 becomes 3:36), not a change."""
+    try:
+        return abs((datetime.fromisoformat(a.replace("Z", "+00:00")) - datetime.fromisoformat(b.replace("Z", "+00:00"))).total_seconds()) / 60
+    except (TypeError, ValueError):
+        return 0
 
 
 def artifact_copy(html, title):
@@ -335,11 +385,15 @@ def week_label(data, main_day, nfl=False):
     return main_day.strftime("Week of %b %-d"), main_day.strftime("%Y%m%d")
 
 
-def build_league(league, prev_lines, main_day, start, end):
+def build_league(league, prev, main_day, start, end):
     """Fetch one league's week. Returns (league data for the page, summary lines, week slug)."""
     L = LEAGUES[league]
     nfl = league == "nfl"
     dates = [start + timedelta(days=i) for i in range((end - start).days + 1)]
+    prev_lines = previous_lines(prev)
+    now_et = datetime.now(ET)
+    today_slate, now_iso = slate_date(now_et), now_et.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    changes = []
 
     events, week, slug, provider = {}, None, None, None
     for d in dates:
@@ -381,6 +435,10 @@ def build_league(league, prev_lines, main_day, start, end):
                 line = closing_line(league, g["id"]) or line
             if line:
                 g["close"] = line
+        sc = schedule_change(g, prev.get(g["id"]), g["state"] == "in" or day == today_slate, now_iso)
+        if sc:
+            g["sched"] = sc
+            changes.append((day, g, sc))
         days[day].append(g)
 
     for d in days:
@@ -393,7 +451,7 @@ def build_league(league, prev_lines, main_day, start, end):
     have = sorted(all_present) if DEFAULT_PACKAGES == "everything" else sorted({n for p in DEFAULT_PACKAGES for n in L["packages"].get(p, [])})
     out = {
         "name": L["name"], "week": week, "main": main_day.isoformat(), "mainLabel": main_day.strftime("%a, %b %-d"),
-        "logo": L["logo"], "networks": networks, "order": order, "packages": L["packages"], "have": have,
+        "logo": L["logo"], "networks": networks, "order": order, "tvAll": L["tv"], "streamAll": L["stream"], "packages": L["packages"], "have": have,
         "confs": NFL_CONFS if nfl else cfb_conf_table(),
         "days": [{"label": d.strftime("%a %-m/%-d"), "date": d.isoformat(), "games": days[d]} for d in dates if days[d]],
     }
@@ -432,6 +490,21 @@ def build_league(league, prev_lines, main_day, start, end):
     rep.append(f"  TV games without a line: {nolines}")
     tbds = [(d, g) for d in dates for g in days[d] if g.get("tbd")]
     rep.append(f"  time TBD: {len(tbds)}" + (": " + "; ".join(f"{g['away']['name']} at {g['home']['name']}" for d, g in tbds) if tbds else ""))
+    if changes:
+        def et_iso(iso):
+            dt = datetime.fromisoformat(iso.replace("Z", "+00:00")).astimezone(ET)
+            return dt.strftime("%-I:%M %p")
+        items = []
+        for d, g, sc in sorted(changes, key=lambda x: (x[0], x[1]["kick"])):
+            who = f"{g['away']['ab']} {'vs' if g['neutral'] else 'at'} {g['home']['ab']}"
+            cur = g["carriers"][0] if g["carriers"] else "no TV"
+            bits = []
+            if sc.get("chan") and sc["chan"] != cur:
+                bits.append(f"{sc['chan']} -> {cur}" + (f" ({et_iso(sc['at'])} ET)" if sc.get("at") else ""))
+            if sc.get("kick") and kick_gap(sc["kick"], g["kick"]) >= 20:
+                bits.append(f"kick {et_iso(sc['kick'])} -> {'TBD' if g.get('tbd') else et_iso(g['kick'])} ET")
+            items.append(f"{d.strftime('%a')} {who}: {', '.join(bits)}")
+        rep.append("  schedule changes on game day: " + "; ".join(items))
     if unknown_conf:
         rep.append("  non-Division I or unknown conference ids: " + "; ".join(f"{k}: {', '.join(sorted(v))}" for k, v in unknown_conf.items()))
     return out, rep, slug, pulled, lines_src
@@ -448,7 +521,7 @@ def data_block(slate):
     for li, lg in enumerate(keys):
         L = slate["leagues"][lg]
         lines.append(f"    {js(lg)}: {{")
-        for k in ("name", "week", "main", "mainLabel", "logo", "networks", "order", "packages", "have", "confs"):
+        for k in ("name", "week", "main", "mainLabel", "logo", "networks", "order", "tvAll", "streamAll", "packages", "have", "confs"):
             lines.append(f"      {js(k)}: {js(L[k])},")
         lines.append('      "days": [')
         for i, d in enumerate(L["days"]):
@@ -511,11 +584,11 @@ def main():
         # one, else the newest weekly file for that league, else the template
         web_prev = os.path.join(web_root, league, "index.html") if web_root is not None else None
         prev_src = web_prev if web_prev and os.path.exists(web_prev) else (newest(f"{L['file']}-*.html", exclude=(f"{L['file']}-artifact.html",)) or template)
-        prev_lines = previous_lines(open(prev_src, encoding="utf-8").read()) if prev_src and os.path.exists(prev_src) else {}
+        prev = previous_games(open(prev_src, encoding="utf-8").read()) if prev_src and os.path.exists(prev_src) else {}
         got = None
         for attempt in range(3):   # a window with no games (the gap before the season, a Sunday with none) rolls a week forward
             try:
-                got = build_league(league, prev_lines, main_day, start, end)
+                got = build_league(league, prev, main_day, start, end)
                 break
             except LookupError as ex:
                 if args.main or attempt == 2:
