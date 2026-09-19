@@ -1,4 +1,4 @@
-College Football Week 3 (128 games, pulled Sat 9/19, 6:36 PM ET, lines DraftKings via ESPN)
+College Football Week 3 (128 games, pulled Sat 9/19, 6:49 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week3.html
   web copy written to cfb/index.html
   Thu 9/17: 1 on TV, 0 not
@@ -19,10 +19,10 @@ College Football Week 3 (128 games, pulled Sat 9/19, 6:36 PM ET, lines DraftKing
     Sat 16:00 ET  Northern Iowa at #18 Iowa  [FS1]  IOWA -37.5, o/u 48.5
     Sat 16:00 ET  Western Kentucky at #4 Indiana  [Peacock]  IU -44.5, o/u 59.5
     Sat 17:15 ET  Florida State at #10 Alabama  [ABC]  ALA -18.5, o/u 50.5
-    Sat 19:00 ET  Troy at #20 Missouri  [SECN+]  MIZ -27.5, o/u 50.5
+    Sat 19:00 ET  Troy at #20 Missouri  [SECN+]  MIZ -27.5, o/u 49.5
     Sat 19:30 ET  #7 LSU at #8 Ole Miss  [ABC]  LSU -3.0, o/u 58.5
     Sat 19:30 ET  West Virginia vs #25 Virginia  [ACCN]  UVA -10.5, o/u 51.5
-    Sat 19:30 ET  #11 BYU at Colorado State  [CBS]  BYU -17.5, o/u 53.5
+    Sat 19:30 ET  #11 BYU at Colorado State  [CBS]  BYU -17.5, o/u 54.5
     Sat 19:30 ET  New Mexico at #24 Oklahoma  [ESPN2]  OU -21.5, o/u 45.5
     Sat 19:30 ET  Michigan State at #3 Notre Dame  [NBC]  ND -28.5, o/u 51.5
     Sat 19:45 ET  Kennesaw State at #15 Tennessee  [SECN]  TENN -35.5, o/u 60.5
@@ -32,7 +32,7 @@ College Football Week 3 (128 games, pulled Sat 9/19, 6:36 PM ET, lines DraftKing
   schedule changes on game day: Sat POI at CHSO: kick 6:00 PM -> 6:45 PM ET
   non-Division I or unknown conference ids: none: Delta State, Glenville State, Louisiana Christian, Point University, Virginia Lynchburg; 136: Central State (OH), Tuskegee; 104: Bowie State; 112: Northeastern State
 
-NFL Week 2 (16 games, pulled Sat 9/19, 6:36 PM ET, lines DraftKings via ESPN)
+NFL Week 2 (16 games, pulled Sat 9/19, 6:49 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week2.html
   web copy written to nfl/index.html
   Thu 9/17: 0 on TV, 1 not
