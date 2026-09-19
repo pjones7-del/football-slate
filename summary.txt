@@ -1,4 +1,4 @@
-College Football Week 3 (128 games, pulled Sat 9/19, 3:07 PM ET, lines DraftKings via ESPN)
+College Football Week 3 (128 games, pulled Sat 9/19, 3:21 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week3.html
   web copy written to cfb/index.html
   Thu 9/17: 1 on TV, 0 not
@@ -31,7 +31,7 @@ College Football Week 3 (128 games, pulled Sat 9/19, 3:07 PM ET, lines DraftKing
   time TBD: 0
   non-Division I or unknown conference ids: none: Delta State, Glenville State, Louisiana Christian, Point University, Virginia Lynchburg; 136: Central State (OH), Tuskegee; 104: Bowie State; 112: Northeastern State
 
-NFL Week 2 (16 games, pulled Sat 9/19, 3:07 PM ET, lines DraftKings via ESPN)
+NFL Week 2 (16 games, pulled Sat 9/19, 3:21 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week2.html
   web copy written to nfl/index.html
   Thu 9/17: 0 on TV, 1 not
@@ -53,6 +53,6 @@ NFL Week 2 (16 games, pulled Sat 9/19, 3:07 PM ET, lines DraftKings via ESPN)
     Sun 16:25 ET  Washington Commanders at Dallas Cowboys  [FOX]  DAL -3.5, o/u 50.5
     Sun 16:25 ET  Miami Dolphins at San Francisco 49ers  [FOX]  SF -13.5, o/u 44.5
     Sun 20:20 ET  Indianapolis Colts at Kansas City Chiefs  [NBC]  KC -6.0, o/u 46.5
-    Mon 20:15 ET  New York Giants at Los Angeles Rams  [ESPN]  LAR -7.0, o/u 48.5
+    Mon 20:15 ET  New York Giants at Los Angeles Rams  [ESPN]  LAR -7.0, o/u 47.5
   TV games without a line: 0
   time TBD: 0
