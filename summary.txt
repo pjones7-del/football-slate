@@ -1,4 +1,4 @@
-College Football Week 3 (128 games, pulled Sun 9/20, 6:37 PM ET, lines DraftKings via ESPN)
+College Football Week 3 (128 games, pulled Sun 9/20, 6:50 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week3.html
   web copy written to cfb/index.html
   Thu 9/17: 1 on TV, 0 not
@@ -32,7 +32,7 @@ College Football Week 3 (128 games, pulled Sun 9/20, 6:37 PM ET, lines DraftKing
   schedule changes on game day: Sat FSU at ALA: ABC -> ESPN2 (7:49 PM ET); Sat POI at CHSO: kick 6:00 PM -> 6:45 PM ET; Sat UNM at OU: ESPN2 -> ESPNEWS (7:35 PM ET); Sat SCST at FUR: kick 7:00 PM -> 7:30 PM ET; Sat KENN at TENN: SECN -> SECN+ (8:12 PM ET); Sat BYU at CSU: kick 7:30 PM -> 8:15 PM ET; Sat CLT at APP: kick 6:00 PM -> 9:30 PM ET
   non-Division I or unknown conference ids: none: Delta State, Glenville State, Louisiana Christian, Point University, Virginia Lynchburg; 136: Central State (OH), Tuskegee; 104: Bowie State; 112: Northeastern State
 
-NFL Week 2 (16 games, pulled Sun 9/20, 6:37 PM ET, lines DraftKings via ESPN)
+NFL Week 2 (16 games, pulled Sun 9/20, 6:51 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week2.html
   web copy written to nfl/index.html
   Thu 9/17: 0 on TV, 1 not
