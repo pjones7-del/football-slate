@@ -1,4 +1,4 @@
-NFL Week 2 (16 games, pulled Sun 9/20, 10:23 AM ET, lines DraftKings via ESPN)
+NFL Week 2 (16 games, pulled Sun 9/20, 10:37 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week2.html
   web copy written to nfl/index.html
   Thu 9/17: 0 on TV, 1 not
@@ -11,7 +11,7 @@ NFL Week 2 (16 games, pulled Sun 9/20, 10:23 AM ET, lines DraftKings via ESPN)
     Sun 13:00 ET  Pittsburgh Steelers at New England Patriots  [CBS]  NE -5.5, o/u 41.5
     Sun 13:00 ET  Cleveland Browns at Tampa Bay Buccaneers  [CBS]  TB -8.5, o/u 41.5
     Sun 13:00 ET  Carolina Panthers at Atlanta Falcons  [FOX]  CAR -2.5, o/u 43.5
-    Sun 13:00 ET  Minnesota Vikings at Chicago Bears  [FOX]  CHI -4.5, o/u 46.5
+    Sun 13:00 ET  Minnesota Vikings at Chicago Bears  [FOX]  CHI -4.5, o/u 47.5
     Sun 13:00 ET  Green Bay Packers at New York Jets  [FOX]  GB -3.5, o/u 44.5
     Sun 13:00 ET  Philadelphia Eagles at Tennessee Titans  [FOX]  PHI -7.0, o/u 39.5
     Sun 16:05 ET  Jacksonville Jaguars at Denver Broncos  [CBS]  DEN -2.5, o/u 45.5
