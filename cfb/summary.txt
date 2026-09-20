@@ -1,4 +1,4 @@
-College Football Week 3 (128 games, pulled Sat 9/19, 10:25 PM ET, lines DraftKings via ESPN)
+College Football Week 3 (128 games, pulled Sat 9/19, 10:38 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week3.html
   web copy written to cfb/index.html
   Thu 9/17: 1 on TV, 0 not
@@ -27,7 +27,7 @@ College Football Week 3 (128 games, pulled Sat 9/19, 10:25 PM ET, lines DraftKin
     Sat 19:45 ET  Kennesaw State at #15 Tennessee  [SECN+]  TENN -35.5, o/u 60.5
     Sat 20:00 ET  UTSA at #1 Texas  [SECN+]  TEX -30.5, o/u 58.5
     Sat 20:15 ET  #11 BYU at Colorado State  [CBS]  BYU -17.5, o/u 54.5
-  TV games without a line: 1
+  TV games without a line: 0
   time TBD: 0
   schedule changes on game day: Sat FSU at ALA: ABC -> ESPN2 (7:49 PM ET); Sat POI at CHSO: kick 6:00 PM -> 6:45 PM ET; Sat UNM at OU: ESPN2 -> ESPNEWS (7:35 PM ET); Sat SCST at FUR: kick 7:00 PM -> 7:30 PM ET; Sat KENN at TENN: SECN -> SECN+ (8:12 PM ET); Sat BYU at CSU: kick 7:30 PM -> 8:15 PM ET; Sat CLT at APP: kick 6:00 PM -> 9:30 PM ET
-  non-Division I or unknown conference ids: 104: Bowie State; 136: Central State (OH), Tuskegee; 112: Northeastern State; none: Delta State, Glenville State, Louisiana Christian, Point University, Virginia Lynchburg
+  non-Division I or unknown conference ids: 104: Bowie State; 112: Northeastern State; none: Delta State, Glenville State, Louisiana Christian, Point University, Virginia Lynchburg; 136: Central State (OH), Tuskegee
