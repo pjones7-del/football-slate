@@ -1,4 +1,4 @@
-NFL Week 2 (16 games, pulled Mon 9/21, 6:51 AM ET, lines DraftKings via ESPN)
+NFL Week 2 (16 games, pulled Mon 9/21, 7:08 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week2.html
   web copy written to nfl/index.html
   Thu 9/17: 0 on TV, 1 not
@@ -20,6 +20,6 @@ NFL Week 2 (16 games, pulled Mon 9/21, 6:51 AM ET, lines DraftKings via ESPN)
     Sun 16:25 ET  Washington Commanders at Dallas Cowboys  [FOX]  DAL -3.5, o/u 51.5
     Sun 16:25 ET  Miami Dolphins at San Francisco 49ers  [FOX]  SF -12.5, o/u 44.5
     Sun 20:20 ET  Indianapolis Colts at Kansas City Chiefs  [NBC]  KC -6.0, o/u 46.5
-    Mon 20:15 ET  New York Giants at Los Angeles Rams  [ESPN]  LAR -7.0, o/u 47.5
+    Mon 20:15 ET  New York Giants at Los Angeles Rams  [ESPN]  LAR -6.5, o/u 47.5
   TV games without a line: 0
   time TBD: 0
