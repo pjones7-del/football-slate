@@ -1,4 +1,4 @@
-College Football Week 4 (123 games, pulled Tue 9/22, 6:07 PM ET, lines DraftKings via ESPN)
+College Football Week 4 (123 games, pulled Tue 9/22, 6:24 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week4.html
   web copy written to cfb/index.html
   Thu 9/24: 1 on TV, 0 not
@@ -27,14 +27,14 @@ College Football Week 4 (123 games, pulled Tue 9/22, 6:07 PM ET, lines DraftKing
   time TBD: 0
   non-Division I or unknown conference ids: none: Rio Grande; 136: Fort Valley State; 112: Northeastern State
 
-NFL Week 3 (16 games, pulled Tue 9/22, 6:07 PM ET, lines DraftKings via ESPN)
+NFL Week 3 (16 games, pulled Tue 9/22, 6:24 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week3.html
   web copy written to nfl/index.html
   Thu 9/24: 0 on TV, 1 not
   Sun 9/27: 14 on TV, 0 not
   Mon 9/28: 1 on TV, 0 not
   every game with its line:
-    Thu 20:15 ET  Atlanta Falcons at Green Bay Packers  [Prime Video]  GB -6.0, o/u 44.5
+    Thu 20:15 ET  Atlanta Falcons at Green Bay Packers  [Prime Video]  GB -6.0, o/u 43.5
     Sun 13:00 ET  Houston Texans at Indianapolis Colts  [CBS]  HOU -2.5, o/u 43.5
     Sun 13:00 ET  New England Patriots at Jacksonville Jaguars  [CBS]  JAX -3.0, o/u 45.5
     Sun 13:00 ET  Kansas City Chiefs at Miami Dolphins  [CBS]  KC -11.5, o/u 45.5
@@ -46,7 +46,7 @@ NFL Week 3 (16 games, pulled Tue 9/22, 6:07 PM ET, lines DraftKings via ESPN)
     Sun 13:00 ET  Seattle Seahawks at Washington Commanders  [FOX]  SEA -7.0, o/u 40.5
     Sun 16:05 ET  Arizona Cardinals at San Francisco 49ers  [FOX]  SF -8.5, o/u 47.5
     Sun 16:05 ET  Minnesota Vikings at Tampa Bay Buccaneers  [FOX]  MIN -1.5, o/u 42.5
-    Sun 16:25 ET  Baltimore Ravens vs Dallas Cowboys  [CBS]  BAL -3.0, o/u 52.5
+    Sun 16:25 ET  Baltimore Ravens vs Dallas Cowboys  [CBS]  BAL -3.5, o/u 52.5
     Sun 16:25 ET  Las Vegas Raiders at New Orleans Saints  [CBS]  NO -3.0, o/u 43.5
     Sun 20:20 ET  Los Angeles Rams at Denver Broncos  [NBC]  LAR -2.5, o/u 45.5
     Mon 20:15 ET  Philadelphia Eagles at Chicago Bears  [ESPN]  PHI -4.5, o/u 41.5
