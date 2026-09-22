@@ -1,11 +1,11 @@
-NFL Week 3 (16 games, pulled Tue 9/22, 12:26 PM ET, lines DraftKings via ESPN)
+NFL Week 3 (16 games, pulled Tue 9/22, 12:41 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week3.html
   web copy written to nfl/index.html
   Thu 9/24: 0 on TV, 1 not
   Sun 9/27: 14 on TV, 0 not
   Mon 9/28: 1 on TV, 0 not
   every game with its line:
-    Thu 20:15 ET  Atlanta Falcons at Green Bay Packers  [Prime Video]  GB -6.0, o/u 43.5
+    Thu 20:15 ET  Atlanta Falcons at Green Bay Packers  [Prime Video]  GB -6.0, o/u 44.5
     Sun 13:00 ET  Houston Texans at Indianapolis Colts  [CBS]  HOU -2.5, o/u 43.5
     Sun 13:00 ET  New England Patriots at Jacksonville Jaguars  [CBS]  JAX -3.0, o/u 45.5
     Sun 13:00 ET  Kansas City Chiefs at Miami Dolphins  [CBS]  KC -11.5, o/u 45.5
