@@ -1,4 +1,4 @@
-NFL Week 3 (16 games, pulled Tue 9/22, 2:10 PM ET, lines DraftKings via ESPN)
+NFL Week 3 (16 games, pulled Tue 9/22, 2:30 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week3.html
   web copy written to nfl/index.html
   Thu 9/24: 0 on TV, 1 not
@@ -20,6 +20,6 @@ NFL Week 3 (16 games, pulled Tue 9/22, 2:10 PM ET, lines DraftKings via ESPN)
     Sun 16:25 ET  Baltimore Ravens vs Dallas Cowboys  [CBS]  BAL -3.0, o/u 52.5
     Sun 16:25 ET  Las Vegas Raiders at New Orleans Saints  [CBS]  NO -3.0, o/u 44.5
     Sun 20:20 ET  Los Angeles Rams at Denver Broncos  [NBC]  LAR -2.5, o/u 45.5
-    Mon 20:15 ET  Philadelphia Eagles at Chicago Bears  [ESPN]  PHI -3.5, o/u 43.5
+    Mon 20:15 ET  Philadelphia Eagles at Chicago Bears  [ESPN]  PHI -3.5, o/u 42.5
   TV games without a line: 0
   time TBD: 0
