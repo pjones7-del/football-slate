@@ -1,4 +1,4 @@
-NFL Week 3 (16 games, pulled Wed 9/23, 5:08 PM ET, lines DraftKings via ESPN)
+NFL Week 3 (16 games, pulled Wed 9/23, 5:25 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week3.html
   web copy written to nfl/index.html
   Thu 9/24: 0 on TV, 1 not
