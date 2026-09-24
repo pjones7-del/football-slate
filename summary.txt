@@ -1,4 +1,4 @@
-College Football Week 4 (123 games, pulled Thu 9/24, 9:44 AM ET, lines DraftKings via ESPN)
+College Football Week 4 (123 games, pulled Thu 9/24, 9:56 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week4.html
   web copy written to cfb/index.html
   Thu 9/24: 1 on TV, 0 not
@@ -27,7 +27,7 @@ College Football Week 4 (123 games, pulled Thu 9/24, 9:44 AM ET, lines DraftKing
   time TBD: 0
   non-Division I or unknown conference ids: none: Rio Grande; 136: Fort Valley State; 112: Northeastern State
 
-NFL Week 3 (16 games, pulled Thu 9/24, 9:44 AM ET, lines DraftKings via ESPN)
+NFL Week 3 (16 games, pulled Thu 9/24, 9:56 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week3.html
   web copy written to nfl/index.html
   Thu 9/24: 0 on TV, 1 not
@@ -41,7 +41,7 @@ NFL Week 3 (16 games, pulled Thu 9/24, 9:44 AM ET, lines DraftKings via ESPN)
     Sun 13:00 ET  Tennessee Titans at New York Giants  [CBS]  NYG -3.0, o/u 38.5
     Sun 13:00 ET  Cincinnati Bengals at Pittsburgh Steelers  [CBS]  CIN -3.5, o/u 42.5
     Sun 13:00 ET  Los Angeles Chargers at Buffalo Bills  [FOX]  BUF -7.0, o/u 50.5
-    Sun 13:00 ET  Carolina Panthers at Cleveland Browns  [FOX]  CAR -2.5, o/u 42.5
+    Sun 13:00 ET  Carolina Panthers at Cleveland Browns  [FOX]  CAR -3.0, o/u 42.5
     Sun 13:00 ET  New York Jets at Detroit Lions  [FOX]  DET -6.5, o/u 47.5
     Sun 13:00 ET  Seattle Seahawks at Washington Commanders  [FOX]  SEA -7.0, o/u 40.5
     Sun 16:05 ET  Arizona Cardinals at San Francisco 49ers  [FOX]  SF -8.5, o/u 47.5
