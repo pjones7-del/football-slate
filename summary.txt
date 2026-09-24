@@ -1,4 +1,4 @@
-College Football Week 4 (123 games, pulled Thu 9/24, 9:10 AM ET, lines DraftKings via ESPN)
+College Football Week 4 (123 games, pulled Thu 9/24, 9:27 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week4.html
   web copy written to cfb/index.html
   Thu 9/24: 1 on TV, 0 not
@@ -27,7 +27,7 @@ College Football Week 4 (123 games, pulled Thu 9/24, 9:10 AM ET, lines DraftKing
   time TBD: 0
   non-Division I or unknown conference ids: none: Rio Grande; 136: Fort Valley State; 112: Northeastern State
 
-NFL Week 3 (16 games, pulled Thu 9/24, 9:10 AM ET, lines DraftKings via ESPN)
+NFL Week 3 (16 games, pulled Thu 9/24, 9:27 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week3.html
   web copy written to nfl/index.html
   Thu 9/24: 0 on TV, 1 not
