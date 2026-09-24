@@ -1,4 +1,4 @@
-College Football Week 4 (123 games, pulled Wed 9/23, 10:08 PM ET, lines DraftKings via ESPN)
+College Football Week 4 (123 games, pulled Wed 9/23, 10:26 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week4.html
   web copy written to cfb/index.html
   Thu 9/24: 1 on TV, 0 not
@@ -6,7 +6,7 @@ College Football Week 4 (123 games, pulled Wed 9/23, 10:08 PM ET, lines DraftKin
   Sat 9/26: 40 on TV, 76 not
   ranked matchups:
     Fri 20:00 ET  Northwestern at #5 Indiana  [FOX]  IU -21.0, o/u 49.5
-    Sat 12:00 ET  #1 Texas at #14 Tennessee  [ABC]  TEX -4.5, o/u 55.5
+    Sat 12:00 ET  #1 Texas at #14 Tennessee  [ABC]  TEX -4.0, o/u 55.5
     Sat 12:00 ET  Wake Forest at #16 Louisville  [ESPN]  LOU -13.5, o/u 57.5
     Sat 12:00 ET  Illinois at #7 Ohio State  [FOX]  OSU -26.5, o/u 53.5
     Sat 12:00 ET  Sam Houston at #11 Texas Tech  [TNT]  TTU -34.5, o/u 55.5
@@ -27,7 +27,7 @@ College Football Week 4 (123 games, pulled Wed 9/23, 10:08 PM ET, lines DraftKin
   time TBD: 0
   non-Division I or unknown conference ids: none: Rio Grande; 136: Fort Valley State; 112: Northeastern State
 
-NFL Week 3 (16 games, pulled Wed 9/23, 10:08 PM ET, lines DraftKings via ESPN)
+NFL Week 3 (16 games, pulled Wed 9/23, 10:26 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week3.html
   web copy written to nfl/index.html
   Thu 9/24: 0 on TV, 1 not
