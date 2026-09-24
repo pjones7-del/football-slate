@@ -1,4 +1,4 @@
-College Football Week 4 (123 games, pulled Thu 9/24, 12:28 PM ET, lines DraftKings via ESPN)
+College Football Week 4 (123 games, pulled Thu 9/24, 12:43 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week4.html
   web copy written to cfb/index.html
   Thu 9/24: 1 on TV, 0 not
@@ -7,14 +7,14 @@ College Football Week 4 (123 games, pulled Thu 9/24, 12:28 PM ET, lines DraftKin
   ranked matchups:
     Fri 20:00 ET  Northwestern at #5 Indiana  [FOX]  IU -21.0, o/u 49.5
     Sat 12:00 ET  #1 Texas at #14 Tennessee  [ABC]  TEX -4.0, o/u 55.5
-    Sat 12:00 ET  Wake Forest at #16 Louisville  [ESPN]  LOU -13.5, o/u 57.5
+    Sat 12:00 ET  Wake Forest at #16 Louisville  [ESPN]  LOU -13.5, o/u 56.5
     Sat 12:00 ET  Illinois at #7 Ohio State  [FOX]  OSU -27.5, o/u 53.5
     Sat 12:00 ET  Sam Houston at #11 Texas Tech  [TNT]  TTU -34.5, o/u 55.5
     Sat 14:00 ET  #3 Notre Dame at Purdue  [Peacock]  ND -27.5, o/u 58.5
     Sat 15:30 ET  #4 Ole Miss at #21 Florida  [ABC]  FLA -3.5, o/u 58.5
     Sat 15:30 ET  #17 Iowa at #18 Michigan  [CBS]  MICH -5.5, o/u 38.5
     Sat 15:30 ET  Oklahoma at #2 Georgia  [ESPN]  UGA -14.0, o/u 44.5
-    Sat 15:30 ET  #15 Utah at Iowa State  [FOX]  UTAH -8.5, o/u 48.5
+    Sat 15:30 ET  #15 Utah at Iowa State  [FOX]  UTAH -8.5, o/u 47.5
     Sat 16:00 ET  #25 Houston at Georgia Southern  [ESPNU]  HOU -18.5, o/u 56.5
     Sat 17:00 ET  Wisconsin at #13 Penn State  [Peacock]  PSU -10.0, o/u 44.5
     Sat 18:30 ET  Central Michigan at #6 Miami (FL)  [CW]  MIA -41.5, o/u 54.5
@@ -27,7 +27,7 @@ College Football Week 4 (123 games, pulled Thu 9/24, 12:28 PM ET, lines DraftKin
   time TBD: 0
   non-Division I or unknown conference ids: none: Rio Grande; 136: Fort Valley State; 112: Northeastern State
 
-NFL Week 3 (16 games, pulled Thu 9/24, 12:28 PM ET, lines DraftKings via ESPN)
+NFL Week 3 (16 games, pulled Thu 9/24, 12:43 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week3.html
   web copy written to nfl/index.html
   Thu 9/24: 0 on TV, 1 not
@@ -35,7 +35,7 @@ NFL Week 3 (16 games, pulled Thu 9/24, 12:28 PM ET, lines DraftKings via ESPN)
   Mon 9/28: 1 on TV, 0 not
   every game with its line:
     Thu 20:15 ET  Atlanta Falcons at Green Bay Packers  [Prime Video]  GB -4.5, o/u 42.5
-    Sun 13:00 ET  Houston Texans at Indianapolis Colts  [CBS]  HOU -2.5, o/u 42.5
+    Sun 13:00 ET  Houston Texans at Indianapolis Colts  [CBS]  HOU -1.5, o/u 42.5
     Sun 13:00 ET  New England Patriots at Jacksonville Jaguars  [CBS]  JAX -3.0, o/u 45.5
     Sun 13:00 ET  Kansas City Chiefs at Miami Dolphins  [CBS]  KC -10.5, o/u 45.5
     Sun 13:00 ET  Tennessee Titans at New York Giants  [CBS]  NYG -2.5, o/u 38.5
