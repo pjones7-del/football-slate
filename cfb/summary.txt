@@ -1,11 +1,11 @@
-College Football Week 4 (123 games, pulled Fri 9/25, 1:53 PM ET, lines DraftKings via ESPN)
+College Football Week 4 (123 games, pulled Fri 9/25, 2:09 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week4.html
   web copy written to cfb/index.html
   Thu 9/24: 1 on TV, 0 not
   Fri 9/25: 6 on TV, 0 not
   Sat 9/26: 40 on TV, 76 not
   ranked matchups:
-    Fri 20:00 ET  Northwestern at #5 Indiana  [FOX]  IU -20.5, o/u 49.5
+    Fri 20:00 ET  Northwestern at #5 Indiana  [FOX]  IU -20.5, o/u 50.5
     Sat 12:00 ET  #1 Texas at #14 Tennessee  [ABC]  TEX -4.5, o/u 54.5
     Sat 12:00 ET  Wake Forest at #16 Louisville  [ESPN]  LOU -13.5, o/u 57.5
     Sat 12:00 ET  Illinois at #7 Ohio State  [FOX]  OSU -27.5, o/u 53.5
@@ -23,6 +23,6 @@ College Football Week 4 (123 games, pulled Fri 9/25, 1:53 PM ET, lines DraftKing
     Sat 19:30 ET  #20 Oregon at #12 USC  [NBC]  ORE -3.0, o/u 61.5
     Sat 19:45 ET  #19 Missouri at #24 Mississippi State  [SECN]  MSST -6.0, o/u 58.5
     Sat 21:00 ET  Missouri State at #22 SMU  [ACCN]  SMU -34.5, o/u 59.5
-  TV games without a line: 1
+  TV games without a line: 0
   time TBD: 0
   non-Division I or unknown conference ids: none: Rio Grande; 136: Fort Valley State; 112: Northeastern State
