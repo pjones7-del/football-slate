@@ -1,4 +1,4 @@
-College Football Week 4 (123 games, pulled Fri 9/25, 2:43 PM ET, lines DraftKings via ESPN)
+College Football Week 4 (123 games, pulled Fri 9/25, 2:56 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week4.html
   web copy written to cfb/index.html
   Thu 9/24: 1 on TV, 0 not
@@ -10,7 +10,7 @@ College Football Week 4 (123 games, pulled Fri 9/25, 2:43 PM ET, lines DraftKing
     Sat 12:00 ET  Wake Forest at #16 Louisville  [ESPN]  LOU -13.5, o/u 57.5
     Sat 12:00 ET  Illinois at #7 Ohio State  [FOX]  OSU -26.5, o/u 53.5
     Sat 12:00 ET  Sam Houston at #11 Texas Tech  [TNT]  TTU -34.5, o/u 55.5
-    Sat 14:00 ET  #3 Notre Dame at Purdue  [Peacock]  ND -27.5, o/u 58.5
+    Sat 14:00 ET  #3 Notre Dame at Purdue  [Peacock]  ND -27.5, o/u 57.5
     Sat 15:30 ET  #4 Ole Miss at #21 Florida  [ABC]  FLA -3.5, o/u 59.5
     Sat 15:30 ET  #17 Iowa at #18 Michigan  [CBS]  MICH -5.5, o/u 38.5
     Sat 15:30 ET  Oklahoma at #2 Georgia  [ESPN]  UGA -13.5, o/u 44.5
@@ -27,7 +27,7 @@ College Football Week 4 (123 games, pulled Fri 9/25, 2:43 PM ET, lines DraftKing
   time TBD: 0
   non-Division I or unknown conference ids: none: Rio Grande; 136: Fort Valley State; 112: Northeastern State
 
-NFL Week 3 (16 games, pulled Fri 9/25, 2:43 PM ET, lines DraftKings via ESPN)
+NFL Week 3 (16 games, pulled Fri 9/25, 2:56 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week3.html
   web copy written to nfl/index.html
   Thu 9/24: 0 on TV, 1 not
