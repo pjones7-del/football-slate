@@ -1,4 +1,4 @@
-College Football Week 4 (123 games, pulled Fri 9/25, 10:54 AM ET, lines DraftKings via ESPN)
+College Football Week 4 (123 games, pulled Fri 9/25, 11:09 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week4.html
   web copy written to cfb/index.html
   Thu 9/24: 1 on TV, 0 not
@@ -8,7 +8,7 @@ College Football Week 4 (123 games, pulled Fri 9/25, 10:54 AM ET, lines DraftKin
     Fri 20:00 ET  Northwestern at #5 Indiana  [FOX]  IU -20.5, o/u 49.5
     Sat 12:00 ET  #1 Texas at #14 Tennessee  [ABC]  TEX -4.5, o/u 54.5
     Sat 12:00 ET  Wake Forest at #16 Louisville  [ESPN]  LOU -13.5, o/u 57.5
-    Sat 12:00 ET  Illinois at #7 Ohio State  [FOX]  OSU -27.5, o/u 53.5
+    Sat 12:00 ET  Illinois at #7 Ohio State  [FOX]  OSU -26.5, o/u 53.5
     Sat 12:00 ET  Sam Houston at #11 Texas Tech  [TNT]  TTU -34.5, o/u 55.5
     Sat 14:00 ET  #3 Notre Dame at Purdue  [Peacock]  ND -27.5, o/u 58.5
     Sat 15:30 ET  #4 Ole Miss at #21 Florida  [ABC]  FLA -3.5, o/u 59.5
@@ -19,7 +19,7 @@ College Football Week 4 (123 games, pulled Fri 9/25, 10:54 AM ET, lines DraftKin
     Sat 17:00 ET  Wisconsin at #13 Penn State  [Peacock]  PSU -10.0, o/u 44.5
     Sat 18:30 ET  Central Michigan at #6 Miami (FL)  [CW]  MIA -41.5, o/u 54.5
     Sat 19:00 ET  South Carolina at #8 Alabama  [ESPN]  ALA -12.5, o/u 54.5
-    Sat 19:30 ET  #23 Texas A&M at #10 LSU  [ABC]  LSU -9.5, o/u 51.5
+    Sat 19:30 ET  #23 Texas A&M at #10 LSU  [ABC]  LSU -8.5, o/u 51.5
     Sat 19:30 ET  #20 Oregon at #12 USC  [NBC]  ORE -3.0, o/u 61.5
     Sat 19:45 ET  #19 Missouri at #24 Mississippi State  [SECN]  MSST -6.0, o/u 58.5
     Sat 21:00 ET  Missouri State at #22 SMU  [ACCN]  SMU -34.5, o/u 59.5
@@ -27,7 +27,7 @@ College Football Week 4 (123 games, pulled Fri 9/25, 10:54 AM ET, lines DraftKin
   time TBD: 0
   non-Division I or unknown conference ids: none: Rio Grande; 136: Fort Valley State; 112: Northeastern State
 
-NFL Week 3 (16 games, pulled Fri 9/25, 10:54 AM ET, lines DraftKings via ESPN)
+NFL Week 3 (16 games, pulled Fri 9/25, 11:09 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week3.html
   web copy written to nfl/index.html
   Thu 9/24: 0 on TV, 1 not
