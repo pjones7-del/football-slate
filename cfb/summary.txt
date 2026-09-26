@@ -1,4 +1,4 @@
-College Football Week 4 (123 games, pulled Sat 9/26, 11:07 AM ET, lines DraftKings via ESPN)
+College Football Week 4 (123 games, pulled Sat 9/26, 11:25 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week4.html
   web copy written to cfb/index.html
   Thu 9/24: 1 on TV, 0 not
@@ -13,7 +13,7 @@ College Football Week 4 (123 games, pulled Sat 9/26, 11:07 AM ET, lines DraftKin
     Sat 14:00 ET  #3 Notre Dame at Purdue  [Peacock]  ND -27.5, o/u 57.5
     Sat 15:30 ET  #4 Ole Miss at #21 Florida  [ABC]  FLA -3.5, o/u 58.5
     Sat 15:30 ET  #17 Iowa at #18 Michigan  [CBS]  MICH -5.5, o/u 38.5
-    Sat 15:30 ET  Oklahoma at #2 Georgia  [ESPN]  UGA -13.5, o/u 44.5
+    Sat 15:30 ET  Oklahoma at #2 Georgia  [ESPN]  UGA -13.5, o/u 43.5
     Sat 15:30 ET  #15 Utah at Iowa State  [FOX]  UTAH -7.5, o/u 47.5
     Sat 16:00 ET  #25 Houston at Georgia Southern  [ESPNU]  HOU -17.5, o/u 56.5
     Sat 17:00 ET  Wisconsin at #13 Penn State  [Peacock]  PSU -10.0, o/u 43.5
