@@ -1,9 +1,9 @@
-College Football Week 4 (123 games, pulled Sat 9/26, 3:36 PM ET, lines DraftKings via ESPN)
+College Football Week 4 (123 games, pulled Sat 9/26, 3:49 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week4.html
   web copy written to cfb/index.html
   Thu 9/24: 1 on TV, 0 not
   Fri 9/25: 6 on TV, 0 not
-  Sat 9/26: 39 on TV, 77 not
+  Sat 9/26: 40 on TV, 76 not
   ranked matchups:
     Fri 20:00 ET  Northwestern at #5 Indiana  [FOX]  IU -20.5, o/u 49.5
     Sat 12:00 ET  #1 Texas at #14 Tennessee  [ABC]  TEX -5.5, o/u 54.5
@@ -25,10 +25,9 @@ College Football Week 4 (123 games, pulled Sat 9/26, 3:36 PM ET, lines DraftKing
     Sat 21:00 ET  Missouri State at #22 SMU  [ACCN]  SMU -32.5, o/u 60.5
   TV games without a line: 0
   time TBD: 0
-  schedule changes on game day: Sat CARK at FSU: ACCN -> ACCNX (3:09 PM ET)
   non-Division I or unknown conference ids: none: Rio Grande; 136: Fort Valley State; 112: Northeastern State
 
-NFL Week 3 (16 games, pulled Sat 9/26, 3:36 PM ET, lines DraftKings via ESPN)
+NFL Week 3 (16 games, pulled Sat 9/26, 3:49 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week3.html
   web copy written to nfl/index.html
   Thu 9/24: 0 on TV, 1 not
