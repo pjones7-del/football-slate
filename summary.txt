@@ -1,4 +1,4 @@
-College Football Week 4 (123 games, pulled Fri 9/25, 10:52 PM ET, lines DraftKings via ESPN)
+College Football Week 4 (123 games, pulled Fri 9/25, 11:07 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week4.html
   web copy written to cfb/index.html
   Thu 9/24: 1 on TV, 0 not
@@ -22,12 +22,12 @@ College Football Week 4 (123 games, pulled Fri 9/25, 10:52 PM ET, lines DraftKin
     Sat 19:30 ET  #23 Texas A&M at #10 LSU  [ABC]  LSU -8.5, o/u 51.5
     Sat 19:30 ET  #20 Oregon at #12 USC  [NBC]  ORE -3.0, o/u 61.5
     Sat 19:45 ET  #19 Missouri at #24 Mississippi State  [SECN]  MSST -6.0, o/u 58.5
-    Sat 21:00 ET  Missouri State at #22 SMU  [ACCN]  SMU -34.5, o/u 59.5
+    Sat 21:00 ET  Missouri State at #22 SMU  [ACCN]  SMU -33.5, o/u 59.5
   TV games without a line: 0
   time TBD: 0
   non-Division I or unknown conference ids: none: Rio Grande; 136: Fort Valley State; 112: Northeastern State
 
-NFL Week 3 (16 games, pulled Fri 9/25, 10:52 PM ET, lines DraftKings via ESPN)
+NFL Week 3 (16 games, pulled Fri 9/25, 11:07 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week3.html
   web copy written to nfl/index.html
   Thu 9/24: 0 on TV, 1 not
