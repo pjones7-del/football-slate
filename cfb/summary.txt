@@ -1,4 +1,4 @@
-College Football Week 4 (123 games, pulled Sat 9/26, 1:51 PM ET, lines DraftKings via ESPN)
+College Football Week 4 (123 games, pulled Sat 9/26, 2:09 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week4.html
   web copy written to cfb/index.html
   Thu 9/24: 1 on TV, 0 not
@@ -20,9 +20,9 @@ College Football Week 4 (123 games, pulled Sat 9/26, 1:51 PM ET, lines DraftKing
     Sat 18:30 ET  Central Michigan at #6 Miami (FL)  [CW]  MIA -41.5, o/u 53.5
     Sat 19:00 ET  South Carolina at #8 Alabama  [ESPN]  ALA -12.5, o/u 54.5
     Sat 19:30 ET  #23 Texas A&M at #10 LSU  [ABC]  LSU -8.5, o/u 52.5
-    Sat 19:30 ET  #20 Oregon at #12 USC  [NBC]  ORE -3.5, o/u 61.5
+    Sat 19:30 ET  #20 Oregon at #12 USC  [NBC]  ORE -3.5, o/u 60.5
     Sat 19:45 ET  #19 Missouri at #24 Mississippi State  [SECN]  MSST -4.5, o/u 58.5
-    Sat 21:00 ET  Missouri State at #22 SMU  [ACCN]  SMU -31.5, o/u 60.5
+    Sat 21:00 ET  Missouri State at #22 SMU  [ACCN]  SMU -32.5, o/u 60.5
   TV games without a line: 0
   time TBD: 0
   non-Division I or unknown conference ids: none: Rio Grande; 136: Fort Valley State; 112: Northeastern State
