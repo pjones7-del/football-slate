@@ -1,11 +1,11 @@
-College Football Week 5 (114 games, pulled Tue 9/29, 7:08 PM ET, lines DraftKings via ESPN)
+College Football Week 5 (114 games, pulled Tue 9/29, 7:24 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week5.html
   web copy written to cfb/index.html
   Thu 10/1: 2 on TV, 0 not
   Fri 10/2: 4 on TV, 0 not
   Sat 10/3: 38 on TV, 70 not
   ranked matchups:
-    Sat 12:00 ET  #7 Alabama at #16 Mississippi State  [ABC]  ALA -6.0, o/u 59.5
+    Sat 12:00 ET  #7 Alabama at #16 Mississippi State  [ABC]  ALA -6.0, o/u 60.5
     Sat 12:00 ET  Boston College at #21 SMU  [CW]  SMU -21.0, o/u 55.5
     Sat 12:00 ET  #3 Notre Dame at North Carolina  [ESPN]  ND -21.0, o/u 47.5
     Sat 12:00 ET  UCF at #20 Houston  [ESPN2]  HOU -12.5, o/u 51.5
@@ -24,7 +24,7 @@ College Football Week 5 (114 games, pulled Tue 9/29, 7:08 PM ET, lines DraftKing
   TV games without a line: 3
   time TBD: 0
 
-NFL Week 4 (16 games, pulled Tue 9/29, 7:08 PM ET, lines DraftKings via ESPN)
+NFL Week 4 (16 games, pulled Tue 9/29, 7:24 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week4.html
   web copy written to nfl/index.html
   Thu 10/1: 0 on TV, 1 not
