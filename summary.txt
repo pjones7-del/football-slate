@@ -1,4 +1,4 @@
-College Football Week 5 (114 games, pulled Tue 9/29, 11:14 AM ET, lines DraftKings via ESPN)
+College Football Week 5 (114 games, pulled Tue 9/29, 11:34 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week5.html
   web copy written to cfb/index.html
   Thu 10/1: 2 on TV, 0 not
@@ -14,17 +14,17 @@ College Football Week 5 (114 games, pulled Tue 9/29, 11:14 AM ET, lines DraftKin
     Sat 15:30 ET  #5 Ohio State at #14 Iowa  [CBS]  OSU -14.0, o/u 45.5
     Sat 15:30 ET  Auburn at #17 Tennessee  [ESPN]  TENN -7.0, o/u 54.5
     Sat 16:15 ET  #24 Kentucky at South Carolina  [SECN]  SC -2.5, o/u 53.5
-    Sat 19:00 ET  #10 BYU at TCU  [ESPN]  BYU -6.5, o/u 48.5
-    Sat 19:30 ET  #4 Miami (FL) at Clemson  [ABC]  MIA -16.5, o/u 48.5
+    Sat 19:00 ET  #10 BYU at TCU  [ESPN]  BYU -6.5, o/u 47.5
+    Sat 19:30 ET  #4 Miami (FL) at Clemson  [ABC]  MIA -16.5, o/u 47.5
     Sat 19:30 ET  Utah State at #22 Boise State  [CBSSN]  BOIS -21.0, o/u 51.5
     Sat 19:30 ET  #12 Texas Tech at Colorado  [FOX]  TTU -13.5, o/u 50.5
-    Sat 19:30 ET  Washington at #18 USC  [NBC]  USC -9.5, o/u 57.5
+    Sat 19:30 ET  Washington at #18 USC  [NBC]  USC -9.5, o/u 58.5
     Sat 19:45 ET  McNeese at #11 LSU  [SECN]
     Sat 20:00 ET  #6 Indiana at Rutgers  [BTN]  IU -24.5, o/u 55.5
   TV games without a line: 3
   time TBD: 0
 
-NFL Week 4 (16 games, pulled Tue 9/29, 11:14 AM ET, lines DraftKings via ESPN)
+NFL Week 4 (16 games, pulled Tue 9/29, 11:34 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week4.html
   web copy written to nfl/index.html
   Thu 10/1: 0 on TV, 1 not
@@ -37,7 +37,7 @@ NFL Week 4 (16 games, pulled Tue 9/29, 11:14 AM ET, lines DraftKings via ESPN)
     Sun 13:00 ET  New England Patriots at Buffalo Bills  [CBS]  BUF -7.0, o/u 48.5
     Sun 13:00 ET  Jacksonville Jaguars at Cincinnati Bengals  [CBS]  CIN -2.5, o/u 51.5
     Sun 13:00 ET  Arizona Cardinals at New York Giants  [CBS]  ARI -1.5, o/u 44.5
-    Sun 13:00 ET  New York Jets at Chicago Bears  [FOX]  CHI -3.0, o/u 42.5
+    Sun 13:00 ET  New York Jets at Chicago Bears  [FOX]  CHI -3.5, o/u 42.5
     Sun 13:00 ET  Dallas Cowboys at Houston Texans  [FOX]  HOU -2.5, o/u 47.5
     Sun 13:00 ET  Los Angeles Rams at Philadelphia Eagles  [FOX]  LAR -3.0, o/u 44.5
     Sun 13:00 ET  Green Bay Packers at Tampa Bay Buccaneers  [FOX]  GB -3.5, o/u 39.5
