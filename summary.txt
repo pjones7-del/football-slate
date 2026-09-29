@@ -1,4 +1,4 @@
-College Football Week 5 (114 games, pulled Tue 9/29, 8:18 AM ET, lines DraftKings via ESPN)
+College Football Week 5 (114 games, pulled Tue 9/29, 8:46 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week5.html
   web copy written to cfb/index.html
   Thu 10/1: 2 on TV, 0 not
@@ -24,7 +24,7 @@ College Football Week 5 (114 games, pulled Tue 9/29, 8:18 AM ET, lines DraftKing
   TV games without a line: 3
   time TBD: 0
 
-NFL Week 4 (16 games, pulled Tue 9/29, 8:18 AM ET, lines DraftKings via ESPN)
+NFL Week 4 (16 games, pulled Tue 9/29, 8:46 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week4.html
   web copy written to nfl/index.html
   Thu 10/1: 0 on TV, 1 not
@@ -39,7 +39,7 @@ NFL Week 4 (16 games, pulled Tue 9/29, 8:18 AM ET, lines DraftKings via ESPN)
     Sun 13:00 ET  Arizona Cardinals at New York Giants  [CBS]  ARI -1.5, o/u 44.5
     Sun 13:00 ET  New York Jets at Chicago Bears  [FOX]  CHI -3.5, o/u 42.5
     Sun 13:00 ET  Dallas Cowboys at Houston Texans  [FOX]  HOU -2.5, o/u 47.5
-    Sun 13:00 ET  Los Angeles Rams at Philadelphia Eagles  [FOX]  LAR -3.0, o/u 44.5
+    Sun 13:00 ET  Los Angeles Rams at Philadelphia Eagles  [FOX]  LAR -3.0, o/u 45.5
     Sun 13:00 ET  Green Bay Packers at Tampa Bay Buccaneers  [FOX]  GB -4.5, o/u 39.5
     Sun 16:05 ET  Miami Dolphins at Minnesota Vikings  [FOX]  MIN -11.5, o/u 38.5
     Sun 16:25 ET  Kansas City Chiefs at Las Vegas Raiders  [CBS]  KC -4.5, o/u 47.5
