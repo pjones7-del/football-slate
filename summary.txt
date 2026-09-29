@@ -1,4 +1,4 @@
-College Football Week 5 (114 games, pulled Tue 9/29, 11:56 AM ET, lines DraftKings via ESPN)
+College Football Week 5 (114 games, pulled Tue 9/29, 12:13 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week5.html
   web copy written to cfb/index.html
   Thu 10/1: 2 on TV, 0 not
@@ -16,7 +16,7 @@ College Football Week 5 (114 games, pulled Tue 9/29, 11:56 AM ET, lines DraftKin
     Sat 16:15 ET  #24 Kentucky at South Carolina  [SECN]  SC -2.5, o/u 53.5
     Sat 19:00 ET  #10 BYU at TCU  [ESPN]  BYU -6.5, o/u 47.5
     Sat 19:30 ET  #4 Miami (FL) at Clemson  [ABC]  MIA -16.5, o/u 47.5
-    Sat 19:30 ET  Utah State at #22 Boise State  [CBSSN]  BOIS -21.0, o/u 51.5
+    Sat 19:30 ET  Utah State at #22 Boise State  [CBSSN]  BOIS -20.5, o/u 51.5
     Sat 19:30 ET  #12 Texas Tech at Colorado  [FOX]  TTU -13.5, o/u 50.5
     Sat 19:30 ET  Washington at #18 USC  [NBC]  USC -9.5, o/u 58.5
     Sat 19:45 ET  McNeese at #11 LSU  [SECN]
@@ -24,7 +24,7 @@ College Football Week 5 (114 games, pulled Tue 9/29, 11:56 AM ET, lines DraftKin
   TV games without a line: 3
   time TBD: 0
 
-NFL Week 4 (16 games, pulled Tue 9/29, 11:56 AM ET, lines DraftKings via ESPN)
+NFL Week 4 (16 games, pulled Tue 9/29, 12:13 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week4.html
   web copy written to nfl/index.html
   Thu 10/1: 0 on TV, 1 not
