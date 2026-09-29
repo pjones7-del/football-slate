@@ -1,28 +1,25 @@
-College Football Week 4 (123 games, pulled Mon 9/28, 11:46 PM ET, lines DraftKings via ESPN)
-  weekly file written to cfb-slate-week4.html
+College Football Week 5 (114 games, pulled Tue 9/29, 12:08 AM ET, lines DraftKings via ESPN)
+  weekly file written to cfb-slate-week5.html
   web copy written to cfb/index.html
-  Thu 9/24: 1 on TV, 0 not
-  Fri 9/25: 6 on TV, 0 not
-  Sat 9/26: 40 on TV, 76 not
+  Thu 10/1: 2 on TV, 0 not
+  Fri 10/2: 4 on TV, 0 not
+  Sat 10/3: 38 on TV, 70 not
   ranked matchups:
-    Fri 20:00 ET  Northwestern at #5 Indiana  [FOX]  IU -20.5, o/u 49.5
-    Sat 12:00 ET  #1 Texas at #14 Tennessee  [ABC]  TEX -5.5, o/u 54.5
-    Sat 12:00 ET  Wake Forest at #16 Louisville  [ESPN]  LOU -11.5, o/u 57.5
-    Sat 12:00 ET  Illinois at #7 Ohio State  [FOX]  OSU -25.5, o/u 53.5
-    Sat 12:00 ET  Sam Houston at #11 Texas Tech  [TNT]  TTU -34.5, o/u 56.5
-    Sat 14:00 ET  #3 Notre Dame at Purdue  [Peacock]  ND -27.5, o/u 56.5
-    Sat 15:30 ET  #4 Ole Miss at #21 Florida  [ABC]  FLA -4.0, o/u 58.5
-    Sat 15:30 ET  #17 Iowa at #18 Michigan  [CBS]  MICH -4.5, o/u 39.5
-    Sat 15:30 ET  Oklahoma at #2 Georgia  [ESPN]  UGA -11.5, o/u 43.5
-    Sat 15:30 ET  #15 Utah at Iowa State  [FOX]  UTAH -7.5, o/u 46.5
-    Sat 16:00 ET  #25 Houston at Georgia Southern  [ESPNU]  HOU -17.5, o/u 56.5
-    Sat 17:00 ET  Wisconsin at #13 Penn State  [Peacock]  PSU -9.5, o/u 43.5
-    Sat 18:30 ET  Central Michigan at #6 Miami (FL)  [CW]  MIA -40.5, o/u 52.5
-    Sat 19:10 ET  South Carolina at #8 Alabama  [ESPN]  ALA -12.5, o/u 53.5
-    Sat 19:30 ET  #23 Texas A&M at #10 LSU  [ABC]  LSU -8.5, o/u 52.5
-    Sat 19:30 ET  #20 Oregon at #12 USC  [NBC]  ORE -3.5, o/u 60.5
-    Sat 19:45 ET  #19 Missouri at #24 Mississippi State  [SECN]  MSST -3.5, o/u 58.5
-    Sat 21:00 ET  Missouri State at #22 SMU  [ACCN]  SMU -30.5, o/u 60.5
-  TV games without a line: 0
+    Sat 12:00 ET  #7 Alabama at #16 Mississippi State  [ABC]  ALA -6.0, o/u 60.5
+    Sat 12:00 ET  Boston College at #21 SMU  [CW]  SMU -21.0, o/u 55.5
+    Sat 12:00 ET  #3 Notre Dame at North Carolina  [ESPN]  ND -21.0, o/u 47.5
+    Sat 12:00 ET  UCF at #20 Houston  [ESPN2]  HOU -12.5, o/u 51.5
+    Sat 12:45 ET  Vanderbilt at #2 Georgia  [SECN]  UGA -24.5, o/u 50.5
+    Sat 15:30 ET  #8 Florida at #25 Missouri  [ABC]  FLA -4.5, o/u 56.5
+    Sat 15:30 ET  #5 Ohio State at #14 Iowa  [CBS]  OSU -14.0, o/u 45.5
+    Sat 15:30 ET  Auburn at #17 Tennessee  [ESPN]  TENN -7.0, o/u 53.5
+    Sat 16:15 ET  #24 Kentucky at South Carolina  [SECN]  SC -2.5, o/u 53.5
+    Sat 19:00 ET  #10 BYU at TCU  [ESPN]  BYU -6.5, o/u 48.5
+    Sat 19:30 ET  #4 Miami (FL) at Clemson  [ABC]  MIA -16.5, o/u 48.5
+    Sat 19:30 ET  Utah State at #22 Boise State  [CBSSN]  BOIS -19.5, o/u 51.5
+    Sat 19:30 ET  #12 Texas Tech at Colorado  [FOX]  TTU -13.5, o/u 50.5
+    Sat 19:30 ET  Washington at #18 USC  [NBC]  USC -9.5, o/u 57.5
+    Sat 19:45 ET  McNeese at #11 LSU  [SECN]
+    Sat 20:00 ET  #6 Indiana at Rutgers  [BTN]  IU -24.5, o/u 56.5
+  TV games without a line: 3
   time TBD: 0
-  non-Division I or unknown conference ids: none: Rio Grande; 136: Fort Valley State; 112: Northeastern State
