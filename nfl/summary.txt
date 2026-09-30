@@ -1,4 +1,4 @@
-NFL Week 4 (16 games, pulled Wed 9/30, 11:02 AM ET, lines DraftKings via ESPN)
+NFL Week 4 (16 games, pulled Wed 9/30, 11:31 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week4.html
   web copy written to nfl/index.html
   Thu 10/1: 0 on TV, 1 not
@@ -19,7 +19,7 @@ NFL Week 4 (16 games, pulled Wed 9/30, 11:02 AM ET, lines DraftKings via ESPN)
     Sun 16:25 ET  Kansas City Chiefs at Las Vegas Raiders  [CBS]  KC -4.5, o/u 47.5
     Sun 16:25 ET  Denver Broncos at San Francisco 49ers  [CBS]  SF -3.0, o/u 47.5
     Sun 16:25 ET  Los Angeles Chargers at Seattle Seahawks  [CBS]  SEA -7.0, o/u 42.5
-    Sun 20:20 ET  Detroit Lions at Carolina Panthers  [NBC]  DET -3.5, o/u 50.5
+    Sun 20:20 ET  Detroit Lions at Carolina Panthers  [NBC]  DET -3.5, o/u 51.5
     Mon 20:15 ET  Atlanta Falcons at New Orleans Saints  [ESPN]  NO -3.0, o/u 48.5
   TV games without a line: 0
   time TBD: 0
