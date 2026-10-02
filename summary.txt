@@ -1,4 +1,4 @@
-College Football Week 5 (114 games, pulled Fri 10/2, 1:32 PM ET, lines DraftKings via ESPN)
+College Football Week 5 (114 games, pulled Fri 10/2, 1:54 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week5.html
   web copy written to cfb/index.html
   Thu 10/1: 2 on TV, 0 not
@@ -24,7 +24,7 @@ College Football Week 5 (114 games, pulled Fri 10/2, 1:32 PM ET, lines DraftKing
   TV games without a line: 0
   time TBD: 0
 
-NFL Week 4 (16 games, pulled Fri 10/2, 1:32 PM ET, lines DraftKings via ESPN)
+NFL Week 4 (16 games, pulled Fri 10/2, 1:54 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week4.html
   web copy written to nfl/index.html
   Thu 10/1: 0 on TV, 1 not
@@ -32,7 +32,7 @@ NFL Week 4 (16 games, pulled Fri 10/2, 1:32 PM ET, lines DraftKings via ESPN)
   Mon 10/5: 1 on TV, 0 not
   every game with its line:
     Thu 20:15 ET  Pittsburgh Steelers at Cleveland Browns  [Prime Video]  PIT -2.5, o/u 38.5
-    Sun 09:30 ET  Indianapolis Colts vs Washington Commanders  [NFL Network]  IND -3.5, o/u 47.5
+    Sun 09:30 ET  Indianapolis Colts vs Washington Commanders  [NFL Network]  IND -4.5, o/u 47.5
     Sun 13:00 ET  Tennessee Titans at Baltimore Ravens  [CBS]  BAL -11.5, o/u 42.5
     Sun 13:00 ET  New England Patriots at Buffalo Bills  [CBS]  BUF -7.0, o/u 49.5
     Sun 13:00 ET  Jacksonville Jaguars at Cincinnati Bengals  [CBS]  CIN -2.5, o/u 51.5
