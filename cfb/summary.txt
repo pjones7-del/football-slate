@@ -1,4 +1,4 @@
-College Football Week 5 (114 games, pulled Fri 10/2, 12:15 PM ET, lines DraftKings via ESPN)
+College Football Week 5 (114 games, pulled Fri 10/2, 12:43 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week5.html
   web copy written to cfb/index.html
   Thu 10/1: 2 on TV, 0 not
@@ -21,5 +21,5 @@ College Football Week 5 (114 games, pulled Fri 10/2, 12:15 PM ET, lines DraftKin
     Sat 19:30 ET  Washington at #18 USC  [NBC]  USC -8.5, o/u 58.5
     Sat 19:45 ET  McNeese at #11 LSU  [SECN]  LSU -52.5, o/u 61.5
     Sat 20:00 ET  #6 Indiana at Rutgers  [BTN]  IU -24.5, o/u 56.5
-  TV games without a line: 1
+  TV games without a line: 0
   time TBD: 0
