@@ -2,7 +2,7 @@
  "name": "Football Slate",
  "short_name": "Slate",
  "description": "Every college and NFL game by channel and kickoff, with live scores, lines and weather.",
- "start_url": "cfb/",
+ "start_url": "./",
  "scope": "./",
  "display": "standalone",
  "orientation": "any",
