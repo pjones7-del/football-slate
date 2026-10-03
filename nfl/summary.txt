@@ -1,6 +1,7 @@
-NFL Week 4 (16 games, pulled Sat 10/3, 3:00 PM ET, lines DraftKings via ESPN)
+NFL Week 4 (16 games, pulled Sat 10/3, 3:05 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week4.html
-  web copy written to nfl/index.html
+  artifact copy written to nfl-slate-artifact.html (logos embedded)
+  nfl/ forwards to the one page
   Thu 10/1: 0 on TV, 1 not
   Sun 10/4: 14 on TV, 0 not
   Mon 10/5: 1 on TV, 0 not
