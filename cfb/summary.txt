@@ -1,6 +1,7 @@
-College Football Week 5 (114 games, pulled Sat 10/3, 3:00 PM ET, lines DraftKings via ESPN)
+College Football Week 5 (114 games, pulled Sat 10/3, 3:05 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week5.html
-  web copy written to cfb/index.html
+  artifact copy written to cfb-slate-artifact.html (logos embedded)
+  cfb/ forwards to the one page
   Thu 10/1: 2 on TV, 0 not
   Fri 10/2: 4 on TV, 0 not
   Sat 10/3: 38 on TV, 70 not
