@@ -28,7 +28,7 @@ it went. Outputs:
 --summary summary.txt writes cfb/summary.txt and nfl/summary.txt beside it and both into summary.txt.
 Needs Python 3.9+ and internet access. No packages to install (--embed wants Pillow, only used by hand).
 """
-import argparse, glob, json, os, re, sys, urllib.request
+import argparse, glob, json, math, os, re, sys, urllib.request
 from datetime import date, datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
@@ -215,7 +215,9 @@ def game(e, L, nfl):
     v = c.get("venue") or {}
     adr = v.get("address") or {}
     where = adr.get("state") if adr.get("country") in (None, "", "USA", "United States") else adr.get("country")
-    return {
+    wx = weather(e.get("weather"))
+    ml = moneyline(odds)
+    out = {
         "id": e["id"], "kick": c["date"], "tbd": c.get("timeValid") is False,
         "away": team(sides["away"], nfl), "home": team(sides["home"], nfl),
         "neutral": bool(c.get("neutralSite")), "venue": ", ".join(x for x in (adr.get("city"), where) if x) or v.get("fullName", ""),
@@ -225,9 +227,49 @@ def game(e, L, nfl):
         "state": typ.get("state"), "detail": typ.get("shortDetail"), "period": st.get("period"), "clock": st.get("displayClock"),
         "sit": {"poss": sit.get("possession"), "dd": sit.get("shortDownDistanceText"), "at": sit.get("possessionText"),
                 "yl": sit.get("yardLine"), "rz": bool(sit.get("isRedZone")), "ht": sit.get("homeTimeouts"), "at_": sit.get("awayTimeouts"),
-                "last": ((sit.get("lastPlay") or {}).get("text") or "")[:140]} if sit else None,
+                "last": ((sit.get("lastPlay") or {}).get("text") or "")[:140],
+                "lt": (((sit.get("lastPlay") or {}).get("type") or {}).get("text") or "")} if sit else None,
         "week": (e.get("week") or {}).get("number"),
     }
+    if wx:
+        out["wx"] = wx
+    if v.get("indoor"):
+        out["dome"] = True
+    if ml:
+        out["ml"] = ml
+    return out
+
+
+def weather(w):
+    """ESPN's game-time forecast (AccuWeather): {"t": temperature F, "c": AccuWeather icon number, "d": condition text}.
+    For a game that hasn't started, displayValue is the text and conditionId the icon number; once it starts the two
+    swap, so take whichever is all digits as the number. Appears about a week out; None when ESPN has nothing."""
+    if not w or w.get("temperature") is None:
+        return None
+    a, b = str(w.get("conditionId") or ""), str(w.get("displayValue") or "")
+    code, text = (a, b) if a.isdigit() else (b, a) if b.isdigit() else ("", a or b)
+    try:
+        t = int(math.floor(float(w["temperature"]) + 0.5))   # half up, the way the page rounds it
+    except (TypeError, ValueError):
+        return None
+    out = {"t": t}
+    if code:
+        out["c"] = int(code)
+    if text:
+        out["d"] = text
+    return out
+
+
+def moneyline(odds):
+    """[away, home] American prices from the scoreboard's DraftKings object, or None."""
+    ml = odds.get("moneyline") or {}
+    out = []
+    for side in ("away", "home"):
+        try:
+            out.append(int(str(((ml.get(side) or {}).get("close") or {}).get("odds", "")).replace("+", "")))
+        except (TypeError, ValueError):
+            return None
+    return out
 
 
 def closing_line(league, eid):
@@ -247,7 +289,14 @@ def closing_line(league, eid):
             if sp is None and ou is None:
                 sp, ou = num(it.get("spread")), num(it.get("overUnder"))
             if sp is not None or ou is not None:
-                return [sp, ou]
+                ml = []
+                for side in ("awayTeamOdds", "homeTeamOdds"):
+                    try:
+                        ml.append(int(str((((it.get(side) or {}).get("close") or {}).get("moneyLine") or {}).get("american", "")).replace("+", "")))
+                    except (TypeError, ValueError):
+                        ml = None
+                        break
+                return [sp, ou] + ([ml] if ml else [])
     return None
 
 
@@ -269,15 +318,31 @@ def previous_games(html):
     return out
 
 
+def previous_league(path, league):
+    """The whole league block (name, week, days, networks...) from a previous build's data block, so a league whose fetch
+    failed can ride along unchanged and the page never drops to one league. (block, pulled) or (None, "")."""
+    try:
+        html = open(path, encoding="utf-8").read()
+        m = re.search(r"const SLATE = (\{.*?\});\n", html, re.S)
+        prev = json.loads(m.group(1)) if m else {}
+        block = (prev.get("leagues") or {}).get(league)
+        return (block, prev.get("pulled", "")) if block and block.get("days") else (None, "")
+    except Exception:
+        return None, ""
+
+
 def previous_lines(prev):
-    """{event id: [spread, total]} for the games that had a line last build."""
+    """{event id: [spread, total, [away ML, home ML]]} for the games that had a line last build; the moneyline slot is
+    only there when the previous build carried one."""
     out = {}
     for eid, g in prev.items():
-        sp, ou = g.get("spread", g.get("sp")), g.get("ou")
+        sp, ou, ml = g.get("spread", g.get("sp")), g.get("ou"), g.get("ml")
         if g.get("close"):
-            sp, ou = g["close"]
+            sp, ou = g["close"][0], g["close"][1]
+            if len(g["close"]) > 2:
+                ml = g["close"][2]
         if sp is not None or ou is not None:
-            out[eid] = [sp, ou]
+            out[eid] = [sp, ou] + ([ml] if ml else [])
     return out
 
 
@@ -434,6 +499,8 @@ def build_league(league, prev, main_day, start, end):
                 looked_up += 1
                 line = closing_line(league, g["id"]) or line
             if line:
+                if len(line) < 3 and prev_lines.get(g["id"]) and len(prev_lines[g["id"]]) > 2:
+                    line = line[:2] + [prev_lines[g["id"]][2]]
                 g["close"] = line
         sc = schedule_change(g, prev.get(g["id"]), g["state"] == "in" or day == today_slate, now_iso)
         if sc:
@@ -470,7 +537,7 @@ def build_league(league, prev, main_day, start, end):
     rk = lambda r: f"#{r} " if r else ""
 
     def line_of(g):
-        sp, ou = (g["close"] if g.get("close") else (g["spread"], g["ou"]))
+        sp, ou = (g["close"][0], g["close"][1]) if g.get("close") else (g["spread"], g["ou"])
         if sp is None:
             return ""
         fav = g["home"] if sp < 0 else g["away"] if sp > 0 else None
@@ -574,7 +641,7 @@ def main():
     slate = {"v": 2, "default": "cfb", "pulled": "", "lines": "", "leagues": {},
              "confIds": {**{k: v[0] for k, v in FBS_CONF.items()}, **{k: v[0] for k, v in FCS_CONF.items()}},
              "nflDiv": NFL_DIV, "nameAlias": NAME_ALIAS}
-    reports, slugs, extra = [], {}, {}
+    reports, slugs, extra, carried = [], {}, {}, set()
     for league in leagues:
         L = LEAGUES[league]
         main_day = date.fromisoformat(args.main) if args.main else main_day_for(league, today)
@@ -601,6 +668,13 @@ def main():
                 reports.append([f"{L['name']}: build failed ({ex.__class__.__name__}: {ex})"])
                 break
         if got is None:
+            # the fetch failed or found nothing: keep the previous build's board for this league rather than hand out
+            # a page with one league on it (Phil, 10/3: never reduce the board to one of them)
+            block, was = previous_league(prev_src, league) if prev_src else (None, "")
+            if block:
+                slate["leagues"][league] = block
+                carried.add(league)
+                reports[-1].append(f"  kept the previous build's {L['name']} board (pulled {was or 'earlier'}) so the page still carries both leagues")
             continue
         data, rep, slug, pulled, lines_src = got
         slate["leagues"][league] = data
@@ -623,7 +697,7 @@ def main():
         return re.sub(r"<title>.*?</title>", f"<title>{L['title']} - {wk}</title>", html, count=1)
 
     for league in leagues:
-        if league not in slate["leagues"]:
+        if league not in slate["leagues"] or league in carried:   # a carried league's own files stay as they were
             continue
         L = LEAGUES[league]
         html = page(league)
