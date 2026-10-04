@@ -1,4 +1,4 @@
-College Football Week 5 (114 games, pulled Sun 10/4, 7:33 AM ET, lines DraftKings via ESPN)
+College Football Week 5 (114 games, pulled Sun 10/4, 2:17 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week5.html
   cfb/ forwards to the one page
   Thu 10/1: 2 on TV, 0 not
@@ -25,7 +25,7 @@ College Football Week 5 (114 games, pulled Sun 10/4, 7:33 AM ET, lines DraftKing
   time TBD: 0
   schedule changes on game day: Sat FLA at MIZ: kick 3:30 PM -> 3:50 PM ET
 
-NFL Week 4 (16 games, pulled Sun 10/4, 7:33 AM ET, lines DraftKings via ESPN)
+NFL Week 4 (16 games, pulled Sun 10/4, 2:17 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week4.html
   nfl/ forwards to the one page
   Thu 10/1: 0 on TV, 1 not
