@@ -1,4 +1,4 @@
-NFL Week 5 (15 games, pulled Tue 10/6, 3:27 AM ET, lines DraftKings via ESPN)
+NFL Week 5 (15 games, pulled Tue 10/6, 11:00 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week5.html
   nfl/ forwards to the one page
   Thu 10/8: 0 on TV, 1 not
@@ -6,19 +6,19 @@ NFL Week 5 (15 games, pulled Tue 10/6, 3:27 AM ET, lines DraftKings via ESPN)
   Mon 10/12: 1 on TV, 0 not
   every game with its line:
     Thu 20:15 ET  Tampa Bay Buccaneers at Dallas Cowboys  [Prime Video]  DAL -9.5, o/u 47.5
-    Sun 09:30 ET  Philadelphia Eagles vs Jacksonville Jaguars  [NFL Network]  JAX -7.0, o/u 42.5
+    Sun 09:30 ET  Philadelphia Eagles vs Jacksonville Jaguars  [NFL Network]  JAX -6.5, o/u 42.5
     Sun 13:00 ET  Las Vegas Raiders at New England Patriots  [CBS]  NE -3.5, o/u 45.5
     Sun 13:00 ET  Cleveland Browns at New York Jets  [CBS]  NYJ -2.5, o/u 39.5
     Sun 13:00 ET  Indianapolis Colts at Pittsburgh Steelers  [CBS]  PIT -2.5, o/u 44.5
-    Sun 13:00 ET  Houston Texans at Tennessee Titans  [CBS]  HOU -7.0, o/u 39.5
+    Sun 13:00 ET  Houston Texans at Tennessee Titans  [CBS]  HOU -6.5, o/u 39.5
     Sun 13:00 ET  Chicago Bears at Green Bay Packers  [Fox]  CHI -3.0, o/u 45.5
     Sun 13:00 ET  Cincinnati Bengals at Miami Dolphins  [Fox]  CIN -7.0, o/u 42.5
     Sun 13:00 ET  Minnesota Vikings at New Orleans Saints  [Fox]  MIN -1.5, o/u 42.5
     Sun 13:00 ET  New York Giants at Washington Commanders  [Fox]  WSH -3.0, o/u 43.5
     Sun 16:05 ET  Denver Broncos at Los Angeles Chargers  [CBS]  DEN -3.5, o/u 42.5
     Sun 16:25 ET  Detroit Lions at Arizona Cardinals  [Fox]  DET -4.5, o/u 54.5
-    Sun 16:25 ET  San Francisco 49ers at Seattle Seahawks  [Fox]  SEA -2.5, o/u 47.5
-    Sun 20:20 ET  Baltimore Ravens at Atlanta Falcons  [NBC]  BAL -2.5, o/u 45.5
+    Sun 16:25 ET  San Francisco 49ers at Seattle Seahawks  [Fox]  SEA -3.0, o/u 47.5
+    Sun 20:20 ET  Baltimore Ravens at Atlanta Falcons  [NBC]  ATL -3.0, o/u 43.5
     Mon 20:15 ET  Buffalo Bills at Los Angeles Rams  [ESPN]  LAR -2.5, o/u 54.5
   TV games without a line: 0
   time TBD: 0
