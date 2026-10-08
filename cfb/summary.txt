@@ -1,20 +1,20 @@
-College Football Week 6 (106 games, pulled Wed 10/7, 4:32 PM ET, lines DraftKings via ESPN)
+College Football Week 6 (106 games, pulled Wed 10/7, 8:54 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week6.html
   cfb/ forwards to the one page
   Thu 10/8: 4 on TV, 0 not
-  Fri 10/9: 4 on TV, 2 not
-  Sat 10/10: 36 on TV, 60 not
+  Fri 10/9: 4 on TV, 3 not
+  Sat 10/10: 36 on TV, 59 not
   ranked matchups:
-    Fri 21:00 ET  #20 Iowa at Washington  [no TV]  WASH -3.5, o/u 41.5
-    Fri 22:15 ET  Iowa State at #8 BYU  [ESPN]  BYU -10.5, o/u 46.5
+    Fri 21:00 ET  #20 Iowa at Washington  [no TV]  WASH -3.0, o/u 41.5
+    Fri 22:15 ET  Iowa State at #8 BYU  [ESPN]  BYU -10.0, o/u 46.5
     Sat 12:00 ET  Texas A&M at #14 Missouri  [ABC]  MIZ -3.5, o/u 48.5
-    Sat 12:00 ET  North Carolina at #25 Pitt  [ESPN]  PITT -3.5, o/u 47.5
+    Sat 12:00 ET  North Carolina at #25 Pitt  [ESPN]  PITT -4.0, o/u 47.5
     Sat 12:00 ET  UCF at #18 Oklahoma State  [ESPN2]  OKST -10.5, o/u 53.5
-    Sat 12:00 ET  #7 Indiana at Nebraska  [Fox]  IU -7.5, o/u 49.5
+    Sat 12:00 ET  #7 Indiana at Nebraska  [Fox]  IU -7.5, o/u 48.5
     Sat 12:45 ET  South Carolina at #16 Florida  [SECN]  FLA -11.5, o/u 60.5
     Sat 15:30 ET  #1 Texas vs Oklahoma  [ABC]  TEX -7.5, o/u 39.5
     Sat 15:30 ET  #21 UCLA at #13 Oregon  [CBS]  ORE -11.5, o/u 58.5
-    Sat 15:30 ET  #9 Ole Miss at Vanderbilt  [ESPN]  MISS -10.0, o/u 56.5
+    Sat 15:30 ET  #9 Ole Miss at Vanderbilt  [ESPN]  MISS -9.5, o/u 56.5
     Sat 15:30 ET  #22 Houston at Kansas State  [Fox]  KSU -2.5, o/u 55.5
     Sat 15:30 ET  Stanford at #3 Notre Dame  [NBC]  ND -38.5, o/u 54.5
     Sat 16:15 ET  Maryland at #5 Ohio State  [BTN]  OSU -34.5, o/u 56.5
