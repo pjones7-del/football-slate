@@ -28,7 +28,7 @@ it went. Outputs:
 --summary summary.txt writes cfb/summary.txt and nfl/summary.txt beside it and both into summary.txt.
 Needs Python 3.9+ and internet access. No packages to install (--embed wants Pillow, only used by hand).
 """
-import argparse, glob, json, math, os, re, sys, urllib.request
+import argparse, glob, json, math, os, re, sys, unicodedata, urllib.request
 from datetime import date, datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
@@ -135,6 +135,130 @@ DEFAULT_PACKAGES = "everything"   # what a board opens with: "everything" = ever
                                   # or a list of package names, e.g. ["YouTube TV", "Peacock", "ESPN Unlimited"]
 CORE_ODDS = "https://sports.core.api.espn.com/v2/sports/football/leagues/{lg}/events/{id}/competitions/{id}/odds?limit=20"
 
+# ---------------------------------------------------------------- second source for a missing network (10/9/2026)
+# ESPN sometimes posts a game with no broadcast at all (Iowa at Washington, 10/9: blank in every ESPN feed on game day while
+# CBS Sports had it on FOX). When a college game in the window has no network and hasn't ended, the build reads CBS Sports'
+# FBS schedule page for the week and takes the network from the row with the same date and kickoff (ET) and a matching team.
+# ESPN wins whenever it has anything; this only fills blanks. The page carries the fill between its own polls.
+CBS_SCHED = "https://www.cbssports.com/college-football/schedule/FBS/{year}/regular/{week}/"
+CBS_NET = {"ESPN": "ESPN", "ESP2": "ESPN2", "ESPN2": "ESPN2", "ESPU": "ESPNU", "ESPNU": "ESPNU", "ESP+": "ESPN+", "ESPN+": "ESPN+", "ESP3": "ESPN3",
+           "ESPNN": "ESPNEWS", "ESPNEWS": "ESPNEWS", "SECN": "SECN", "SEC+": "SECN+", "ACCN": "ACCN", "ACCX": "ACCNX", "ACCNX": "ACCNX", "BTN": "BTN",
+           "FOX": "FOX", "FS1": "FS1", "FS2": "FS2", "ABC": "ABC", "CBS": "CBS", "NBC": "NBC", "CW": "CW", "CBSSN": "CBSSN", "TNT": "TNT", "TBS": "TBS",
+           "TRU": "TRUTV", "TRUTV": "TRUTV", "USA": "USA", "PEAC": "Peacock", "PEACOCK": "Peacock", "MW+": "MW+", "MAX": "HBO Max", "HBO": "HBO Max",
+           "PAR+": "Paramount+", "P+": "Paramount+", "DIS+": "Disney+", "YOUTUBE": "YouTube", "YT": "YouTube", "FOXONE": "Fox One", "FOX ONE": "Fox One"}
+# CBS's short team names where a plain comparison with ESPN's name wouldn't land (both sides canonized: lower case, "St." to
+# "State", punctuation out). Anything not here still matches when one name starts with the other ("Miami" / "Miami (FL)").
+CBS_TEAM = {"app state": "appalachian state", "so miss": "southern miss", "c carolina": "coastal carolina", "middle tenn": "middle tennessee",
+            "w kentucky": "western kentucky", "w michigan": "western michigan", "e michigan": "eastern michigan", "c michigan": "central michigan",
+            "n illinois": "northern illinois", "s alabama": "south alabama", "ga southern": "georgia southern", "ga tech": "georgia tech",
+            "la tech": "louisiana tech", "fla atlantic": "florida atlantic", "fla intl": "florida international", "fiu": "florida international",
+            "n carolina": "north carolina", "s carolina": "south carolina", "boston col": "boston college", "jksnville state": "jacksonville state",
+            "sam hous state": "sam houston", "sam houston state": "sam houston", "miss state": "mississippi state", "n mexico": "new mexico",
+            "n mexico state": "new mexico state", "s florida": "south florida", "e carolina": "east carolina", "w virginia": "west virginia",
+            "n texas": "north texas", "ul lafayette": "louisiana", "california": "cal", "pittsburgh": "pitt", "fau": "florida atlantic", "miami fla": "miami fl",
+            "n dakota state": "north dakota state", "s dakota state": "south dakota state", "e washington": "eastern washington", "n arizona": "northern arizona",
+            "n colorado": "northern colorado", "s illinois": "southern illinois", "e illinois": "eastern illinois", "e kentucky": "eastern kentucky",
+            "w illinois": "western illinois", "w carolina": "western carolina", "so utah": "southern utah", "se louisiana": "southeastern louisiana",
+            "se missouri state": "southeast missouri state", "cent ark": "central arkansas", "abil christian": "abilene christian", "tenn tech": "tennessee tech",
+            "new hamp": "new hampshire", "charleston so": "charleston southern", "miss valley state": "mississippi valley state", "bethune cook": "bethune cookman",
+            "ark pine bluff": "arkansas pine bluff", "southern u": "southern", "ualbany": "albany", "nc aandt": "north carolina aandt", "nc central": "north carolina central"}
+
+
+def canon_team(s):
+    s = unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode().lower()
+    s = s.replace("&amp;", "and").replace("&", "and").replace(".", "").replace("-", " ").replace("'", "")
+    s = re.sub(r"\bst(?=\s|$)", "state", s)
+    s = re.sub(r"[^a-z0-9 ]", " ", s)
+    s = re.sub(r"\s+", " ", s).strip()
+    return CBS_TEAM.get(s, s)
+
+
+def cbs_rows(html):
+    """[{date, min, away, home, aab, hab, tv}] from a CBS Sports schedule page: one table per day, each row the away team,
+    the home team, the kickoff (ET) with the network under it. The gametracker link (current week only) carries CBS's
+    abbreviations. Rows without a time or a network are skipped."""
+    rows = []
+    for chunk in re.split(r'<h2 class="TableBase-title', html)[1:]:
+        m = re.search(r">\s*([A-Z][a-z]+day, [A-Z][a-z]+ \d{1,2}, \d{4})\s*<", chunk)
+        if not m:
+            continue
+        try:
+            day = datetime.strptime(m.group(1), "%A, %B %d, %Y").date()
+        except ValueError:
+            continue
+        for row in re.findall(r'<tr class="TableBase-bodyTr">(.*?)</tr>', chunk, re.S):
+            names = re.findall(r'class="TeamName"><a [^>]*>\s*([^<]+?)\s*</a>', row)
+            t = re.search(r'<div class="CellGame"><a [^>]*>\s*([^<]+?)\s*</a>', row)
+            tv = re.search(r'class="CellGameTv">(.*?)</div>', row, re.S)
+            if len(names) < 2 or not t or not tv:
+                continue
+            tm = re.match(r"(\d{1,2}):(\d{2})\s*([ap])m", t.group(1).strip().lower())
+            if not tm:
+                continue
+            minute = (int(tm.group(1)) % 12 + (12 if tm.group(3) == "p" else 0)) * 60 + int(tm.group(2))
+            label = re.sub(r"<[^>]+>", " ", tv.group(1))
+            label = re.sub(r"\s+", " ", label).strip().upper()
+            ab = re.search(r"NCAAF_\d{8}_([A-Z0-9]+)@([A-Z0-9]+)", row)
+            rows.append({"date": day, "min": minute, "away": canon_team(names[0]), "home": canon_team(names[1]),
+                         "aab": ab.group(1) if ab else "", "hab": ab.group(2) if ab else "", "tv": label})
+    return rows
+
+
+def cbs_fill(games, year, week):
+    """Fill the network on the college games ESPN left blank from CBS Sports' schedule. Returns (filled, misses, notes):
+    filled = [(game, network)], misses = games with no usable CBS row, notes = labels CBS used that aren't mapped."""
+    if not games or not week:
+        return [], list(games), []
+    rows, notes = [], set()
+    for w in (week, week + 1, week - 1):   # the week pages are numbered like ESPN's; the neighbors cover a numbering slip
+        if w < 1:
+            continue
+        try:
+            req = urllib.request.Request(CBS_SCHED.format(year=year, week=w), headers={"User-Agent": "Mozilla/5.0 (football-slate build)"})
+            with urllib.request.urlopen(req, timeout=30) as r:
+                rows = cbs_rows(r.read().decode("utf-8", "ignore"))
+        except Exception:
+            rows = []
+        if rows and any(r["date"] == espn_et(g["kick"])[0] for g in games for r in rows):
+            break
+    filled, misses = [], []
+    for g in games:
+        day, minute = espn_et(g["kick"])
+        best, score, tie = None, 0, False
+        for r in rows:
+            if r["date"] != day or abs(r["min"] - minute) > 15:
+                continue
+            s = 0
+            for side, ab in (("away", g["away"]), ("home", g["home"])):
+                n = canon_team(ab["name"])
+                if n and (n == r[side] or n.startswith(r[side]) or r[side].startswith(n)):
+                    s += 2
+                if ab["ab"] and r[side[0] + "ab"] == ab["ab"]:
+                    s += 1
+            if r["min"] == minute:
+                s += 1
+            if s > score:
+                best, score, tie = r, s, False
+            elif s == score and s:
+                tie = True
+        if not best or tie or score < 3:   # at least one team by name, or both by abbreviation, at the right time
+            misses.append(g)
+            continue
+        net = CBS_NET.get(best["tv"], "")
+        if not net:
+            if best["tv"] and best["tv"] not in ("—", "-", "TBA", "TBD"):
+                notes.add(best["tv"])
+            misses.append(g)
+            continue
+        filled.append((g, net))
+    return filled, misses, sorted(notes)
+
+
+def espn_et(kick):
+    """(ET calendar date, ET minutes) of a kickoff stamp."""
+    dt = datetime.fromisoformat(kick.replace("Z", "+00:00")).astimezone(ET)
+    return dt.date(), dt.hour * 60 + dt.minute
+
 LEAGUES = {
     "cfb": {"name": "College Football", "api": CFB_API, "groups": CFB_GROUPS, "file": "cfb-slate", "title": "CFB Slate", "core": "college-football",
             "logo": "/i/teamlogos/ncaa/500/{lg}.png", "main_wd": 5, "before": 2, "after": 2,
@@ -151,8 +275,14 @@ def fetch(url):
         return json.load(r)
 
 
+# ESPN's channel names as the board spells them, matched without regard to case: the feed started sending "Fox" for FOX
+# on 10/9/2026, which had made a second row with no logo, no package and no DirecTV number
+KNOWN_NETS = {n.upper(): n for n in CFB_TV_ORDER + CFB_STREAM_ORDER + LINEAR + NFL_TV_ORDER + NFL_STREAM_ORDER + NFL_LINEAR}
+
+
 def norm_net(n):
-    return NET_ALIAS.get(n, n)
+    n = NET_ALIAS.get(n, n)
+    return KNOWN_NETS.get((n or "").upper(), n)
 
 
 def team(comp, nfl):
@@ -460,12 +590,13 @@ def build_league(league, prev, main_day, start, end):
     today_slate, now_iso = slate_date(now_et), now_et.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     changes = []
 
-    events, week, slug, provider = {}, None, None, None
+    events, week, slug, provider, week_num = {}, None, None, None, None
     for d in dates:
         for g in L["groups"]:
             data = fetch(L["api"].format(d=d.strftime("%Y%m%d"), g=g))
             if (d == main_day or week is None) and g == L["groups"][0] and (data.get("week") or {}).get("number") is not None:
                 week, slug = week_label(data, main_day, nfl)
+                week_num = data["week"]["number"] if (data.get("season") or {}).get("type", 2) == 2 else None   # regular season only: CBS's pages are numbered by it
             for e in data.get("events", []):
                 if e.get("id") and e.get("competitions"):
                     events.setdefault(e["id"], e)
@@ -474,7 +605,7 @@ def build_league(league, prev, main_day, start, end):
     if not events:
         raise LookupError(f"no games between {start} and {end}")
 
-    days, unknown_conf, looked_up = {d: [] for d in dates}, {}, 0
+    days, unknown_conf, looked_up, pending = {d: [] for d in dates}, {}, 0, []
     for e in events.values():
         c = e["competitions"][0]
         dt = datetime.fromisoformat(c["date"].replace("Z", "+00:00")).astimezone(ET)
@@ -491,6 +622,15 @@ def build_league(league, prev, main_day, start, end):
                 cid = str(comp["team"].get("conferenceId", ""))
                 if cfb_conf_code(cid) == "OTHER":
                     unknown_conf.setdefault(cid or "none", set()).add(NAME_ALIAS.get(comp["team"].get("location", ""), comp["team"].get("location", "")))
+        pending.append((day, g))
+    # a college game ESPN posted with no network at all: CBS Sports' schedule fills it before the lines and the change
+    # tracking look at the game (else a fill from the previous build would read as a move to "no broadcast")
+    fbs = {v[0] for v in FBS_CONF.values()}
+    blanks = [g for d, g in pending if not g["carriers"] and not g["tbd"] and g["state"] != "post" and (g["home"]["conf"] in fbs or g["away"]["conf"] in fbs)] if not nfl else []
+    filled, misses, cbs_notes = cbs_fill(blanks, main_day.year, week_num) if blanks else ([], [], [])
+    for g, net in filled:
+        g["carriers"], g["tv"], g["_tv"] = [net], net in L["tv"], [net] if net in L["tv"] else []
+    for day, g in pending:
         provider = provider or g["provider"]
         if g["state"] in ("in", "post") and g["spread"] is None and g["ou"] is None:
             # ESPN pulls the odds at kickoff: keep the last pregame number as the closing line, or ask the odds feed once
@@ -572,6 +712,12 @@ def build_league(league, prev, main_day, start, end):
                 bits.append(f"kick {et_iso(sc['kick'])} -> {'TBD' if g.get('tbd') else et_iso(g['kick'])} ET")
             items.append(f"{d.strftime('%a')} {who}: {', '.join(bits)}")
         rep.append("  schedule changes on game day: " + "; ".join(items))
+    if filled:
+        rep.append("  network from CBS Sports (ESPN lists none): " + "; ".join(f"{g['away']['name']} at {g['home']['name']} {net}" for g, net in filled))
+    if misses:
+        rep.append("  no network on ESPN or CBS Sports: " + "; ".join(f"{g['away']['name']} at {g['home']['name']}" for g in misses))
+    if cbs_notes:
+        rep.append("  CBS Sports network labels not in CBS_NET: " + ", ".join(cbs_notes))
     if unknown_conf:
         rep.append("  non-Division I or unknown conference ids: " + "; ".join(f"{k}: {', '.join(sorted(v))}" for k, v in unknown_conf.items()))
     return out, rep, slug, pulled, lines_src
