@@ -1,11 +1,11 @@
-College Football Week 6 (105 games, pulled Thu 10/8, 9:56 PM ET, lines DraftKings via ESPN)
+College Football Week 6 (105 games, pulled Fri 10/9, 4:50 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week6.html
   cfb/ forwards to the one page
   Thu 10/8: 4 on TV, 0 not
   Fri 10/9: 4 on TV, 3 not
   Sat 10/10: 36 on TV, 58 not
   ranked matchups:
-    Fri 21:00 ET  #20 Iowa at Washington  [no TV]  WASH -3.0, o/u 41.5
+    Fri 21:00 ET  #20 Iowa at Washington  [no TV]  WASH -2.5, o/u 41.5
     Fri 22:15 ET  Iowa State at #8 BYU  [ESPN]  BYU -10.5, o/u 46.5
     Sat 12:00 ET  Texas A&M at #14 Missouri  [ABC]  MIZ -3.5, o/u 48.5
     Sat 12:00 ET  North Carolina at #25 Pitt  [ESPN]  PITT -3.5, o/u 47.5
@@ -16,7 +16,7 @@ College Football Week 6 (105 games, pulled Thu 10/8, 9:56 PM ET, lines DraftKing
     Sat 15:30 ET  #21 UCLA at #13 Oregon  [CBS]  ORE -11.5, o/u 59.5
     Sat 15:30 ET  #9 Ole Miss at Vanderbilt  [ESPN]  MISS -9.5, o/u 54.5
     Sat 15:30 ET  #22 Houston at Kansas State  [Fox]  KSU -2.5, o/u 55.5
-    Sat 15:30 ET  Stanford at #3 Notre Dame  [NBC]  ND -39.5, o/u 54.5
+    Sat 15:30 ET  Stanford at #3 Notre Dame  [NBC]  ND -38.5, o/u 54.5
     Sat 16:15 ET  Maryland at #5 Ohio State  [BTN]  OSU -32.5, o/u 56.5
     Sat 16:15 ET  #15 Tennessee at Arkansas  [SECN]  TENN -13.5, o/u 51.5
     Sat 19:00 ET  #10 LSU at Kentucky  [ESPN]  LSU -8.5, o/u 51.5
@@ -28,7 +28,7 @@ College Football Week 6 (105 games, pulled Thu 10/8, 9:56 PM ET, lines DraftKing
   time TBD: 0
   non-Division I or unknown conference ids: none: American International, Arkansas Baptist, Franklin Pierce, Virginia Lynchburg
 
-NFL Week 5 (15 games, pulled Thu 10/8, 9:56 PM ET, lines DraftKings via ESPN)
+NFL Week 5 (15 games, pulled Fri 10/9, 4:50 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week5.html
   nfl/ forwards to the one page
   Thu 10/8: 0 on TV, 1 not
