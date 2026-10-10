@@ -286,6 +286,8 @@
   .tb .pl .sc{font-variant-numeric:tabular-nums;margin-left:auto;padding:0 3px;margin-right:-3px;font-size:16px;min-width:22px;box-sizing:content-box;width:var(--scv,22px);text-align:right}
   .gbar.pre .tb .pl .sc{width:var(--scw,22px)}
   .tb .pl .sc.spread{font-size:12px;font-weight:600;opacity:.9}
+  /* Both mode: a hairline between the spread and the price, drawn rather than typed (a | in this face reads as a 1), the plate's own ink a shade lighter, a touch taller than the digits (Phil, 10/10) */
+  .sc .sep{display:inline-block;width:1px;height:1.15em;background:currentColor;opacity:.35;margin:0 5px;vertical-align:-.17em}
   .tb .pl .sc.dim{opacity:.55}
   .tb .pl .p{width:12px;height:12px;flex:none;visibility:hidden;display:flex;align-items:center}
   .tb .pl .p svg{display:block;width:12px;height:12px}
@@ -1113,6 +1115,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     return sp;
   }
   const liveLine = g => S.odds && g.lsp != null ? fmtLine(g, g.lsp, g.lou, t => t.ab) : "";
+  /* the pregame slot on a plate or a card row: text, except that Both mode draws the hairline between the spread and the price */
+  function fillSlot(sc, txt){ sc.textContent = ""; const m = txt.match(/^(.*) \| (.*)$/); if (!m){ sc.textContent = txt; return; } sc.appendChild(document.createTextNode(m[1])); sc.appendChild(el("i", "sep")); sc.appendChild(document.createTextNode(m[2])); }
 
   /* ============================ the bug (cards) ============================ */
   const FLASH = new Set();
@@ -1132,7 +1136,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const sc = el("div", "sc");
     if (st.phase === "pre"){
       const txt = plateSlot(g, side);
-      if (txt){ sc.textContent = txt; sc.classList.add("spread"); }
+      if (txt){ fillSlot(sc, txt); sc.classList.add("spread"); }
     } else {
       sc.textContent = String(t.score);
       if (st.phase === "final" && t.score < other.score) sc.classList.add("dim");
@@ -1235,6 +1239,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const plateLabel = t => (t.rank ? t.rank + " " : "") + t.ab;
   /* the name slot on every plate is as wide as the widest label on the board, so the scores sit in one column down the screen */
   const measurer = document.createElement("canvas").getContext("2d");
+  const slotWidth = t => { const m = t.match(/^(.*) \| (.*)$/); return m ? measurer.measureText(m[1]).width + measurer.measureText(m[2]).width + 11 : measurer.measureText(t).width; };   /* the hairline and its margins instead of the typed bar */
   function slotWidths(games){
     const nm = document.querySelector(".tb .pl .nm"), sc = document.querySelector(".tb .pl .sc"); if (!nm || !sc) return [0, 0, 0];
     const font = e => { const cs = getComputedStyle(e); return cs.fontWeight + " " + cs.fontSize + " " + cs.fontFamily; };
@@ -1243,7 +1248,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     let w = 0; games.forEach(g => [g.away, g.home].forEach(t => { w = Math.max(w, measurer.measureText((stars.has(t.name) ? STAR + " " : "") + plateLabel(t)).width); }));
     /* the pregame slot (the line or the price, 600 12px) and the score slot (700 16px) are sized apart, so a long price doesn't widen the live bars */
     let v = 0, u = 0;
-    measurer.font = scPre ? font(scPre) : "600 12px " + fam; games.forEach(g => { if (status(g).phase === "pre") ["away", "home"].forEach(side => { v = Math.max(v, measurer.measureText(plateSlot(g, side)).width); }); });
+    measurer.font = scPre ? font(scPre) : "600 12px " + fam; games.forEach(g => { if (status(g).phase === "pre") ["away", "home"].forEach(side => { v = Math.max(v, slotWidth(plateSlot(g, side))); }); });
     measurer.font = scLive ? font(scLive) : "700 16px " + fam; games.forEach(g => { if (status(g).phase !== "pre") ["away", "home"].forEach(side => { u = Math.max(u, measurer.measureText(String(g[side].score)).width); }); });
     return [Math.ceil(w) + 1, Math.ceil(v) + 1, Math.ceil(u) + 1];
   }
@@ -1258,7 +1263,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     nm.appendChild(document.createTextNode(plateLabel(t)));
     p.appendChild(nm);
     const sc = el("span", "sc");
-    if (st.phase === "pre"){ const txt = plateSlot(g, side); if (txt){ sc.textContent = txt; sc.classList.add("spread"); } }
+    if (st.phase === "pre"){ const txt = plateSlot(g, side); if (txt){ fillSlot(sc, txt); sc.classList.add("spread"); } }
     else { sc.textContent = String(t.score); if (st.phase === "final" && t.score < other.score) sc.classList.add("dim"); }
     p.appendChild(sc);
     const f = el("span", "p" + (st.rz && st.poss === side ? " rz" : "")); f.innerHTML = FOOTBALL; p.appendChild(f);
