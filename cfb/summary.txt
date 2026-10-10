@@ -1,4 +1,4 @@
-College Football Week 6 (105 games, pulled Sat 10/10, 2:55 AM ET, lines DraftKings via ESPN)
+College Football Week 6 (105 games, pulled Sat 10/10, 9:31 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week6.html
   cfb/ forwards to the one page
   Thu 10/8: 4 on TV, 0 not
@@ -7,13 +7,13 @@ College Football Week 6 (105 games, pulled Sat 10/10, 2:55 AM ET, lines DraftKin
   ranked matchups:
     Fri 21:00 ET  #20 Iowa at Washington  [FOX]  WASH -3.0, o/u 40.5
     Fri 22:30 ET  Iowa State at #8 BYU  [ESPN]  BYU -11.5, o/u 46.5
-    Sat 12:00 ET  Texas A&M at #14 Missouri  [ABC]  MIZ -3.5, o/u 49.5
-    Sat 12:00 ET  North Carolina at #25 Pitt  [ESPN]  PITT -3.5, o/u 47.5
+    Sat 12:00 ET  Texas A&M at #14 Missouri  [ABC]  MIZ -3.5, o/u 50.5
+    Sat 12:00 ET  North Carolina at #25 Pitt  [ESPN]  PITT -3.5, o/u 46.5
     Sat 12:00 ET  UCF at #18 Oklahoma State  [ESPN2]  OKST -10.5, o/u 53.5
-    Sat 12:00 ET  #7 Indiana at Nebraska  [FOX]  IU -7.5, o/u 48.5
+    Sat 12:00 ET  #7 Indiana at Nebraska  [FOX]  IU -8.5, o/u 48.5
     Sat 12:45 ET  South Carolina at #16 Florida  [SECN]  FLA -10.5, o/u 58.5
     Sat 15:30 ET  #1 Texas vs Oklahoma  [ABC]  TEX -7.5, o/u 39.5
-    Sat 15:30 ET  #21 UCLA at #13 Oregon  [CBS]  ORE -10.5, o/u 58.5
+    Sat 15:30 ET  #21 UCLA at #13 Oregon  [CBS]  ORE -10.5, o/u 57.5
     Sat 15:30 ET  #9 Ole Miss at Vanderbilt  [ESPN]  MISS -9.5, o/u 54.5
     Sat 15:30 ET  #22 Houston at Kansas State  [FOX]  KSU -2.5, o/u 55.5
     Sat 15:30 ET  Stanford at #3 Notre Dame  [NBC]  ND -39.5, o/u 54.5
@@ -21,8 +21,8 @@ College Football Week 6 (105 games, pulled Sat 10/10, 2:55 AM ET, lines DraftKin
     Sat 16:15 ET  #15 Tennessee at Arkansas  [SECN]  TENN -13.5, o/u 51.5
     Sat 19:00 ET  #10 LSU at Kentucky  [ESPN]  LSU -8.5, o/u 50.5
     Sat 19:30 ET  #2 Georgia at #6 Alabama  [ABC]  ALA -2.5, o/u 51.5
-    Sat 19:30 ET  #19 USC at Penn State  [NBC]  PSU -1.5, o/u 54.5
-    Sat 20:00 ET  Kansas at #12 Utah  [no TV]  UTAH -15.5, o/u 51.5
+    Sat 19:30 ET  #19 USC at Penn State  [NBC]  PSU -2.5, o/u 54.5
+    Sat 20:00 ET  Kansas at #12 Utah  [no TV]  UTAH -15.5, o/u 50.5
     Sat 22:30 ET  #23 Boise State at Fresno State  [CW]  BOIS -7.0, o/u 48.5
   TV games without a line: 0
   time TBD: 0

@@ -1,4 +1,4 @@
-NFL Week 5 (15 games, pulled Sat 10/10, 2:55 AM ET, lines DraftKings via ESPN)
+NFL Week 5 (15 games, pulled Sat 10/10, 9:31 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week5.html
   nfl/ forwards to the one page
   Thu 10/8: 0 on TV, 1 not
@@ -18,7 +18,7 @@ NFL Week 5 (15 games, pulled Sat 10/10, 2:55 AM ET, lines DraftKings via ESPN)
     Sun 16:05 ET  Denver Broncos at Los Angeles Chargers  [CBS]  DEN -3.5, o/u 41.5
     Sun 16:25 ET  Detroit Lions at Arizona Cardinals  [FOX]  DET -5.5, o/u 54.5
     Sun 16:25 ET  San Francisco 49ers at Seattle Seahawks  [FOX]  SEA -3.0, o/u 45.5
-    Sun 20:20 ET  Baltimore Ravens at Atlanta Falcons  [NBC]  ATL -3.5, o/u 43.5
+    Sun 20:20 ET  Baltimore Ravens at Atlanta Falcons  [NBC]  ATL -3.0, o/u 43.5
     Mon 20:15 ET  Buffalo Bills at Los Angeles Rams  [ESPN]  LAR -3.0, o/u 54.5
   TV games without a line: 0
   time TBD: 0
