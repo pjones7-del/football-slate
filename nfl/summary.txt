@@ -1,4 +1,4 @@
-NFL Week 5 (15 games, pulled Sat 10/10, 9:31 AM ET, lines DraftKings via ESPN)
+NFL Week 5 (15 games, pulled Sat 10/10, 11:35 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week5.html
   nfl/ forwards to the one page
   Thu 10/8: 0 on TV, 1 not
@@ -11,7 +11,7 @@ NFL Week 5 (15 games, pulled Sat 10/10, 9:31 AM ET, lines DraftKings via ESPN)
     Sun 13:00 ET  Cleveland Browns at New York Jets  [CBS]  NYJ -2.5, o/u 39.5
     Sun 13:00 ET  Indianapolis Colts at Pittsburgh Steelers  [CBS]  PIT -3.0, o/u 43.5
     Sun 13:00 ET  Houston Texans at Tennessee Titans  [CBS]  HOU -7.0, o/u 38.5
-    Sun 13:00 ET  Chicago Bears at Green Bay Packers  [FOX]  CHI -1.5, o/u 45.5
+    Sun 13:00 ET  Chicago Bears at Green Bay Packers  [FOX]  CHI -1.5, o/u 46.5
     Sun 13:00 ET  Cincinnati Bengals at Miami Dolphins  [FOX]  CIN -7.0, o/u 43.5
     Sun 13:00 ET  Minnesota Vikings at New Orleans Saints  [FOX]  MIN -2.5, o/u 41.5
     Sun 13:00 ET  New York Giants at Washington Commanders  [FOX]  WSH -3.5, o/u 41.5
