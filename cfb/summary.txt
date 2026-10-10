@@ -1,4 +1,4 @@
-College Football Week 6 (105 games, pulled Sat 10/10, 4:15 PM ET, lines DraftKings via ESPN)
+College Football Week 6 (105 games, pulled Sat 10/10, 4:22 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week6.html
   cfb/ forwards to the one page
   Thu 10/8: 4 on TV, 0 not
@@ -17,7 +17,7 @@ College Football Week 6 (105 games, pulled Sat 10/10, 4:15 PM ET, lines DraftKin
     Sat 15:30 ET  #9 Ole Miss at Vanderbilt  [ESPN]  MISS -9.5, o/u 54.5
     Sat 15:30 ET  #22 Houston at Kansas State  [FOX]  KSU -2.5, o/u 55.5
     Sat 15:30 ET  Stanford at #3 Notre Dame  [NBC]  ND -40.5, o/u 55.5
-    Sat 16:15 ET  Maryland at #5 Ohio State  [BTN]  OSU -31.5, o/u 56.5
+    Sat 16:15 ET  Maryland at #5 Ohio State  [BTN]  OSU -33.5, o/u 56.5
     Sat 16:15 ET  #15 Tennessee at Arkansas  [SECN]  TENN -13.5, o/u 51.5
     Sat 19:00 ET  #10 LSU at Kentucky  [ESPN]  LSU -9.5, o/u 50.5
     Sat 19:30 ET  #2 Georgia at #6 Alabama  [ABC]  ALA -2.5, o/u 51.5
