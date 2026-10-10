@@ -1,4 +1,4 @@
-NFL Week 5 (15 games, pulled Sat 10/10, 11:35 AM ET, lines DraftKings via ESPN)
+NFL Week 5 (15 games, pulled Sat 10/10, 11:50 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week5.html
   nfl/ forwards to the one page
   Thu 10/8: 0 on TV, 1 not
