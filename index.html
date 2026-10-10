@@ -1109,7 +1109,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const sp = fav === side ? String(g.sp < 0 ? g.sp : -g.sp) : "";
     const ml = g.ml ? fmtMl(side === "home" ? g.ml[1] : g.ml[0]) : "";
     if (S.ml === "ml" && ml) return ml;
-    if (S.ml === "both" && ml) return sp ? sp + " \u00b7 " + ml : ml;
+    if (S.ml === "both" && ml) return sp ? sp + " | " + ml : ml;   /* a bar, not a dot, between the spread and the price (Phil, 10/9) */
     return sp;
   }
   const liveLine = g => S.odds && g.lsp != null ? fmtLine(g, g.lsp, g.lou, t => t.ab) : "";
