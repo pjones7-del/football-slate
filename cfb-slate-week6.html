@@ -349,6 +349,7 @@
   .tb .ln .lc > div{display:flex;align-items:center;gap:4px}
   .tb .ln .lc > div:first-child{color:var(--away-ink)}
   .tb .ln .lc > div:last-child{color:var(--home-ink)}
+  .tb .ln .lcm > div{justify-content:flex-end}   /* the two prices end at one right edge, like the plates */
   .tb .ln .lc.old{opacity:.5}   /* Live odds on, but DraftKings has no in-game number for it (a blowout): the close, faded. No red dots on a bar (Phil, 10/10) */
   .gbar.ghost .tb .ln,.gbar.noln .tb .ln,.gbar.nolm .tb .ln .lcm{display:none}
   .gbar.nosp .tb .pl .sc{display:none}
@@ -1260,19 +1261,17 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* ============================ timeline ============================ */
   const plateLabel = t => (t.rank ? t.rank + " " : "") + t.ab;
   /* the name slot on every plate is as wide as the widest label on the board, so the scores sit in one column down the screen */
-  const measurer = document.createElement("canvas").getContext("2d");
-  const slotWidth = t => { const m = t.match(/^(.*) \| (.*)$/); return m ? measurer.measureText(m[1]).width + measurer.measureText(m[2]).width + 11 : measurer.measureText(t).width; };   /* the hairline and its margins instead of the typed bar */
-  function slotWidths(games){
-    const nm = document.querySelector(".tb .pl .nm"), sc = document.querySelector(".tb .pl .sc"); if (!nm || !sc) return [0, 0, 0];
-    const font = e => { const cs = getComputedStyle(e); return cs.fontWeight + " " + cs.fontSize + " " + cs.fontFamily; };
-    const stars = P().stars, fam = getComputedStyle(sc).fontFamily, scPre = document.querySelector(".tb .pl .sc.spread"), scLive = document.querySelector(".gbar:not(.pre) .tb .pl .sc");
-    measurer.font = font(nm);
-    let w = 0; games.forEach(g => [g.away, g.home].forEach(t => { w = Math.max(w, measurer.measureText((stars.has(t.name) ? STAR + " " : "") + plateLabel(t)).width); }));
-    /* the pregame slot (the line or the price, 600 12px) and the score slot (700 16px) are sized apart, so a long price doesn't widen the live bars */
-    let v = 0, u = 0;
-    measurer.font = scPre ? font(scPre) : "600 12px " + fam; games.forEach(g => { if (status(g).phase === "pre") ["away", "home"].forEach(side => { v = Math.max(v, slotWidth(plateSlot(g, side))); }); });
-    measurer.font = scLive ? font(scLive) : "700 16px " + fam; games.forEach(g => { if (status(g).phase !== "pre") ["away", "home"].forEach(side => { u = Math.max(u, measurer.measureText(String(g[side].score)).width); }); });
-    return [Math.ceil(w) + 1, Math.ceil(v) + 1, Math.ceil(u) + 1];
+  /* the plates' shared columns (the name, the pregame line or price, the score), each as wide as the widest on the board so they sit in one
+     column down the screen. Measured from the plates themselves, as rendered: a canvas measure couldn't see tabular-nums or the plate's
+     letter-spacing, so a ".5" spread spilled past its slot and the dog's price sat left of the favorite's (Phil, 10/11). The pregame slot and
+     the score slot are sized apart, so a long price doesn't widen the live bars. */
+  function slotWidths(tl){
+    const rw = e => { const r = document.createRange(); r.selectNodeContents(e); return r.getBoundingClientRect().width; };
+    let w = 0, v = 0, u = 0;
+    tl.querySelectorAll(".gbar .tb .pl .nm").forEach(e => { w = Math.max(w, rw(e)); });
+    tl.querySelectorAll(".gbar.pre .tb .pl .sc").forEach(e => { v = Math.max(v, rw(e)); });
+    tl.querySelectorAll(".gbar:not(.pre) .tb .pl .sc").forEach(e => { u = Math.max(u, rw(e)); });
+    return [Math.ceil(w), Math.ceil(v), Math.ceil(u)];
   }
   function plate(g, side, st){
     const t = g[side], other = g[side === "home" ? "away" : "home"];
@@ -1442,7 +1441,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       tl.appendChild(row);
     });
     wrap.appendChild(tl);
-    const [abw, scw, scv] = slotWidths(list); tl.style.setProperty("--abw", abw + "px"); tl.style.setProperty("--scw", scw + "px"); tl.style.setProperty("--scv", scv + "px");
+    const [abw, scw, scv] = slotWidths(tl); tl.style.setProperty("--abw", abw + "px"); tl.style.setProperty("--scw", scw + "px"); tl.style.setProperty("--scv", scv + "px");
     /* as a bar runs out of room (short to begin with, or scrolling out on the left) the bug sheds pieces instead of showing a cut
        fragment, in this order: the status block, then the spread on the plate, then the weather cell, then the plates stand alone,
        then nothing (weather outranks the odds; a live score never goes). Each tier is the width it needs and the classes that set it. */
