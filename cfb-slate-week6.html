@@ -259,18 +259,26 @@
   .tb .pl.away,.tb .st .big{color:var(--away-ink)}
   .tb .pl.home,.tb .st .sub{color:var(--home-ink)}
   /* finals: the same two team colors, pulled most of the way into the page ground, so the hue stays and the block recedes */
-  .gbar.final{--away-ink:#c3c9d3;--home-ink:#c3c9d3;box-shadow:none;background:linear-gradient(to bottom,color-mix(in oklab,var(--away) 45%,var(--bg)) 0 50%,color-mix(in oklab,var(--home) 45%,var(--bg)) 50% 100%)}
+  /* finals (Phil's pick, option 4 of the 10/11 study): the loser's half goes graphite, the winner's half keeps a muted team color, and an arrow
+     points at the winner's score; a tie is grey on both halves. Everything at full strength, so the score reads. --fin and --fin-ink are set per
+     bar (the winner's color pulled toward the ground, and an ink that reads on it). */
+  .gbar.final{--away-ink:#eceef2;--home-ink:#eceef2;box-shadow:none;background:linear-gradient(to bottom,#2a3039 0 50%,#252b34 50% 100%)}
+  .gbar.final.awin{--away-ink:var(--fin-ink,#eceef2);background:linear-gradient(to bottom,var(--fin) 0 50%,#252b34 50% 100%)}
+  .gbar.final.hwin{--home-ink:var(--fin-ink,#eceef2);background:linear-gradient(to bottom,#2a3039 0 50%,var(--fin) 50% 100%)}
+  .gbar.final .tb .pl.lose{color:#8c94a0}
+  .gbar.final .tb .pl .sc.dim{opacity:1}
+  .gbar.final .tb .pl .p svg{display:none}
+  .gbar.final .tb .pl.win .p{visibility:visible}
+  .gbar.final .tb .pl.win .p::before{content:"";width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-right:7px solid currentColor;margin-left:2px}
   .gbar.final.fav{box-shadow:inset 0 0 0 2px var(--accent)}
   /* ...and a thin diagonal hatch over the color plus dimmed text and logos, so "over" reads before the word FINAL does */
-  .gbar.final::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(135deg,rgba(0,0,0,.32) 0 1.5px,transparent 1.5px 7px)}
   .gbar.final .tb,.gbar.final .cl{z-index:1}
-  .gbar.final .tb .pl{opacity:.72}
-  .gbar.final .tb .pl img{opacity:.7;filter:grayscale(.4) drop-shadow(0 0 1px #fff)}
   /* light mode: a pale tint of each team color with the full color as a stripe on the kickoff edge */
   .lightpref .gbar{--away-ink:var(--ink);--home-ink:var(--ink);background:linear-gradient(to bottom,var(--away) 0 50%,var(--home) 50% 100%) 0 0/6px 100% no-repeat,linear-gradient(to bottom,color-mix(in oklab,var(--away) 24%,var(--card)) 0 50%,color-mix(in oklab,var(--home) 24%,var(--card)) 50% 100%)}
-  .lightpref .gbar.final::after{background:repeating-linear-gradient(135deg,rgba(0,0,0,.16) 0 1.5px,transparent 1.5px 7px)}
-  .lightpref .gbar.final{--away-ink:#4a515c;--home-ink:#4a515c;background:linear-gradient(to bottom,color-mix(in oklab,var(--away) 40%,var(--bg2)) 0 50%,color-mix(in oklab,var(--home) 40%,var(--bg2)) 50% 100%) 0 0/6px 100% no-repeat,linear-gradient(to bottom,color-mix(in oklab,var(--away) 10%,var(--bg2)) 0 50%,color-mix(in oklab,var(--home) 10%,var(--bg2)) 50% 100%)}
-  .lightpref .gbar.final .tb .pl,.lightpref .gbar.final .tb .st{opacity:.7}
+  .lightpref .gbar.final{--away-ink:var(--ink);--home-ink:var(--ink);background:linear-gradient(to bottom,#e4e4e0 0 50%,#dcdcd7 50% 100%)}
+  .lightpref .gbar.final.awin{background:linear-gradient(to bottom,var(--away) 0 50%,transparent 50%) 0 0/6px 100% no-repeat,linear-gradient(to bottom,color-mix(in oklab,var(--away) 24%,var(--card)) 0 50%,#dcdcd7 50% 100%)}
+  .lightpref .gbar.final.hwin{background:linear-gradient(to bottom,transparent 50%,var(--home) 50%) 0 0/6px 100% no-repeat,linear-gradient(to bottom,#e4e4e0 0 50%,color-mix(in oklab,var(--home) 24%,var(--card)) 50% 100%)}
+  .lightpref .gbar.final .tb .pl.lose{color:#858b94}
   .lightpref .gbar .cl{color:var(--ink);text-shadow:none}
   .cl{position:sticky;right:10px;margin-left:auto;padding-left:8px;flex:none;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:2px;font-family:var(--cond);font-weight:600;font-size:12px;line-height:1;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.75);white-space:nowrap;pointer-events:none}
   .cl b{font-weight:700;font-size:13px}
@@ -325,8 +333,8 @@
   .chgi{display:inline-flex;align-items:baseline;gap:6px;background:transparent;border:1px solid var(--line2);border-radius:999px;padding:2px 10px;font-family:var(--cond);font-size:13px;color:var(--muted);cursor:pointer;white-space:nowrap}
   .chgi .who{font-weight:700;color:var(--ink)}
   .chgi:hover{border-color:var(--ink)}
-  .gbar.final .tb .st .big{opacity:.6}
-  .gbar.final .tb .st .sub{opacity:.55}
+  .gbar.final .tb .st .big{opacity:.8}
+  .gbar.final .tb .st .sub{opacity:.75}
   .gbar.tight .tb .st{display:none}
   /* ---- weather: the icon over the temperature after the status block; a dome shows the dome over a gold DOME. As a bar runs out
      of room the status block goes first, then the spread on the plate, then this cell, then the plates stand alone (Phil's order:
@@ -378,7 +386,7 @@
   .ls td.t{width:auto;padding:4px 10px;border-left:1px solid var(--line2);font-weight:700;font-size:15px;color:var(--ink)}
   .ls td.q.on{color:var(--accent)}
   @keyframes flash{0%{background:var(--accent);color:var(--accent-ink)}100%{background:transparent;color:inherit}}
-  .team.flash .sc,.pl.flash .sc{animation:flash 1.6s ease-out;border-radius:4px}   /* no padding change: a flash must not move the digits */
+  .team.flash .sc,.pl.flash .sc{animation:flash 1s ease-out;border-radius:4px}   /* no padding change: a flash must not move the digits */
   @media (prefers-reduced-motion: reduce){.team.flash .sc,.pl.flash .sc{animation:none}}
   .now{position:absolute;top:0;bottom:0;width:2px;background:var(--accent);pointer-events:none;box-shadow:0 0 6px var(--accent)}
   .gbar .now{box-shadow:none;opacity:.9}   /* the bar's own segment of the line: under the bug, over the color */
@@ -989,6 +997,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const nowText = () => new Intl.DateTimeFormat("en-US", { timeZone: TZ[S.tz], hour: "numeric", minute: "2-digit" }).format(new Date()) + " " + S.tz;
 
   /* ============================ data ============================ */
+  /* a share t of color a over b, in sRGB: the winner's half of a final, its team color pulled toward the ground */
+  const mixHex = (a, b, t) => { const p = h => [0, 2, 4].map(i => parseInt(h.replace("#", "").slice(i, i + 2), 16)), x = p(a), y = p(b); return "#" + x.map((v, i) => Math.round(v * t + y[i] * (1 - t)).toString(16).padStart(2, "0")).join(""); };
   const lum = hex => { hex = (hex || "").replace("#", ""); if (hex.length !== 6) return 0; const f = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }; return 0.2126 * f(parseInt(hex.slice(0, 2), 16)) + 0.7152 * f(parseInt(hex.slice(2, 4), 16)) + 0.0722 * f(parseInt(hex.slice(4, 6), 16)); };
   const dist = (a, b) => { a = (a || "").replace("#", ""); b = (b || "").replace("#", ""); if (a.length !== 6 || b.length !== 6) return 999; let s = 0; for (let i = 0; i < 6; i += 2) s += Math.pow(parseInt(a.slice(i, i + 2), 16) - parseInt(b.slice(i, i + 2), 16), 2); return Math.sqrt(s); };
   const baseColor = t => { let c = t.color || "3b4560"; if (lum(c) > 0.8 && t.alt && lum(t.alt) < lum(c)) c = t.alt; return "#" + c; };
@@ -1275,7 +1285,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   function plate(g, side, st){
     const t = g[side], other = g[side === "home" ? "away" : "home"];
-    const p = el("div", "pl " + side + (st.poss === side ? " has" : "") + (FLASH.has(g.id + side) ? " flash" : ""));
+    const p = el("div", "pl " + side + (st.poss === side ? " has" : "") + (FLASH.has(g.id + side) ? " flash" : "") + (st.phase === "final" && t.score !== other.score ? (t.score > other.score ? " win" : " lose") : ""));
     const lg = el("span", "lg");
     if (t.logo){ const im = document.createElement("img"); im.src = LOGO(g.league, t.logo); im.alt = ""; im.decoding = "async"; im.addEventListener("error", () => im.remove()); lg.appendChild(im); }
     p.appendChild(lg);
@@ -1391,6 +1401,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         const b = el("div", "gbar " + st.phase + (st.rz ? " rz" : "") + (S.open === g.id && (S.openRow ? S.openRow === net : !g.ghost) ? " open" : "") + (g.fav ? " fav" : "") + (g.loc ? " loc" : "") + (g.ghost ? " ghost" : ""));
         b.style.left = x(g._start) + "px"; b.style.width = w + "px"; b.style.top = (i * LANE + (LANE >= 66 ? 5 : 4)) + "px";
         const [ca, ch] = colors(g); b.style.setProperty("--away", ca); b.style.setProperty("--home", ch); b.style.setProperty("--away-ink-d", lum(ca) > 0.45 ? "#111" : "#fff"); b.style.setProperty("--home-ink-d", lum(ch) > 0.45 ? "#111" : "#fff");
+        if (st.phase === "final" && !g.ghost && g.away.score !== g.home.score){ const aw = g.away.score > g.home.score, fin = mixHex(aw ? ca : ch, "#1c222b", 0.62);
+          b.classList.add(aw ? "awin" : "hwin"); b.style.setProperty("--fin", fin); b.style.setProperty("--fin-ink", lum(fin) > 0.45 ? "#111" : "#eceef2"); }
         if (g.ghost){
           /* the trace a moved game leaves on its old row: who, and where it went */
           const gl = el("div", "tb gl"), who = el("span", "who");
@@ -1946,7 +1958,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
 
   /* ============================ live: ESPN once a minute for the day on screen ============================ */
   const API = { cfb: g => "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates={d}&groups=" + g + "&limit=300", nfl: () => "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={d}&limit=100" };
-  let pollStamp = "", pollFails = 0, ticks = 0;
+  let pollStamp = "", pollFails = 0, ticks = 0, lastPoll = 0;   /* lastPoll: when the last poll landed, so a catch-up (after a load, or back from the background) doesn't flash */
   const NET_ALIAS = { "SEC Network": "SECN", "ACC Network": "ACCN", "USA Net": "USA", "USA Network": "USA", "Big Ten Network": "BTN", "CBS Sports Network": "CBSSN", "The CW": "CW", "CW Network": "CW", "TNT/HBO Max": "TNT", "truTV": "TRUTV", "ESPNews": "ESPNEWS", "ESPN News": "ESPNEWS", "NBC Sports Network": "NBCSN", "NFL Net": "NFL Network", "NFLN": "NFL Network", "Amazon Prime Video": "Prime Video", "Prime": "Prime Video", "Amazon Prime": "Prime Video" };
   const STREAM_TYPES = new Set(["Streaming", "Web"]);
   /* the channel names as the build spells them, matched without regard to case: ESPN started sending "Fox" for FOX on 10/9/2026 */
@@ -2003,7 +2015,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       for (const d of [S.day, shiftDate(S.day, 1)]) for (const u of (lg === "cfb" ? [API.cfb("80"), API.cfb("81")] : [API.nfl()])) urls.push(u.replace("{d}", d.replace(/-/g, "")));
       const seen = new Map();
       for (const u of urls){ const r = await fetch(u, { cache: "no-store" }); if (!r.ok) throw new Error(r.status); const j = await r.json(); (j.events || []).forEach(e => { const g = fromEspn(e, lg); if (g && !seen.has(g.id)) seen.set(g.id, g); }); }
-      let changed = false;
+      let changed = false; const asItHappens = lastPoll && Date.now() - lastPoll < 180000;   /* the previous poll landed within three minutes */
       GAMES[lg] = GAMES[lg].map(old => { const n = seen.get(old.id); if (!n) return old; const p = prepGame(n, lg);
         if (p.sp == null && old.sp != null){ p.sp = old.sp; p.ou = old.ou; p.close = p.state !== "pre"; }   /* ESPN drops the odds at kickoff: keep the last number as the close */
         if (old.close && p.state !== "pre"){ p.sp = old.sp; p.ou = old.ou; p.close = true; }
@@ -2019,9 +2031,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         if (kickGap(old.kick, p.kick) >= 20) sc = Object.assign({ chan: oc, kick: old.kick }, sc || {});
         if (sc && (sc.chan || "") === nc && (!sc.kick || kickGap(sc.kick, p.kick) < 20)) sc = null;
         if (sc) p.sched = sc; else delete p.sched;
-        if (p.away.score !== old.away.score) FLASH.add(p.id + "away"); if (p.home.score !== old.home.score) FLASH.add(p.id + "home");
+        if (asItHappens && p.away.score !== old.away.score) FLASH.add(p.id + "away"); if (asItHappens && p.home.score !== old.home.score) FLASH.add(p.id + "home");   /* a score flashes only when the change is seen as it happens (Phil, 10/11) */
         if (JSON.stringify(p) !== JSON.stringify(old)) changed = true; return p; });
-      pollFails = 0; pollStamp = nowText();
+      pollFails = 0; pollStamp = nowText(); lastPoll = Date.now();
       if (changed){ const before = [...PRESENT[lg].keys()].sort().join("|"); recount(lg); if ([...PRESENT[lg].keys()].sort().join("|") !== before) builtFor = ""; }   /* a new channel gets its chip */
       if (changed) render(); else footer();
       if (S.odds) pollOdds(false);
@@ -2066,7 +2078,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     fnotes.textContent = "";
     fnotes.appendChild(el("div", null, "Schedule and TV from ESPN (a college game ESPN posts with no network takes it from CBS Sports' schedule). Timeline: visitor on top, the bug stays at the left edge of a game as you scroll; a bar ends when the next game starts on that channel, streaming rows stack simultaneous games. " +
       "Tap a game to open its card (score by quarter, timeouts, last play), tap the card for ESPN's gamecast, tap a channel logo to open that network. Live games show possession (ball), down and distance, red for the red zone; " +
-      "a live bar carries its numbers in the bug after the clock: the spread over the total, and in ML or Both each team's price in its half; the closing numbers, or with Live odds on DraftKings' in-game ones (faded = the close, when the book has pulled its live number), the close then at the far right where there's room. On a live bar short of room the weather gives way first, then the prices, then the line. Finals are hatched. Package sets which channels count as yours; everything else, plus games with no broadcast, sits greyed at the bottom. " +
+      "a live bar carries its numbers in the bug after the clock: the spread over the total, and in ML or Both each team's price in its half; the closing numbers, or with Live odds on DraftKings' in-game ones (faded = the close, when the book has pulled its live number), the close then at the far right where there's room. On a live bar short of room the weather gives way first, then the prices, then the line. Finals go grey with the winner's half keeping its color and an arrow by the winning score. Package sets which channels count as yours; everything else, plus games with no broadcast, sits greyed at the bottom. " +
       "On now keeps just the games in progress. Teams (under More) stars your teams (gold frame) and can limit the board to them. " +
       "Game-day changes: a game moved to another channel gets a gold FROM note in its new row and leaves a dashed ghost in the old one up to the move; a start pushed by weather gets WAS; a game still going past its window says RUNNING LONG and the next game on that channel stacks under it; the strip above the board lists them all (ESPN's feed reports its own networks' moves within minutes; FOX and CBS shuffles show up there less reliably, and look-ins never do). " +
       (NFL() ? "Sunday afternoon CBS and FOX games are regional (REG); set your Market (ZIP) and the games your own CBS and FOX stations carry are tagged LOCAL, from the TV listings, and take the top lane of their row. " : "") +
