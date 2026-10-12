@@ -288,6 +288,7 @@
   .tb .pl img{width:18px;height:18px;object-fit:contain;flex:none;filter:drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px rgba(255,255,255,.85))}
   .tb .pl .nm{min-width:var(--abw,0);white-space:nowrap}
   .tb{position:sticky;left:var(--label);display:grid;grid-template-columns:auto auto auto auto;align-items:stretch;height:100%;width:max-content;max-width:100%;flex:none}   /* flex:none: the far-right close block must never squeeze the bug (it skewed the room math) */
+  .tl.measure .gbar .tb{max-width:none}   /* while the room math measures the bug's pieces: their natural widths, not squeezed into a short bar (a squeezed status block made a trimmed bug come out too wide, 10/11) */
   .tb .col{display:grid;grid-template-rows:1fr 1fr;height:100%}
   .tb .pl{display:flex;align-items:center;gap:5px;padding:0 6px 0 7px;font-family:var(--cond);font-weight:700;font-size:15px;letter-spacing:.02em;white-space:nowrap}
   .tb .pl .sc{font-variant-numeric:tabular-nums;margin-left:auto;padding:0 3px;margin-right:-3px;font-size:16px;min-width:22px;box-sizing:content-box;width:var(--scv,22px);text-align:right}
@@ -1457,6 +1458,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     /* as a bar runs out of room (short to begin with, or scrolling out on the left) the bug sheds pieces instead of showing a cut
        fragment, in this order: the status block, then the spread on the plate, then the weather cell, then the plates stand alone,
        then nothing (weather outranks the odds; a live score never goes). Each tier is the width it needs and the classes that set it. */
+    tl.classList.add("measure");   /* natural widths while measuring (see .tl.measure) */
     const bars = [...tl.querySelectorAll(".gbar")].map(b => { const tb = b.querySelector(".tb"), cl = b.querySelector(".cl"), seg = b.querySelector(".now");
       const col = tb.querySelector(".col"), st = tb.querySelector(".st"), wx = tb.querySelector(".wx"), ln = tb.querySelector(".ln"), sc = col && col.querySelector(".sc"), ghost = b.classList.contains("ghost");
       const plates = col ? col.offsetWidth + 6 : 0, stw = st ? st.offsetWidth : 0, wxw = wx ? wx.offsetWidth : 0, lnw = ln ? ln.offsetWidth : 0;
@@ -1466,6 +1468,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
                   : ln ? [[plates + stw + lnw + wxw, ""], [plates + stw + lnw, "nowx"]].concat(lmw ? [[plates + stw + lnw - lmw, "nowx nolm"]] : [], [[plates + stw, "nowx noln"], [plates, "tight noln nowx"]])   /* live: the line outranks the weather (Phil, 10/10): the weather goes first, then the prices, then the line; the clock last */
                        : [[plates + stw + wxw, ""], [plates + wxw, "tight"], [plates - spw + wxw, "tight nosp"], [plates - spw, "tight nosp nowx"]];
       return { el: b, left: b.offsetLeft, width: b.offsetWidth, right: b.offsetLeft + b.offsetWidth, tiers, clw: cl ? cl.offsetWidth : 0, seg, segX: seg ? +seg.dataset.x : 0 }; });
+    tl.classList.remove("measure");
     const TIERCLS = ["tight", "nosp", "nowx", "noln", "nolm", "gone"];
     wrap._trim = () => {
       const sl = wrap.scrollLeft, vis = Math.max(120, wrap.clientWidth - LABEL);
