@@ -1,4 +1,4 @@
-College Football Week 6 (105 games, pulled Sun 10/11, 8:23 PM ET, lines DraftKings via ESPN)
+College Football Week 6 (105 games, pulled Sun 10/11, 8:25 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week6.html
   cfb/ forwards to the one page
   Thu 10/8: 4 on TV, 0 not
@@ -29,7 +29,7 @@ College Football Week 6 (105 games, pulled Sun 10/11, 8:23 PM ET, lines DraftKin
   schedule changes on game day: Sat SCST at CHSO: kick 12:00 PM -> 1:00 PM ET; Sat KU at UTAH: ESPNEWS -> ESPN (4:39 AM ET); Sat JMU at GASO: kick 7:30 PM -> 8:10 PM ET
   non-Division I or unknown conference ids: none: American International, Arkansas Baptist, Franklin Pierce, Virginia Lynchburg
 
-NFL Week 5 (15 games, pulled Sun 10/11, 8:23 PM ET, lines DraftKings via ESPN)
+NFL Week 5 (15 games, pulled Sun 10/11, 8:25 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week5.html
   nfl/ forwards to the one page
   Thu 10/8: 0 on TV, 1 not
