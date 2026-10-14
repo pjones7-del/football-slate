@@ -1,4 +1,4 @@
-College Football Week 7 (114 games, pulled Wed 10/14, 4:33 PM ET, lines DraftKings via ESPN)
+College Football Week 7 (114 games, pulled Wed 10/14, 7:50 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week7.html
   cfb/ forwards to the one page
   Thu 10/15: 3 on TV, 0 not
@@ -6,26 +6,26 @@ College Football Week 7 (114 games, pulled Wed 10/14, 4:33 PM ET, lines DraftKin
   Sat 10/17: 37 on TV, 70 not
   ranked matchups:
     Sat 12:00 ET  Florida at #7 Texas  [ABC]  TEX -10.5, o/u 51.5
-    Sat 12:00 ET  Virginia at #24 SMU  [CW]  SMU -9.5, o/u 51.5
+    Sat 12:00 ET  Virginia at #24 SMU  [CW]  SMU -8.5, o/u 51.5
     Sat 12:00 ET  #16 Mississippi State at #22 LSU  [ESPN]  LSU -14.5, o/u 57.5
-    Sat 12:00 ET  #4 Ohio State at #5 Indiana  [FOX]  OSU -3.5, o/u 51.5
-    Sat 12:00 ET  #25 Northwestern at Michigan State  [Peacock]  NU -7.5, o/u 48.5
+    Sat 12:00 ET  #4 Ohio State at #5 Indiana  [FOX]  OSU -3.5, o/u 50.5
+    Sat 12:00 ET  #25 Northwestern at Michigan State  [Peacock]  NU -7.5, o/u 49.5
     Sat 15:30 ET  #6 Alabama at #14 Tennessee  [ABC]  ALA -8.5, o/u 51.5
     Sat 15:30 ET  Auburn at #1 Georgia  [ESPN]  UGA -20.5, o/u 49.5
     Sat 15:30 ET  Arizona State at #10 Texas Tech  [FOX]  TTU -14.5, o/u 48.5
-    Sat 15:30 ET  #13 Missouri at #9 Ole Miss  [SECN]  MISS -6.0, o/u 58.5
+    Sat 15:30 ET  #13 Missouri at #9 Ole Miss  [SECN]  MISS -5.5, o/u 58.5
     Sat 19:00 ET  Florida State at #3 Miami (FL)  [ESPN]  MIA -21.5, o/u 56.5
     Sat 19:30 ET  #2 Notre Dame at #8 BYU  [ABC]  ND -10.5, o/u 46.5
     Sat 19:30 ET  #18 Oklahoma State at #20 Houston  [FOX]  HOU -4.5, o/u 62.5
-    Sat 19:30 ET  Wisconsin at #12 UCLA  [NBC]  UCLA -2.5, o/u 43.5
-    Sat 19:30 ET  #15 Kentucky at Oklahoma  [SECN]  OU -7.0, o/u 43.5
+    Sat 19:30 ET  Wisconsin at #12 UCLA  [NBC]  UCLA -2.5, o/u 42.5
+    Sat 19:30 ET  #15 Kentucky at Oklahoma  [SECN]  OU -6.5, o/u 43.5
     Sat 22:15 ET  #11 Utah at Colorado  [ESPN]  UTAH -15.5, o/u 49.5
     Sat 22:30 ET  #21 Wake Forest at Cal  [ESPN2]  WAKE -9.5, o/u 53.5
   TV games without a line: 3
   time TBD: 0
   non-Division I or unknown conference ids: 136: Morehouse College; none: West Alabama
 
-NFL Week 6 (14 games, pulled Wed 10/14, 4:33 PM ET, lines DraftKings via ESPN)
+NFL Week 6 (14 games, pulled Wed 10/14, 7:50 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week6.html
   nfl/ forwards to the one page
   Thu 10/15: 0 on TV, 1 not
@@ -35,11 +35,11 @@ NFL Week 6 (14 games, pulled Wed 10/14, 4:33 PM ET, lines DraftKings via ESPN)
     Thu 20:15 ET  Seattle Seahawks at Denver Broncos  [Prime Video]  SEA -2.5, o/u 40.5
     Sun 09:30 ET  Houston Texans vs Jacksonville Jaguars  [NFL Network]  JAX -2.5, o/u 42.5
     Sun 13:00 ET  New York Jets at New England Patriots  [CBS]  NE -7.5, o/u 43.5
-    Sun 13:00 ET  Carolina Panthers at Philadelphia Eagles  [CBS]  CAR -1.5, o/u 40.5
+    Sun 13:00 ET  Carolina Panthers at Philadelphia Eagles  [CBS]  CAR -1.5, o/u 39.5
     Sun 13:00 ET  Pittsburgh Steelers at Tampa Bay Buccaneers  [CBS]  PIT -2.5, o/u 39.5
-    Sun 13:00 ET  Chicago Bears at Atlanta Falcons  [FOX]  CHI -1.5, o/u 50.5
+    Sun 13:00 ET  Chicago Bears at Atlanta Falcons  [FOX]  CHI -1.5, o/u 51.5
     Sun 13:00 ET  Baltimore Ravens at Cleveland Browns  [FOX]  BAL -5.5, o/u 42.5
-    Sun 13:00 ET  Tennessee Titans at Indianapolis Colts  [FOX]  IND -7.0, o/u 44.5
+    Sun 13:00 ET  Tennessee Titans at Indianapolis Colts  [FOX]  IND -7.0, o/u 43.5
     Sun 13:00 ET  New Orleans Saints at New York Giants  [FOX]  NO -1.5, o/u 45.5
     Sun 16:05 ET  Arizona Cardinals at Los Angeles Rams  [FOX]  LAR -12.5, o/u 51.5
     Sun 16:25 ET  Los Angeles Chargers at Kansas City Chiefs  [CBS]  KC -8.5, o/u 42.5
