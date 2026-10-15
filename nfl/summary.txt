@@ -1,4 +1,4 @@
-NFL Week 6 (14 games, pulled Thu 10/15, 12:23 AM ET, lines DraftKings via ESPN)
+NFL Week 6 (14 games, pulled Thu 10/15, 5:45 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week6.html
   nfl/ forwards to the one page
   Thu 10/15: 0 on TV, 1 not
@@ -10,7 +10,7 @@ NFL Week 6 (14 games, pulled Thu 10/15, 12:23 AM ET, lines DraftKings via ESPN)
     Sun 13:00 ET  New York Jets at New England Patriots  [CBS]  NE -7.5, o/u 43.5
     Sun 13:00 ET  Carolina Panthers at Philadelphia Eagles  [CBS]  CAR -1.5, o/u 39.5
     Sun 13:00 ET  Pittsburgh Steelers at Tampa Bay Buccaneers  [CBS]  PIT -2.5, o/u 39.5
-    Sun 13:00 ET  Chicago Bears at Atlanta Falcons  [FOX]  CHI -1.5, o/u 50.5
+    Sun 13:00 ET  Chicago Bears at Atlanta Falcons  [FOX]  CHI -1.5, o/u 51.5
     Sun 13:00 ET  Baltimore Ravens at Cleveland Browns  [FOX]  BAL -5.5, o/u 42.5
     Sun 13:00 ET  Tennessee Titans at Indianapolis Colts  [FOX]  IND -7.0, o/u 44.5
     Sun 13:00 ET  New Orleans Saints at New York Giants  [FOX]  NO -1.5, o/u 45.5
