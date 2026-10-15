@@ -1,18 +1,18 @@
-College Football Week 7 (114 games, pulled Thu 10/15, 10:50 AM ET, lines DraftKings via ESPN)
+College Football Week 7 (114 games, pulled Thu 10/15, 3:01 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week7.html
   cfb/ forwards to the one page
   Thu 10/15: 3 on TV, 0 not
   Fri 10/16: 4 on TV, 0 not
   Sat 10/17: 37 on TV, 70 not
   ranked matchups:
-    Sat 12:00 ET  Florida at #7 Texas  [ABC]  TEX -10.5, o/u 51.5
+    Sat 12:00 ET  Florida at #7 Texas  [ABC]  TEX -11.5, o/u 51.5
     Sat 12:00 ET  Virginia at #24 SMU  [CW]  SMU -9.5, o/u 51.5
-    Sat 12:00 ET  #16 Mississippi State at #22 LSU  [ESPN]  LSU -14.5, o/u 57.5
+    Sat 12:00 ET  #16 Mississippi State at #22 LSU  [ESPN]  LSU -14.5, o/u 56.5
     Sat 12:00 ET  #4 Ohio State at #5 Indiana  [FOX]  OSU -3.5, o/u 50.5
-    Sat 12:00 ET  #25 Northwestern at Michigan State  [Peacock]  NU -7.5, o/u 49.5
-    Sat 15:30 ET  #6 Alabama at #14 Tennessee  [ABC]  ALA -7.5, o/u 51.5
-    Sat 15:30 ET  Auburn at #1 Georgia  [ESPN]  UGA -20.5, o/u 49.5
-    Sat 15:30 ET  Arizona State at #10 Texas Tech  [FOX]  TTU -14.5, o/u 48.5
+    Sat 12:00 ET  #25 Northwestern at Michigan State  [Peacock]  NU -7.0, o/u 49.5
+    Sat 15:30 ET  #6 Alabama at #14 Tennessee  [ABC]  ALA -7.5, o/u 50.5
+    Sat 15:30 ET  Auburn at #1 Georgia  [ESPN]  UGA -21.0, o/u 49.5
+    Sat 15:30 ET  Arizona State at #10 Texas Tech  [FOX]  TTU -15.5, o/u 48.5
     Sat 15:30 ET  #13 Missouri at #9 Ole Miss  [SECN]  MISS -5.5, o/u 58.5
     Sat 19:00 ET  Florida State at #3 Miami (FL)  [ESPN]  MIA -21.5, o/u 56.5
     Sat 19:30 ET  #2 Notre Dame at #8 BYU  [ABC]  ND -10.5, o/u 46.5
@@ -21,6 +21,6 @@ College Football Week 7 (114 games, pulled Thu 10/15, 10:50 AM ET, lines DraftKi
     Sat 19:30 ET  #15 Kentucky at Oklahoma  [SECN]  OU -6.5, o/u 43.5
     Sat 22:15 ET  #11 Utah at Colorado  [ESPN]  UTAH -15.5, o/u 49.5
     Sat 22:30 ET  #21 Wake Forest at Cal  [ESPN2]  WAKE -9.5, o/u 53.5
-  TV games without a line: 2
+  TV games without a line: 1
   time TBD: 0
   non-Division I or unknown conference ids: none: West Alabama; 136: Morehouse College
