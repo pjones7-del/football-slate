@@ -1,4 +1,4 @@
-College Football Week 7 (114 games, pulled Fri 10/16, 12:31 PM ET, lines DraftKings via ESPN)
+College Football Week 7 (114 games, pulled Fri 10/16, 3:52 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week7.html
   cfb/ forwards to the one page
   Thu 10/15: 3 on TV, 0 not
@@ -7,7 +7,7 @@ College Football Week 7 (114 games, pulled Fri 10/16, 12:31 PM ET, lines DraftKi
   ranked matchups:
     Sat 12:00 ET  Florida at #7 Texas  [ABC]  TEX -11.5, o/u 51.5
     Sat 12:00 ET  Virginia at #24 SMU  [CW]  SMU -9.5, o/u 51.5
-    Sat 12:00 ET  #16 Mississippi State at #22 LSU  [ESPN]  LSU -15.5, o/u 57.5
+    Sat 12:00 ET  #16 Mississippi State at #22 LSU  [ESPN]  LSU -15.5, o/u 56.5
     Sat 12:00 ET  #4 Ohio State at #5 Indiana  [FOX]  OSU -3.0, o/u 50.5
     Sat 12:00 ET  #25 Northwestern at Michigan State  [Peacock]  NU -7.0, o/u 49.5
     Sat 15:30 ET  #6 Alabama at #14 Tennessee  [ABC]  ALA -7.5, o/u 50.5
@@ -21,6 +21,6 @@ College Football Week 7 (114 games, pulled Fri 10/16, 12:31 PM ET, lines DraftKi
     Sat 19:30 ET  #15 Kentucky at Oklahoma  [SECN]  OU -6.5, o/u 43.5
     Sat 22:15 ET  #11 Utah at Colorado  [ESPN]  UTAH -14.5, o/u 49.5
     Sat 22:30 ET  #21 Wake Forest at Cal  [ESPN2]  WAKE -10.0, o/u 53.5
-  TV games without a line: 1
+  TV games without a line: 0
   time TBD: 0
   non-Division I or unknown conference ids: none: West Alabama; 136: Morehouse College

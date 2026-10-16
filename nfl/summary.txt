@@ -1,4 +1,4 @@
-NFL Week 6 (14 games, pulled Fri 10/16, 12:31 PM ET, lines DraftKings via ESPN)
+NFL Week 6 (14 games, pulled Fri 10/16, 3:52 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week6.html
   nfl/ forwards to the one page
   Thu 10/15: 0 on TV, 1 not
@@ -8,15 +8,15 @@ NFL Week 6 (14 games, pulled Fri 10/16, 12:31 PM ET, lines DraftKings via ESPN)
     Thu 20:15 ET  Seattle Seahawks at Denver Broncos  [Prime Video]  SEA -2.5, o/u 40.5
     Sun 09:30 ET  Houston Texans vs Jacksonville Jaguars  [NFL Network]  JAX -2.5, o/u 42.5
     Sun 13:00 ET  New York Jets at New England Patriots  [CBS]  NE -7.5, o/u 43.5
-    Sun 13:00 ET  Carolina Panthers at Philadelphia Eagles  [CBS]  CAR -3.5, o/u 38.5
+    Sun 13:00 ET  Carolina Panthers at Philadelphia Eagles  [CBS]  CAR -3.5, o/u 39.5
     Sun 13:00 ET  Pittsburgh Steelers at Tampa Bay Buccaneers  [CBS]  PIT -2.5, o/u 39.5
     Sun 13:00 ET  Chicago Bears at Atlanta Falcons  [FOX]  CHI -1.5, o/u 51.5
-    Sun 13:00 ET  Baltimore Ravens at Cleveland Browns  [FOX]  BAL -3.5, o/u 40.5
+    Sun 13:00 ET  Baltimore Ravens at Cleveland Browns  [FOX]  BAL -3.0, o/u 39.5
     Sun 13:00 ET  Tennessee Titans at Indianapolis Colts  [FOX]  IND -7.0, o/u 44.5
-    Sun 13:00 ET  New Orleans Saints at New York Giants  [FOX]  NO -1.5, o/u 45.5
+    Sun 13:00 ET  New Orleans Saints at New York Giants  [FOX]  NO -1.5, o/u 46.5
     Sun 16:05 ET  Arizona Cardinals at Los Angeles Rams  [FOX]  LAR -12.5, o/u 51.5
     Sun 16:25 ET  Los Angeles Chargers at Kansas City Chiefs  [CBS]  KC -7.5, o/u 41.5
-    Sun 16:25 ET  Buffalo Bills at Las Vegas Raiders  [CBS]  BUF -5.5, o/u 53.5
+    Sun 16:25 ET  Buffalo Bills at Las Vegas Raiders  [CBS]  BUF -4.5, o/u 53.5
     Sun 20:20 ET  Dallas Cowboys at Green Bay Packers  [NBC]  GB -1.5, o/u 53.5
     Mon 20:15 ET  Washington Commanders at San Francisco 49ers  [ESPN]  SF -7.5, o/u 51.5
   TV games without a line: 0
