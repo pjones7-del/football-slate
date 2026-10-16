@@ -1,4 +1,4 @@
-College Football Week 7 (114 games, pulled Thu 10/15, 8:19 PM ET, lines DraftKings via ESPN)
+College Football Week 7 (114 games, pulled Fri 10/16, 1:43 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week7.html
   cfb/ forwards to the one page
   Thu 10/15: 3 on TV, 0 not
@@ -12,7 +12,7 @@ College Football Week 7 (114 games, pulled Thu 10/15, 8:19 PM ET, lines DraftKin
     Sat 12:00 ET  #25 Northwestern at Michigan State  [Peacock]  NU -7.0, o/u 49.5
     Sat 15:30 ET  #6 Alabama at #14 Tennessee  [ABC]  ALA -7.5, o/u 50.5
     Sat 15:30 ET  Auburn at #1 Georgia  [ESPN]  UGA -19.5, o/u 49.5
-    Sat 15:30 ET  Arizona State at #10 Texas Tech  [FOX]  TTU -15.5, o/u 49.5
+    Sat 15:30 ET  Arizona State at #10 Texas Tech  [FOX]  TTU -15.5, o/u 50.5
     Sat 15:30 ET  #13 Missouri at #9 Ole Miss  [SECN]  MISS -5.5, o/u 58.5
     Sat 19:00 ET  Florida State at #3 Miami (FL)  [ESPN]  MIA -21.5, o/u 56.5
     Sat 19:30 ET  #2 Notre Dame at #8 BYU  [ABC]  ND -10.5, o/u 46.5
