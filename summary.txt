@@ -1,4 +1,4 @@
-College Football Week 7 (114 games, pulled Fri 10/16, 1:43 AM ET, lines DraftKings via ESPN)
+College Football Week 7 (114 games, pulled Fri 10/16, 7:12 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week7.html
   cfb/ forwards to the one page
   Thu 10/15: 3 on TV, 0 not
@@ -19,13 +19,13 @@ College Football Week 7 (114 games, pulled Fri 10/16, 1:43 AM ET, lines DraftKin
     Sat 19:30 ET  #18 Oklahoma State at #20 Houston  [FOX]  HOU -4.5, o/u 62.5
     Sat 19:30 ET  Wisconsin at #12 UCLA  [NBC]  UCLA -2.5, o/u 42.5
     Sat 19:30 ET  #15 Kentucky at Oklahoma  [SECN]  OU -6.5, o/u 43.5
-    Sat 22:15 ET  #11 Utah at Colorado  [ESPN]  UTAH -15.5, o/u 49.5
+    Sat 22:15 ET  #11 Utah at Colorado  [ESPN]  UTAH -14.5, o/u 49.5
     Sat 22:30 ET  #21 Wake Forest at Cal  [ESPN2]  WAKE -10.0, o/u 53.5
   TV games without a line: 1
   time TBD: 0
   non-Division I or unknown conference ids: none: West Alabama; 136: Morehouse College
 
-NFL Week 6 (14 games, pulled Fri 10/16, 1:43 AM ET, lines DraftKings via ESPN)
+NFL Week 6 (14 games, pulled Fri 10/16, 7:12 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week6.html
   nfl/ forwards to the one page
   Thu 10/15: 0 on TV, 1 not
