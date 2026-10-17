@@ -1,4 +1,4 @@
-College Football Week 7 (114 games, pulled Fri 10/16, 9:14 PM ET, lines DraftKings via ESPN)
+College Football Week 7 (114 games, pulled Sat 10/17, 2:50 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week7.html
   cfb/ forwards to the one page
   Thu 10/15: 3 on TV, 0 not
@@ -7,7 +7,7 @@ College Football Week 7 (114 games, pulled Fri 10/16, 9:14 PM ET, lines DraftKin
   ranked matchups:
     Sat 12:00 ET  Florida at #7 Texas  [ABC]  TEX -11.5, o/u 51.5
     Sat 12:00 ET  Virginia at #24 SMU  [CW]  SMU -9.5, o/u 51.5
-    Sat 12:00 ET  #16 Mississippi State at #22 LSU  [ESPN]  LSU -17.5, o/u 56.5
+    Sat 12:00 ET  #16 Mississippi State at #22 LSU  [ESPN]  LSU -17.5, o/u 55.5
     Sat 12:00 ET  #4 Ohio State at #5 Indiana  [FOX]  OSU -3.0, o/u 50.5
     Sat 12:00 ET  #25 Northwestern at Michigan State  [Peacock]  NU -7.0, o/u 49.5
     Sat 15:30 ET  #6 Alabama at #14 Tennessee  [ABC]  ALA -7.5, o/u 50.5
@@ -19,14 +19,14 @@ College Football Week 7 (114 games, pulled Fri 10/16, 9:14 PM ET, lines DraftKin
     Sat 19:30 ET  #18 Oklahoma State at #20 Houston  [FOX]  HOU -4.5, o/u 62.5
     Sat 19:30 ET  Wisconsin at #12 UCLA  [NBC]  UCLA -2.5, o/u 42.5
     Sat 19:30 ET  #15 Kentucky at Oklahoma  [SECN]  OU -6.5, o/u 43.5
-    Sat 22:15 ET  #11 Utah at Colorado  [ESPN]  UTAH -15.5, o/u 49.5
+    Sat 22:15 ET  #11 Utah at Colorado  [ESPN]  UTAH -14.5, o/u 49.5
     Sat 22:30 ET  #21 Wake Forest at Cal  [ESPN2]  WAKE -10.0, o/u 53.5
   TV games without a line: 0
   time TBD: 0
   schedule changes on game day: Fri COLU at PENN: kick 7:00 PM -> 8:30 PM ET
   non-Division I or unknown conference ids: none: West Alabama; 136: Morehouse College
 
-NFL Week 6 (14 games, pulled Fri 10/16, 9:14 PM ET, lines DraftKings via ESPN)
+NFL Week 6 (14 games, pulled Sat 10/17, 2:50 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week6.html
   nfl/ forwards to the one page
   Thu 10/15: 0 on TV, 1 not
@@ -38,7 +38,7 @@ NFL Week 6 (14 games, pulled Fri 10/16, 9:14 PM ET, lines DraftKings via ESPN)
     Sun 13:00 ET  New York Jets at New England Patriots  [CBS]  NE -7.5, o/u 43.5
     Sun 13:00 ET  Carolina Panthers at Philadelphia Eagles  [CBS]  CAR -3.0, o/u 39.5
     Sun 13:00 ET  Pittsburgh Steelers at Tampa Bay Buccaneers  [CBS]  PIT -2.5, o/u 38.5
-    Sun 13:00 ET  Chicago Bears at Atlanta Falcons  [FOX]  CHI -1.5, o/u 51.5
+    Sun 13:00 ET  Chicago Bears at Atlanta Falcons  [FOX]  CHI -1.5, o/u 52.5
     Sun 13:00 ET  Baltimore Ravens at Cleveland Browns  [FOX]  BAL -3.0, o/u 39.5
     Sun 13:00 ET  Tennessee Titans at Indianapolis Colts  [FOX]  IND -7.0, o/u 44.5
     Sun 13:00 ET  New Orleans Saints at New York Giants  [FOX]  NO -1.5, o/u 46.5
