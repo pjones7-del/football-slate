@@ -1,4 +1,4 @@
-College Football Week 7 (114 games, pulled Sat 10/17, 2:22 PM ET, lines DraftKings via ESPN)
+College Football Week 7 (114 games, pulled Sat 10/17, 5:22 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week7.html
   cfb/ forwards to the one page
   Thu 10/15: 3 on TV, 0 not
@@ -26,7 +26,7 @@ College Football Week 7 (114 games, pulled Sat 10/17, 2:22 PM ET, lines DraftKin
   schedule changes on game day: Fri COLU at PENN: kick 7:00 PM -> 8:30 PM ET
   non-Division I or unknown conference ids: none: West Alabama; 136: Morehouse College
 
-NFL Week 6 (14 games, pulled Sat 10/17, 2:22 PM ET, lines DraftKings via ESPN)
+NFL Week 6 (14 games, pulled Sat 10/17, 5:22 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week6.html
   nfl/ forwards to the one page
   Thu 10/15: 0 on TV, 1 not
