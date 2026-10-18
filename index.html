@@ -1999,6 +1999,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
 
   /* ============================ live: ESPN once a minute for the day on screen ============================ */
   const API = { cfb: g => "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates={d}&groups=" + g + "&limit=300", nfl: () => "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={d}&limit=100" };
+  let pollAt = 0, pollKey = "", pollBusy = false, oddsAt = 0;   /* the poll's schedule: when it's next due, the feeds it pulled last, one at a time */
   let pollStamp = "", pollFails = 0, ticks = 0, lastPoll = 0;   /* lastPoll: when the last poll landed, so a catch-up (after a load, or back from the background) doesn't flash */
   const NET_ALIAS = { "SEC Network": "SECN", "ACC Network": "ACCN", "USA Net": "USA", "USA Network": "USA", "Big Ten Network": "BTN", "CBS Sports Network": "CBSSN", "The CW": "CW", "CW Network": "CW", "TNT/HBO Max": "TNT", "truTV": "TRUTV", "ESPNews": "ESPNEWS", "ESPN News": "ESPNEWS", "NBC Sports Network": "NBCSN", "NFL Net": "NFL Network", "NFLN": "NFL Network", "Amazon Prime Video": "Prime Video", "Prime": "Prime Video", "Amazon Prime": "Prime Video" };
   const STREAM_TYPES = new Set(["Streaming", "Web"]);
@@ -2046,14 +2047,30 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     return out;
   }
   const wanted = () => { const t = etNow().date; return S.day && (S.day === t || S.day === shiftDate(t, -1)) && (GAMES[S.league] || []).some(g => g.date === S.day && g.state !== "post"); };
+  /* the feeds the board needs (Phil, 10/18: don't pull what isn't on screen): the Eastern dates of the unfinished games that pass the
+     filters (On now aside, so a game about to start is still watched), the next day only for a kick after midnight Eastern; for college
+     the FCS feed only when an FCS-only game is on screen (ESPN's FBS feed carries every game with an FBS team) */
+  const pollGames = () => dayList().filter(g => g.state !== "post" && passes(g, true));
+  const pollUrls = () => {
+    const open = pollGames(); if (!open.length) return [];
+    const dates = new Set([S.day]); open.forEach(g => { const d = partsIn(g.kick, TZ.ET).date; if (d > S.day) dates.add(d); });
+    const fbs = FBS(), feeds = S.league === "cfb" ? [API.cfb("80")].concat(open.some(g => !fbs.has(g.home.conf) && !fbs.has(g.away.conf)) ? [API.cfb("81")] : []) : [API.nfl()];
+    const out = []; [...dates].sort().forEach(d => feeds.forEach(u => out.push(u.replace("{d}", d.replace(/-/g, ""))))); return out;
+  };
+  /* how often: every 15 seconds while a game on screen is live or about to kick off (ESPN's scoreboard is cached 2 seconds and moves with
+     every play), once a minute otherwise, every 10 minutes after three failures in a row */
+  const pollEvery = () => { if (pollFails >= 3) return 600000; const now = Date.now();
+    return pollGames().some(g => { if (g.state === "in") return true; if (g.state !== "pre" || g.tbd) return false; const dt = new Date(g.kick).getTime() - now; return dt < 300000 && dt > -1800000; }) ? 15000 : 60000; };   /* a game still "pre" half an hour past its kickoff is postponed or stuck, not about to start */
   async function poll(force){
     ticks++;
-    if (document.hidden || !wanted()) return;
-    if (!force && pollFails >= 3 && ticks % 10) return;   /* after repeated failures, try every 10 minutes */
-    const lg = S.league;
+    if (document.hidden || pollBusy) return;
+    if (!wanted()){ pollAt = Date.now() + 60000; return; }
+    if (!force && Date.now() < pollAt) return;
+    const lg = S.league, urls = pollUrls(), started = Date.now();
+    pollKey = urls.join("|"); pollAt = started + 60000;
+    if (!urls.length) return;
+    pollBusy = true;
     try {
-      const urls = [];
-      for (const d of [S.day, shiftDate(S.day, 1)]) for (const u of (lg === "cfb" ? [API.cfb("80"), API.cfb("81")] : [API.nfl()])) urls.push(u.replace("{d}", d.replace(/-/g, "")));
       const seen = new Map();
       for (const u of urls){ const r = await fetch(u, { cache: "no-store" }); if (!r.ok) throw new Error(r.status); const j = await r.json(); (j.events || []).forEach(e => { const g = fromEspn(e, lg); if (g && !seen.has(g.id)) seen.set(g.id, g); }); }
       let changed = false; const asItHappens = lastPoll && Date.now() - lastPoll < 180000;   /* the previous poll landed within three minutes */
@@ -2080,17 +2097,22 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (changed) render(); else footer();
       if (S.odds) pollOdds(false);
     } catch (e) { pollFails++; footer(); }
+    finally { pollBusy = false; pollAt = started + pollEvery(); }
   }
-  setInterval(poll, 60000);
+  /* the schedule: a 5-second tick polls when one is due, and right away when the view needs a different set of feeds (another day,
+     a filter that brings FCS games on screen) */
+  setInterval(() => { if (document.hidden || pollBusy) return; const k = wanted() ? pollUrls().join("|") : ""; if (k && k !== pollKey) poll(true); else poll(); }, 5000);
   /* a home-screen app (or a tab) coming back after hours resumes the old page: past six hours, reload for the newest build (settings are saved) */
   const loadedAt = Date.now();
-  document.addEventListener("visibilitychange", () => { if (document.hidden) return; if (Date.now() - loadedAt > 6 * 3600000 && navigator.onLine !== false) location.reload(); else poll(); });
+  document.addEventListener("visibilitychange", () => { if (document.hidden) return; if (Date.now() - loadedAt > 6 * 3600000 && navigator.onLine !== false) location.reload(); else poll(true); });
   /* live odds: DraftKings' in-game line per live game from ESPN's core odds endpoint (cross-origin allowed). One request per
      live game per poll; ESPN's own cache lets that feed lag by up to about 15 minutes. */
   const CORE = (league, id) => "https://sports.core.api.espn.com/v2/sports/football/leagues/" + (league === "nfl" ? "nfl" : "college-football") + "/events/" + id + "/competitions/" + id + "/odds?limit=20";
   let oddsBusy = false, oddsStamp = "";
   async function pollOdds(force){
     if (!S.odds || oddsBusy || document.hidden) return;
+    if (!force && Date.now() - oddsAt < 55000) return;   /* once a minute at most: ESPN caches this feed about 10 minutes, so the faster score poll doesn't pull it faster */
+    oddsAt = Date.now();
     const lg = S.league, live = (GAMES[lg] || []).filter(g => g.date === S.day && g.state === "in");
     if (!live.length) return;
     oddsBusy = true;
