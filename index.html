@@ -382,6 +382,38 @@
   .xhead button{margin-left:auto;background:transparent;border:1px solid var(--line2);border-radius:6px;padding:2px 8px;font-family:var(--cond);font-weight:600;font-size:12px;color:var(--muted);cursor:pointer}
   .xodds{display:flex;gap:6px 16px;flex-wrap:wrap;font-family:var(--cond);font-weight:600;font-size:14px;color:var(--muted)}
   .xodds span:first-child{color:var(--ink)}
+  /* ---- gamecast in the expanded card (Phil, 10/18): the field strip and the latest play, then tabs ---- */
+  .g-cast{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:8px 11px 10px;font-family:var(--cond);color:var(--ink);display:flex;flex-direction:column;gap:8px}
+  .g-fs{display:block;width:100%;height:auto}
+  .g-one{display:flex;align-items:center;gap:10px}.g-one .g-f{width:38%;flex:none}.g-one .g-t{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+  .g-one .g-t b{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.g-one .g-t span{font-family:var(--body);font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .g-tabs{display:flex;gap:5px}.g-tabs button{flex:1;background:transparent;border:1px solid var(--line2);border-radius:999px;padding:3px 0;font-family:var(--cond);font-weight:700;font-size:11.5px;color:var(--muted);cursor:pointer;white-space:nowrap}
+  .g-tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--card)}
+  .g-list{display:flex;flex-direction:column}.g-none{font-family:var(--body);font-size:12.5px;color:var(--muted)}
+  .g-gcp{display:flex;flex-direction:column;gap:2px;padding:5px 0;border-top:1px solid var(--line)}.g-gcp:first-child{border-top:0;padding-top:0}
+  .g-gcp .g-t{display:flex;gap:8px;align-items:baseline;font-size:13px}.g-gcp .g-t b{font-weight:700;white-space:nowrap}.g-gcp .g-t span{color:var(--muted);font-weight:600;font-size:12px;white-space:nowrap}
+  .g-gcp .g-t i{margin-left:auto;font-style:normal;font-weight:700;font-size:12px;color:var(--muted);white-space:nowrap}.g-gcp .g-t i.g-pos{color:#4cc38a}.g-gcp .g-t i.g-neg{color:#ff6b5e}
+  .lightpref .g-gcp .g-t i.g-pos{color:#1f8f5a}.lightpref .g-gcp .g-t i.g-neg{color:#c9382b}
+  .g-gcp .g-x{font-family:var(--body);font-size:12.5px;line-height:1.3;color:var(--muted)}.g-gcp.g-now .g-x{color:var(--ink)}.g-gcp.g-sc .g-t b{color:var(--accent)}
+  .g-dr,.g-sp{display:flex;align-items:center;gap:7px;font-size:13px;padding:4px 0;border-top:1px solid var(--line)}.g-dr:first-child,.g-sp:first-child{border-top:0;padding-top:0}
+  .g-tm{font-weight:700;font-size:11px;color:#fff;padding:1px 5px;border-radius:4px;min-width:30px;text-align:center;flex:none}
+  .g-res{font-weight:700;font-size:11px;letter-spacing:.05em;text-transform:uppercase;padding:1px 6px;border-radius:999px;background:rgba(128,128,128,.18);color:var(--muted);white-space:nowrap}
+  .g-res.g-sc{background:var(--accent);color:var(--accent-ink)}.g-res.g-live{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+  .g-dr .g-d{color:var(--muted);font-weight:600;font-size:12px;margin-left:auto;white-space:nowrap}
+  .g-sp .g-k{font-weight:700;flex:none}.g-sp .g-d{color:var(--muted);font-weight:600;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}.g-sp .g-s{font-weight:700;font-variant-numeric:tabular-nums;flex:none}
+  .g-box{display:flex;flex-direction:column}.g-box .g-row{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;padding:3px 0;border-top:1px solid var(--line);font-size:13px;align-items:baseline}
+  .g-box .g-row:first-child{border-top:0;padding-top:0}.g-box .g-hd span{font-weight:700;font-size:12px;letter-spacing:.06em;color:var(--muted)}.g-box .g-hd span:last-child{text-align:right}
+  .g-box .g-v{font-weight:700;font-variant-numeric:tabular-nums}.g-box .g-v:last-child{text-align:right}.g-box .g-lab{color:var(--muted);font-weight:600;font-size:12px;text-align:center}
+  .g-wp{display:flex;flex-direction:column;gap:4px}
+  .g-wp .g-l{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .g-wprow{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600}.g-wprow img{width:22px;height:22px;object-fit:contain}.g-wprow .g-ab{font-weight:700}.g-wprow i{width:14px;height:3px;border-radius:2px}
+  .g-wprow b{margin-left:auto;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+  .g-ch{touch-action:none;cursor:ew-resize}.g-ch svg{display:block;width:100%;height:64px}
+  .g-ax{position:relative;height:12px;font-size:10px;color:var(--dim);margin-top:-2px}.g-ax span{position:absolute;top:0;transform:translateX(-50%)}
+  .g-pick{display:flex;flex-direction:column;gap:3px;padding:6px 9px 7px;border-radius:8px;background:rgba(128,128,128,.1);border-left:3px solid var(--ink);margin-top:3px}
+  .g-pick .g-t{display:flex;gap:10px;align-items:center}.g-pick .g-pl{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}.g-pick .g-pl b{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.g-pick .g-pl span{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+  .g-pick .g-ps{display:flex;flex-direction:column;align-items:flex-end;gap:1px;flex:none}.g-pick .g-ps b{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.08em}.g-pick .g-ps span{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+  .g-pick .g-x{font-family:var(--body);font-size:12.5px;line-height:1.3;color:var(--ink)}
   .ls{border-collapse:collapse;font-family:var(--cond);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums;background:var(--card);border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
   .ls th,.ls td{padding:4px 9px;text-align:right;border-bottom:1px solid var(--line)}
   .ls th{color:var(--muted);font-weight:600;font-size:12px;letter-spacing:.04em}
@@ -900,7 +932,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const has = lg => !!(LG[lg] && LG[lg].days && LG[lg].days.length);
   const fresh = () => ({ on: new Set(), off: new Set(), confs: new Set(), show: "fbs", mine: false, now: false, stars: new Set(), views: [], mkt: "", zip: "", dome: false, wx: new Set() });
   /* ml: what the plates show before kickoff: the spread, each team's moneyline, or both (shared by both leagues) */
-  const S = { league: "cfb", day: "", tz: "AZ", tzSet: false, view: "timeline", open: "", openRow: "", odds: false, ml: "spread", dtv: false, foot: "on", bar: "on", chg: "on", more: false, fold: {}, per: { cfb: fresh(), nfl: fresh() } };
+  const S = { league: "cfb", day: "", tz: "AZ", tzSet: false, view: "timeline", open: "", openRow: "", odds: false, ml: "spread", dtv: false, gct: "wp", foot: "on", bar: "on", chg: "on", more: false, fold: {}, per: { cfb: fresh(), nfl: fresh() } };
   /* which league opens (10/3: one page for both): a league named in the address (?league=nfl or #nfl; the old cfb/ and nfl/ links
      forward with one) beats the league last looked at on this device, which beats the file's own default. A copy built with lock
      set (the weekly files, the artifacts) always opens on its own league. A hint in the address is dropped once applied, so a
@@ -963,6 +995,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       S.odds = !!saved.odds; S.more = !!saved.more;
       if (["spread", "ml", "both"].includes(saved.ml)) S.ml = saved.ml;
       S.dtv = !!saved.dtv;
+      if (typeof saved.gct === "string") S.gct = ["box", "plays", "drives", "scoring", "wp", ""].includes(saved.gct) ? saved.gct : "wp";   /* the gamecast tab left open (empty: none) */
       if (!SLATE.lock && has(saved.league)) S.league = saved.league;
       if (saved.foot === "off") S.foot = "off";
       if (saved.bar === "off") S.bar = "off";
@@ -984,7 +1017,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function remember(){
     try {
       let old = {}; try { old = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; if (typeof old !== "object" || Array.isArray(old)) old = {}; } catch (e) { old = {}; }
-      const rec = Object.assign({}, old, { v: 3, tz: S.tz, tzSet: S.tzSet, view: S.view, odds: S.odds, ml: S.ml, dtv: S.dtv, foot: S.foot, bar: S.bar, chg: S.chg, more: S.more, theme: document.documentElement.getAttribute("data-theme") || "", skin: document.documentElement.getAttribute("data-skin") || "broadcast" });
+      const rec = Object.assign({}, old, { v: 3, tz: S.tz, tzSet: S.tzSet, view: S.view, odds: S.odds, ml: S.ml, dtv: S.dtv, gct: S.gct, foot: S.foot, bar: S.bar, chg: S.chg, more: S.more, theme: document.documentElement.getAttribute("data-theme") || "", skin: document.documentElement.getAttribute("data-skin") || "broadcast" });
       if (!SLATE.lock) rec.league = S.league;   /* a locked copy (weekly file, artifact) never moves the one page's league */
       ["cfb", "nfl"].forEach(lg => { const p = S.per[lg]; rec[lg] = Object.assign({}, (old[lg] && typeof old[lg] === "object") ? old[lg] : {}, { on: [...p.on], off: [...p.off], confs: confOrder(lg).filter(c => p.confs.has(c)), show: p.show, mine: p.mine, now: p.now, stars: [...p.stars], views: p.views, mkt: p.mkt, zip: p.zip, dome: p.dome, wx: WXKEYS.filter(k => p.wx.has(k)) }); });
       localStorage.setItem(KEY, JSON.stringify(rec));
@@ -1358,10 +1391,10 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const x = el("div", "xrow"), xin = el("div", "xin");
     const head = el("div", "xhead");
     head.appendChild(el("span", null, g.carriers.length ? g.carriers.join(" · ") : NONE));
-    head.appendChild(el("span", "go", "Tap card for gamecast"));
     const close = el("button", null, "Close"); close.type = "button"; close.addEventListener("click", e => { e.stopPropagation(); S.open = ""; render(); }); head.appendChild(close);
     xin.appendChild(head);
     xin.appendChild(card(g));
+    if (g.state !== "pre" && !g.ghost) xin.appendChild(gcBlock(g));
     const ls = linescore(g); if (ls) xin.appendChild(ls);
     if (g.state !== "pre" && (g.sp != null || g.lsp != null)){
       const od = el("div", "xodds");
@@ -1374,6 +1407,150 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     }
     x.appendChild(xin);
     return x;
+  }
+  /* ============================ gamecast (Phil, 10/18) ============================
+     The expanded card of a game that has started: a field strip with the ball, the line to gain and the drive so far, beside the down and
+     the latest play; then tabs (Box score, Plays, Drives, Scoring, Win %) from ESPN's game summary, polled every 10 seconds while a
+     live game's card is open (a final's once). Opens on Win % the first time, then on the tab left open; the open tab closes on a second
+     tap. Only the strip and the open tab are redrawn, in place. */
+  const GCTABS = [["box", "Box score"], ["plays", "Plays"], ["drives", "Drives"], ["scoring", "Scoring"], ["wp", "Win %"]];
+  const SUMMARY = (league, id) => "https://site.api.espn.com/apis/site/v2/sports/football/" + (league === "nfl" ? "nfl" : "college-football") + "/summary?event=" + id;
+  const GCD = {};   /* id -> { at, d } the parsed summary */
+  let gcBusy = false, gcSel = -1;   /* gcSel: the win-probability point under the finger, -1 for the latest */
+  const gcPlay = (p, team) => { const st = p.start || {}; return { id: p.id, q: (p.period || {}).number, clock: (p.clock || {}).displayValue || "", dd: st.downDistanceText || st.shortDownDistanceText || "", type: ((p.type || {}).text) || "",
+    yds: p.statYardage == null ? null : +p.statYardage, text: (p.text || "").trim(), score: !!p.scoringPlay, team, as: p.awayScore, hs: p.homeScore }; };
+  function parseSummary(j){
+    const dv = j.drives || {}, seen = new Set(), drives = [];
+    (dv.previous || []).concat(dv.current ? [dv.current] : []).forEach(dr => { const k = dr.id || dr.description + (dr.start || {}).text; if (seen.has(k)) return; seen.add(k);
+      const team = ((dr.team || {}).abbreviation) || "";
+      drives.push({ id: k, team, res: dr.shortDisplayResult || dr.displayResult || "", desc: dr.description || "", start: (dr.start || {}).text || "", x0: (dr.start || {}).yardLine, q: ((dr.start || {}).period || {}).number, clock: ((dr.start || {}).clock || {}).displayValue || "",
+        score: !!dr.isScore, current: dr === dv.current || (!dv.current && false), plays: (dr.plays || []).map(p => gcPlay(p, team)) }); });
+    if (dv.current && drives.length) drives[drives.length - 1].current = true;
+    const plays = []; drives.forEach(d => d.plays.forEach(p => plays.push(p))); plays.reverse();
+    const byId = {}; plays.forEach(p => { byId[p.id] = p; });
+    const wp = (j.winprobability || []).map(w => Object.assign({ h: +w.homeWinPercentage }, byId[w.playId] || {}));
+    const scoring = (j.scoringPlays || []).map(s => ({ q: (s.period || {}).number, clock: (s.clock || {}).displayValue || "", team: ((s.team || {}).abbreviation) || "", kind: ((s.scoringType || {}).abbreviation) || ((s.scoringType || {}).displayName) || "", as: s.awayScore, hs: s.homeScore, text: s.text || "" }));
+    const box = {}; ((j.boxscore || {}).teams || []).forEach(t => { const m = {}; (t.statistics || []).forEach(s => { m[s.label] = s.displayValue; }); box[((t.team || {}).abbreviation) || ""] = m; });
+    return { drives, plays, wp, scoring, box, cur: drives.length && drives[drives.length - 1].current ? drives[drives.length - 1] : null };
+  }
+  async function pollGc(force){
+    if (document.hidden || gcBusy || !S.open) return;
+    const g = (GAMES[S.league] || []).find(x => x.id === S.open); if (!g || g.state === "pre") return;
+    const c = GCD[g.id];
+    if (c && g.state === "post" && c.final) return;   /* a final: fetched once */
+    if (c && !force && Date.now() - c.at < 9000) return;
+    gcBusy = true;
+    try {
+      const r = await fetch(SUMMARY(S.league, g.id), { cache: "no-store" }); if (!r.ok) throw new Error(r.status);
+      const d = parseSummary(await r.json()), key = JSON.stringify([d.plays.length, d.plays[0] && d.plays[0].id, d.wp.length, d.scoring.length, (d.box[g.away.ab] || {})["Total Yards"], (d.box[g.home.ab] || {})["Total Yards"]]);
+      const changed = !c || c.key !== key;
+      GCD[g.id] = { at: Date.now(), d, key, final: g.state === "post" };
+      if (changed || !c) redrawGc(g);
+    } catch (e) { if (!c) GCD[g.id] = { at: Date.now(), d: null, key: "", final: false }; redrawGc(g); }
+    finally { gcBusy = false; }
+  }
+  let gcDrag = false;   /* a finger on the win-probability line: hold the redraw until it lifts */
+  function redrawGc(g){ if (gcDrag) return; const old = document.querySelector(".xrow .g-cast"); if (!old) return; const n = gcBlock(g); if (n) old.replaceWith(n); }
+  /* the field strip: the home end zone on the left, the ball, the line to gain, and the drive so far */
+  function gcStrip(g, cur, h){
+    const s = g.sit || {}, home = s.poss === g.home.id, away = s.poss === g.away.id;
+    if (s.yl == null || (!home && !away)) return "";
+    const pos = yl => 10 + Math.max(0, Math.min(100, yl)) * 0.8, m = (s.dd || "").match(/&\s*(\d+)/), goal = /goal/i.test(s.dd || "");
+    const dist = goal ? null : m ? +m[1] : null, dir = home ? 1 : -1, ball = pos(s.yl), ltg = goal ? pos(home ? 100 : 0) : dist != null ? pos(s.yl + dir * dist) : null;
+    const col = home ? colors(g)[1] : colors(g)[0], ds = cur && cur.x0 != null ? pos(cur.x0) : null, ticks = [];
+    for (let y = 10; y < 100; y += 10) ticks.push('<line x1="' + pos(y) + '" y1="2" x2="' + pos(y) + '" y2="' + (h - 2) + '" stroke="rgba(255,255,255,' + (y === 50 ? .35 : .18) + ')" stroke-width="' + (y === 50 ? 1 : .6) + '"/>');
+    return '<svg class="g-fs" viewBox="0 0 100 ' + h + '" preserveAspectRatio="none"><rect x="0" y="0" width="100" height="' + h + '" rx="2" fill="#1f5c3a"/>' +
+      '<rect x="0" y="0" width="10" height="' + h + '" fill="' + colors(g)[1] + '"/><rect x="90" y="0" width="10" height="' + h + '" fill="' + colors(g)[0] + '"/>' + ticks.join("") +
+      (ds != null ? '<rect x="' + Math.min(ds, ball) + '" y="' + (h - 4) + '" width="' + Math.abs(ball - ds) + '" height="2.5" fill="' + col + '" opacity=".9"/>' : "") +
+      (ltg != null ? '<line x1="' + ltg + '" y1="0" x2="' + ltg + '" y2="' + h + '" stroke="var(--accent)" stroke-width="1.4"/>' : "") +
+      '<line x1="' + ball + '" y1="0" x2="' + ball + '" y2="' + h + '" stroke="#fff" stroke-width="1.2"/><path d="M' + (ball + dir * 6) + ' ' + (h / 2) + ' l' + (-dir * 4) + ' -3 v6 z" fill="#fff" opacity=".9"/></svg>';
+  }
+  function gcBlock(g){
+    const c = GCD[g.id], d = c && c.d, cur = d && d.cur, wrap = el("div", "g-cast");
+    const st = status(g), teamColor = ab => ab === g.home.ab ? colors(g)[1] : colors(g)[0];
+    if (st.phase === "live"){
+      const one = el("div", "g-one"), f = el("div", "g-f"), t = el("div", "g-t"); f.innerHTML = gcStrip(g, cur, 12); if (f.innerHTML) one.appendChild(f);
+      const latest = d && d.plays.find(p => !/timeout|warning|end of|end period/i.test(p.type)), s = g.sit || {};   /* the last real play (the bug's tag already says TIMEOUT) */
+      t.appendChild(el("b", null, (st.sub ? st.sub + (st.sub2 ? " " + st.sub2.replace(/^at /, "· ") : "") : st.big) + (st.tag ? " · " + st.tag : "")));
+      t.appendChild(el("span", null, ((latest && latest.text) || s.last || "").replace(/\s*\(.*?\)\.?$/, "")));
+      one.appendChild(t); wrap.appendChild(one);
+    }
+    const tabs = el("div", "g-tabs");
+    GCTABS.forEach(([k, lab]) => { const b = el("button", null, lab); b.type = "button"; b.setAttribute("aria-pressed", String(S.gct === k));
+      b.addEventListener("click", e => { e.stopPropagation(); S.gct = S.gct === k ? "" : k; gcSel = -1; remember(); redrawGc(g); }); tabs.appendChild(b); });
+    wrap.appendChild(tabs);
+    if (!S.gct) return wrap;
+    if (!c){ wrap.appendChild(el("div", "g-none", "Loading…")); pollGc(true); return wrap; }
+    if (!d){ wrap.appendChild(el("div", "g-none", "ESPN's game summary isn't reachable right now.")); return wrap; }
+    const ydsTxt = y => y == null ? "" : (y > 0 ? "+" + y : String(y));
+    if (S.gct === "plays"){
+      const list = el("div", "g-list"); if (!d.plays.length) list.appendChild(el("div", "g-none", "No plays yet."));
+      d.plays.slice(0, 5).forEach((p, i) => { const r = el("div", "g-gcp" + (i ? "" : " g-now") + (p.score ? " g-sc" : "")), top = el("div", "g-t");
+        top.appendChild(el("b", null, p.dd || p.type)); top.appendChild(el("span", null, (p.q ? "Q" + p.q + " " : "") + p.clock));
+        if (p.yds != null && !/penalty|timeout|end|warning|kickoff|punt|field goal|extra point/i.test(p.type)) top.appendChild(el("i", p.yds < 0 ? "g-neg" : p.yds > 0 ? "g-pos" : "", ydsTxt(p.yds) + " yds"));
+        r.appendChild(top); r.appendChild(el("div", "g-x", p.text)); list.appendChild(r); });
+      wrap.appendChild(list);
+    } else if (S.gct === "drives"){
+      const list = el("div", "g-list"); if (!d.drives.length) list.appendChild(el("div", "g-none", "No drives yet."));
+      d.drives.slice().reverse().slice(0, 8).forEach(dr => { const r = el("div", "g-dr"), tm = el("span", "g-tm", dr.team); tm.style.background = teamColor(dr.team); r.appendChild(tm);
+        r.appendChild(el("span", "g-res" + (dr.current ? " g-live" : dr.score ? " g-sc" : ""), dr.current ? "now" : dr.res)); r.appendChild(el("span", "g-d", dr.desc + (dr.q ? " · Q" + dr.q + " " + dr.clock : ""))); list.appendChild(r); });
+      wrap.appendChild(list);
+    } else if (S.gct === "scoring"){
+      const list = el("div", "g-list"); if (!d.scoring.length) list.appendChild(el("div", "g-none", "No scoring yet."));
+      d.scoring.slice().reverse().forEach(s => { const r = el("div", "g-sp"), tm = el("span", "g-tm", s.team); tm.style.background = teamColor(s.team); r.appendChild(tm); r.appendChild(el("span", "g-k", s.kind));
+        r.appendChild(el("span", "g-d", s.text.replace(/\s*\(.*$/, "") + (s.q ? " · Q" + s.q + " " + s.clock : ""))); r.appendChild(el("span", "g-s", s.as + "-" + s.hs)); list.appendChild(r); });
+      wrap.appendChild(list);
+    } else if (S.gct === "box"){
+      const box = el("div", "g-box"), A = d.box[g.away.ab] || {}, H = d.box[g.home.ab] || {}, hd = el("div", "g-row g-hd");
+      hd.appendChild(el("span", null, g.away.ab)); hd.appendChild(el("span", null, "")); hd.appendChild(el("span", null, g.home.ab)); box.appendChild(hd);
+      let n = 0;
+      [["1st Downs", "1st downs"], ["Total Yards", "Total yards"], ["Passing", "Passing"], ["Rushing", "Rushing"], ["3rd down efficiency", "3rd down"], ["Turnovers", "Turnovers"], ["Penalties", "Penalties"], ["Possession", "Possession"]].forEach(([k, lab]) => {
+        if (A[k] == null && H[k] == null) return; n++; const r = el("div", "g-row"); r.appendChild(el("span", "g-v", A[k] == null ? "" : A[k])); r.appendChild(el("span", "g-lab", lab)); r.appendChild(el("span", "g-v", H[k] == null ? "" : H[k])); box.appendChild(r); });
+      if (!n) box.appendChild(el("div", "g-none", "No box score yet."));
+      wrap.appendChild(box);
+    } else if (S.gct === "wp"){
+      /* ESPN's win probability, laid out like its app (Phil's screenshot, 10/18): the visitor's row over the chart, the home side's under it, the
+         line in the visitor's color above the midline and the home side's below, dotted lines at the quarter breaks, and a scrubber that shows
+         the play and the score at any point */
+      const W = d.wp, n = W.length, box = el("div", "g-wp");
+      if (!n){ box.appendChild(el("div", "g-none", "No win probability yet.")); wrap.appendChild(box); return wrap; }
+      const [ca, ch] = colors(g), home = W[n - 1].h, pct = v => (Math.round(v * 1000) / 10).toFixed(1) + "%";
+      const trow = (t, v, cls) => { const r = el("div", "g-wprow " + cls); if (t.logo){ const im = document.createElement("img"); im.src = LOGO(g.league, t.logo); im.alt = ""; im.decoding = "async"; im.addEventListener("error", () => im.remove()); r.appendChild(im); }
+        r.appendChild(el("span", "g-ab", t.ab)); const sw = el("i", null); sw.style.background = cls === "g-away" ? ca : ch; r.appendChild(sw); r.appendChild(el("b", null, pct(v))); return r; };
+      box.appendChild(el("div", "g-l", "Win probability · drag along the line for any play"));
+      box.appendChild(trow(g.away, 1 - home, "g-away"));
+      const X = i => n > 1 ? i / (n - 1) * 100 : 50, Y = w => (w.h * 30 + 2).toFixed(1), pts = W.map((w, i) => X(i).toFixed(1) + "," + Y(w)).join(" ");
+      const qs = []; W.forEach((w, i) => { if (i && w.q && W[i - 1].q && w.q !== W[i - 1].q) qs.push([i, w.q]); });   /* the quarter breaks */
+      const chart = el("div", "g-ch"), sel = gcSel >= 0 && gcSel < n ? gcSel : n - 1;
+      chart.innerHTML = '<svg viewBox="0 0 100 34" preserveAspectRatio="none"><defs><clipPath id="gcA"><rect x="0" y="0" width="100" height="17"/></clipPath><clipPath id="gcH"><rect x="0" y="17" width="100" height="17"/></clipPath></defs>' +
+        '<rect x="0" y="0" width="100" height="34" fill="rgba(128,128,128,.08)"/><line x1="0" y1="17" x2="100" y2="17" stroke="rgba(128,128,128,.55)" stroke-width=".5"/>' +
+        qs.map(([i]) => '<line x1="' + X(i).toFixed(1) + '" y1="0" x2="' + X(i).toFixed(1) + '" y2="34" stroke="rgba(128,128,128,.45)" stroke-dasharray="1.2 1.8" stroke-width=".5" vector-effect="non-scaling-stroke"/>').join("") +
+        '<g clip-path="url(#gcA)"><polygon points="0,17 ' + pts + ' 100,17" fill="' + ca + '" opacity=".3"/><polyline points="' + pts + '" fill="none" stroke="' + ca + '" stroke-width="1.3" vector-effect="non-scaling-stroke"/></g>' +
+        '<g clip-path="url(#gcH)"><polygon points="0,17 ' + pts + ' 100,17" fill="' + ch + '" opacity=".3"/><polyline points="' + pts + '" fill="none" stroke="' + ch + '" stroke-width="1.3" vector-effect="non-scaling-stroke"/></g>' +
+        '<line class="g-mk" x1="' + X(sel).toFixed(1) + '" y1="0" x2="' + X(sel).toFixed(1) + '" y2="34" stroke="var(--ink)" stroke-width="1" vector-effect="non-scaling-stroke"/><circle class="g-dot" cx="' + X(sel).toFixed(1) + '" cy="' + Y(W[sel]) + '" r="1.8" fill="var(--ink)"/></svg>';
+      box.appendChild(chart);
+      /* the quarter labels, each centered in its span */
+      const ax = el("div", "g-ax"), edges = [0].concat(qs.map(x => x[0]), [n - 1]), names = [W[0].q || 1].concat(qs.map(x => x[1]));
+      edges.slice(0, -1).forEach((e, k) => { const lab = el("span", null, names[k] > 4 ? (names[k] === 5 ? "OT" : names[k] - 4 + "OT") : ["", "1st", "2nd", "3rd", "4th"][names[k]] || ""); lab.style.left = ((X(e) + X(edges[k + 1])) / 2) + "%"; ax.appendChild(lab); });
+      box.appendChild(ax);
+      box.appendChild(trow(g.home, home, "g-home"));
+      const pick = el("div", "g-pick"), pt = el("div", "g-t"), pl = el("div", "g-pl"), pb = el("b"), pq = el("span"), ps = el("div", "g-ps"), px = el("div", "g-x");
+      pl.appendChild(pb); pl.appendChild(pq); pt.appendChild(pl); pt.appendChild(ps); pick.appendChild(pt); pick.appendChild(px); box.appendChild(pick);
+      const show = i => { const w = W[i]; pb.textContent = w.dd || w.type || (i === n - 1 ? "Kickoff" : ""); pq.textContent = (w.q ? "Q" + w.q + " " + w.clock : "") + (w.team ? " · " + w.team + " ball" : "");
+        ps.textContent = ""; if (w.as != null){ ps.appendChild(el("b", null, w.as + " " + w.hs)); ps.appendChild(el("span", null, g.away.ab + " " + g.home.ab)); }
+        px.textContent = (w.text || "") + (w.text ? " · " : "") + g.away.ab + " " + pct(1 - w.h) + ", " + g.home.ab + " " + pct(w.h);
+        const mk = chart.querySelector(".g-mk"), dot = chart.querySelector(".g-dot"); if (mk){ mk.setAttribute("x1", X(i).toFixed(1)); mk.setAttribute("x2", X(i).toFixed(1)); } if (dot){ dot.setAttribute("cx", X(i).toFixed(1)); dot.setAttribute("cy", Y(w)); } };
+      show(sel);
+      const at = e => { const r = chart.getBoundingClientRect(); return Math.max(0, Math.min(n - 1, Math.round((e.clientX - r.left) / Math.max(1, r.width) * (n - 1)))); };
+      let down = false;
+      chart.addEventListener("pointerdown", e => { down = true; gcDrag = true; gcSel = at(e); show(gcSel); e.stopPropagation(); e.preventDefault(); try { chart.setPointerCapture(e.pointerId); } catch (x) {} });
+      chart.addEventListener("pointermove", e => { if (!down) return; gcSel = at(e); show(gcSel); e.preventDefault(); });
+      const up = e => { if (!down) return; down = false; gcDrag = false; gcSel = -1; show(n - 1); if (e) e.stopPropagation(); };
+      chart.addEventListener("pointerup", up); chart.addEventListener("pointercancel", up);
+      chart.addEventListener("click", e => e.stopPropagation());
+      wrap.appendChild(box);
+    }
+    return wrap;
   }
   /* a channel row ends a bar where the channel's next game starts, but only for a real handoff (a doubleheader: the next window is three hours
      on, 180 at the least): a game that starts sooner is a regional split or a weather-delayed kick sharing the channel, and it takes a lane of
@@ -2131,6 +2308,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     } catch (e) {} finally { oddsBusy = false; }
   }
   setInterval(() => pollOdds(false), 60000);
+  setInterval(() => pollGc(false), 10000);   /* the gamecast, while a live game's card is open */
 
   /* ============================ footer ============================ */
   const fxEl = document.getElementById("fx"), fnotes = document.getElementById("fnotes"), fmore = document.getElementById("fmore");
@@ -2141,7 +2319,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     document.getElementById("src").textContent = "Lines " + (SLATE.lines || "unavailable") + ", pulled " + SLATE.pulled + "; a started game shows its closing line" + (S.odds ? (oddsStamp ? "; live odds as of " + oddsStamp + " (ESPN refreshes them every few minutes)" : "; live odds refresh with the scores") : "") + ". Lines move, check before betting.";
     fnotes.textContent = "";
     fnotes.appendChild(el("div", null, "Schedule and TV from ESPN (a college game ESPN posts with no network takes it from CBS Sports' schedule). Timeline: visitor on top, the bug stays at the left edge of a game as you scroll; a bar ends when the next game starts on that channel, streaming rows stack simultaneous games. " +
-      "Tap a game to open its card (score by quarter, timeouts, last play), tap the card for ESPN's gamecast, tap a channel logo to open that network. Live games show possession (ball), down and distance, red for the red zone; " +
+      "Tap a game to open its card: the drive on a field strip with the latest play, then tabs for the box score, the plays, the drives, the scoring and ESPN's win probability (drag along the line to see each play; the card keeps the tab you leave open, tap it again to close it); tap the card itself for ESPN's gamecast, tap a channel logo to open that network. Live games show possession (ball), down and distance, red for the red zone; " +
       "a live bar carries its numbers in the bug after the clock: the spread over the total, and in ML or Both each team's price in its half; the closing numbers, or with Live odds on DraftKings' in-game ones (faded = the close, when the book has pulled its live number), the close then at the far right where there's room. On a live bar short of room the weather gives way first, then the prices, then the line. Finals go grey with faint stripes, the winner's half keeping its color and an arrow by the winning score. Package sets which channels count as yours; everything else, plus games with no broadcast, sits greyed at the bottom. " +
       "On now keeps just the games in progress. Teams (under More) stars your teams (gold frame) and can limit the board to them. " +
       "Game-day changes: a game moved to another channel gets a gold FROM note in its new row and leaves a dashed ghost in the old one up to the move; a start pushed by weather gets WAS; a game still going past its window says RUNNING LONG and the next game on that channel stacks under it; the strip above the board lists them all (ESPN's feed reports its own networks' moves within minutes; FOX and CBS shuffles show up there less reliably, and look-ins never do). " +
