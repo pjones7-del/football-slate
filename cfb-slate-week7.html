@@ -1024,7 +1024,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const d = slateDay(g.kick);
     let sp = g.spread, ou = g.ou, close = false, ml = g.ml || null;
     if (g.close && (g.close[0] != null || g.close[1] != null)){ sp = g.close[0]; ou = g.close[1]; close = true; if (g.close[2]) ml = g.close[2]; }
-    return tailKeys(Object.assign({}, g, { league: lg, date: d.date, kickMin: d.m, sp, ou, close, ml, lsp: g.lsp == null ? null : g.lsp, lou: g.lou == null ? null : g.lou, lml: g.lml || null }));
+    /* keep: the last real down seen (possession, down and distance, spot, red zone, and the score then), carried through ESPN's blank spells */
+    const s = g.sit, keep = s && s.dd && s.poss ? { poss: s.poss, dd: s.dd, at: s.at || "", yl: s.yl == null ? null : s.yl, rz: !!s.rz, as: g.away.score, hs: g.home.score } : (g.keep || null);
+    return tailKeys(Object.assign({}, g, { league: lg, date: d.date, kickMin: d.m, sp, ou, close, ml, lsp: g.lsp == null ? null : g.lsp, lou: g.lou == null ? null : g.lou, lml: g.lml || null, keep }));
   };
   /* the forecast, the roof and the moneyline sit at the end in a fixed order, whether they came from the build or a poll, so the
      poll's changed-or-not check (a string compare) isn't thrown by key order */
@@ -1120,12 +1122,32 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     else out.big = (g.clock && g.period) ? "Q" + g.period + " " + g.clock : (det || "LIVE").toUpperCase().slice(0, 9);
     const s = g.sit;
     if (s){
+      const side = id => id && id === g.home.id ? "home" : id && id === g.away.id ? "away" : null;
+      const half = /half/i.test(det), end = /^End/i.test(det), qEnd = /^End of (1st|3rd)/i.test(det), stop = stopWord(s.lt), k = g.keep;
       out.rz = !!s.rz;
-      if (s.poss) out.poss = s.poss === g.home.id ? "home" : s.poss === g.away.id ? "away" : null;
-      if (s.dd && !/half/i.test(det) && !/^End/i.test(det)){ out.sub = s.dd; out.sub2 = s.at ? "at " + s.at : ""; }
-      else if (!/half/i.test(det) && !/^End/i.test(det)) out.sub = between(s);   /* ESPN blanks the down after a score, a timeout or a kick until the next snap */
+      if (s.poss) out.poss = side(s.poss);
+      else if (s.dd && /kickoff/i.test(s.lt || "")) out.poss = side(s.lteam);   /* right after a kickoff ESPN has the new down before the possession; the kickoff is filed under the receiving side */
+      if (s.dd && !half && (!end || qEnd)){ out.sub = s.dd; out.sub2 = s.at ? "at " + s.at : ""; if (stop) out.tag = stop; }
+      else if (!half && (!end || qEnd)){
+        /* ESPN blanks the down after a score, in some breaks and around a kick, until the next snap. Mid-drive (same score, same spot as
+           the last real down) the board keeps that down, the spot and the ball through the break; after a score, who kicks off (Phil, 10/18) */
+        const kept = k && k.as === g.away.score && k.hs === g.home.score && (s.yl == null || k.yl == null || s.yl === k.yl);
+        if (kept && (stop || qEnd)){ out.poss = side(k.poss); out.rz = !!k.rz; out.sub = k.dd; out.sub2 = k.at ? "at " + k.at : ""; if (stop) out.tag = stop; }
+        else if (stop){ const ko = kicker(g, k, s); if (ko){ out.poss = ko; out.rz = false; out.sub = g[ko].ab + " kicks off"; out.tag = stop; } else out.sub = stop; }
+        else if (!end) out.sub = between(s);
+      }
     }
     return out;
+  }
+  /* a break in play that the feed gives as the last play: a team's or the TV's timeout, the two-minute warning, an injury, a review */
+  const stopWord = lt => { lt = lt || ""; return /two.?minute/i.test(lt) ? "2-min warning" : /timeout/i.test(lt) ? "timeout" : /injury/i.test(lt) ? "injury" : /review|challenge/i.test(lt) ? "review" : ""; };
+  /* who kicks off after a score: the side whose score went up since the last real down (after a safety, the side that gave it up),
+     else the team on the feed's last play (the drive the TV timeout belongs to) */
+  function kicker(g, k, s){
+    const side = id => id && id === g.home.id ? "home" : id && id === g.away.id ? "away" : null;
+    if (k){ const da = g.away.score - k.as, dh = g.home.score - k.hs;
+      if (da > 0 || dh > 0){ const sc = da > 0 ? "away" : "home", had = side(k.poss); return (da > 0 ? da : dh) === 2 && had && had !== sc ? had : sc; } }
+    return side(s.lteam);
   }
   /* what the feed's last play says while there is no down to show: a score, its try, a timeout, a kick */
   function between(s){
@@ -1215,6 +1237,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (st.phase !== "live" || !st.sub) stat.appendChild(chanChip(st.chan));
     if (st.sub) stat.appendChild(el("div", "sub", st.sub));
     if (st.sub2) stat.appendChild(el("div", "sub2", st.sub2));
+    if (st.tag) stat.appendChild(el("div", "sub2", st.tag));
     if (st.phase === "pre" && g.loc) stat.appendChild(el("div", "sub2 loc", "on your " + g.carriers[0] + " station"));
     else if (st.phase === "pre" && g.reg) stat.appendChild(el("div", "sub2", "regional"));
     if (st.phase !== "final"){ const ic = wxIcon(g); if (ic){ const w = el("div", "wxl"); if (g.dome) w.appendChild(domePill()); else { w.innerHTML = WXI[ic]; w.appendChild(el("span", null, g.wx.t + "\u00b0")); } w.title = wxTitle(g); stat.appendChild(w); } }
@@ -1436,6 +1459,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         const col = el("div", "col"); col.appendChild(plate(g, "away", st)); col.appendChild(plate(g, "home", st)); tb.appendChild(col);
         const stc = el("div", "st");
         const big = el("div", "big", st.big);
+        if (st.tag) big.appendChild(el("span", "tag", st.tag));   /* a break in play: TIMEOUT, 2-MIN WARNING ... (the down stays below) */
         if (g.moved) big.appendChild(el("span", "tag mv", "from " + g.from));
         if (g.retimed && g.wasMin != null) big.appendChild(el("span", "tag mv", "was " + fmtMin(g.wasMin + off)));
         if (st.phase === "live" && nowMin != null && g.kickMin + LEN <= nowMin && !/delay/i.test(g.detail || "")) big.appendChild(el("span", "tag mv", "running long"));
@@ -2014,7 +2038,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       venue: [adr.city, adr.state || adr.country].filter(Boolean).join(", "), carriers, tv: !!tvn.length,
       spread: odds.spread == null ? null : odds.spread, ou: odds.overUnder == null ? null : odds.overUnder,
       provider: ((odds.provider || {}).name || "").replace("Draft Kings", "DraftKings"), state: typ.state, detail: typ.shortDetail, period: st.period, clock: st.displayClock,
-      sit: sit ? { poss: sit.possession, dd: sit.shortDownDistanceText, at: sit.possessionText, yl: sit.yardLine, rz: !!sit.isRedZone, ht: sit.homeTimeouts, at_: sit.awayTimeouts, last: ((sit.lastPlay || {}).text || "").slice(0, 140), lt: (((sit.lastPlay || {}).type || {}).text || "") } : null,
+      sit: sit ? { poss: sit.possession, dd: sit.shortDownDistanceText, at: sit.possessionText, yl: sit.yardLine, rz: !!sit.isRedZone, ht: sit.homeTimeouts, at_: sit.awayTimeouts, last: ((sit.lastPlay || {}).text || "").slice(0, 140), lt: (((sit.lastPlay || {}).type || {}).text || ""), lteam: String((((sit.lastPlay || {}).team) || {}).id || "") } : null,
       week: (e.week || {}).number };
     const wx = espnWeather(e.weather); if (wx) out.wx = wx;
     if (v.indoor) out.dome = true;
@@ -2034,6 +2058,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       for (const u of urls){ const r = await fetch(u, { cache: "no-store" }); if (!r.ok) throw new Error(r.status); const j = await r.json(); (j.events || []).forEach(e => { const g = fromEspn(e, lg); if (g && !seen.has(g.id)) seen.set(g.id, g); }); }
       let changed = false; const asItHappens = lastPoll && Date.now() - lastPoll < 180000;   /* the previous poll landed within three minutes */
       GAMES[lg] = GAMES[lg].map(old => { const n = seen.get(old.id); if (!n) return old; const p = prepGame(n, lg);
+        if (!p.keep && old.keep && p.state === "in") p.keep = old.keep;   /* ESPN blanked the down: keep the last real one (Phil, 10/18) */
         if (p.sp == null && old.sp != null){ p.sp = old.sp; p.ou = old.ou; p.close = p.state !== "pre"; }   /* ESPN drops the odds at kickoff: keep the last number as the close */
         if (old.close && p.state !== "pre"){ p.sp = old.sp; p.ou = old.ou; p.close = true; }
         if (!p.ml && old.ml) p.ml = old.ml;   /* the moneyline goes with it */
