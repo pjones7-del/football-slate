@@ -1516,7 +1516,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (!n){ box.appendChild(el("div", "g-none", "No win probability yet.")); wrap.appendChild(box); return wrap; }
       const [ca, ch] = colors(g), home = W[n - 1].h, pct = v => (Math.round(v * 1000) / 10).toFixed(1) + "%";
       const trow = (t, v, cls) => { const r = el("div", "g-wprow " + cls); if (t.logo){ const im = document.createElement("img"); im.src = LOGO(g.league, t.logo); im.alt = ""; im.decoding = "async"; im.addEventListener("error", () => im.remove()); r.appendChild(im); }
-        r.appendChild(el("span", "g-ab", t.ab)); const sw = el("i", null); sw.style.background = cls === "g-away" ? ca : ch; r.appendChild(sw); r.appendChild(el("b", null, pct(v))); return r; };
+        r.appendChild(el("span", "g-ab", t.ab)); const sw = el("i", null); sw.style.background = cls === "g-away" ? ca : ch; r.appendChild(sw); const b = el("b", null, pct(v)); pcts[cls] = b; r.appendChild(b); return r; };
+      const pcts = {};   /* the two big percentages follow the marker (Phil, 10/18) */
       box.appendChild(el("div", "g-l", "Win probability · drag along the line for any play"));
       box.appendChild(trow(g.away, 1 - home, "g-away"));
       const X = i => n > 1 ? i / (n - 1) * 100 : 50, Y = w => (w.h * 30 + 2).toFixed(1), pts = W.map((w, i) => X(i).toFixed(1) + "," + Y(w)).join(" ");
@@ -1538,7 +1539,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       pl.appendChild(pb); pl.appendChild(pq); pt.appendChild(pl); pt.appendChild(ps); pick.appendChild(pt); pick.appendChild(px); box.appendChild(pick);
       const show = i => { const w = W[i]; pb.textContent = w.dd || w.type || (i === n - 1 ? "Kickoff" : ""); pq.textContent = (w.q ? "Q" + w.q + " " + w.clock : "") + (w.team ? " · " + w.team + " ball" : "");
         ps.textContent = ""; if (w.as != null){ ps.appendChild(el("b", null, w.as + " " + w.hs)); ps.appendChild(el("span", null, g.away.ab + " " + g.home.ab)); }
-        px.textContent = (w.text || "") + (w.text ? " · " : "") + g.away.ab + " " + pct(1 - w.h) + ", " + g.home.ab + " " + pct(w.h);
+        px.textContent = w.text || ""; if (pcts["g-away"]) pcts["g-away"].textContent = pct(1 - w.h); if (pcts["g-home"]) pcts["g-home"].textContent = pct(w.h);
         const mk = chart.querySelector(".g-mk"), dot = chart.querySelector(".g-dot"); if (mk){ mk.setAttribute("x1", X(i).toFixed(1)); mk.setAttribute("x2", X(i).toFixed(1)); } if (dot){ dot.setAttribute("cx", X(i).toFixed(1)); dot.setAttribute("cy", Y(w)); } };
       show(sel);
       const at = e => { const r = chart.getBoundingClientRect(); return Math.max(0, Math.min(n - 1, Math.round((e.clientX - r.left) / Math.max(1, r.width) * (n - 1)))); };
