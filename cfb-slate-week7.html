@@ -384,9 +384,22 @@
   .xodds span:first-child{color:var(--ink)}
   /* ---- gamecast in the expanded card (Phil, 10/18): the field strip and the latest play, then tabs ---- */
   .g-cast{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:8px 11px 10px;font-family:var(--cond);color:var(--ink);display:flex;flex-direction:column;gap:8px}
-  .g-fs{display:block;width:100%;height:auto}
-  .g-one{display:flex;align-items:center;gap:10px}.g-one .g-f{width:38%;flex:none}.g-one .g-t{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
-  .g-one .g-t b{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.g-one .g-t span{font-family:var(--body);font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* the meter: the possessing team, the down, the drive; a thin track with the end zones hatched in the team colors, the drive so far, the
+     line to gain in gold and a football at the ball; the last real play (Phil's picks, 10/18) */
+  .g-one{display:flex;flex-direction:column;gap:6px;align-items:stretch}
+  .g-one .g-r{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px}
+  .g-one .g-p{display:inline-flex;align-items:center;gap:6px;min-width:0}.g-one .g-p b{font-size:14px;font-weight:700;white-space:nowrap}.g-one .g-p .g-at{color:var(--muted);font-weight:600;white-space:nowrap}
+  .g-one .g-lg{width:18px;height:18px;object-fit:contain;flex:none}
+  .g-one .g-m{color:var(--muted);font-weight:600;font-size:12px;white-space:nowrap}
+  .g-one .g-last{font-family:var(--body);font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .g-tr{padding:5px 0}
+  .g-tk{position:relative;height:8px;border-radius:4px;background:rgba(128,128,128,.22)}
+  .g-tk i{position:absolute;display:block}
+  .g-cap{top:0;bottom:0;width:10%}.g-capL{left:0;border-radius:4px 0 0 4px}.g-capR{right:0;border-radius:0 4px 4px 0}
+  .g-tick{top:1.5px;bottom:1.5px;width:1px;background:rgba(128,128,128,.55)}.g-tick.g-mid{background:rgba(128,128,128,.9)}
+  .g-dv{top:0;bottom:0;opacity:.95}
+  .g-ltg{top:-4px;bottom:-4px;width:2px;background:var(--accent);border-radius:1px}
+  .g-fb{top:50%;width:22px;height:15px;transform:translate(-50%,-50%)}.g-fb svg{display:block;width:100%;height:100%;overflow:visible}
   .g-tabs{display:flex;gap:5px}.g-tabs button{flex:1;background:transparent;border:1px solid var(--line2);border-radius:999px;padding:3px 0;font-family:var(--cond);font-weight:700;font-size:11.5px;color:var(--muted);cursor:pointer;white-space:nowrap}
   .g-tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--card)}
   .g-list{display:flex;flex-direction:column}.g-none{font-family:var(--body);font-size:12.5px;color:var(--muted)}
@@ -1451,30 +1464,36 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   let gcDrag = false;   /* a finger on the win-probability line: hold the redraw until it lifts */
   function redrawGc(g){ if (gcDrag) return; const old = document.querySelector(".xrow .g-cast"); if (!old) return; const n = gcBlock(g); if (n) old.replaceWith(n); }
-  /* the field strip: the home end zone on the left, the ball, the line to gain, and the drive so far */
-  function gcStrip(g, cur, h){
-    const s = g.sit || {}, home = s.poss === g.home.id, away = s.poss === g.away.id;
-    if (s.yl == null || (!home && !away)) return "";
-    const pos = yl => 10 + Math.max(0, Math.min(100, yl)) * 0.8, m = (s.dd || "").match(/&\s*(\d+)/), goal = /goal/i.test(s.dd || "");
-    const dist = goal ? null : m ? +m[1] : null, dir = home ? 1 : -1, ball = pos(s.yl), ltg = goal ? pos(home ? 100 : 0) : dist != null ? pos(s.yl + dir * dist) : null;
-    const col = home ? colors(g)[1] : colors(g)[0], ds = cur && cur.x0 != null ? pos(cur.x0) : null, ticks = [];
-    for (let y = 10; y < 100; y += 10) ticks.push('<line x1="' + pos(y) + '" y1="2" x2="' + pos(y) + '" y2="' + (h - 2) + '" stroke="rgba(255,255,255,' + (y === 50 ? .35 : .18) + ')" stroke-width="' + (y === 50 ? 1 : .6) + '"/>');
-    return '<svg class="g-fs" viewBox="0 0 100 ' + h + '" preserveAspectRatio="none"><rect x="0" y="0" width="100" height="' + h + '" rx="2" fill="#1f5c3a"/>' +
-      '<rect x="0" y="0" width="10" height="' + h + '" fill="' + colors(g)[1] + '"/><rect x="90" y="0" width="10" height="' + h + '" fill="' + colors(g)[0] + '"/>' + ticks.join("") +
-      (ds != null ? '<rect x="' + Math.min(ds, ball) + '" y="' + (h - 4) + '" width="' + Math.abs(ball - ds) + '" height="2.5" fill="' + col + '" opacity=".9"/>' : "") +
-      (ltg != null ? '<line x1="' + ltg + '" y1="0" x2="' + ltg + '" y2="' + h + '" stroke="var(--accent)" stroke-width="1.4"/>' : "") +
-      '<line x1="' + ball + '" y1="0" x2="' + ball + '" y2="' + h + '" stroke="#fff" stroke-width="1.2"/><path d="M' + (ball + dir * 6) + ' ' + (h / 2) + ' l' + (-dir * 4) + ' -3 v6 z" fill="#fff" opacity=".9"/></svg>';
+  /* the meter (Phil's picks, 10/18): the possessing team's logo, the down and the spot, the drive; a thin track with the end zones hatched in
+     the team colors (home on the left), the drive so far in the possessing team's color, the line to gain in gold and a football at the
+     ball; the last real play beneath (the bug's tag already says TIMEOUT) */
+  const GC_BALL = '<svg viewBox="0 0 24 16"><path d="M2 8c0-3.4 4.5-6.5 10-6.5S22 4.6 22 8s-4.5 6.5-10 6.5S2 11.4 2 8z" fill="#a65d35" stroke="#fff" stroke-width="1.2"/><path d="M5.6 4.2v7.6M18.4 4.2v7.6" stroke="#fff" stroke-width="1"/><path d="M8.6 8h6.8" stroke="#fff" stroke-width="1.1" stroke-linecap="round"/><path d="M10 6.6v2.8M12 6.6v2.8M14 6.6v2.8" stroke="#fff" stroke-width=".9" stroke-linecap="round"/></svg>';
+  function gcMeter(g, cur, st, d){
+    const one = el("div", "g-one"), s = g.sit || {}, [ca, ch] = colors(g), home = s.poss === g.home.id, away = s.poss === g.away.id, side = home ? "home" : away ? "away" : "";
+    const r = el("div", "g-r"), p = el("span", "g-p");
+    if (side && g[side].logo){ const im = document.createElement("img"); im.src = LOGO(g.league, g[side].logo); im.alt = ""; im.decoding = "async"; im.className = "g-lg"; im.addEventListener("error", () => im.remove()); p.appendChild(im); }
+    p.appendChild(el("b", null, st.sub || st.big)); if (st.sub2) p.appendChild(el("span", "g-at", st.sub2)); if (st.tag) p.appendChild(el("span", "g-at", "· " + st.tag));
+    r.appendChild(p); if (cur && cur.desc) r.appendChild(el("span", "g-m", cur.desc.replace(" yards", " yds"))); one.appendChild(r);
+    if (s.yl != null && side){
+      const pos = yl => 10 + Math.max(0, Math.min(100, yl)) * 0.8, m = (s.dd || "").match(/&\s*(\d+)/), goal = /goal/i.test(s.dd || ""), dir = home ? 1 : -1;
+      const dist = goal ? null : m ? +m[1] : null, ball = pos(s.yl), ltg = goal ? pos(home ? 100 : 0) : dist != null ? pos(s.yl + dir * dist) : null, col = home ? ch : ca;
+      const tr = el("div", "g-tr"), tk = el("div", "g-tk");
+      const cap = (cls, c) => { const e = el("i", "g-cap " + cls); e.style.background = "repeating-linear-gradient(135deg," + c + " 0 1px,transparent 1px 4.5px)"; return e; };
+      tk.appendChild(cap("g-capL", ch)); tk.appendChild(cap("g-capR", ca));
+      for (let y = 10; y < 100; y += 10){ const k = el("i", "g-tick" + (y === 50 ? " g-mid" : "")); k.style.left = pos(y) + "%"; tk.appendChild(k); }
+      if (cur && cur.x0 != null){ const ds = pos(cur.x0), dv = el("i", "g-dv"); dv.style.left = Math.min(ds, ball) + "%"; dv.style.width = Math.abs(ball - ds) + "%"; dv.style.background = col; tk.appendChild(dv); }
+      if (ltg != null){ const l = el("i", "g-ltg"); l.style.left = ltg + "%"; tk.appendChild(l); }
+      const fb = el("i", "g-fb"); fb.style.left = ball + "%"; fb.innerHTML = GC_BALL; tk.appendChild(fb);
+      tr.appendChild(tk); one.appendChild(tr);
+    }
+    const latest = d && d.plays.find(p => !/timeout|warning|end of|end period/i.test(p.type));
+    const txt = ((latest && latest.text) || s.last || "").replace(/\s*\(.*?\)\.?$/, ""); if (txt) one.appendChild(el("div", "g-last", txt));
+    return one;
   }
   function gcBlock(g){
     const c = GCD[g.id], d = c && c.d, cur = d && d.cur, wrap = el("div", "g-cast");
     const st = status(g), teamColor = ab => ab === g.home.ab ? colors(g)[1] : colors(g)[0];
-    if (st.phase === "live"){
-      const one = el("div", "g-one"), f = el("div", "g-f"), t = el("div", "g-t"); f.innerHTML = gcStrip(g, cur, 12); if (f.innerHTML) one.appendChild(f);
-      const latest = d && d.plays.find(p => !/timeout|warning|end of|end period/i.test(p.type)), s = g.sit || {};   /* the last real play (the bug's tag already says TIMEOUT) */
-      t.appendChild(el("b", null, (st.sub ? st.sub + (st.sub2 ? " " + st.sub2.replace(/^at /, "· ") : "") : st.big) + (st.tag ? " · " + st.tag : "")));
-      t.appendChild(el("span", null, ((latest && latest.text) || s.last || "").replace(/\s*\(.*?\)\.?$/, "")));
-      one.appendChild(t); wrap.appendChild(one);
-    }
+    if (st.phase === "live") wrap.appendChild(gcMeter(g, cur, st, d));
     const tabs = el("div", "g-tabs");
     GCTABS.forEach(([k, lab]) => { const b = el("button", null, lab); b.type = "button"; b.setAttribute("aria-pressed", String(S.gct === k));
       b.addEventListener("click", e => { e.stopPropagation(); S.gct = S.gct === k ? "" : k; gcSel = -1; remember(); redrawGc(g); }); tabs.appendChild(b); });
