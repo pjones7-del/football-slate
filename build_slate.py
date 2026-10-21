@@ -7,7 +7,7 @@ College / NFL control switches inside the page. The renderer is the Slate Lab bo
 anchored scorebug, cards, live possession and down and distance, live odds, channel logos, per-league package,
 conference and team filters, saved views, print.
 
-College: every FBS and FCS game from Thursday through Monday, grid on Saturday.
+College: every FBS and FCS game from Tuesday through Monday (ESPN's week; the Tuesday and Wednesday games count), grid on Saturday.
 NFL: every game from Wednesday through Monday, grid on Sunday.
 
 Usage:
@@ -261,7 +261,7 @@ def espn_et(kick):
 
 LEAGUES = {
     "cfb": {"name": "College Football", "api": CFB_API, "groups": CFB_GROUPS, "file": "cfb-slate", "title": "CFB Slate", "core": "college-football",
-            "logo": "/i/teamlogos/ncaa/500/{lg}.png", "main_wd": 5, "before": 2, "after": 2,
+            "logo": "/i/teamlogos/ncaa/500/{lg}.png", "main_wd": 5, "before": 4, "after": 2,   # Tuesday through Monday: the midweek games were missed at before=2 (Phil, 10/21)
             "tv": CFB_TV_ORDER, "stream": CFB_STREAM_ORDER, "packages": CFB_PACKAGES},
     "nfl": {"name": "NFL", "api": NFL_API, "groups": ("",), "file": "nfl-slate", "title": "NFL Slate", "core": "nfl",
             "logo": "/i/teamlogos/nfl/500/{lg}.png", "main_wd": 6, "before": 4, "after": 1,
@@ -764,7 +764,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--league", choices=["both", "cfb", "nfl"], default="both", help="which league(s) to fetch (default both; the page carries what was fetched)")
     ap.add_argument("--main", help="grid day, YYYY-MM-DD (default: the coming Saturday for college, Sunday for the NFL); use with --league")
-    ap.add_argument("--start", help="first day to include, YYYY-MM-DD (default: main - 2 college, main - 4 NFL)")
+    ap.add_argument("--start", help="first day to include, YYYY-MM-DD (default: main - 4, Tuesday for college and Wednesday for the NFL)")
     ap.add_argument("--end", help="last day to include, YYYY-MM-DD (default: main + 2 college, main + 1 NFL)")
     ap.add_argument("--template", help="slate file to reuse the renderer from (default: newest cfb-slate-week*.html here)")
     ap.add_argument("--out", help="output file for a single-league build (default: cfb-slate-weekN.html or nfl-slate-weekN.html)")
