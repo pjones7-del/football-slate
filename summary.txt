@@ -1,4 +1,4 @@
-College Football Week 8 (111 games, pulled Thu 10/22, 3:26 AM ET, lines DraftKings via ESPN)
+College Football Week 8 (111 games, pulled Thu 10/22, 9:42 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week8.html
   cfb/ forwards to the one page
   Tue 10/20: 3 on TV, 0 not
@@ -27,7 +27,7 @@ College Football Week 8 (111 games, pulled Thu 10/22, 3:26 AM ET, lines DraftKin
   TV games without a line: 0
   time TBD: 0
 
-NFL Week 7 (14 games, pulled Thu 10/22, 3:26 AM ET, lines DraftKings via ESPN)
+NFL Week 7 (14 games, pulled Thu 10/22, 9:42 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week7.html
   nfl/ forwards to the one page
   Thu 10/22: 0 on TV, 1 not
@@ -40,13 +40,13 @@ NFL Week 7 (14 games, pulled Thu 10/22, 3:26 AM ET, lines DraftKings via ESPN)
     Sun 13:00 ET  Indianapolis Colts at Minnesota Vikings  [CBS]  MIN -6.5, o/u 41.5
     Sun 13:00 ET  Miami Dolphins at New York Jets  [CBS]  NYJ -4.5, o/u 39.5
     Sun 13:00 ET  Cleveland Browns at Tennessee Titans  [CBS]  CLE -1.5, o/u 37.5
-    Sun 13:00 ET  San Francisco 49ers at Atlanta Falcons  [FOX]  SF -3.0, o/u 49.5
+    Sun 13:00 ET  San Francisco 49ers at Atlanta Falcons  [FOX]  SF -2.5, o/u 49.5
     Sun 13:00 ET  Tampa Bay Buccaneers at Carolina Panthers  [FOX]  CAR -3.0, o/u 44.5
     Sun 13:00 ET  New York Giants at Houston Texans  [FOX]  HOU -10.5, o/u 42.5
     Sun 16:05 ET  Denver Broncos at Arizona Cardinals  [CBS]  DEN -4.5, o/u 43.5
     Sun 16:25 ET  Green Bay Packers at Detroit Lions  [FOX]  DET -3.0, o/u 53.5
-    Sun 16:25 ET  Los Angeles Rams at Las Vegas Raiders  [FOX]  LAR -4.5, o/u 48.5
-    Sun 20:20 ET  Kansas City Chiefs at Seattle Seahawks  [NBC]  SEA -2.5, o/u 42.5
+    Sun 16:25 ET  Los Angeles Rams at Las Vegas Raiders  [FOX]  LAR -3.5, o/u 48.5
+    Sun 20:20 ET  Kansas City Chiefs at Seattle Seahawks  [NBC]  SEA -3.0, o/u 42.5
     Mon 20:15 ET  Dallas Cowboys at Philadelphia Eagles  [ESPN]  DAL -4.5, o/u 44.5
   TV games without a line: 0
   time TBD: 0
