@@ -375,7 +375,7 @@
   .team .poss.rz svg ellipse,.tb .pl .p.rz svg ellipse{fill:var(--live);stroke:#fff}
   .gbar.gone .tb{visibility:hidden}
   .xrow{flex-basis:100%;display:block;padding:8px 10px 10px;background:var(--bg2);border-top:1px dashed var(--line2)}
-  .xin{width:min(460px,calc(100vw - 40px));display:flex;flex-direction:column;gap:8px}
+  .xin{position:sticky;left:10px;width:min(460px,calc(100vw - 20px));display:flex;flex-direction:column;gap:8px}   /* the card sticks at the board's left edge as the board scrolls under it, and the board snaps to show it whole when it opens (Phil, 10/23) */
   .xin .bug{cursor:pointer}
   .xhead{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap;font-family:var(--cond);font-weight:600;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
   .xhead .go{color:var(--accent)}
@@ -556,17 +556,17 @@
         <button type="button" data-key="show" data-v="top25">Top 25</button>
         <button type="button" data-key="show" data-v="all">All</button>
       </div>
-      <div class="seg"><button type="button" id="nowBtn" aria-pressed="false" title="Only the games in progress right now">On now<small id="nowN"></small></button></div>
       <div class="seg"><button type="button" id="oddsBtn" aria-pressed="false" title="Show DraftKings' in-game line on live games, refreshed with the scores">Live odds</button></div>
+      <div class="seg"><button type="button" id="confBtn" aria-pressed="false" aria-controls="cpanel"><span id="confLbl">Conf</span><small id="confN"></small></button></div>
+      <div class="seg"><button type="button" id="moreBtn" aria-pressed="false" aria-controls="more" title="On now, the lines switch, timeline or cards, package, your market (NFL), weather, your teams, print, DirecTV, style, theme, save a view">More</button></div>
+    </div>
+    <div class="row two" id="more" hidden>
+      <div class="seg"><button type="button" id="nowBtn" aria-pressed="false" title="Only the games in progress right now">On now<small id="nowN"></small></button></div>
       <div class="seg" role="group" aria-label="Lines" title="What the plates show before kickoff: the spread, each team's moneyline, or both">
         <button type="button" data-ml="spread">Spread</button>
         <button type="button" data-ml="ml">ML</button>
         <button type="button" data-ml="both">Both</button>
       </div>
-      <div class="seg"><button type="button" id="confBtn" aria-pressed="false" aria-controls="cpanel"><span id="confLbl">Conf</span><small id="confN"></small></button></div>
-      <div class="seg"><button type="button" id="moreBtn" aria-pressed="false" aria-controls="more" title="Timeline or cards, package, your market (NFL), weather, your teams, print, DirecTV, style, theme, save a view">More</button></div>
-    </div>
-    <div class="row two" id="more" hidden>
       <div class="seg" role="group" aria-label="View">
         <button type="button" data-key="view" data-v="timeline">Timeline</button>
         <button type="button" data-key="view" data-v="cards">Cards</button>
@@ -1430,7 +1430,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const GCTABS = [["box", "Box score"], ["plays", "Plays"], ["drives", "Drives"], ["scoring", "Scoring"], ["wp", "Win %"]];
   const SUMMARY = (league, id) => "https://site.api.espn.com/apis/site/v2/sports/football/" + (league === "nfl" ? "nfl" : "college-football") + "/summary?event=" + id;
   const GCD = {};   /* id -> { at, d } the parsed summary */
-  let gcBusy = false, gcSel = -1;   /* gcSel: the win-probability point under the finger, -1 for the latest */
+  let gcBusy = false, gcSel = -1, gcSelGame = "";   /* gcSel: the win-probability point under the finger, -1 for the latest */
   const gcPlay = (p, team) => { const st = p.start || {}; return { id: p.id, q: (p.period || {}).number, clock: (p.clock || {}).displayValue || "", dd: st.downDistanceText || st.shortDownDistanceText || "", type: ((p.type || {}).text) || "",
     yds: p.statYardage == null ? null : +p.statYardage, text: (p.text || "").trim(), score: !!p.scoringPlay, team, as: p.awayScore, hs: p.homeScore }; };
   function parseSummary(j){
@@ -1493,11 +1493,12 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   function gcBlock(g){
     const c = GCD[g.id], d = c && c.d, cur = d && d.cur, wrap = el("div", "g-cast");
+    if (gcSelGame !== g.id){ gcSel = -1; gcSelGame = g.id; }   /* another game's card: the marker goes back to the latest play */
     const st = status(g), teamColor = ab => ab === g.home.ab ? colors(g)[1] : colors(g)[0];
     if (st.phase === "live") wrap.appendChild(gcMeter(g, cur, st, d));
     const tabs = el("div", "g-tabs");
     GCTABS.forEach(([k, lab]) => { const b = el("button", null, lab); b.type = "button"; b.setAttribute("aria-pressed", String(S.gct === k));
-      b.addEventListener("click", e => { e.stopPropagation(); S.gct = S.gct === k ? "" : k; gcSel = -1; remember(); redrawGc(g); }); tabs.appendChild(b); });
+      b.addEventListener("click", e => { e.stopPropagation(); S.gct = S.gct === k ? "" : k; remember(); redrawGc(g); }); tabs.appendChild(b); });
     wrap.appendChild(tabs);
     if (!S.gct) return wrap;
     if (!c){ wrap.appendChild(el("div", "g-none", "Loading…")); pollGc(true); return wrap; }
@@ -1566,7 +1567,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       let down = false;
       chart.addEventListener("pointerdown", e => { down = true; gcDrag = true; gcSel = at(e); show(gcSel); e.stopPropagation(); e.preventDefault(); try { chart.setPointerCapture(e.pointerId); } catch (x) {} });
       chart.addEventListener("pointermove", e => { if (!down) return; gcSel = at(e); show(gcSel); e.preventDefault(); });
-      const up = e => { if (!down) return; down = false; gcDrag = false; gcSel = -1; show(n - 1); if (e) e.stopPropagation(); };
+      const up = e => { if (!down) return; down = false; gcDrag = false; if (e) e.stopPropagation(); };   /* the marker stays where the finger lifts (Phil, 10/23) */
       chart.addEventListener("pointerup", up); chart.addEventListener("pointercancel", up);
       chart.addEventListener("click", e => e.stopPropagation());
       wrap.appendChild(box);
@@ -2145,8 +2146,12 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const xr = wrap.querySelector(".xrow");
     if (xr){
       const LABEL = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--label")) || 0, xin = xr.querySelector(".xin");
-      const left = Math.max(+xr.dataset.left, wrap.scrollLeft - LABEL);
-      xin.style.marginLeft = (LABEL + Math.max(0, Math.min(left, +xr.dataset.width - xin.offsetWidth))) + "px";
+      /* the card under its bar's start (within the row); when it opens, the board scrolls just enough to show it whole (Phil, 10/23), and
+         the card is sticky at the left edge, so scrolling the board on from there keeps it in view until its bar has gone */
+      const M = Math.max(0, Math.min(LABEL + (+xr.dataset.left) - 10, xr.clientWidth - 20 - xin.offsetWidth));
+      xin.style.marginLeft = M + "px";
+      if (S.open !== wrap.dataset.open){ const sx = 10 + M - wrap.scrollLeft, W = xin.offsetWidth, vis = wrap.clientWidth;
+        if (sx + W + 10 > vis) wrap.scrollLeft += sx + W + 10 - vis; else if (sx < 10) wrap.scrollLeft -= 10 - sx; }
       if (S.open !== wrap.dataset.open) xr.scrollIntoView({ block: "nearest" });
     }
     if (S.view === "cards" && S.open && S.open !== wrap.dataset.open){ const c = wrap.querySelector('.bug[data-id="' + S.open + '"]'); if (c){ c.classList.add("open"); c.scrollIntoView({ block: "center" }); } }
