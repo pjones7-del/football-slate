@@ -527,6 +527,7 @@
     .fx{padding:4px 12px 5px;font-size:11px}
   }
 </style>
+<script data-goatcounter="https://slatetober.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 <div class="app">
@@ -939,6 +940,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* files in the repo's img/ folder: the live pages sit one folder down (cfb/, nfl/), the weekly files at the root */
   const IMG = /\/(cfb|nfl)\/[^/]*$/.test(location.pathname) ? "../" : "";
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  /* the visitor counter's events (GoatCounter; nothing personal, no cookies): what gets used, not who */
+  const tally = (path, title) => { try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "ev/" + path, title: title || path, event: true }); } catch (e) {} };
   const openNew = url => { const w = window.open(url, "_blank"); if (w) w.opener = null; else location.href = url; };
 
   /* ============================ state ============================ */
@@ -1308,7 +1311,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     }
     if (foot.childNodes.length) c.appendChild(foot); else c.style.gridTemplateRows = "auto auto";
     c.title = g.away.name + (g.neutral ? " vs " : " at ") + g.home.name + (g.neutral && g.venue ? " (" + g.venue + ")" : "") + ". Tap for the gamecast.";
-    c.addEventListener("click", () => openNew(gamecast(g)));
+    c.addEventListener("click", () => { tally("espn", "ESPN gamecast opened"); openNew(gamecast(g)); });
     c.addEventListener("keydown", e => { if (e.key === "Enter") openNew(gamecast(g)); });
     return c;
   }
@@ -1498,7 +1501,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (st.phase === "live") wrap.appendChild(gcMeter(g, cur, st, d));
     const tabs = el("div", "g-tabs");
     GCTABS.forEach(([k, lab]) => { const b = el("button", null, lab); b.type = "button"; b.setAttribute("aria-pressed", String(S.gct === k));
-      b.addEventListener("click", e => { e.stopPropagation(); S.gct = S.gct === k ? "" : k; remember(); redrawGc(g); }); tabs.appendChild(b); });
+      b.addEventListener("click", e => { e.stopPropagation(); S.gct = S.gct === k ? "" : k; if (S.gct) tally("tab-" + k, "Gamecast tab: " + lab); remember(); redrawGc(g); }); tabs.appendChild(b); });
     wrap.appendChild(tabs);
     if (!S.gct) return wrap;
     if (!c){ wrap.appendChild(el("div", "g-none", "Loading…")); pollGc(true); return wrap; }
@@ -1682,7 +1685,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         }
         b.title = g.away.name + (g.neutral ? " vs " : " at ") + g.home.name + (g.neutral && g.venue ? " (" + g.venue + ")" : "") + ", " + fmtTime(g.kick) + " " + S.tz + " on " + (g.carriers.join(" / ") || NONE) +
                   (g.loc ? " (your market's game)" : g.reg ? " (regional: your station carries one " + g.carriers[0] + " game in this slot)" : "") + ". Tap to expand.";
-        b.addEventListener("click", () => { const same = S.open === g.id && (S.openRow ? S.openRow === net : true); S.open = same ? "" : g.id; S.openRow = same ? "" : net; render(); });
+        b.addEventListener("click", () => { const same = S.open === g.id && (S.openRow ? S.openRow === net : true); S.open = same ? "" : g.id; S.openRow = same ? "" : net; if (!same) tally("card-open", "Card opened"); render(); });
         track.appendChild(b);
       }));
       row.appendChild(track);
@@ -2164,7 +2167,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   let trimTick = false;
   wrap.addEventListener("scroll", () => { if (S.view !== "timeline" || !wrap._trim || trimTick) return; trimTick = true; requestAnimationFrame(() => { trimTick = false; wrap._trim(); }); }, { passive: true });
-  document.querySelectorAll("#leagueSeg button").forEach(b => b.addEventListener("click", () => { if (S.league === b.dataset.v || !has(b.dataset.v)) return; S.league = b.dataset.v; S.day = ""; S.open = ""; showPanel(null); remember(); render(); poll(true); }));
+  document.querySelectorAll("#leagueSeg button").forEach(b => b.addEventListener("click", () => { if (S.league === b.dataset.v || !has(b.dataset.v)) return; S.league = b.dataset.v; S.day = ""; S.open = ""; showPanel(null); tally("league-" + S.league, "League: " + S.league); remember(); render(); poll(true); }));
   document.querySelectorAll(".seg button[data-key=view]").forEach(b => b.addEventListener("click", () => { S.view = b.dataset.v; remember(); render(); }));
   /* time zone: the five-zone picker shows until a zone has been tapped once on this device (that first pick is needed), then folds
      to a chip with the zone on it; the chip opens the picker again. Any tap, the current zone included, counts as the pick. */
@@ -2187,7 +2190,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   syncSkin();
   const oddsBtn = document.getElementById("oddsBtn");
   const syncOdds = () => oddsBtn.setAttribute("aria-pressed", String(S.odds));
-  oddsBtn.addEventListener("click", () => { S.odds = !S.odds; remember(); syncOdds(); render(); if (S.odds) pollOdds(true); });
+  oddsBtn.addEventListener("click", () => { S.odds = !S.odds; if (S.odds) tally("live-odds", "Live odds on"); remember(); syncOdds(); render(); if (S.odds) pollOdds(true); });
   syncOdds();
   const dtvBtn = document.getElementById("dtvBtn");
   dtvBtn.addEventListener("click", () => { S.dtv = !S.dtv; remember(); render(); });
