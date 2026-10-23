@@ -1,4 +1,4 @@
-College Football Week 8 (111 games, pulled Fri 10/23, 3:20 AM ET, lines DraftKings via ESPN)
+College Football Week 8 (111 games, pulled Fri 10/23, 9:18 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week8.html
   cfb/ forwards to the one page
   Tue 10/20: 3 on TV, 0 not
@@ -8,13 +8,13 @@ College Football Week 8 (111 games, pulled Fri 10/23, 3:20 AM ET, lines DraftKin
   Sat 10/24: 33 on TV, 64 not
   ranked matchups:
     Sat 12:00 ET  #18 LSU at Auburn  [ABC]  LSU -7.0, o/u 51.5
-    Sat 12:00 ET  Cal at #23 SMU  [CW]  SMU -19.5, o/u 55.5
+    Sat 12:00 ET  Cal at #23 SMU  [CW]  SMU -18.5, o/u 55.5
     Sat 12:00 ET  Pitt at #1 Miami (FL)  [ESPN]  MIA -19.5, o/u 48.5
     Sat 12:00 ET  #6 Indiana at Michigan  [FOX]  IU -7.5, o/u 42.5
     Sat 12:00 ET  #8 Texas Tech at Cincinnati  [FS1]  TTU -11.5, o/u 56.5
     Sat 12:00 ET  Rutgers at #24 Northwestern  [Peacock]  NU -16.5, o/u 58.5
     Sat 15:30 ET  Texas A&M at #13 Alabama  [ABC]  ALA -13.5, o/u 50.5
-    Sat 15:30 ET  Michigan State at #9 UCLA  [CBS]  UCLA -15.5, o/u 43.5
+    Sat 15:30 ET  Michigan State at #9 UCLA  [CBS]  UCLA -14.5, o/u 43.5
     Sat 15:30 ET  #11 Tennessee at South Carolina  [ESPN]  SC -2.5, o/u 50.5
     Sat 15:30 ET  #2 BYU at UCF  [FOX]  BYU -7.0, o/u 43.5
     Sat 15:30 ET  #15 Iowa at Minnesota  [FS1]  IOWA -7.0, o/u 40.5
@@ -27,7 +27,7 @@ College Football Week 8 (111 games, pulled Fri 10/23, 3:20 AM ET, lines DraftKin
   TV games without a line: 0
   time TBD: 0
 
-NFL Week 7 (14 games, pulled Fri 10/23, 3:20 AM ET, lines DraftKings via ESPN)
+NFL Week 7 (14 games, pulled Fri 10/23, 9:18 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week7.html
   nfl/ forwards to the one page
   Thu 10/22: 0 on TV, 1 not
