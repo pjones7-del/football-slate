@@ -1,4 +1,4 @@
-College Football Week 8 (111 games, pulled Sat 10/24, 1:04 PM ET, lines DraftKings via ESPN)
+College Football Week 8 (111 games, pulled Sat 10/24, 1:21 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week8.html
   cfb/ forwards to the one page
   Tue 10/20: 3 on TV, 0 not
@@ -16,7 +16,7 @@ College Football Week 8 (111 games, pulled Sat 10/24, 1:04 PM ET, lines DraftKin
     Sat 15:30 ET  Texas A&M at #13 Alabama  [ABC]  ALA -13.5, o/u 49.5
     Sat 15:30 ET  Michigan State at #9 UCLA  [CBS]  UCLA -16.5, o/u 42.5
     Sat 15:30 ET  #11 Tennessee at South Carolina  [ESPN]  SC -2.5, o/u 50.5
-    Sat 15:30 ET  #2 BYU at UCF  [FOX]  BYU -7.0, o/u 43.5
+    Sat 15:30 ET  #2 BYU at UCF  [FOX]  BYU -7.5, o/u 43.5
     Sat 15:30 ET  #15 Iowa at Minnesota  [FS1]  IOWA -7.5, o/u 40.5
     Sat 18:00 ET  #21 Boise State at Washington State  [USA]  BOIS -14.5, o/u 52.5
     Sat 19:30 ET  #7 Ole Miss at #19 Texas  [ABC]  TEX -3.0, o/u 54.5
@@ -27,7 +27,7 @@ College Football Week 8 (111 games, pulled Sat 10/24, 1:04 PM ET, lines DraftKin
   TV games without a line: 0
   time TBD: 0
 
-NFL Week 7 (14 games, pulled Sat 10/24, 1:04 PM ET, lines DraftKings via ESPN)
+NFL Week 7 (14 games, pulled Sat 10/24, 1:21 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week7.html
   nfl/ forwards to the one page
   Thu 10/22: 0 on TV, 1 not
