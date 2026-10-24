@@ -1,4 +1,4 @@
-NFL Week 7 (14 games, pulled Sat 10/24, 4:20 PM ET, lines DraftKings via ESPN)
+NFL Week 7 (14 games, pulled Sat 10/24, 4:36 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week7.html
   nfl/ forwards to the one page
   Thu 10/22: 0 on TV, 1 not
