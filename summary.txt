@@ -1,4 +1,4 @@
-College Football Week 8 (111 games, pulled Sat 10/24, 5:31 PM ET, lines DraftKings via ESPN)
+College Football Week 8 (111 games, pulled Sat 10/24, 5:43 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week8.html
   cfb/ forwards to the one page
   Tue 10/20: 3 on TV, 0 not
@@ -22,13 +22,13 @@ College Football Week 8 (111 games, pulled Sat 10/24, 5:31 PM ET, lines DraftKin
     Sat 19:30 ET  #7 Ole Miss at #19 Texas  [ABC]  TEX -3.0, o/u 54.5
     Sat 19:30 ET  Iowa State at #25 Arizona  [ESPN2]  ARIZ -12.5, o/u 51.5
     Sat 19:30 ET  #16 USC at Wisconsin  [NBC]  USC -2.5, o/u 50.5
-    Sat 19:30 ET  Vanderbilt at #12 Kentucky  [SECN]  UK -10.5, o/u 50.5
+    Sat 19:30 ET  Vanderbilt at #12 Kentucky  [SECN]  UK -10.5, o/u 51.5
     Sat 22:15 ET  #14 Houston at #10 Utah  [ESPN]  UTAH -6.5, o/u 57.5
   TV games without a line: 0
   time TBD: 0
-  schedule changes on game day: Sat PITT at MIA: ESPN -> ESPNEWS (5:30 PM ET)
+  schedule changes on game day: Sat PITT at MIA: ESPN -> ESPNEWS (5:43 PM ET)
 
-NFL Week 7 (14 games, pulled Sat 10/24, 5:31 PM ET, lines DraftKings via ESPN)
+NFL Week 7 (14 games, pulled Sat 10/24, 5:43 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week7.html
   nfl/ forwards to the one page
   Thu 10/22: 0 on TV, 1 not
