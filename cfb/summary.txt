@@ -1,4 +1,4 @@
-College Football Week 8 (111 games, pulled Sat 10/24, 2:01 PM ET, lines DraftKings via ESPN)
+College Football Week 8 (111 games, pulled Sat 10/24, 4:20 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week8.html
   cfb/ forwards to the one page
   Tue 10/20: 3 on TV, 0 not
@@ -9,16 +9,16 @@ College Football Week 8 (111 games, pulled Sat 10/24, 2:01 PM ET, lines DraftKin
   ranked matchups:
     Sat 12:00 ET  #18 LSU at Auburn  [ABC]  LSU -7.0, o/u 51.5
     Sat 12:00 ET  Cal at #23 SMU  [CW]  SMU -19.5, o/u 55.5
-    Sat 12:00 ET  Pitt at #1 Miami (FL)  [ESPN]  MIA -19.5, o/u 48.5
+    Sat 12:00 ET  Pitt at #1 Miami (FL)  [ESPNEWS]  MIA -19.5, o/u 48.5
     Sat 12:00 ET  #6 Indiana at Michigan  [FOX]  IU -7.5, o/u 42.5
     Sat 12:00 ET  #8 Texas Tech at Cincinnati  [FS1]  TTU -11.5, o/u 56.5
     Sat 12:00 ET  Rutgers at #24 Northwestern  [Peacock]  NU -15.5, o/u 58.5
-    Sat 15:30 ET  Texas A&M at #13 Alabama  [ABC]  ALA -13.5, o/u 49.5
-    Sat 15:30 ET  Michigan State at #9 UCLA  [CBS]  UCLA -16.5, o/u 42.5
+    Sat 15:30 ET  Texas A&M at #13 Alabama  [ABC]  ALA -13.5, o/u 50.5
+    Sat 15:30 ET  Michigan State at #9 UCLA  [CBS]  UCLA -14.5, o/u 43.5
     Sat 15:30 ET  #11 Tennessee at South Carolina  [ESPN]  SC -2.5, o/u 50.5
-    Sat 15:30 ET  #2 BYU at UCF  [FOX]  BYU -7.5, o/u 43.5
+    Sat 15:30 ET  #2 BYU at UCF  [FOX]  BYU -7.0, o/u 43.5
     Sat 15:30 ET  #15 Iowa at Minnesota  [FS1]  IOWA -7.5, o/u 40.5
-    Sat 18:00 ET  #21 Boise State at Washington State  [USA]  BOIS -14.5, o/u 52.5
+    Sat 18:00 ET  #21 Boise State at Washington State  [USA]  BOIS -14.5, o/u 51.5
     Sat 19:30 ET  #7 Ole Miss at #19 Texas  [ABC]  TEX -3.0, o/u 54.5
     Sat 19:30 ET  Iowa State at #25 Arizona  [ESPN2]  ARIZ -12.5, o/u 51.5
     Sat 19:30 ET  #16 USC at Wisconsin  [NBC]  USC -2.5, o/u 50.5
@@ -26,3 +26,4 @@ College Football Week 8 (111 games, pulled Sat 10/24, 2:01 PM ET, lines DraftKin
     Sat 22:15 ET  #14 Houston at #10 Utah  [ESPN]  UTAH -6.5, o/u 57.5
   TV games without a line: 0
   time TBD: 0
+  schedule changes on game day: Sat PITT at MIA: ESPN -> ESPNEWS (4:20 PM ET)

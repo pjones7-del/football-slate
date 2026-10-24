@@ -1,4 +1,4 @@
-NFL Week 7 (14 games, pulled Sat 10/24, 2:01 PM ET, lines DraftKings via ESPN)
+NFL Week 7 (14 games, pulled Sat 10/24, 4:20 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week7.html
   nfl/ forwards to the one page
   Thu 10/22: 0 on TV, 1 not
@@ -7,7 +7,7 @@ NFL Week 7 (14 games, pulled Sat 10/24, 2:01 PM ET, lines DraftKings via ESPN)
   every game with its line:
     Thu 20:15 ET  New England Patriots at Chicago Bears  [Prime Video]  CHI -3.0, o/u 50.5
     Sun 09:30 ET  Pittsburgh Steelers vs New Orleans Saints  [NFL Network]  PIT -3.0, o/u 44.5
-    Sun 13:00 ET  Cincinnati Bengals at Baltimore Ravens  [CBS]  CIN -1.5, o/u 47.5
+    Sun 13:00 ET  Cincinnati Bengals at Baltimore Ravens  [CBS]  CIN -2.5, o/u 46.5
     Sun 13:00 ET  Indianapolis Colts at Minnesota Vikings  [CBS]  MIN -6.5, o/u 41.5
     Sun 13:00 ET  Miami Dolphins at New York Jets  [CBS]  NYJ -4.5, o/u 39.5
     Sun 13:00 ET  Cleveland Browns at Tennessee Titans  [CBS]  CLE -2.5, o/u 36.5
