@@ -1,4 +1,4 @@
-College Football Week 8 (111 games, pulled Sat 10/24, 9:01 PM ET, lines DraftKings via ESPN)
+College Football Week 8 (111 games, pulled Sun 10/25, 1:53 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week8.html
   cfb/ forwards to the one page
   Tue 10/20: 3 on TV, 0 not
@@ -26,4 +26,4 @@ College Football Week 8 (111 games, pulled Sat 10/24, 9:01 PM ET, lines DraftKin
     Sat 22:15 ET  #14 Houston at #10 Utah  [ESPN]  UTAH -6.5, o/u 57.5
   TV games without a line: 0
   time TBD: 0
-  schedule changes on game day: Sat PITT at MIA: ESPN -> ESPNEWS (6:43 PM ET)
+  schedule changes on game day: Sat PITT at MIA: ESPN -> ESPNEWS (6:43 PM ET); Sat NDSU at UNM: kick 10:00 PM -> 10:20 PM ET
