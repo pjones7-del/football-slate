@@ -1,4 +1,4 @@
-NFL Week 7 (14 games, pulled Sun 10/25, 11:58 AM ET, lines DraftKings via ESPN)
+NFL Week 7 (14 games, pulled Sun 10/25, 2:52 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week7.html
   nfl/ forwards to the one page
   Thu 10/22: 0 on TV, 1 not
@@ -14,7 +14,7 @@ NFL Week 7 (14 games, pulled Sun 10/25, 11:58 AM ET, lines DraftKings via ESPN)
     Sun 13:00 ET  San Francisco 49ers at Atlanta Falcons  [FOX]  SF -2.5, o/u 50.5
     Sun 13:00 ET  Tampa Bay Buccaneers at Carolina Panthers  [FOX]  CAR -3.0, o/u 44.5
     Sun 13:00 ET  New York Giants at Houston Texans  [FOX]  HOU -10.0, o/u 42.5
-    Sun 16:05 ET  Denver Broncos at Arizona Cardinals  [CBS]  DEN -4.5, o/u 42.5
+    Sun 16:05 ET  Denver Broncos at Arizona Cardinals  [CBS]  DEN -4.5, o/u 43.5
     Sun 16:25 ET  Green Bay Packers at Detroit Lions  [FOX]  DET -3.5, o/u 55.5
     Sun 16:25 ET  Los Angeles Rams at Las Vegas Raiders  [FOX]  LAR -3.5, o/u 48.5
     Sun 20:20 ET  Kansas City Chiefs at Seattle Seahawks  [NBC]  SEA -3.0, o/u 42.5
