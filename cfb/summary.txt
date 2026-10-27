@@ -1,4 +1,4 @@
-College Football Week 9 (115 games, pulled Tue 10/27, 3:39 AM ET, lines DraftKings via ESPN)
+College Football Week 9 (115 games, pulled Tue 10/27, 10:20 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week9.html
   cfb/ forwards to the one page
   Tue 10/27: 2 on TV, 0 not
@@ -7,7 +7,7 @@ College Football Week 9 (115 games, pulled Tue 10/27, 3:39 AM ET, lines DraftKin
   Fri 10/30: 4 on TV, 0 not
   Sat 10/31: 38 on TV, 66 not
   ranked matchups:
-    Sat 12:00 ET  #5 Notre Dame vs Navy  [ABC]  ND -30.5, o/u 55.5
+    Sat 12:00 ET  #5 Notre Dame vs Navy  [ABC]  ND -30.5, o/u 57.5
     Sat 12:00 ET  #22 Arizona at #13 Texas Tech  [ESPN]  TTU -3.5, o/u 54.5
     Sat 12:00 ET  #19 SMU at Syracuse  [ESPN2]  SMU -10.0, o/u 58.5
     Sat 12:00 ET  #25 Wisconsin at Iowa  [FOX]  IOWA -3.5, o/u 36.5
@@ -19,12 +19,12 @@ College Football Week 9 (115 games, pulled Tue 10/27, 3:39 AM ET, lines DraftKin
     Sat 15:45 ET  #6 Utah at Cincinnati  [ESPN]  UTAH -6.5, o/u 56.5
     Sat 15:45 ET  Virginia at #14 Wake Forest  [ESPN2]  WAKE -12.5, o/u 49.5
     Sat 16:15 ET  Nevada at #7 UCLA  [BTN]  UCLA -22.5, o/u 44.5
-    Sat 19:00 ET  #24 Oklahoma State at Iowa State  [FS1]  OKST -8.5, o/u 57.5
+    Sat 19:00 ET  #24 Oklahoma State at Iowa State  [FS1]  OKST -9.5, o/u 57.5
     Sat 19:30 ET  #1 Miami (FL) at North Carolina  [ABC]  MIA -14.5, o/u 52.5
     Sat 19:30 ET  Mississippi State at #11 Texas  [ESPN]  TEX -21.0, o/u 50.5
     Sat 19:30 ET  #2 Ohio State at USC  [NBC]  OSU -6.5, o/u 51.5
     Sat 19:45 ET  #23 Missouri at Arkansas  [SECN]  MIZ -10.0, o/u 49.5
-    Sat 22:00 ET  Texas State at #20 Boise State  [CW]  BOIS -11.5, o/u 63.5
+    Sat 22:00 ET  Texas State at #20 Boise State  [CW]  BOIS -11.5, o/u 64.5
   TV games without a line: 3
   time TBD: 0
   non-Division I or unknown conference ids: none: UFTL
