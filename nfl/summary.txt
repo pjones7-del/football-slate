@@ -1,4 +1,4 @@
-NFL Week 8 (14 games, pulled Wed 10/28, 2:45 PM ET, lines DraftKings via ESPN)
+NFL Week 8 (14 games, pulled Wed 10/28, 7:05 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week8.html
   nfl/ forwards to the one page
   Thu 10/29: 0 on TV, 1 not
@@ -7,7 +7,7 @@ NFL Week 8 (14 games, pulled Wed 10/28, 2:45 PM ET, lines DraftKings via ESPN)
   every game with its line:
     Thu 20:15 ET  Carolina Panthers at Green Bay Packers  [Prime Video]  GB -3.5, o/u 47.5
     Sun 13:00 ET  Baltimore Ravens at Buffalo Bills  [CBS]  BUF -3.0, o/u 54.5
-    Sun 13:00 ET  Tennessee Titans at Cincinnati Bengals  [CBS]  CIN -10.5, o/u 46.5
+    Sun 13:00 ET  Tennessee Titans at Cincinnati Bengals  [CBS]  CIN -10.0, o/u 46.5
     Sun 13:00 ET  Indianapolis Colts at Jacksonville Jaguars  [CBS]  JAX -10.0, o/u 46.5
     Sun 13:00 ET  Cleveland Browns at Pittsburgh Steelers  [CBS]  PIT -3.5, o/u 39.5
     Sun 13:00 ET  Arizona Cardinals at Dallas Cowboys  [FOX]  DAL -7.0, o/u 54.5
@@ -17,7 +17,7 @@ NFL Week 8 (14 games, pulled Wed 10/28, 2:45 PM ET, lines DraftKings via ESPN)
     Sun 16:05 ET  Los Angeles Chargers at Los Angeles Rams  [FOX]  LAR -6.5, o/u 45.5
     Sun 16:25 ET  Kansas City Chiefs at Denver Broncos  [CBS]  KC -1.5, o/u 40.5
     Sun 16:25 ET  New England Patriots at Miami Dolphins  [CBS]  NE -7.0, o/u 43.5
-    Sun 20:20 ET  Philadelphia Eagles at Washington Commanders  [NBC]  WSH -5.5, o/u 40.5
+    Sun 20:20 ET  Philadelphia Eagles at Washington Commanders  [NBC]  WSH -6.0, o/u 40.5
     Mon 20:15 ET  Chicago Bears at Seattle Seahawks  [ESPN]  SEA -3.0, o/u 46.5
   TV games without a line: 0
   time TBD: 0
