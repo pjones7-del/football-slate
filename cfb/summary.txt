@@ -1,4 +1,4 @@
-College Football Week 9 (115 games, pulled Wed 10/28, 1:22 AM ET, lines DraftKings via ESPN)
+College Football Week 9 (115 games, pulled Wed 10/28, 8:38 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week9.html
   cfb/ forwards to the one page
   Tue 10/27: 2 on TV, 0 not
@@ -24,7 +24,7 @@ College Football Week 9 (115 games, pulled Wed 10/28, 1:22 AM ET, lines DraftKin
     Sat 19:30 ET  Mississippi State at #11 Texas  [ESPN]  TEX -20.5, o/u 50.5
     Sat 19:30 ET  #2 Ohio State at USC  [NBC]  OSU -6.5, o/u 51.5
     Sat 19:45 ET  #23 Missouri at Arkansas  [SECN]  MIZ -10.0, o/u 49.5
-    Sat 22:00 ET  Texas State at #20 Boise State  [CW]  BOIS -11.5, o/u 64.5
+    Sat 22:00 ET  Texas State at #20 Boise State  [CW]  BOIS -11.5, o/u 63.5
   TV games without a line: 3
   time TBD: 0
   non-Division I or unknown conference ids: none: UFTL
