@@ -1,4 +1,4 @@
-College Football Week 9 (115 games, pulled Wed 10/28, 10:20 PM ET, lines DraftKings via ESPN)
+College Football Week 9 (115 games, pulled Thu 10/29, 5:46 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week9.html
   cfb/ forwards to the one page
   Tue 10/27: 2 on TV, 0 not
@@ -29,7 +29,7 @@ College Football Week 9 (115 games, pulled Wed 10/28, 10:20 PM ET, lines DraftKi
   time TBD: 0
   non-Division I or unknown conference ids: none: UFTL
 
-NFL Week 8 (14 games, pulled Wed 10/28, 10:20 PM ET, lines DraftKings via ESPN)
+NFL Week 8 (14 games, pulled Thu 10/29, 5:46 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week8.html
   nfl/ forwards to the one page
   Thu 10/29: 0 on TV, 1 not
