@@ -1,4 +1,4 @@
-College Football Week 9 (115 games, pulled Fri 10/30, 4:38 PM ET, lines DraftKings via ESPN)
+College Football Week 9 (115 games, pulled Fri 10/30, 8:37 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week9.html
   cfb/ forwards to the one page
   Tue 10/27: 2 on TV, 0 not
@@ -9,7 +9,7 @@ College Football Week 9 (115 games, pulled Fri 10/30, 4:38 PM ET, lines DraftKin
   ranked matchups:
     Sat 12:00 ET  #5 Notre Dame vs Navy  [ABC]  ND -30.5, o/u 56.5
     Sat 12:00 ET  #22 Arizona at #13 Texas Tech  [ESPN]  TTU -3.5, o/u 54.5
-    Sat 12:00 ET  #19 SMU at Syracuse  [ESPN2]  SMU -10.5, o/u 58.5
+    Sat 12:00 ET  #19 SMU at Syracuse  [ESPN2]  SMU -10.0, o/u 58.5
     Sat 12:00 ET  #25 Wisconsin at Iowa  [FOX]  IOWA -2.5, o/u 36.5
     Sat 12:45 ET  Auburn at #12 Ole Miss  [SECN]  MISS -11.5, o/u 57.5
     Sat 15:30 ET  #17 Florida vs #3 Georgia  [ABC]  UGA -12.5, o/u 56.5
@@ -29,7 +29,7 @@ College Football Week 9 (115 games, pulled Fri 10/30, 4:38 PM ET, lines DraftKin
   time TBD: 0
   non-Division I or unknown conference ids: none: UFTL
 
-NFL Week 8 (14 games, pulled Fri 10/30, 4:38 PM ET, lines DraftKings via ESPN)
+NFL Week 8 (14 games, pulled Fri 10/30, 8:37 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week8.html
   nfl/ forwards to the one page
   Thu 10/29: 0 on TV, 1 not
@@ -48,7 +48,7 @@ NFL Week 8 (14 games, pulled Fri 10/30, 4:38 PM ET, lines DraftKings via ESPN)
     Sun 16:05 ET  Los Angeles Chargers at Los Angeles Rams  [FOX]  LAR -6.5, o/u 45.5
     Sun 16:25 ET  Kansas City Chiefs at Denver Broncos  [CBS]  KC -1.5, o/u 40.5
     Sun 16:25 ET  New England Patriots at Miami Dolphins  [CBS]  NE -7.0, o/u 43.5
-    Sun 20:20 ET  Philadelphia Eagles at Washington Commanders  [NBC]  WSH -6.0, o/u 40.5
+    Sun 20:20 ET  Philadelphia Eagles at Washington Commanders  [NBC]  WSH -5.5, o/u 40.5
     Mon 20:15 ET  Chicago Bears at Seattle Seahawks  [ESPN]  SEA -3.0, o/u 46.5
   TV games without a line: 0
   time TBD: 0

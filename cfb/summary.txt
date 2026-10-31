@@ -1,4 +1,4 @@
-College Football Week 9 (115 games, pulled Fri 10/30, 4:38 PM ET, lines DraftKings via ESPN)
+College Football Week 9 (115 games, pulled Fri 10/30, 8:37 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week9.html
   cfb/ forwards to the one page
   Tue 10/27: 2 on TV, 0 not
@@ -9,7 +9,7 @@ College Football Week 9 (115 games, pulled Fri 10/30, 4:38 PM ET, lines DraftKin
   ranked matchups:
     Sat 12:00 ET  #5 Notre Dame vs Navy  [ABC]  ND -30.5, o/u 56.5
     Sat 12:00 ET  #22 Arizona at #13 Texas Tech  [ESPN]  TTU -3.5, o/u 54.5
-    Sat 12:00 ET  #19 SMU at Syracuse  [ESPN2]  SMU -10.5, o/u 58.5
+    Sat 12:00 ET  #19 SMU at Syracuse  [ESPN2]  SMU -10.0, o/u 58.5
     Sat 12:00 ET  #25 Wisconsin at Iowa  [FOX]  IOWA -2.5, o/u 36.5
     Sat 12:45 ET  Auburn at #12 Ole Miss  [SECN]  MISS -11.5, o/u 57.5
     Sat 15:30 ET  #17 Florida vs #3 Georgia  [ABC]  UGA -12.5, o/u 56.5
