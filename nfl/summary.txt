@@ -1,4 +1,4 @@
-NFL Week 8 (14 games, pulled Fri 10/30, 8:37 PM ET, lines DraftKings via ESPN)
+NFL Week 8 (14 games, pulled Sat 10/31, 2:52 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week8.html
   nfl/ forwards to the one page
   Thu 10/29: 0 on TV, 1 not
