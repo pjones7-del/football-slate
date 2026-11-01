@@ -1,4 +1,4 @@
-College Football Week 9 (115 games, pulled Sat 10/31, 6:24 PM ET, lines DraftKings via ESPN)
+College Football Week 9 (115 games, pulled Sat 10/31, 10:03 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week9.html
   cfb/ forwards to the one page
   Tue 10/27: 2 on TV, 0 not
@@ -24,13 +24,13 @@ College Football Week 9 (115 games, pulled Sat 10/31, 6:24 PM ET, lines DraftKin
     Sat 19:30 ET  Mississippi State at #11 Texas  [ESPN]  TEX -20.5, o/u 50.5
     Sat 19:30 ET  #2 Ohio State at USC  [NBC]  OSU -6.5, o/u 50.5
     Sat 19:45 ET  #23 Missouri at Arkansas  [SECN]  MIZ -10.0, o/u 48.5
-    Sat 22:00 ET  Texas State at #20 Boise State  [CW]  BOIS -10.5, o/u 63.5
+    Sat 22:00 ET  Texas State at #20 Boise State  [CW]  BOIS -10.0, o/u 63.5
   TV games without a line: 0
   time TBD: 0
   schedule changes on game day: Fri KENT at SAC: ESPN2 -> ESPNU (2:52 AM ET)
   non-Division I or unknown conference ids: none: UFTL
 
-NFL Week 8 (14 games, pulled Sat 10/31, 6:24 PM ET, lines DraftKings via ESPN)
+NFL Week 8 (14 games, pulled Sat 10/31, 10:03 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week8.html
   nfl/ forwards to the one page
   Thu 10/29: 0 on TV, 1 not
@@ -44,7 +44,7 @@ NFL Week 8 (14 games, pulled Sat 10/31, 6:24 PM ET, lines DraftKings via ESPN)
     Sun 13:00 ET  Cleveland Browns at Pittsburgh Steelers  [CBS]  PIT -3.5, o/u 38.5
     Sun 13:00 ET  Arizona Cardinals at Dallas Cowboys  [FOX]  DAL -7.0, o/u 54.5
     Sun 13:00 ET  Minnesota Vikings at Detroit Lions  [FOX]  DET -3.0, o/u 46.5
-    Sun 13:00 ET  Las Vegas Raiders at New York Jets  [FOX]  NYJ -1.5, o/u 45.5
+    Sun 13:00 ET  Las Vegas Raiders at New York Jets  [FOX]  NYJ -1.5, o/u 46.5
     Sun 13:00 ET  Atlanta Falcons at Tampa Bay Buccaneers  [FOX]  TB -2.5, o/u 43.5
     Sun 16:05 ET  Los Angeles Chargers at Los Angeles Rams  [FOX]  LAR -6.5, o/u 45.5
     Sun 16:25 ET  Kansas City Chiefs at Denver Broncos  [CBS]  KC -1.5, o/u 40.5
