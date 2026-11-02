@@ -101,6 +101,23 @@
   .row.top{flex-wrap:nowrap;gap:8px}
   .row.top .brand{flex:1 1 auto}
   .filters{flex:none;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;padding:6px 12px;border-radius:999px;border:1px solid var(--line2);background:var(--card);color:var(--ink);cursor:pointer;white-space:nowrap;box-shadow:var(--shadow)}
+  /* the week pill (Phil, 11/2): on the title line in both states; gold on another week; the week row under the title line */
+  .wk{flex:none;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;padding:6px 10px;border-radius:999px;border:1px solid var(--line2);background:var(--card);color:var(--ink);cursor:pointer;white-space:nowrap;box-shadow:var(--shadow)}
+  .wk b{font-weight:700;margin-left:3px;font-size:11px}
+  .wk.away{border-color:var(--accent);color:var(--accent)}
+  .row.top .brand #brand{white-space:nowrap}
+  @media (max-width: 640px){ .bar:not(.off) .brand #sub{display:none} }   /* the day row says the day; the title line has the pills */
+  .row.weeks{margin-top:8px;flex-direction:column;align-items:flex-start;gap:5px}
+  .bar.off > .row.weeks:not([hidden]){display:flex;margin-bottom:2px}
+  .wkline{display:flex;align-items:center;gap:8px;width:100%;min-width:0}
+  .wkscroll{flex:1 1 auto;min-width:0;overflow-x:auto;scrollbar-width:none;padding-bottom:1px}
+  .wkscroll::-webkit-scrollbar{display:none}
+  #wkBack{flex:none;padding:6px 10px;font-weight:700;border-color:var(--accent);color:var(--accent)}
+  #wkSeg button{flex:none}
+  #wkSeg button.cur{box-shadow:inset 0 -3px 0 var(--accent)}
+  #wkSeg button.past{opacity:.72}
+  #wknote{font-family:var(--body);font-weight:500;font-size:12px;letter-spacing:0;text-transform:none;color:var(--muted);max-width:100%;white-space:normal}
+  #leagueSeg button small.away{color:var(--accent);opacity:1}
   .filters b{font-weight:700;margin-left:3px;font-size:11px}
   #cslips{display:none}
   .row.pick{margin-top:8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:6px}
@@ -161,6 +178,13 @@
   .tb .pl.away .legm.half{bottom:50%}.tb .pl.home .legm.half{top:50%}   /* a team's leg beside a game leg: its outer half, so they stack away / game / home */
 
   .panel h2{margin:6px 0 5px;font-family:var(--cond);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  /* Settings (Phil, 11/2): the set-once things in labeled rows; the Package, Market and Save-view panels open under their rows */
+  .panel.set .srow{display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;margin:4px 0 8px}
+  .panel.set .srow .lbl{flex:none;width:76px;font-family:var(--cond);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .panel.set .srow .tzslot{display:contents}
+  .panel.set .sub:empty{display:none}
+  .panel.set .sub > .panel{margin:0 0 10px 84px;padding-top:4px;border-top:0;border-left:2px solid var(--line2);padding-left:10px}
+  @media (max-width: 640px){ .panel.set .sub > .panel{margin-left:0;border-left:0;padding-left:0;border-top:1px solid var(--line2);padding-top:6px} }
   .panel h2 span{font-family:var(--body);font-weight:500;text-transform:none;letter-spacing:0;margin-left:8px;font-size:12px}
   .panel input{font:inherit;font-size:13px;font-weight:500;padding:4px 10px;border-radius:999px;border:1px solid var(--line2);background:transparent;color:var(--ink);width:170px;max-width:100%}
   .panel input:focus{outline:2px solid var(--accent);outline-offset:-2px}
@@ -438,6 +462,7 @@
   .xlines .xlr{display:contents}
   .xlines .xll{color:var(--muted);font-weight:600;font-size:12.5px}
   .xlines .xlv{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .xlines.xwrap .xlv.xlw{white-space:normal}   /* a moneyline pair that doesn't fit breaks after its slash (11/1) */
   .xlines .xlc{color:var(--muted);font-weight:600}
   .xlines .xlh .xlv,.xlines .xlh .xlc{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:700}
   .xlines .xlnote{grid-column:1 / -1;color:var(--muted);font-size:12px;font-family:var(--body)}
@@ -587,7 +612,12 @@
     <div class="row top">
       <div class="brand"><span id="brand">Football Slate</span> <small id="sub"></small><small id="cdate"></small></div>
       <div class="seg" id="cslips" role="group" aria-label="Slips" title="Your slips: a slip on keeps just its games, two on show both"></div>
+      <button type="button" class="wk" id="wkBtn" aria-expanded="false" aria-controls="wkrow" title="Look at another week">Week<b>&#x25BE;</b></button>
       <button type="button" class="filters" id="bshow" aria-expanded="true" title="Hide the controls">Filters <b>&#x25B4;</b></button>
+    </div>
+    <div class="row weeks" id="wkrow" hidden>
+      <div class="wkline"><button type="button" class="chip" id="wkBack" hidden>This week</button><div class="wkscroll"><div class="seg two" id="wkSeg" role="group" aria-label="Week"></div></div></div>
+      <span class="note" id="wknote"></span>
     </div>
     <div class="row pick">
         <div class="seg two" role="group" aria-label="League" id="leagueSeg">
@@ -625,30 +655,46 @@
         <button type="button" data-ml="ml">ML</button>
         <button type="button" data-ml="both">Both</button>
       </div>
-      <div class="seg" role="group" aria-label="View">
-        <button type="button" data-key="view" data-v="timeline">Timeline</button>
-        <button type="button" data-key="view" data-v="cards">Cards</button>
-      </div>
-      <div class="seg"><button type="button" id="pkgBtn" aria-pressed="false" aria-controls="panel">Package<small id="pkgN"></small></button></div>
-      <div class="seg" id="mktSeg" hidden><button type="button" id="mktBtn" aria-pressed="false" aria-controls="mpanel" title="Your market: which Sunday afternoon CBS and FOX games your own stations carry">Set market</button></div>
       <div class="seg"><button type="button" id="wxBtn" aria-pressed="false" aria-controls="wpanel" title="Keep just the games with the forecast you pick, or the ones under a roof">Weather<small id="wxN"></small></button></div>
       <div class="seg"><button type="button" id="slipBtn" aria-pressed="false" aria-controls="spanel" title="Your parlays: a slip is a list of legs, a button beside FBS / Top 25 / All, and the legs tracked on the bars">Slips<small id="slipN"></small></button></div>
       <div class="seg"><button type="button" id="teamBtn" aria-pressed="false" aria-controls="tpanel" title="Star your teams: gold frame on the board, and the option to show only their games">&#9734; Teams<small id="teamN"></small></button></div>
-      <div class="seg"><button type="button" id="printBtn" title="One landscape page of the day on screen, as filtered">Print</button></div>
-      <div class="seg"><button type="button" id="dtvBtn" aria-pressed="false" title="Put each channel's DirecTV number under its logo (the locals are the Phoenix stations)">DirecTV</button></div>
-      <div class="seg" role="group" aria-label="Style">
-        <button type="button" data-skin="broadcast">Broadcast</button>
-        <button type="button" data-skin="app">App</button>
+      <div class="seg"><button type="button" id="setBtn" aria-pressed="false" aria-controls="setpanel" title="The set-once things: how the board looks, your channels and market, the time zone, saved views, print">Settings</button></div>
+    </div>
+    <div class="panel set" id="setpanel" hidden>
+      <div class="srow"><span class="lbl">View</span>
+        <div class="seg" role="group" aria-label="View">
+          <button type="button" data-key="view" data-v="timeline">Timeline</button>
+          <button type="button" data-key="view" data-v="cards">Cards</button>
+        </div>
+        <div class="seg" role="group" aria-label="Card" title="The open card: everything at once, or the lines behind a Lines tab">
+          <button type="button" data-xc="full">Full card</button>
+          <button type="button" data-xc="compact">Compact card</button>
+        </div>
       </div>
-      <div class="seg" role="group" aria-label="Card" title="The open card: everything at once, or the lines behind a Lines tab">
-        <button type="button" data-xc="full">Full card</button>
-        <button type="button" data-xc="compact">Compact card</button>
+      <div class="srow"><span class="lbl">Style</span>
+        <div class="seg" role="group" aria-label="Style">
+          <button type="button" data-skin="broadcast">Broadcast</button>
+          <button type="button" data-skin="app">App</button>
+        </div>
+        <div class="seg" role="group" aria-label="Theme">
+          <button type="button" id="themeBtn" aria-pressed="false" title="Switch between the dark and light look">Light</button>
+        </div>
       </div>
-      <div class="seg" role="group" aria-label="Theme">
-        <button type="button" id="themeBtn" aria-pressed="false" title="Switch between the dark and light look">Light</button>
+      <div class="srow"><span class="lbl">Channels</span>
+        <div class="seg"><button type="button" id="pkgBtn" aria-pressed="false" aria-controls="panel">Package<small id="pkgN"></small></button></div>
+        <div class="seg"><button type="button" id="dtvBtn" aria-pressed="false" title="Put each channel's DirecTV number under its logo (the locals are the Phoenix stations)">DirecTV</button></div>
       </div>
-      <div class="tzslot" id="tzslot"></div>
-      <div class="chips views" id="vadd"></div>
+      <div class="sub" id="pkgslot"></div>
+      <div class="srow" id="mktRow" hidden><span class="lbl">Market</span>
+        <div class="seg" id="mktSeg" hidden><button type="button" id="mktBtn" aria-pressed="false" aria-controls="mpanel" title="Your market: which Sunday afternoon CBS and FOX games your own stations carry">Set market</button></div>
+      </div>
+      <div class="sub" id="mktslot"></div>
+      <div class="srow"><span class="lbl">Time zone</span><div class="tzslot" id="tzslot"></div></div>
+      <div class="srow"><span class="lbl">Views</span><div class="chips views" id="vadd"></div></div>
+      <div class="sub" id="vslot"></div>
+      <div class="srow"><span class="lbl"></span>
+        <div class="seg"><button type="button" id="printBtn" title="One landscape page of the day on screen, as filtered">Print</button></div>
+      </div>
     </div>
     <div class="panel" id="spanel" hidden>
       <h2>Slips <span>a parlay as a filter: paste the slip's picks or read a screenshot, check the legs, save; the slip gets a button beside FBS / Top 25 / All and its legs show on the bars</span></h2>
@@ -734,7 +780,7 @@ const SLATE = {
   "v": 2,
   "default": "cfb",
   "lock": false,
-  "pulled": "Mon 11/2, 1:10 PM ET",
+  "pulled": "Sun 11/1, 10:57 AM ET",
   "lines": "DraftKings via ESPN",
   "confIds": {"8":"SEC","5":"B1G","1":"ACC","4":"B12","151":"AAC","9":"PAC","17":"MWC","15":"MAC","37":"SBC","12":"CUSA","18":"IND","20":"BSKY","179":"BSO","26":"BSO","40":"BSO","48":"CAA","32":"FCSI","22":"IVY","24":"MEAC","21":"MVFC","25":"NEC","27":"PAT","28":"PFL","29":"SOCON","30":"SLC","31":"SWAC","177":"UAC"},
   "nflDiv": {"BUF":"AFCE","MIA":"AFCE","NE":"AFCE","NYJ":"AFCE","BAL":"AFCN","CIN":"AFCN","CLE":"AFCN","PIT":"AFCN","HOU":"AFCS","IND":"AFCS","JAX":"AFCS","TEN":"AFCS","DEN":"AFCW","KC":"AFCW","LV":"AFCW","LAC":"AFCW","DAL":"NFCE","NYG":"NFCE","PHI":"NFCE","WSH":"NFCE","CHI":"NFCN","DET":"NFCN","GB":"NFCN","MIN":"NFCN","ATL":"NFCS","CAR":"NFCS","NO":"NFCS","TB":"NFCS","ARI":"NFCW","LAR":"NFCW","SF":"NFCW","SEA":"NFCW"},
@@ -899,21 +945,21 @@ const SLATE = {
           {"id":"401873023","kick":"2026-10-30T00:15Z","tbd":false,"away":{"id":"29","ab":"CAR","name":"Carolina Panthers","short":"Panthers","color":"0085ca","alt":"000000","logo":"car","rank":0,"rec":"3-4","conf":"NFCS","score":19,"winner":false,"line":[3,7,3,6]},"home":{"id":"9","ab":"GB","name":"Green Bay Packers","short":"Packers","color":"204e32","alt":"ffb612","logo":"gb","rank":0,"rec":"5-3","conf":"NFCN","score":27,"winner":true,"line":[6,14,7,0]},"neutral":false,"venue":"Green Bay, WI","carriers":["Prime Video"],"tv":false,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":8,"close":[-3.5,46.5,[150,-180]]}
         ]},
         {"label": "Sun 11/1", "date": "2026-11-01", "games": [
-          {"id":"401873026","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"33","ab":"BAL","name":"Baltimore Ravens","short":"Ravens","color":"29126f","alt":"000000","logo":"bal","rank":0,"rec":"4-4","conf":"AFCN","score":10,"winner":false,"line":[7,0,3,0]},"home":{"id":"2","ab":"BUF","name":"Buffalo Bills","short":"Bills","color":"00338d","alt":"d50a0a","logo":"buf","rank":0,"rec":"6-1","conf":"AFCE","score":36,"winner":true,"line":[10,6,7,13]},"neutral":false,"venue":"Orchard Park, NY","carriers":["CBS"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":8,"close":[-3.0,54.5,[136,-162]]},
-          {"id":"401873031","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"10","ab":"TEN","name":"Tennessee Titans","short":"Titans","color":"4495d2","alt":"001532","logo":"ten","rank":0,"rec":"1-7","conf":"AFCS","score":36,"winner":false,"line":[13,0,8,15,0]},"home":{"id":"4","ab":"CIN","name":"Cincinnati Bengals","short":"Bengals","color":"fb4f14","alt":"000000","logo":"cin","rank":0,"rec":"5-2","conf":"AFCN","score":43,"winner":true,"line":[0,14,9,13,7]},"neutral":false,"venue":"Cincinnati, OH","carriers":["CBS"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final/OT","period":5,"clock":"0:00","sit":null,"week":8,"close":[-13.5,46.5,[625,-950]]},
-          {"id":"401873028","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"11","ab":"IND","name":"Indianapolis Colts","short":"Colts","color":"003b75","alt":"ffffff","logo":"ind","rank":0,"rec":"2-6","conf":"AFCS","score":7,"winner":false,"line":[0,0,7,0]},"home":{"id":"30","ab":"JAX","name":"Jacksonville Jaguars","short":"Jaguars","color":"007487","alt":"d7a22a","logo":"jax","rank":0,"rec":"5-2","conf":"AFCS","score":42,"winner":true,"line":[7,21,14,0]},"neutral":false,"venue":"Jacksonville, FL","carriers":["CBS"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":8,"close":[-10.0,46.5,[380,-500]]},
-          {"id":"401873027","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"5","ab":"CLE","name":"Cleveland Browns","short":"Browns","color":"472a08","alt":"ff3c00","logo":"cle","rank":0,"rec":"5-3","conf":"AFCN","score":6,"winner":false,"line":[0,6,0,0]},"home":{"id":"23","ab":"PIT","name":"Pittsburgh Steelers","short":"Steelers","color":"000000","alt":"ffb612","logo":"pit","rank":0,"rec":"6-2","conf":"AFCN","score":27,"winner":true,"line":[7,13,7,0]},"neutral":false,"venue":"Pittsburgh, PA","carriers":["CBS"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":8,"close":[-3.5,38.5,[154,-185]]},
-          {"id":"401873024","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"22","ab":"ARI","name":"Arizona Cardinals","short":"Cardinals","color":"a40227","alt":"ffffff","logo":"ari","rank":0,"rec":"3-5","conf":"NFCW","score":33,"winner":true,"line":[0,3,7,20,3]},"home":{"id":"6","ab":"DAL","name":"Dallas Cowboys","short":"Cowboys","color":"002a5c","alt":"b0b7bc","logo":"dal","rank":0,"rec":"3-5","conf":"NFCE","score":30,"winner":false,"line":[7,7,3,13,0]},"neutral":false,"venue":"Arlington, TX","carriers":["FOX"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final/OT","period":5,"clock":"0:00","sit":null,"week":8,"dome":true,"close":[-7.0,54.5,[260,-325]]},
-          {"id":"401873030","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"16","ab":"MIN","name":"Minnesota Vikings","short":"Vikings","color":"4f2683","alt":"ffc62f","logo":"min","rank":0,"rec":"6-1","conf":"NFCN","score":15,"winner":false,"line":[0,7,0,8]},"home":{"id":"8","ab":"DET","name":"Detroit Lions","short":"Lions","color":"0076b6","alt":"bbbbbb","logo":"det","rank":0,"rec":"5-2","conf":"NFCN","score":19,"winner":true,"line":[3,3,6,7]},"neutral":false,"venue":"Detroit, MI","carriers":["FOX"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":8,"dome":true,"close":[-3.0,46.5,[142,-170]]},
-          {"id":"401873029","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"13","ab":"LV","name":"Las Vegas Raiders","short":"Raiders","color":"000000","alt":"a5acaf","logo":"lv","rank":0,"rec":"4-4","conf":"AFCW","score":38,"winner":true,"line":[7,7,14,10]},"home":{"id":"20","ab":"NYJ","name":"New York Jets","short":"Jets","color":"115740","alt":"ffffff","logo":"nyj","rank":0,"rec":"2-6","conf":"AFCE","score":33,"winner":false,"line":[6,17,7,3]},"neutral":false,"venue":"East Rutherford, NJ","carriers":["FOX"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":8,"close":[-1.5,46.5,[110,-130]]},
-          {"id":"401873025","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"1","ab":"ATL","name":"Atlanta Falcons","short":"Falcons","color":"a71930","alt":"000000","logo":"atl","rank":0,"rec":"3-5","conf":"NFCS","score":0,"winner":false,"line":[0,0,0,0]},"home":{"id":"27","ab":"TB","name":"Tampa Bay Buccaneers","short":"Buccaneers","color":"bd1c36","alt":"3e3a35","logo":"tb","rank":0,"rec":"3-5","conf":"NFCS","score":16,"winner":true,"line":[6,3,7,0]},"neutral":false,"venue":"Tampa, FL","carriers":["FOX"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":8,"close":[-2.5,43.5,[110,-130]]},
-          {"id":"401873032","kick":"2026-11-01T21:05Z","tbd":false,"away":{"id":"24","ab":"LAC","name":"Los Angeles Chargers","short":"Chargers","color":"0080c6","alt":"ffc20e","logo":"lac","rank":0,"rec":"0-7","conf":"AFCW","score":9,"winner":false,"line":[3,6,0,0]},"home":{"id":"14","ab":"LAR","name":"Los Angeles Rams","short":"Rams","color":"003594","alt":"ffd100","logo":"lar","rank":0,"rec":"4-4","conf":"NFCW","score":24,"winner":true,"line":[3,7,14,0]},"neutral":false,"venue":"Inglewood, CA","carriers":["FOX"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":8,"close":[-6.5,46.5,[235,-290]]},
-          {"id":"401873033","kick":"2026-11-01T21:25Z","tbd":false,"away":{"id":"12","ab":"KC","name":"Kansas City Chiefs","short":"Chiefs","color":"e31837","alt":"ffb612","logo":"kc","rank":0,"rec":"5-2","conf":"AFCW","score":24,"winner":false,"line":[7,10,7,0]},"home":{"id":"7","ab":"DEN","name":"Denver Broncos","short":"Broncos","color":"0a2343","alt":"fc4c02","logo":"den","rank":0,"rec":"6-2","conf":"AFCW","score":28,"winner":true,"line":[3,10,0,15]},"neutral":false,"venue":"Denver, CO","carriers":["CBS"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":8,"close":[1.5,41.5,[-112,-108]]},
-          {"id":"401873034","kick":"2026-11-01T21:25Z","tbd":false,"away":{"id":"17","ab":"NE","name":"New England Patriots","short":"Patriots","color":"002a5c","alt":"c60c30","logo":"ne","rank":0,"rec":"5-3","conf":"AFCE","score":24,"winner":true,"line":[3,0,14,7]},"home":{"id":"15","ab":"MIA","name":"Miami Dolphins","short":"Dolphins","color":"008e97","alt":"fc4c02","logo":"mia","rank":0,"rec":"1-6","conf":"AFCE","score":19,"winner":false,"line":[3,10,0,6]},"neutral":false,"venue":"Miami Gardens, FL","carriers":["CBS"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":8,"close":[7.0,41.5,[-345,275]]},
-          {"id":"401873035","kick":"2026-11-02T01:20Z","tbd":false,"away":{"id":"21","ab":"PHI","name":"Philadelphia Eagles","short":"Eagles","color":"06424d","alt":"000000","logo":"phi","rank":0,"rec":"2-6","conf":"NFCE","score":10,"winner":false,"line":[10,0,0,0]},"home":{"id":"28","ab":"WSH","name":"Washington Commanders","short":"Commanders","color":"5a1414","alt":"ffb612","logo":"wsh","rank":0,"rec":"2-4-1","conf":"NFCE","score":27,"winner":true,"line":[3,10,3,11]},"neutral":false,"venue":"Landover, MD","carriers":["NBC"],"tv":true,"spread":null,"ou":null,"provider":"","state":"post","detail":"Final","period":4,"clock":"0:00","sit":null,"week":8,"close":[-6.0,40.5,[225,-278]]}
+          {"id":"401873026","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"33","ab":"BAL","name":"Baltimore Ravens","short":"Ravens","color":"29126f","alt":"000000","logo":"bal","rank":0,"rec":"4-3","conf":"AFCN","score":0,"winner":false,"line":[]},"home":{"id":"2","ab":"BUF","name":"Buffalo Bills","short":"Bills","color":"00338d","alt":"d50a0a","logo":"buf","rank":0,"rec":"5-1","conf":"AFCE","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Orchard Park, NY","carriers":["CBS"],"tv":true,"spread":-3.0,"ou":54.5,"provider":"DraftKings","state":"pre","detail":"11/1 - 1:00 PM EST","period":0,"clock":"0:00","sit":null,"week":8,"wx":{"t":61,"c":1,"d":"Sunny"},"ml":[136,-162]},
+          {"id":"401873031","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"10","ab":"TEN","name":"Tennessee Titans","short":"Titans","color":"4495d2","alt":"001532","logo":"ten","rank":0,"rec":"1-6","conf":"AFCS","score":0,"winner":false,"line":[]},"home":{"id":"4","ab":"CIN","name":"Cincinnati Bengals","short":"Bengals","color":"fb4f14","alt":"000000","logo":"cin","rank":0,"rec":"4-2","conf":"AFCN","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Cincinnati, OH","carriers":["CBS"],"tv":true,"spread":-13.5,"ou":46.5,"provider":"DraftKings","state":"pre","detail":"11/1 - 1:00 PM EST","period":0,"clock":"0:00","sit":null,"week":8,"wx":{"t":70,"c":7,"d":"Cloudy"},"ml":[625,-950]},
+          {"id":"401873028","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"11","ab":"IND","name":"Indianapolis Colts","short":"Colts","color":"003b75","alt":"ffffff","logo":"ind","rank":0,"rec":"2-5","conf":"AFCS","score":0,"winner":false,"line":[]},"home":{"id":"30","ab":"JAX","name":"Jacksonville Jaguars","short":"Jaguars","color":"007487","alt":"d7a22a","logo":"jax","rank":0,"rec":"4-2","conf":"AFCS","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Jacksonville, FL","carriers":["CBS"],"tv":true,"spread":-10.0,"ou":46.5,"provider":"DraftKings","state":"pre","detail":"11/1 - 1:00 PM EST","period":0,"clock":"0:00","sit":null,"week":8,"wx":{"t":79,"c":12,"d":"Showers"},"ml":[380,-500]},
+          {"id":"401873027","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"5","ab":"CLE","name":"Cleveland Browns","short":"Browns","color":"472a08","alt":"ff3c00","logo":"cle","rank":0,"rec":"5-2","conf":"AFCN","score":0,"winner":false,"line":[]},"home":{"id":"23","ab":"PIT","name":"Pittsburgh Steelers","short":"Steelers","color":"000000","alt":"ffb612","logo":"pit","rank":0,"rec":"5-2","conf":"AFCN","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Pittsburgh, PA","carriers":["CBS"],"tv":true,"spread":-3.5,"ou":38.5,"provider":"DraftKings","state":"pre","detail":"11/1 - 1:00 PM EST","period":0,"clock":"0:00","sit":null,"week":8,"wx":{"t":66,"c":5,"d":"Hazy sunshine"},"ml":[154,-185]},
+          {"id":"401873024","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"22","ab":"ARI","name":"Arizona Cardinals","short":"Cardinals","color":"a40227","alt":"ffffff","logo":"ari","rank":0,"rec":"2-5","conf":"NFCW","score":0,"winner":false,"line":[]},"home":{"id":"6","ab":"DAL","name":"Dallas Cowboys","short":"Cowboys","color":"002a5c","alt":"b0b7bc","logo":"dal","rank":0,"rec":"3-4","conf":"NFCE","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Arlington, TX","carriers":["FOX"],"tv":true,"spread":-7.0,"ou":54.5,"provider":"DraftKings","state":"pre","detail":"11/1 - 1:00 PM EST","period":0,"clock":"0:00","sit":null,"week":8,"wx":{"t":75,"c":11,"d":"Fog"},"dome":true,"ml":[260,-325]},
+          {"id":"401873030","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"16","ab":"MIN","name":"Minnesota Vikings","short":"Vikings","color":"4f2683","alt":"ffc62f","logo":"min","rank":0,"rec":"6-0","conf":"NFCN","score":0,"winner":false,"line":[]},"home":{"id":"8","ab":"DET","name":"Detroit Lions","short":"Lions","color":"0076b6","alt":"bbbbbb","logo":"det","rank":0,"rec":"4-2","conf":"NFCN","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Detroit, MI","carriers":["FOX"],"tv":true,"spread":-3.0,"ou":46.5,"provider":"DraftKings","state":"pre","detail":"11/1 - 1:00 PM EST","period":0,"clock":"0:00","sit":null,"week":8,"wx":{"t":65,"c":7,"d":"Cloudy"},"dome":true,"ml":[142,-170]},
+          {"id":"401873029","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"13","ab":"LV","name":"Las Vegas Raiders","short":"Raiders","color":"000000","alt":"a5acaf","logo":"lv","rank":0,"rec":"3-4","conf":"AFCW","score":0,"winner":false,"line":[]},"home":{"id":"20","ab":"NYJ","name":"New York Jets","short":"Jets","color":"115740","alt":"ffffff","logo":"nyj","rank":0,"rec":"2-5","conf":"AFCE","score":0,"winner":false,"line":[]},"neutral":false,"venue":"East Rutherford, NJ","carriers":["FOX"],"tv":true,"spread":-1.5,"ou":46.5,"provider":"DraftKings","state":"pre","detail":"11/1 - 1:00 PM EST","period":0,"clock":"0:00","sit":null,"week":8,"wx":{"t":59,"c":2,"d":"Mostly sunny"},"ml":[110,-130]},
+          {"id":"401873025","kick":"2026-11-01T18:00Z","tbd":false,"away":{"id":"1","ab":"ATL","name":"Atlanta Falcons","short":"Falcons","color":"a71930","alt":"000000","logo":"atl","rank":0,"rec":"3-4","conf":"NFCS","score":0,"winner":false,"line":[]},"home":{"id":"27","ab":"TB","name":"Tampa Bay Buccaneers","short":"Buccaneers","color":"bd1c36","alt":"3e3a35","logo":"tb","rank":0,"rec":"2-5","conf":"NFCS","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Tampa, FL","carriers":["FOX"],"tv":true,"spread":-2.5,"ou":43.5,"provider":"DraftKings","state":"pre","detail":"11/1 - 1:00 PM EST","period":0,"clock":"0:00","sit":null,"week":8,"wx":{"t":80,"c":7,"d":"Cloudy"},"ml":[110,-130]},
+          {"id":"401873032","kick":"2026-11-01T21:05Z","tbd":false,"away":{"id":"24","ab":"LAC","name":"Los Angeles Chargers","short":"Chargers","color":"0080c6","alt":"ffc20e","logo":"lac","rank":0,"rec":"0-6","conf":"AFCW","score":0,"winner":false,"line":[]},"home":{"id":"14","ab":"LAR","name":"Los Angeles Rams","short":"Rams","color":"003594","alt":"ffd100","logo":"lar","rank":0,"rec":"3-4","conf":"NFCW","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Inglewood, CA","carriers":["FOX"],"tv":true,"spread":-6.5,"ou":45.5,"provider":"DraftKings","state":"pre","detail":"11/1 - 4:05 PM EST","period":0,"clock":"0:00","sit":null,"week":8,"wx":{"t":72,"c":2,"d":"Mostly sunny"},"ml":[220,-270]},
+          {"id":"401873033","kick":"2026-11-01T21:25Z","tbd":false,"away":{"id":"12","ab":"KC","name":"Kansas City Chiefs","short":"Chiefs","color":"e31837","alt":"ffb612","logo":"kc","rank":0,"rec":"5-1","conf":"AFCW","score":0,"winner":false,"line":[]},"home":{"id":"7","ab":"DEN","name":"Denver Broncos","short":"Broncos","color":"0a2343","alt":"fc4c02","logo":"den","rank":0,"rec":"5-2","conf":"AFCW","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Denver, CO","carriers":["CBS"],"tv":true,"spread":1.5,"ou":41.5,"provider":"DraftKings","state":"pre","detail":"11/1 - 4:25 PM EST","period":0,"clock":"0:00","sit":null,"week":8,"wx":{"t":63,"c":4,"d":"Intermittent clouds"},"ml":[-115,-105]},
+          {"id":"401873034","kick":"2026-11-01T21:25Z","tbd":false,"away":{"id":"17","ab":"NE","name":"New England Patriots","short":"Patriots","color":"002a5c","alt":"c60c30","logo":"ne","rank":0,"rec":"4-3","conf":"AFCE","score":0,"winner":false,"line":[]},"home":{"id":"15","ab":"MIA","name":"Miami Dolphins","short":"Dolphins","color":"008e97","alt":"fc4c02","logo":"mia","rank":0,"rec":"1-5","conf":"AFCE","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Miami Gardens, FL","carriers":["CBS"],"tv":true,"spread":7.0,"ou":41.5,"provider":"DraftKings","state":"pre","detail":"11/1 - 4:25 PM EST","period":0,"clock":"0:00","sit":null,"week":8,"wx":{"t":78,"c":16,"d":"Mostly cloudy w/ t-storms"},"ml":[-345,275]},
+          {"id":"401873035","kick":"2026-11-02T01:20Z","tbd":false,"away":{"id":"21","ab":"PHI","name":"Philadelphia Eagles","short":"Eagles","color":"06424d","alt":"000000","logo":"phi","rank":0,"rec":"2-5","conf":"NFCE","score":0,"winner":false,"line":[]},"home":{"id":"28","ab":"WSH","name":"Washington Commanders","short":"Commanders","color":"5a1414","alt":"ffb612","logo":"wsh","rank":0,"rec":"1-4-1","conf":"NFCE","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Landover, MD","carriers":["NBC"],"tv":true,"spread":-6.0,"ou":40.5,"provider":"DraftKings","state":"pre","detail":"11/1 - 8:20 PM EST","period":0,"clock":"0:00","sit":null,"week":8,"wx":{"t":50,"c":38,"d":"Mostly cloudy"},"ml":[220,-270]}
         ]},
         {"label": "Mon 11/2", "date": "2026-11-02", "games": [
-          {"id":"401873036","kick":"2026-11-03T01:15Z","tbd":false,"away":{"id":"3","ab":"CHI","name":"Chicago Bears","short":"Bears","color":"0b1c3a","alt":"e64100","logo":"chi","rank":0,"rec":"5-2","conf":"NFCN","score":0,"winner":false,"line":[]},"home":{"id":"26","ab":"SEA","name":"Seattle Seahawks","short":"Seahawks","color":"002a5c","alt":"69be28","logo":"sea","rank":0,"rec":"4-3","conf":"NFCW","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Seattle, WA","carriers":["ESPN"],"tv":true,"spread":-3.0,"ou":46.5,"provider":"DraftKings","state":"pre","detail":"11/2 - 8:15 PM EST","period":0,"clock":"0:00","sit":null,"week":8,"wx":{"t":52,"c":36,"d":"Intermittent clouds"},"ml":[142,-170]}
+          {"id":"401873036","kick":"2026-11-03T01:15Z","tbd":false,"away":{"id":"3","ab":"CHI","name":"Chicago Bears","short":"Bears","color":"0b1c3a","alt":"e64100","logo":"chi","rank":0,"rec":"5-2","conf":"NFCN","score":0,"winner":false,"line":[]},"home":{"id":"26","ab":"SEA","name":"Seattle Seahawks","short":"Seahawks","color":"002a5c","alt":"69be28","logo":"sea","rank":0,"rec":"4-3","conf":"NFCW","score":0,"winner":false,"line":[]},"neutral":false,"venue":"Seattle, WA","carriers":["ESPN"],"tv":true,"spread":-3.0,"ou":46.5,"provider":"DraftKings","state":"pre","detail":"11/2 - 8:15 PM EST","period":0,"clock":"0:00","sit":null,"week":8,"wx":{"t":50,"c":36,"d":"Intermittent clouds"},"ml":[140,-166]}
         ]}
       ]
     }
@@ -1558,14 +1604,15 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (g.sp == null && g.ou == null && !g.ml && !twoCol && g.lsp == null) return null;
     const box = el("div", "xlines"), cols = twoCol ? ["Live", g.close ? "Close" : "Line"] : [g.state !== "pre" && g.close ? "Close" : "Line"];
     box.style.setProperty("--xcols", cols.length);
-    const row = (lab, vals, hd) => { const r = el("div", "xlr" + (hd ? " xlh" : "")); r.appendChild(el("span", "xll", lab));
-      vals.forEach((v, i) => r.appendChild(el(i === 0 && twoCol ? "b" : "span", "xlv" + (i === vals.length - 1 && twoCol ? " xlc" : ""), v))); box.appendChild(r); };
+    const row = (lab, vals, hd, wrap) => { const r = el("div", "xlr" + (hd ? " xlh" : "")); r.appendChild(el("span", "xll", lab));
+      vals.forEach((v, i) => r.appendChild(el(i === 0 && twoCol ? "b" : "span", "xlv" + (i === vals.length - 1 && twoCol ? " xlc" : "") + (wrap ? " xlw" : ""), v))); box.appendChild(r); };
     row("", cols, true);
     const spTxt = sp => sp == null ? "" : sp === 0 ? "PK" : (sp < 0 ? g.home.ab : g.away.ab) + " " + (sp < 0 ? sp : -sp);
     const ouTxt = ou => ou == null ? "" : String(ou);
-    const mlv = ml => ml ? g.away.ab + " " + fmtMl(ml[0]) + " / " + g.home.ab + " " + fmtMl(ml[1]) : "", mlc = ml => ml ? fmtMl(ml[0]) + " / " + fmtMl(ml[1]) : "";
+    const mlv = ml => ml ? g.away.ab + "\u00a0" + fmtMl(ml[0]) + "\u00a0/ " + g.home.ab + "\u00a0" + fmtMl(ml[1]) : "", mlc = ml => ml ? fmtMl(ml[0]) + "\u00a0/ " + fmtMl(ml[1]) : "";   /* a pair breaks only after its slash */
     const sp = twoCol ? [spTxt(g.lsp), spTxt(g.sp)] : [spTxt(g.sp)], ou = twoCol ? [ouTxt(g.lou), ouTxt(g.ou)] : [ouTxt(g.ou)], ml = twoCol ? [mlv(g.lml), mlc(g.ml)] : [mlv(g.ml)];
-    if (sp.some(Boolean)) row("Spread", sp); if (ou.some(Boolean)) row("Total", ou); if (ml.some(Boolean)) row("ML", ml);
+    if (sp.some(Boolean)) row("Spread", sp); if (ou.some(Boolean)) row("Total", ou); if (ml.some(Boolean)) row("ML", ml, false, true);
+    requestAnimationFrame(() => { if (box.isConnected && box.scrollWidth > box.clientWidth + 1) box.classList.add("xwrap"); });   /* only a grid that doesn't fit lets the pairs break (11/1) */
     if (g.lsp != null && !S.odds) box.appendChild(el("div", "xlnote", "Live line available: turn on Live odds"));
     return box;
   }
@@ -1958,7 +2005,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
      button beside FBS / Top 25 / All, and the legs' standing on the bars. Read from pasted text or a screenshot (OCR on the phone),
      confirmed against the board. */
   const slipsOn = () => P().slips.filter(s => s.on);
-  const slipOk = g => { const on = slipsOn(); return !on.length || on.some(s => s.legs.some(l => l.id === g.id)); };
+  const slipOk = g => { if (awayWeek()) return true; const on = slipsOn(); return !on.length || on.some(s => s.legs.some(l => l.id === g.id)); };   /* another week: the slips are this week's games (11/2) */
   const gameLegs = g => { const out = []; slipsOn().forEach(s => s.legs.forEach(l => { if (l.id === g.id) out.push(l); })); return out; };
   const gameOnly = l => l.kind === "total" || l.kind === "prop";   /* a leg on the game rather than on a team: a total, a player prop (10/25) */
   const legSide = (l, side) => gameOnly(l) ? side === "home" : l.side === side;   /* the row or plate a leg's marker sits on */
@@ -2244,7 +2291,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         r.appendChild(el("span", null, g ? legWhere(g, l) : l.text));
         r.appendChild(el("span", "muted", g ? (g.state === "pre" ? "not started" : g.away.ab + " " + g.away.score + " " + g.home.ab + " " + g.home.score + (g.state === "post" ? " final" : "")) : "not on this week's board")); box.appendChild(r); });
       slist.appendChild(box); });
-    slipSeg.textContent = ""; slipSeg.hidden = !p.slips.length; cslips.textContent = "";
+    slipSeg.textContent = ""; slipSeg.hidden = !p.slips.length || awayWeek(); cslips.textContent = ""; if (awayWeek()){ slipN.textContent = p.slips.length ? String(p.slips.length) : ""; return; }
     [slipSeg, cslips].forEach(seg => p.slips.forEach(s => { const b = el("button", null, s.name); b.type = "button"; b.setAttribute("aria-pressed", String(s.on)); b.addEventListener("click", () => { s.on = !s.on; remember(); render(); }); seg.appendChild(b); }));
     slipN.textContent = p.slips.length ? String(p.slips.length) : "";
   }
@@ -2316,7 +2363,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     document.getElementById("confLbl").textContent = NFL() ? "Div" : "Conf";
     document.getElementById("chead").firstChild.textContent = NFL() ? "Divisions " : "Conferences ";
     document.querySelector("#chead span").textContent = NFL() ? "tap to show only games involving these; none on = everything" : "tap to show only games involving these; none on = everything; an FCS pick shows even with FBS on";
-    document.getElementById("mktSeg").hidden = !NFL();
+    document.getElementById("mktSeg").hidden = !NFL(); document.getElementById("mktRow").hidden = !NFL();
     document.getElementById("levelSeg").hidden = NFL();
     tfind.value = "";
   }
@@ -2399,12 +2446,12 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   };
   const mzip = document.getElementById("mzip"), mnote = document.getElementById("mnote"), mhelp = document.getElementById("mhelp");
   function setMarket(code, zip, how){ S.per.nfl.mkt = code; S.per.nfl.zip = zip || ""; mnote.textContent = how || ""; remember(); render(); }
-  function marketFromZip(){
+  function marketFromZip(how){
     const z = mzip.value.trim();
     if (!/^\d{5}$/.test(z)){ mnote.textContent = "Five digits."; return; }
     const ch = ZIP3[+z.slice(0, 3)], i = "0123456789abcdefghijklmnopqrstuvwxyz".indexOf(ch);
     if (ch === "-" || ch === undefined || i < 0 || i >= MARKETS.length){ mnote.textContent = "Not a US ZIP."; return; }
-    setMarket(MARKETS[i], z, "From ZIP " + z);
+    setMarket(MARKETS[i], z, typeof how === "string" ? how : "From ZIP " + z);
   }
   /* ---- local listings: which Sunday afternoon CBS and FOX games the market's own stations carry, from Gracenote's TV
      listings (the feed behind the usual TV guide sites), looked up in the browser for the ZIP the person typed, or the
@@ -2447,13 +2494,22 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     LISTINGS.key = key; LISTINGS.zip = zip; LISTINGS.at = Date.now(); LISTINGS.busy = false;
     render();
   }
-  document.getElementById("mset").addEventListener("click", marketFromZip);
+  document.getElementById("mset").addEventListener("click", () => marketFromZip());
   mzip.addEventListener("keydown", e => { if (e.key === "Enter") marketFromZip(); });
   document.getElementById("mloc").addEventListener("click", () => {
     if (!navigator.geolocation){ mnote.textContent = "No location here; type a ZIP."; return; }
-    mnote.textContent = "Asking...";
-    navigator.geolocation.getCurrentPosition(p => setMarket(nearestMarket(p.coords.latitude, p.coords.longitude), "", "From your location"),
-                                             () => { mnote.textContent = "Location not available; type a ZIP."; }, { maximumAge: 600000, timeout: 10000 });
+    mnote.textContent = "Finding your ZIP...";
+    /* your ZIP from where you are, typed in and set the way Set does (Phil, 11/1): OpenStreetMap's reverse geocoder, the position
+       rounded to about a block; no ZIP back (offline, outside the US, blocked) and the closest team's market stands in */
+    navigator.geolocation.getCurrentPosition(async p => {
+      const lat = p.coords.latitude, lon = p.coords.longitude; let zip = "";
+      try {
+        const r = await fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=" + lat.toFixed(3) + "&lon=" + lon.toFixed(3));
+        if (r.ok){ const a = (await r.json()).address || {}; if (a.country_code === "us") zip = ((a.postcode || "").match(/\b\d{5}\b/) || [""])[0]; }
+      } catch (e) {}
+      if (zip){ mzip.value = zip; marketFromZip("ZIP " + zip + " from your location (OpenStreetMap)"); return; }
+      mzip.value = ""; setMarket(nearestMarket(lat, lon), "", "Couldn't find your ZIP, so this is the closest team's market. Type your ZIP for your own stations.");
+    }, () => { mnote.textContent = "Location not available; type a ZIP."; }, { maximumAge: 600000, timeout: 10000 });
   });
   document.getElementById("mclear").addEventListener("click", () => { mzip.value = ""; setMarket("", "", ""); });
   function refreshMarket(){
@@ -2464,7 +2520,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (S.per.nfl.zip && !mzip.value) mzip.value = S.per.nfl.zip;
     mhelp.innerHTML = "";
     const add = (txt, cls) => mhelp.appendChild(el("span", cls, txt));
-    if (!mkt){ add("Type your ZIP (or use your location) and the Sunday afternoon CBS and FOX games your own stations carry get a LOCAL tag and the top lane of their channel row; the rest of those regional games show REG. Nothing is hidden either way. Prime time, Thursday, Monday and streaming games are the same everywhere. The ZIP stays on this device and is only sent to the TV listings service for the lookup."); return; }
+    if (!mkt){ add("Type your ZIP (or use your location) and the Sunday afternoon CBS and FOX games your own stations carry get a LOCAL tag and the top lane of their channel row; the rest of those regional games show REG. Nothing is hidden either way. Prime time, Thursday, Monday and streaming games are the same everywhere. The ZIP stays on this device and is only sent to the TV listings service for the lookup; Use my location sends your position, rounded to about a block, to OpenStreetMap once to find the ZIP."); return; }
     if (known && LISTINGS.stations.length){
       add("Your stations " + dayLabel(S.day).long + " (TV listings for ZIP " + zip + "): ", "loc");
       const byNet = {}; LISTINGS.stations.forEach(s => (byNet[s.net + " " + s.call] = byNet[s.net + " " + s.call] || []).push(s.g));
@@ -2561,14 +2617,21 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   });
   vname.addEventListener("keydown", e => { if (e.key === "Enter") document.getElementById("vsave").click(); });
   /* one panel open at a time */
+  const setpanel = document.getElementById("setpanel"), setBtn = document.getElementById("setBtn");
+  document.getElementById("pkgslot").appendChild(panel); document.getElementById("mktslot").appendChild(mpanel); document.getElementById("vslot").appendChild(vpanel);   /* the three live under their Settings rows (11/2) */
   function showPanel(which){
-    [panel, cpanel, vpanel, tpanel, mpanel, wpanel, spanel].forEach(p => { p.hidden = p !== which || !p.hidden; });
+    const subs = [panel, mpanel, vpanel], tops = [cpanel, tpanel, wpanel, spanel, setpanel];
+    if (which === setpanel){ const open = setpanel.hidden; tops.forEach(p => { p.hidden = true; }); subs.forEach(p => { p.hidden = true; }); setpanel.hidden = !open; }
+    else if (subs.includes(which)){ const open = which.hidden; tops.forEach(p => { p.hidden = p !== setpanel; }); subs.forEach(p => { p.hidden = p !== which || !open; }); }
+    else { tops.forEach(p => { p.hidden = p !== which || !p.hidden; }); subs.forEach(p => { p.hidden = true; }); }
+    setBtn.setAttribute("aria-pressed", String(!setpanel.hidden));
     slipBtn.setAttribute("aria-pressed", String(!spanel.hidden));
     pkgBtn.setAttribute("aria-pressed", String(!panel.hidden)); confBtn.setAttribute("aria-pressed", String(!cpanel.hidden));
     teamBtn.setAttribute("aria-pressed", String(!tpanel.hidden)); mktBtn.setAttribute("aria-pressed", String(!mpanel.hidden)); wxBtn.setAttribute("aria-pressed", String(!wpanel.hidden));
     const add = document.querySelector("#vadd .chip"); if (add) add.setAttribute("aria-pressed", String(!vpanel.hidden));
   }
   pkgBtn.addEventListener("click", () => showPanel(panel));
+  setBtn.addEventListener("click", () => showPanel(setpanel));
   confBtn.addEventListener("click", () => showPanel(cpanel));
   wxBtn.addEventListener("click", () => showPanel(wpanel));
   slipBtn.addEventListener("click", () => showPanel(spanel));
@@ -2581,7 +2644,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function render(){
     const days = L().days || [], dates = days.map(d => d.date);
     drawSlips();
-    if (!dates.includes(S.day)){ const today = etNow().date; S.day = dates.find(d => d >= today) || dates[dates.length - 1] || ""; }
+    if (!dates.includes(S.day)){ const today = etNow().date; S.day = awayWeek() ? ((days.slice().sort((a, b) => (b.n || 0) - (a.n || 0))[0] || {}).date || "") : (dates.find(d => d >= today) || dates[dates.length - 1] || ""); }   /* another week opens on its fullest day (11/2) */
     if (builtFor !== S.league){ buildPanels(); builtFor = S.league; }
     HAVE = haveSet();
     daysEl.innerHTML = "";
@@ -2595,6 +2658,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     document.getElementById("brand").textContent = NFL() ? "NFL Slate" : "College Slate";
     document.getElementById("sub").textContent = S.day ? dayLabel(S.day).full : "";   /* the week sits under each league button now */
     document.title = (NFL() ? "NFL Slate" : "CFB Slate") + (L().week ? " - " + L().week : "");
+    syncWeek();
     refreshNow(); settleWx(); syncMl(); dtvBtn.setAttribute("aria-pressed", String(S.dtv));
     const keepX = wrap.scrollLeft, keepY = wrap.scrollTop, sameView = wrap.dataset.view === S.view + S.day + S.league;
     wrap.innerHTML = "";
@@ -2602,7 +2666,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (!sameView) wrap._scrolled = false;
     wrap.dataset.view = S.view + S.day + S.league;
     wrap._trim = null;
-    const list = dayGames(), main = list.filter(g => g.ok), no = list.filter(g => !g.ok);
+    const list = dayGames(), main = list.filter(g => g.ok), no = list.filter(g => !g.ok && g.carriers.length), tba = list.filter(g => !g.ok && !g.carriers.length);
     const chg = days.length ? changesStrip(list) : null; if (chg) wrap.appendChild(chg);
     if (!days.length) wrap.appendChild(el("div", "empty", "No games loaded."));
     else if (S.view === "timeline"){
@@ -2611,6 +2675,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (tbd.length) section(wrap, "tbd", "Time TBD", tbd, { fold: true });
     } else renderCards(wrap, main);
     if (days.length && no.length) section(wrap, "no", "Not in your package", [...byKickoff(no).values()].flat(), { fold: true, dim: true });
+    if (days.length && tba.length) section(wrap, "tba", "Channel not announced", [...byKickoff(tba).values()].flat(), { fold: true });   /* a kickoff with no network yet (next week, the late rounds) rather than "Not in your package" (11/2) */
     if (sameView){ wrap.scrollLeft = keepX; wrap.scrollTop = keepY; }
     const xr = wrap.querySelector(".xrow");
     if (xr){
@@ -2746,7 +2811,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     pollBusy = true;
     try {
       const seen = new Map();
-      for (const u of urls){ const r = await fetch(u, { cache: "no-store" }); if (!r.ok) throw new Error(r.status); const j = await r.json(); (j.events || []).forEach(e => { const g = fromEspn(e, lg); if (g && !seen.has(g.id)) seen.set(g.id, g); }); }
+      for (const u of urls){ const r = await fetch(u, { cache: "no-store" }); if (!r.ok) throw new Error(r.status); const j = await r.json(); calFrom(j, lg); (j.events || []).forEach(e => { const g = fromEspn(e, lg); if (g && !seen.has(g.id)) seen.set(g.id, g); }); }
       let changed = false; const asItHappens = lastPoll && Date.now() - lastPoll < 180000, stored = keepStore();   /* the previous poll landed within three minutes */
       GAMES[lg] = GAMES[lg].map(old => { const n = seen.get(old.id); if (!n) return old; const p = prepGame(n, lg);
         if (!p.keep && p.state === "in"){   /* ESPN blanked the down: keep the last real one (Phil, 10/18), or the one this device saw just before a reload (10/23) */
@@ -2813,12 +2878,80 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   setInterval(() => pollOdds(false), 60000);
   setInterval(() => pollGc(false), 10000);   /* the gamecast, while a live game's card is open */
 
+  /* ============================ other weeks (Phil, 11/2) ============================
+     The week pill opens the season's weeks; another week is fetched from ESPN on demand and swapped in for the league. This week
+     stays the build's board (forecasts, moves, local tags), kept aside while away. Nothing here is remembered across loads. */
+  const WEEKS = { base: {}, cal: {}, cache: {} }; S.wk = { cfb: null, nfl: null };
+  Object.keys(LG).forEach(lg => { WEEKS.base[lg] = { week: LG[lg].week, days: LG[lg].days, games: GAMES[lg] }; });
+  const awayWeek = () => !!S.wk[S.league];
+  const weekStamp = () => { const e = S.wk[S.league], c = e && WEEKS.cache[S.league] && WEEKS.cache[S.league][e.type + ":" + e.n]; return c ? c.stamp : ""; };
+  /* ESPN's season calendar rides on every scoreboard answer: the regular season's weeks and the postseason's rounds (no preseason) */
+  const calFrom = (j, lg) => { const cal = (((j.leagues || [])[0] || {}).calendar) || [], out = [];
+    cal.forEach(c => { if (!c || !Array.isArray(c.entries)) return; const post = /post/i.test(c.label || ""); if (!post && !/regular/i.test(c.label || "")) return;
+      c.entries.forEach((e, i) => { if (/pro bowl/i.test(e.label || "")) return; out.push({ label: e.label || "", type: post ? 3 : 2, n: +e.value || i + 1, start: (e.startDate || "").slice(0, 10), end: (e.endDate || "").slice(0, 10) }); }); });
+    if (out.length) WEEKS.cal[lg] = out; };
+  async function loadCal(lg){ if (WEEKS.cal[lg]) return; try { const u = (lg === "nfl" ? API.nfl() : API.cfb("80")).replace("{d}", etNow().date.replace(/-/g, "")).replace(/limit=\d+/, "limit=1"); const r = await fetch(u); if (r.ok) calFrom(await r.json(), lg); } catch (e) {} }
+  const baseEntry = lg => { const cal = WEEKS.cal[lg] || [], w = WEEKS.base[lg].week || "", t = etNow().date; return cal.find(e => e.label === w) || cal.find(e => e.start <= t && t < e.end) || null; };
+  const weekUrls = (lg, e) => { const q = "week=" + e.n + "&seasontype=" + e.type; return lg === "nfl" ? [API.nfl().replace("dates={d}", q)] : [API.cfb("80").replace("dates={d}", q), API.cfb("81").replace("dates={d}", q)]; };
+  const weekDays = games => { const m = {}; games.forEach(g => { m[g.date] = (m[g.date] || 0) + 1; }); return Object.keys(m).sort().map(d => ({ date: d, games: [], n: m[d] })); };
+  async function fetchWeek(lg, e){
+    const key = e.type + ":" + e.n, c = (WEEKS.cache[lg] = WEEKS.cache[lg] || {})[key];
+    if (c && Date.now() - c.at < 600000) return c;
+    const seen = new Map();
+    for (const u of weekUrls(lg, e)){ const r = await fetch(u, { cache: "no-store" }); if (!r.ok) throw new Error(r.status); const j = await r.json(); calFrom(j, lg);
+      (j.events || []).forEach(ev => { const g = fromEspn(ev, lg); if (!g || seen.has(g.id)) return; if (g.state !== "pre" && (g.spread != null || g.ou != null)) g.close = [g.spread, g.ou].concat(g.ml ? [g.ml] : []); seen.set(g.id, g); }); }
+    const games = [...seen.values()].map(g => prepGame(g, lg));
+    const out = { at: Date.now(), stamp: nowText(), games, days: weekDays(games) }; WEEKS.cache[lg][key] = out; return out;
+  }
+  function applyWeek(lg, e, data){   /* e and data: a fetched week; neither: this week */
+    const base = WEEKS.base[lg];
+    if (!S.wk[lg]) base.games = GAMES[lg];   /* leaving this week: its board as the polls left it */
+    if (data){ GAMES[lg] = data.games; LG[lg].days = data.days; LG[lg].week = e.label; S.wk[lg] = e; S.day = (data.days.slice().sort((a, b) => b.n - a.n)[0] || {}).date || ""; }
+    else { GAMES[lg] = base.games; LG[lg].days = base.days; LG[lg].week = base.week; S.wk[lg] = null; S.day = ""; }
+    S.open = ""; if (P().now) P().now = false; recount(lg); builtFor = ""; wrap.scrollLeft = 0; wrap.scrollTop = 0; wrap._scrolled = false;
+    tally("week-" + (e ? e.label : "this"), "Week: " + (e ? e.label : "this week"));
+    render(); poll(true);
+  }
+  const wkBtn = document.getElementById("wkBtn"), wkrow = document.getElementById("wkrow"), wkSeg = document.getElementById("wkSeg"), wknote = document.getElementById("wknote"), wkBack = document.getElementById("wkBack"), wkscroll = wkSeg.parentNode;
+  wkBack.addEventListener("click", () => pickWeek(S.league, null));
+  const wkShort = l => (l || "").replace(/^Week /, "Wk ").replace("Conference Championship", "Conf Champ").replace("Divisional Round", "Divisional");
+  const mainDay = (lg, e) => { for (let d = e.start, i = 0; i < 8 && d < e.end; d = shiftDate(d, 1), i++){ if (dayLabel(d).long === (lg === "nfl" ? "Sunday" : "Saturday")) return d; } return e.start; };
+  function drawWeeks(){
+    const lg = S.league, cal = WEEKS.cal[lg] || [], base = baseEntry(lg), cur = S.wk[lg] ? S.wk[lg].label : (base ? base.label : ""), today = etNow().date;
+    wkSeg.textContent = ""; wkSeg.dataset.lg = lg;
+    if (!cal.length){ wknote.textContent = "Loading the season..."; return; }
+    wkBack.hidden = !(S.wk[lg] && base);
+    cal.forEach(e => { const isBase = !!(base && e.label === base.label), b = el("button", (isBase ? "cur" : "") + (e.end <= today && !isBase ? " past" : "")); b.type = "button";
+      b.textContent = e.type === 2 ? wkShort(e.label).replace(/^Wk /, "W") : wkShort(e.label); b.appendChild(el("small", null, dayLabel(mainDay(lg, e)).md));
+      b.setAttribute("aria-pressed", String(e.label === cur)); b.addEventListener("click", () => pickWeek(lg, isBase ? null : e)); wkSeg.appendChild(b); });
+    wknote.textContent = S.wk[lg] ? LG[lg].week + " from ESPN as of " + weekStamp() + ". Lines move; forecasts, moves and local tags are this week's only." : "";
+    const on = wkSeg.querySelector('button[aria-pressed="true"]'); if (on){ const r = on.getBoundingClientRect(), sr = wkscroll.getBoundingClientRect(); wkscroll.scrollLeft += (r.left - sr.left) - (sr.width - r.width) / 2; }
+  }
+  let wkBusy = false;
+  async function pickWeek(lg, e){
+    if (wkBusy) return;
+    if (!e){ applyWeek(lg, null, null); drawWeeks(); return; }
+    wkBusy = true; wknote.textContent = "Loading " + e.label + "...";
+    try { const data = await fetchWeek(lg, e); if (S.league === lg){ applyWeek(lg, e, data); drawWeeks(); } }
+    catch (err) { wknote.textContent = "Couldn't load " + e.label + " from ESPN; try again."; }
+    finally { wkBusy = false; }
+  }
+  function openWeeks(){ drawWeeks(); if (!WEEKS.cal[S.league]) loadCal(S.league).then(() => { if (!wkrow.hidden && wkSeg.dataset.lg === S.league) drawWeeks(); }); }
+  wkBtn.addEventListener("click", () => { const open = wkrow.hidden; wkrow.hidden = !open; if (open) openWeeks(); syncWeek(); });
+  function syncWeek(){
+    const away = awayWeek(); wkBtn.classList.toggle("away", away); wkBtn.setAttribute("aria-expanded", String(!wkrow.hidden));
+    wkBtn.textContent = wkShort(L().week) || "Week"; wkBtn.appendChild(el("b", null, wkrow.hidden ? "▾" : "▴"));
+    wkBtn.title = away ? "On " + L().week + ": tap for this week or another" : "Look at another week";
+    document.querySelectorAll("#leagueSeg button small").forEach(s => s.classList.toggle("away", !!S.wk[s.parentNode.dataset.v]));
+    if (!wkrow.hidden && wkSeg.dataset.lg !== S.league) openWeeks();
+  }
+
   /* ============================ footer ============================ */
   const fxEl = document.getElementById("fx"), fnotes = document.getElementById("fnotes"), fmore = document.getElementById("fmore");
   function footer(){
     const st = document.getElementById("pollst");
     st.classList.toggle("on", !!pollStamp);
-    document.getElementById("polltxt").textContent = pollStamp ? "Scores live from ESPN, " + pollStamp : (pollFails ? "Live updates blocked here; scores as of the last build" : "Scores as of the last build");
+    document.getElementById("polltxt").textContent = awayWeek() ? L().week + " from ESPN as of " + weekStamp() + "; no live updates on other weeks" : pollStamp ? "Scores live from ESPN, " + pollStamp : (pollFails ? "Live updates blocked here; scores as of the last build" : "Scores as of the last build");
     document.getElementById("src").textContent = "Lines " + (SLATE.lines || "unavailable") + ", pulled " + SLATE.pulled + "; a started game shows its closing line" + (S.odds ? (oddsStamp ? "; live odds as of " + oddsStamp + " (ESPN refreshes them every few minutes)" : "; live odds refresh with the scores") : "") + ". Lines move, check before betting.";
     fnotes.textContent = "";
     fnotes.appendChild(el("div", null, "Schedule and TV from ESPN (a college game ESPN posts with no network takes it from CBS Sports' schedule). Timeline: visitor on top, the bug stays at the left edge of a game as you scroll; a bar ends when the next game starts on that channel, streaming rows stack simultaneous games. " +
