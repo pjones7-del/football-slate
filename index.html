@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png" type="image/png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=Chakra+Petch:wght@500;600;700&display=swap">
 <style>
   :root{
     color-scheme:dark;
@@ -44,7 +44,7 @@
   }
   /* ---- skins: the same board in three treatments ---- */
   :root[data-skin="app"]{
-    --cond:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; --body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --cond:"Chakra Petch",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; --body:"Chakra Petch",-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;   /* Chakra Petch (Phil, 11/2); its 800s fall to the 700 face */
     --r:16px; --row:50px; --sc:30px; --nm:16px; --stw:98px; --lg:36px; --bigst:19px; --lane:64px;
     --bg:#000; --bg2:#0e0e10; --card:#1c1c1e; --card2:#2c2c2e; --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.18);
     --ink:#f5f5f7; --muted:#98989f; --dim:#6b6b70; --accent:#ffb340; --accent-ink:#1a1400; --live:#ff453a; --rz:#c6281f; --shadow:0 2px 10px rgba(0,0,0,.45);
@@ -83,6 +83,7 @@
   .bar{flex:none;padding:10px 16px 8px;background:var(--bg2);border-bottom:1px solid var(--line2);max-height:70vh;overflow:auto}
   .row{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
   .brand{font-family:var(--cond);font-weight:700;font-size:20px;letter-spacing:.06em;text-transform:uppercase;margin-right:auto;display:flex;align-items:baseline;gap:8px;min-width:0}
+  .brand .wm{width:auto;display:inline-block;vertical-align:baseline;overflow:visible;margin-bottom:-.04em}   /* the title lockup (11/2): the line rises above the L in the accent; its height is set inline from the glyphs */
   .brand small{font-family:var(--body);font-weight:500;font-size:12px;letter-spacing:.02em;text-transform:none;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .seg{display:inline-flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden;background:transparent}
   .seg button{background:transparent;border:0;padding:6px 11px;font-family:var(--cond);font-weight:600;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);cursor:pointer;white-space:nowrap}
@@ -644,9 +645,9 @@
         <button type="button" data-key="show" data-v="all">All</button>
       </div>
       <div class="seg" id="slipSeg" role="group" aria-label="Slips" title="Your slips: a slip on keeps just its games, two on show both" hidden></div>
-      <div class="seg"><button type="button" id="oddsBtn" aria-pressed="false" title="Show DraftKings' in-game line on live games, refreshed with the scores">Live odds</button></div>
+      <div class="seg"><button type="button" id="oddsBtn" aria-pressed="false" title="Carry DraftKings' in-game numbers on the live bars (the open card shows them beside the close either way)">Live odds</button></div>
       <div class="seg"><button type="button" id="confBtn" aria-pressed="false" aria-controls="cpanel"><span id="confLbl">Conf</span><small id="confN"></small></button></div>
-      <div class="seg"><button type="button" id="moreBtn" aria-pressed="false" aria-controls="more" title="On now, the lines switch, timeline or cards, package, your market (NFL), weather, your teams, print, DirecTV, style, theme, save a view">More</button></div>
+      <div class="seg"><button type="button" id="moreBtn" aria-pressed="false" aria-controls="more" title="On now, the lines switch, weather, slips, your teams, settings">More</button></div>
     </div>
     <div class="row two" id="more" hidden>
       <div class="seg"><button type="button" id="nowBtn" aria-pressed="false" title="Only the games in progress right now">On now<small id="nowN"></small></button></div>
@@ -1069,7 +1070,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const has = lg => !!(LG[lg] && LG[lg].days && LG[lg].days.length);
   const fresh = () => ({ on: new Set(), off: new Set(), confs: new Set(), show: "fbs", mine: false, now: false, stars: new Set(), views: [], mkt: "", zip: "", dome: false, wx: new Set(), slips: [] });
   /* ml: what the plates show before kickoff: the spread, each team's moneyline, or both (shared by both leagues) */
-  const S = { league: "cfb", day: "", tz: "AZ", tzSet: false, view: "timeline", open: "", openRow: "", odds: false, ml: "spread", dtv: false, gct: "wp", xc: "full", foot: "on", bar: "on", chg: "on", more: false, fold: {}, per: { cfb: fresh(), nfl: fresh() } };
+  const S = { league: "cfb", day: "", tz: "AZ", tzSet: false, view: "timeline", open: "", openRow: "", odds: true, ml: "spread", dtv: false, gct: "wp", xc: "full", foot: "on", bar: "on", chg: "on", more: false, fold: {}, per: { cfb: fresh(), nfl: fresh() } };
   /* which league opens (10/3: one page for both): a league named in the address (?league=nfl or #nfl; the old cfb/ and nfl/ links
      forward with one) beats the league last looked at on this device, which beats the file's own default. A copy built with lock
      set (the weekly files, the artifacts) always opens on its own league. A hint in the address is dropped once applied, so a
@@ -1129,7 +1130,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (ZONES.includes(saved.tz)) S.tz = saved.tz;
       S.tzSet = !!saved.tzSet;   /* until a zone has been tapped once, the picker stays open */
       if (["timeline", "cards"].includes(saved.view)) S.view = saved.view;
-      S.odds = !!saved.odds; S.more = !!saved.more;
+      S.odds = saved.odds2 ? !!saved.odds : true; S.more = !!saved.more;   /* on by default since 11/2: a record from before comes up on once (odds2 marks the new default applied) */
       if (["spread", "ml", "both"].includes(saved.ml)) S.ml = saved.ml;
       S.dtv = !!saved.dtv;
       if (typeof saved.gct === "string") S.gct = ["box", "plays", "drives", "scoring", "wp", "lines", ""].includes(saved.gct) ? saved.gct : "wp";   /* the gamecast tab left open (empty: none) */
@@ -1158,7 +1159,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function remember(){
     try {
       let old = {}; try { old = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; if (typeof old !== "object" || Array.isArray(old)) old = {}; } catch (e) { old = {}; }
-      const rec = Object.assign({}, old, { v: 3, tz: S.tz, tzSet: S.tzSet, view: S.view, odds: S.odds, ml: S.ml, dtv: S.dtv, gct: S.gct, xc: S.xc, foot: S.foot, bar: S.bar, chg: S.chg, more: S.more, theme: document.documentElement.getAttribute("data-theme") || "", skin: document.documentElement.getAttribute("data-skin") || "broadcast" });
+      const rec = Object.assign({}, old, { v: 3, tz: S.tz, tzSet: S.tzSet, view: S.view, odds: S.odds, odds2: true, ml: S.ml, dtv: S.dtv, gct: S.gct, xc: S.xc, foot: S.foot, bar: S.bar, chg: S.chg, more: S.more, theme: document.documentElement.getAttribute("data-theme") || "", skin: document.documentElement.getAttribute("data-skin") || "broadcast" });
       if (!SLATE.lock) rec.league = S.league;   /* a locked copy (weekly file, artifact) never moves the one page's league */
       ["cfb", "nfl"].forEach(lg => { const p = S.per[lg]; rec[lg] = Object.assign({}, (old[lg] && typeof old[lg] === "object") ? old[lg] : {}, { on: [...p.on], off: [...p.off], confs: confOrder(lg).filter(c => p.confs.has(c)), show: p.show, mine: p.mine, now: p.now, stars: [...p.stars], views: p.views, mkt: p.mkt, zip: p.zip, dome: p.dome, wx: WXKEYS.filter(k => p.wx.has(k)), slips: p.slips }); });
       localStorage.setItem(KEY, JSON.stringify(rec));
@@ -1600,7 +1601,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   /* the lines in columns: Live beside Close with Live odds on (Line before kickoff, Close alone otherwise); the spread, the total, the moneyline */
   function xLines(g){
-    const twoCol = S.odds && (g.lsp != null || g.lou != null || !!g.lml);
+    const twoCol = g.lsp != null || g.lou != null || !!g.lml;   /* the live line beside the close whatever the Live odds button says (Phil, 11/2) */
     if (g.sp == null && g.ou == null && !g.ml && !twoCol && g.lsp == null) return null;
     const box = el("div", "xlines"), cols = twoCol ? ["Live", g.close ? "Close" : "Line"] : [g.state !== "pre" && g.close ? "Close" : "Line"];
     box.style.setProperty("--xcols", cols.length);
@@ -1613,7 +1614,6 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const sp = twoCol ? [spTxt(g.lsp), spTxt(g.sp)] : [spTxt(g.sp)], ou = twoCol ? [ouTxt(g.lou), ouTxt(g.ou)] : [ouTxt(g.ou)], ml = twoCol ? [mlv(g.lml), mlc(g.ml)] : [mlv(g.ml)];
     if (sp.some(Boolean)) row("Spread", sp); if (ou.some(Boolean)) row("Total", ou); if (ml.some(Boolean)) row("ML", ml, false, true);
     requestAnimationFrame(() => { if (box.isConnected && box.scrollWidth > box.clientWidth + 1) box.classList.add("xwrap"); });   /* only a grid that doesn't fit lets the pairs break (11/1) */
-    if (g.lsp != null && !S.odds) box.appendChild(el("div", "xlnote", "Live line available: turn on Live odds"));
     return box;
   }
   /* ============================ gamecast (Phil, 10/18) ============================
@@ -2654,6 +2654,34 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* ============================ render ============================ */
   const wrap = document.getElementById("wrap"), daysEl = document.getElementById("days");
   let builtFor = "";
+  /* the title line as one lockup (Phil, 11/2): the league and SLATE in the skin's own title type, the L's stem running on past
+     the cap in the accent color, no head. Drawn from the glyphs once the face is in; the plain words until then. */
+  const brandEl = document.getElementById("brand"), WM_FONT = { broadcast: "800 100px 'Barlow Condensed'", app: "700 100px 'Chakra Petch'" }, wmOk = {};
+  function stemOf(font, ch){   /* the glyph's vertical bar: the columns inked through the band above the baseline, and where they start */
+    const c = document.createElement("canvas"); c.width = 160; c.height = 140; const x = c.getContext("2d");
+    x.font = font; x.textBaseline = "alphabetic"; x.fillStyle = "#000"; x.fillText(ch, 10, 110);
+    const d = x.getImageData(0, 0, 160, 140).data, cols = [];
+    for (let i = 0; i < 160; i++){ let n = 0; for (let y = 20; y < 80; y++) if (d[(y * 160 + i) * 4 + 3] > 128) n++; cols.push(n); }
+    let l = cols.findIndex(n => n > 20), r = l; if (l < 0) return null; while (r + 1 < 160 && cols[r + 1] > 20) r++;
+    let top = 110; for (let y = 0; y < 110; y++){ let hit = false; for (let i = l; i <= r; i++) if (d[(y * 160 + i) * 4 + 3] > 128){ hit = true; break; } if (hit){ top = y; break; } }
+    return { x0: l - 10, x1: r + 1 - 10, cap: 110 - top };
+  }
+  function lockup(text, font, lower, lsx){
+    const c = document.createElement("canvas").getContext("2d"); c.font = font; const w = s => c.measureText(s).width, ls = (lsx || 0) * 100;
+    const j = text.indexOf(lower ? "l" : "L", text.lastIndexOf(" ")); const st = stemOf(font, text[j]); if (!st) return "";
+    let xs = 0; const chars = []; for (const ch of text){ chars.push([ch, xs]); xs += w(ch) + ls; } const W = xs - ls;
+    const sx = chars[j][1] + st.x0, sw = st.x1 - st.x0, cap = st.cap, tip = -(cap + 31.5), H = -tip + 4;
+    return '<svg class="wm" viewBox="0 ' + (tip - 2) + ' ' + W + ' ' + H + '" style="height:' + (H / 100) + 'em" aria-hidden="true">' +
+      '<defs><linearGradient id="wmg" gradientUnits="userSpaceOnUse" x1="0" y1="' + (-cap * 0.8) + '" x2="0" y2="' + (-cap * 1.1) + '"><stop offset="0" style="stop-color:var(--ink)"/><stop offset="1" style="stop-color:var(--accent)"/></linearGradient></defs>' +
+      '<g fill="currentColor" style="font:' + font + '">' + chars.map(([ch, x]) => '<text x="' + x + '" y="0">' + ch + '</text>').join("") + '</g>' +
+      '<rect x="' + sx + '" y="' + tip + '" width="' + sw + '" height="' + (-tip - cap * 0.65) + '" fill="url(#wmg)"/></svg>';
+  }
+  function setBrand(){
+    const app = document.documentElement.getAttribute("data-skin") === "app", word = NFL() ? "NFL" : "College";
+    const svg = app ? (wmOk.app ? lockup(word + " Slate", WM_FONT.app, true, -0.02) : "") : (wmOk.broadcast ? lockup((word + " SLATE").toUpperCase(), WM_FONT.broadcast, false, 0.012) : "");
+    if (svg) brandEl.innerHTML = svg; else brandEl.textContent = word + " Slate";
+  }
+  Object.keys(WM_FONT).forEach(k => { try { document.fonts.load(WM_FONT[k].replace("100px", "20px")).then(fs => { if (fs.length){ wmOk[k] = true; setBrand(); } }).catch(() => {}); } catch (e) {} });
   function render(){
     const days = L().days || [], dates = days.map(d => d.date);
     drawSlips();
@@ -2668,7 +2696,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     document.querySelectorAll(".seg button[data-key=view]").forEach(b => b.setAttribute("aria-pressed", String(S.view === b.dataset.v)));
     syncTz();
     document.querySelectorAll(".seg button[data-key=show]").forEach(b => b.setAttribute("aria-pressed", String(P().show === b.dataset.v)));
-    document.getElementById("brand").textContent = NFL() ? "NFL Slate" : "College Slate";
+    setBrand();
     document.getElementById("sub").textContent = S.day ? dayLabel(S.day).full : "";   /* the week sits under each league button now */
     document.title = (NFL() ? "NFL Slate" : "CFB Slate") + (L().week ? " - " + L().week : "");
     syncWeek();
@@ -2850,7 +2878,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       pollFails = 0; pollStamp = nowText(); lastPoll = Date.now(); keepSave(lg);
       if (changed){ const before = [...PRESENT[lg].keys()].sort().join("|"); recount(lg); if ([...PRESENT[lg].keys()].sort().join("|") !== before) builtFor = ""; }   /* a new channel gets its chip */
       if (changed) render(); else footer();
-      if (S.odds) pollOdds(false);
+      pollOdds(false);   /* the card shows the live line with the button off too (11/2) */
     } catch (e) { pollFails++; footer(); }
     finally { pollBusy = false; pollAt = started + pollEvery(); }
   }
@@ -2868,7 +2896,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const CORE = (league, id) => "https://sports.core.api.espn.com/v2/sports/football/leagues/" + (league === "nfl" ? "nfl" : "college-football") + "/events/" + id + "/competitions/" + id + "/odds?limit=20";
   let oddsBusy = false, oddsStamp = "";
   async function pollOdds(force){
-    if (!S.odds || oddsBusy || document.hidden) return;
+    if (oddsBusy || document.hidden) return;
     if (!force && Date.now() - oddsAt < 55000) return;   /* once a minute at most: ESPN caches this feed about 10 minutes, so the faster score poll doesn't pull it faster */
     oddsAt = Date.now();
     const lg = S.league, live = (GAMES[lg] || []).filter(g => g.date === S.day && g.state === "in");
@@ -2965,11 +2993,11 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const st = document.getElementById("pollst");
     st.classList.toggle("on", !!pollStamp);
     document.getElementById("polltxt").textContent = awayWeek() ? L().week + " from ESPN as of " + weekStamp() + "; no live updates on other weeks" : pollStamp ? "Scores live from ESPN, " + pollStamp : (pollFails ? "Live updates blocked here; scores as of the last build" : "Scores as of the last build");
-    document.getElementById("src").textContent = "Lines " + (SLATE.lines || "unavailable") + ", pulled " + SLATE.pulled + "; a started game shows its closing line" + (S.odds ? (oddsStamp ? "; live odds as of " + oddsStamp + " (ESPN refreshes them every few minutes)" : "; live odds refresh with the scores") : "") + ". Lines move, check before betting.";
+    document.getElementById("src").textContent = "Lines " + (SLATE.lines || "unavailable") + ", pulled " + SLATE.pulled + "; a started game's card shows DraftKings' in-game line beside the close" + (S.odds ? ", and its bar carries the in-game numbers" : "") + (oddsStamp ? "; live odds as of " + oddsStamp + " (ESPN refreshes them every few minutes)" : "; live odds refresh with the scores") + ". Lines move, check before betting.";
     fnotes.textContent = "";
     fnotes.appendChild(el("div", null, "Schedule and TV from ESPN (a college game ESPN posts with no network takes it from CBS Sports' schedule). Timeline: visitor on top, the bug stays at the left edge of a game as you scroll; a bar ends when the next game starts on that channel, streaming rows stack simultaneous games. " +
       "Tap a game to open its card: the scoreboard in the team colors with the quarters and timeouts, the clock and the situation, the drive on a field strip with the latest play, the lines (live beside close), then tabs for the box score, the plays, the drives, the scoring and ESPN's win probability (drag along the line to see each play; the card keeps the tab you leave open, tap it again to close it; Compact card under More puts the lines behind a Lines tab); tap the scoreboard for ESPN's gamecast, tap a channel logo to open that network. Live games show possession (ball), down and distance, red for the red zone; " +
-      "a live bar carries its numbers in the bug after the clock: the spread over the total, and in ML or Both each team's price in its half; the closing numbers, or with Live odds on DraftKings' in-game ones (faded = the close, when the book has pulled its live number), the close then at the far right where there's room. On a live bar short of room the weather gives way first, then the prices, then the line. Finals go grey with faint stripes, the winner's half keeping its color and an arrow by the winning score. Package sets which channels count as yours; everything else, plus games with no broadcast, sits greyed at the bottom. " +
+      "a live bar carries its numbers in the bug after the clock: the spread over the total, and in ML or Both each team's price in its half; the closing numbers, or with Live odds on (the default) DraftKings' in-game ones (faded = the close, when the book has pulled its live number), the close then at the far right where there's room; the open card shows the in-game line beside the close either way. On a live bar short of room the weather gives way first, then the prices, then the line. Finals go grey with faint stripes, the winner's half keeping its color and an arrow by the winning score. Package sets which channels count as yours; everything else, plus games with no broadcast, sits greyed at the bottom. " +
       "On now keeps just the games in progress. Teams (under More) stars your teams (gold frame) and can limit the board to them. " +
       "Game-day changes: a game moved to another channel gets a gold FROM note in its new row and leaves a dashed ghost in the old one up to the move; a start pushed by weather gets WAS; a game still going past its window says RUNNING LONG and the next game on that channel stacks under it; the strip above the board lists them all (ESPN's feed reports its own networks' moves within minutes; FOX and CBS shuffles show up there less reliably, and look-ins never do). " +
       (NFL() ? "Sunday afternoon CBS and FOX games are regional (REG); set your Market (ZIP) and the games your own CBS and FOX stations carry are tagged LOCAL, from the TV listings, and take the top lane of their row. " : "") +
