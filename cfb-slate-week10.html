@@ -388,6 +388,7 @@
   .dm svg{width:20px;height:20px;display:block;flex:none}
   .dm .d{font-size:13px;letter-spacing:.02em;font-weight:700}
   svg.dome .roof{stroke:var(--accent)}
+  .gbar.roofink .tb .wx svg.dome .roof{stroke:currentColor}   /* a home plate the gold can't show against (the Saints' gold, an orange): the whole marker in the plate's ink (Phil, 11/3) */
   .chip.dome[aria-pressed="true"] svg.dome .roof{stroke:currentColor}
   .gbar.final .tb .wx,.gbar.ghost .tb .wx,.gbar.nowx .tb .wx{display:none}
   /* a live bar carries its line in the bug, after the status block: the spread in the away half over the total in the home half (DraftKings'
@@ -430,6 +431,7 @@
   .xsb .xlg img{width:calc(var(--lg) * .9);height:calc(var(--lg) * .9);object-fit:contain;display:block;filter:drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px rgba(255,255,255,.7))}
   .xsb .xnm{min-width:0;display:flex;align-items:baseline;gap:6px;font-family:var(--body);font-weight:600;font-size:var(--nm);white-space:nowrap;overflow:hidden}
   .xsb .xnm .txt{overflow:hidden;text-overflow:ellipsis}
+  @media (max-width: 389px){ .xsb .xr{grid-template-columns:var(--lg) minmax(0,1fr) repeat(var(--xq,4),22px) 40px 16px} .xsb .xnm .rec{display:none} }   /* a narrow phone (SE, mini, 360 Android): tighter quarters, no record, the abbreviation for the name (11/3) */
   .xsb .xnm .rk{font-size:12px;opacity:.75;flex:none}.xsb .xnm .rec{font-size:11px;opacity:.7;flex:none}.xsb .xnm .star{color:var(--accent);flex:none}
   .xsb .xnm .to{display:inline-flex;gap:2px;flex:none;align-self:center;margin-left:2px}
   .xsb .xt .dot{background:currentColor;opacity:.3}.xsb .xt .dot.on{background:var(--accent);opacity:1}
@@ -1203,6 +1205,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const lum = hex => { hex = (hex || "").replace("#", ""); if (hex.length !== 6) return 0; const f = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }; return 0.2126 * f(parseInt(hex.slice(0, 2), 16)) + 0.7152 * f(parseInt(hex.slice(2, 4), 16)) + 0.0722 * f(parseInt(hex.slice(4, 6), 16)); };
   /* the winner's half of a final: its team color pulled toward the ground, then darker in small steps until the white text (#eceef2) reads
      at 4.5:1 or better (10/12: 11 of 66 winner halves had been under, as low as 2:1) */
+  const contrast = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };   /* WCAG luminance ratio */
+  let ACC = "#f5b82e";   /* the theme's accent, read once per render for the dome marker's contrast check */
   const finColor = c => { const ink = lum("#eceef2") + 0.05; let f = mixHex(c, "#1c222b", 0.62); for (let i = 0; i < 14 && ink / (lum(f) + 0.05) < 4.5; i++) f = mixHex(f, "#1c222b", 0.88); return f; };
   const dist = (a, b) => { a = (a || "").replace("#", ""); b = (b || "").replace("#", ""); if (a.length !== 6 || b.length !== 6) return 999; let s = 0; for (let i = 0; i < 6; i += 2) s += Math.pow(parseInt(a.slice(i, i + 2), 16) - parseInt(b.slice(i, i + 2), 16), 2); return Math.sqrt(s); };
   const baseColor = t => { let c = t.color || "3b4560"; if (lum(c) > 0.8 && t.alt && lum(t.alt) < lum(c)) c = t.alt; return "#" + c; };
@@ -1585,7 +1589,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       else { r.style.setProperty("--c", c); r.style.setProperty("--ci", lum(c) > 0.45 ? "#111" : "#fff"); }
       const lg = el("span", "xlg"); if (t.logo){ const im = document.createElement("img"); im.src = LOGO(g.league, t.logo); im.alt = ""; im.decoding = "async"; im.addEventListener("error", () => im.remove()); lg.appendChild(im); } r.appendChild(lg);
       const nm = el("div", "xnm"); if (P().stars.has(t.name)) nm.appendChild(el("span", "star", STAR)); if (t.rank) nm.appendChild(el("span", "rk", "#" + t.rank));
-      nm.appendChild(el("span", "txt", g.league === "nfl" ? t.short : t.name)); if (t.rec) nm.appendChild(el("span", "rec", t.rec));
+      nm.appendChild(el("span", "txt", window.innerWidth < 390 ? t.ab : g.league === "nfl" ? t.short : t.name)); if (t.rec) nm.appendChild(el("span", "rec", t.rec));   /* the abbreviation on a narrow phone (11/3) */
       if (st.phase === "live"){ const to = timeouts(g, side); if (to) nm.appendChild(to); } r.appendChild(nm);
       for (let i = 0; i < n; i++) r.appendChild(el("span", "xq" + (g.state === "in" && i === arr.length - 1 && i === (g.period || 0) - 1 ? " on" : ""), i < arr.length ? String(arr[i]) : ""));
       const sc = el("b", "xs"); if (!started){ const txt = plateSlot(g, side); if (txt){ fillSlot(sc, txt); sc.classList.add("spread"); } } else { sc.textContent = String(t.score); if (res === "lose") sc.classList.add("dim"); } r.appendChild(sc);
@@ -1853,6 +1857,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         const b = el("div", "gbar " + st.phase + (st.rz ? " rz" : "") + (S.open === g.id && (S.openRow ? S.openRow === net : !g.ghost) ? " open" : "") + (g.fav ? " fav" : "") + (g.loc ? " loc" : "") + (g.ghost ? " ghost" : ""));
         b.style.left = x(g._start) + "px"; b.style.width = w + "px"; b.style.top = (i * LANE + (LANE >= 66 ? 5 : 4)) + "px";
         const [ca, ch] = colors(g); b.style.setProperty("--away", ca); b.style.setProperty("--home", ch); b.style.setProperty("--away-ink-d", lum(ca) > 0.45 ? "#111" : "#fff"); b.style.setProperty("--home-ink-d", lum(ch) > 0.45 ? "#111" : "#fff");
+        b.classList.toggle("roofink", !!g.dome && !document.documentElement.classList.contains("lightpref") && contrast(ACC, ch) < 2);   /* the dome marker in ink on a gold or orange plate (11/3) */
         if (st.phase === "final" && !g.ghost && g.away.score !== g.home.score){ const aw = g.away.score > g.home.score, fin = finColor(aw ? ca : ch);
           b.classList.add(aw ? "awin" : "hwin"); b.style.setProperty("--fin", fin); b.style.setProperty("--fin-ink", lum(fin) > 0.45 ? "#111" : "#eceef2"); }
         if (g.ghost){
@@ -2699,6 +2704,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   Object.keys(WM_FONT).forEach(k => { try { document.fonts.load(WM_FONT[k].replace("100px", "20px")).then(fs => { if (fs.length){ wmOk[k] = true; setBrand(); } }).catch(() => {}); } catch (e) {} });
   function render(){
+    ACC = (getComputedStyle(document.documentElement).getPropertyValue("--accent") || "").trim() || "#f5b82e";
     const days = L().days || [], dates = days.map(d => d.date);
     drawSlips();
     if (!dates.includes(S.day)){ const today = etNow().date; S.day = awayWeek() ? ((days.slice().sort((a, b) => (b.n || 0) - (a.n || 0))[0] || {}).date || "") : (dates.find(d => d >= today) || dates[dates.length - 1] || ""); }   /* another week opens on its fullest day (11/2) */
