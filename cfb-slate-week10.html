@@ -2691,11 +2691,11 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const c = document.createElement("canvas").getContext("2d"); c.font = font; const w = s => c.measureText(s).width, ls = (lsx || 0) * 100;
     const j = text.indexOf(lower ? "l" : "L", text.lastIndexOf(" ")); const st = stemOf(font, text[j]); if (!st) return "";
     let xs = 0; const chars = []; for (const ch of text){ chars.push([ch, xs]); xs += w(ch) + ls; } const W = xs - ls;
-    const sx = chars[j][1] + st.x0, sw = st.x1 - st.x0, cap = st.cap, tip = -(cap + 14), H = -tip + 4;   /* the rise .2 cap (G2, 11/2) */
+    const sx = chars[j][1] + st.x0, sw = st.x1 - st.x0, cap = st.cap, tip = -cap, H = -tip + 4;   /* flush with the cap (R2, 11/3): nothing above the letter */
     return '<svg class="wm" viewBox="0 ' + (tip - 2) + ' ' + W + ' ' + H + '" style="height:' + (H / 100) + 'em" aria-hidden="true">' +
-      '<defs><linearGradient id="wmg" gradientUnits="userSpaceOnUse" x1="0" y1="' + (-cap * 0.5) + '" x2="0" y2="' + (-cap * 0.8) + '"><stop offset="0" style="stop-color:var(--ink)"/><stop offset="1" style="stop-color:var(--accent)"/></linearGradient></defs>' +
+      '<defs><linearGradient id="wmg" gradientUnits="userSpaceOnUse" x1="0" y1="' + (-cap * 0.23) + '" x2="0" y2="' + (-cap * 0.43) + '"><stop offset="0" style="stop-color:var(--ink)"/><stop offset="1" style="stop-color:var(--accent)"/></linearGradient></defs>' +
       '<g fill="currentColor" style="font:' + font + '">' + chars.map(([ch, x]) => '<text x="' + x + '" y="0">' + ch + '</text>').join("") + '</g>' +
-      '<rect x="' + sx + '" y="' + tip + '" width="' + sw + '" height="' + (-tip - cap * 0.35) + '" fill="url(#wmg)"/></svg>';
+      '<rect x="' + sx + '" y="' + tip + '" width="' + sw + '" height="' + (-tip) + '" fill="url(#wmg)"/></svg>';   /* gold from the cap down, ink by the foot */
   }
   function setBrand(){
     const app = document.documentElement.getAttribute("data-skin") === "app", word = NFL() ? "NFL" : "College";
