@@ -2672,14 +2672,15 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* the title line as one lockup (Phil, 11/2): the league and SLATE in the skin's own title type, the L's stem running on past
      the cap in the accent color, no head. Drawn from the glyphs once the face is in; the plain words until then. */
   const brandEl = document.getElementById("brand"), WM_FONT = { broadcast: "800 100px 'Barlow Condensed'", app: "700 100px 'Chakra Petch'" }, wmOk = {};
-  function stemOf(font, ch){   /* the glyph's vertical bar: the columns inked through the band above the baseline, and where they start */
-    const c = document.createElement("canvas"); c.width = 160; c.height = 140; const x = c.getContext("2d");
-    x.font = font; x.textBaseline = "alphabetic"; x.fillStyle = "#000"; x.fillText(ch, 10, 110);
-    const d = x.getImageData(0, 0, 160, 140).data, cols = [];
-    for (let i = 0; i < 160; i++){ let n = 0; for (let y = 20; y < 80; y++) if (d[(y * 160 + i) * 4 + 3] > 128) n++; cols.push(n); }
-    let l = cols.findIndex(n => n > 20), r = l; if (l < 0) return null; while (r + 1 < 160 && cols[r + 1] > 20) r++;
-    let top = 110; for (let y = 0; y < 110; y++){ let hit = false; for (let i = l; i <= r; i++) if (d[(y * 160 + i) * 4 + 3] > 128){ hit = true; break; } if (hit){ top = y; break; } }
-    return { x0: l - 10, x1: r + 1 - 10, cap: 110 - top };
+  function stemOf(font, ch){   /* the glyph's vertical bar, read at 4x: every column with ink through the band above the baseline, edge pixels included, and where it starts */
+    const K = 4, W = 160 * K, H = 140 * K, c = document.createElement("canvas"); c.width = W; c.height = H; const x = c.getContext("2d");
+    x.font = font.replace("100px", 100 * K + "px"); x.textBaseline = "alphabetic"; x.fillStyle = "#000"; x.fillText(ch, 10 * K, 110 * K);
+    const d = x.getImageData(0, 0, W, H).data, cols = [];
+    for (let i = 0; i < W; i++){ let n = 0; for (let y = 20 * K; y < 80 * K; y++) if (d[(y * W + i) * 4 + 3] > 0) n++; cols.push(n); }
+    const need = 30 * K;   /* a stem runs most of the band (the band starts above the cap); a serif or a curve doesn't */
+    let l = cols.findIndex(n => n > need), r = l; if (l < 0) return null; while (r + 1 < W && cols[r + 1] > need) r++;
+    let top = 110 * K; for (let y = 0; y < 110 * K; y++){ let hit = false; for (let i = l; i <= r; i++) if (d[(y * W + i) * 4 + 3] > 128){ hit = true; break; } if (hit){ top = y; break; } }
+    return { x0: l / K - 10, x1: (r + 1) / K - 10, cap: (110 * K - top) / K };
   }
   function lockup(text, font, lower, lsx){
     const c = document.createElement("canvas").getContext("2d"); c.font = font; const w = s => c.measureText(s).width, ls = (lsx || 0) * 100;
