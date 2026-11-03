@@ -1,4 +1,4 @@
-College Football Week 10 (124 games, pulled Tue 11/3, 4:23 AM ET, lines DraftKings via ESPN)
+College Football Week 10 (124 games, pulled Tue 11/3, 10:25 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week10.html
   cfb/ forwards to the one page
   Tue 11/3: 2 on TV, 0 not
@@ -8,7 +8,7 @@ College Football Week 10 (124 games, pulled Tue 11/3, 4:23 AM ET, lines DraftKin
   Sat 11/7: 39 on TV, 72 not
   ranked matchups:
     Fri 21:00 ET  #22 New Mexico at Nevada  [CBSSN]  UNM -9.5, o/u 38.5
-    Fri 22:15 ET  TCU at #24 Arizona  [ESPN]  ARIZ -8.5, o/u 42.5
+    Fri 22:15 ET  TCU at #24 Arizona  [ESPN]  ARIZ -8.5, o/u 43.5
     Sat 12:00 ET  #7 BYU at #3 Utah  [ABC]  UTAH -5.5, o/u 48.5
     Sat 12:00 ET  #10 Texas at #19 Missouri  [ESPN]  TEX -2.5, o/u 43.5
     Sat 12:00 ET  #5 UCLA at Minnesota  [FOX]  UCLA -5.5, o/u 39.5
@@ -22,7 +22,7 @@ College Football Week 10 (124 games, pulled Tue 11/3, 4:23 AM ET, lines DraftKin
     Sat 19:30 ET  #2 Georgia at #12 Ole Miss  [ABC]  UGA -3.5, o/u 56.5
     Sat 19:30 ET  #21 Iowa at Northwestern  [FOX]  NU -2.5, o/u 45.5
     Sat 19:30 ET  #1 Miami (FL) at #4 Notre Dame  [NBC]  ND -5.5, o/u 57.5
-    Sat 19:45 ET  Oklahoma at #25 Florida  [SECN]  FLA -6.0, o/u 45.5
+    Sat 19:45 ET  Oklahoma at #25 Florida  [SECN]  FLA -6.0, o/u 44.5
     Sat 21:30 ET  West Virginia at #13 Texas Tech  [ESPN]  TTU -16.5, o/u 65.5
   TV games without a line: 2
   time TBD: 0
