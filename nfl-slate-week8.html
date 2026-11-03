@@ -129,9 +129,13 @@
   .bar.off{padding:7px 16px}
   .bar.off > :not(.top){display:none}
   #cdate{display:none}
-  .bar.off .brand{flex:none}
-  .bar.off .brand #brand,.bar.off .brand #sub{display:none}
-  .bar.off .brand #cdate{display:inline;font-family:var(--cond);font-weight:700;font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+  .bar.off .brand{flex:0 1 auto;min-width:0;gap:6px}   /* folded (11/2): the lockup leads; only the date gives way */
+  .bar.off .brand #sub{display:none}
+  .bar.off .brand #brand{display:inline;flex:none}
+  .bar.off .brand #cdate{display:inline;font-family:var(--cond);font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);white-space:nowrap;flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+  .bar.off.hasslips .brand{flex:none}
+  .bar.off.hasslips .brand #cdate{display:none}   /* the slips take the room on a slips day */
+  :root[data-skin="app"] .bar.off .brand{font-size:18px}
   .bar.off #cslips:not(:empty){display:flex;flex:0 1 auto;min-width:0;overflow-x:auto;scrollbar-width:none;margin-left:auto;-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 14px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 14px),transparent)}
   .bar.off #cslips::-webkit-scrollbar{display:none}
   .bar.off #cslips button{flex:none}
@@ -2304,9 +2308,10 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         r.appendChild(el("span", null, g ? legWhere(g, l) : l.text));
         r.appendChild(el("span", "muted", g ? (g.state === "pre" ? "not started" : g.away.ab + " " + g.away.score + " " + g.home.ab + " " + g.home.score + (g.state === "post" ? " final" : "")) : "not on this week's board")); box.appendChild(r); });
       slist.appendChild(box); });
-    slipSeg.textContent = ""; slipSeg.hidden = !p.slips.length || awayWeek(); cslips.textContent = ""; if (awayWeek()){ slipN.textContent = p.slips.length ? String(p.slips.length) : ""; return; }
+    slipSeg.textContent = ""; slipSeg.hidden = !p.slips.length || awayWeek(); cslips.textContent = ""; document.querySelector(".bar").classList.remove("hasslips"); if (awayWeek()){ slipN.textContent = p.slips.length ? String(p.slips.length) : ""; return; }
     [slipSeg, cslips].forEach(seg => p.slips.forEach(s => { const b = el("button", null, s.name); b.type = "button"; b.setAttribute("aria-pressed", String(s.on)); b.addEventListener("click", () => { s.on = !s.on; remember(); render(); }); seg.appendChild(b); }));
     slipN.textContent = p.slips.length ? String(p.slips.length) : "";
+    document.querySelector(".bar").classList.toggle("hasslips", cslips.children.length > 0);   /* the folded title line gives the date's room to the slips (11/2) */
   }
   const spanel = document.getElementById("spanel"), slipBtn = document.getElementById("slipBtn"), slipSeg = document.getElementById("slipSeg"), cslips = document.getElementById("cslips"), slipN = document.getElementById("slipN"), slist = document.getElementById("slist"), stext = document.getElementById("stext"), simg = document.getElementById("simg"), sread = document.getElementById("sread"), snote = document.getElementById("snote"), sconf = document.getElementById("sconf");
   sread.addEventListener("click", () => readSlip(stext.value));
@@ -2670,11 +2675,11 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const c = document.createElement("canvas").getContext("2d"); c.font = font; const w = s => c.measureText(s).width, ls = (lsx || 0) * 100;
     const j = text.indexOf(lower ? "l" : "L", text.lastIndexOf(" ")); const st = stemOf(font, text[j]); if (!st) return "";
     let xs = 0; const chars = []; for (const ch of text){ chars.push([ch, xs]); xs += w(ch) + ls; } const W = xs - ls;
-    const sx = chars[j][1] + st.x0, sw = st.x1 - st.x0, cap = st.cap, tip = -(cap + 31.5), H = -tip + 4;
+    const sx = chars[j][1] + st.x0, sw = st.x1 - st.x0, cap = st.cap, tip = -(cap + 14), H = -tip + 4;   /* the rise .2 cap (G2, 11/2) */
     return '<svg class="wm" viewBox="0 ' + (tip - 2) + ' ' + W + ' ' + H + '" style="height:' + (H / 100) + 'em" aria-hidden="true">' +
-      '<defs><linearGradient id="wmg" gradientUnits="userSpaceOnUse" x1="0" y1="' + (-cap * 0.8) + '" x2="0" y2="' + (-cap * 1.1) + '"><stop offset="0" style="stop-color:var(--ink)"/><stop offset="1" style="stop-color:var(--accent)"/></linearGradient></defs>' +
+      '<defs><linearGradient id="wmg" gradientUnits="userSpaceOnUse" x1="0" y1="' + (-cap * 0.5) + '" x2="0" y2="' + (-cap * 0.8) + '"><stop offset="0" style="stop-color:var(--ink)"/><stop offset="1" style="stop-color:var(--accent)"/></linearGradient></defs>' +
       '<g fill="currentColor" style="font:' + font + '">' + chars.map(([ch, x]) => '<text x="' + x + '" y="0">' + ch + '</text>').join("") + '</g>' +
-      '<rect x="' + sx + '" y="' + tip + '" width="' + sw + '" height="' + (-tip - cap * 0.65) + '" fill="url(#wmg)"/></svg>';
+      '<rect x="' + sx + '" y="' + tip + '" width="' + sw + '" height="' + (-tip - cap * 0.35) + '" fill="url(#wmg)"/></svg>';
   }
   function setBrand(){
     const app = document.documentElement.getAttribute("data-skin") === "app", word = NFL() ? "NFL" : "College";
