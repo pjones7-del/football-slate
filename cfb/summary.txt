@@ -1,4 +1,4 @@
-College Football Week 10 (124 games, pulled Tue 11/3, 3:15 PM ET, lines DraftKings via ESPN)
+College Football Week 10 (124 games, pulled Tue 11/3, 6:10 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week10.html
   cfb/ forwards to the one page
   Tue 11/3: 2 on TV, 0 not
@@ -23,6 +23,6 @@ College Football Week 10 (124 games, pulled Tue 11/3, 3:15 PM ET, lines DraftKin
     Sat 19:30 ET  #21 Iowa at Northwestern  [FOX]  NU -2.5, o/u 45.5
     Sat 19:30 ET  #1 Miami (FL) at #4 Notre Dame  [NBC]  ND -6.0, o/u 57.5
     Sat 19:45 ET  Oklahoma at #25 Florida  [SECN]  FLA -6.0, o/u 44.5
-    Sat 21:30 ET  West Virginia at #13 Texas Tech  [ESPN]  TTU -17.5, o/u 64.5
+    Sat 21:30 ET  West Virginia at #13 Texas Tech  [ESPN]  TTU -16.5, o/u 64.5
   TV games without a line: 2
   time TBD: 0
