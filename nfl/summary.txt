@@ -1,13 +1,13 @@
-NFL Week 9 (15 games, pulled Wed 11/4, 12:59 AM ET, lines DraftKings via ESPN)
+NFL Week 9 (15 games, pulled Wed 11/4, 9:17 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week9.html
   nfl/ forwards to the one page
   Thu 11/5: 0 on TV, 1 not
   Sun 11/8: 13 on TV, 0 not
   Mon 11/9: 1 on TV, 0 not
   every game with its line:
-    Thu 20:15 ET  Jacksonville Jaguars at Baltimore Ravens  [Prime Video]  JAX -10.0, o/u 40.5
+    Thu 20:15 ET  Jacksonville Jaguars at Baltimore Ravens  [Prime Video]  JAX -10.0, o/u 39.5
     Sun 09:30 ET  Cincinnati Bengals vs Atlanta Falcons  [NFL Network]  CIN -3.0, o/u 52.5
-    Sun 13:00 ET  Denver Broncos at Carolina Panthers  [CBS]  DEN -3.0, o/u 43.5
+    Sun 13:00 ET  Denver Broncos at Carolina Panthers  [CBS]  DEN -2.5, o/u 43.5
     Sun 13:00 ET  New York Jets at Kansas City Chiefs  [CBS]  KC -9.5, o/u 47.5
     Sun 13:00 ET  Cleveland Browns at New Orleans Saints  [CBS]  NO -1.5, o/u 42.5
     Sun 13:00 ET  Dallas Cowboys at Indianapolis Colts  [FOX]  DAL -6.0, o/u 51.5
