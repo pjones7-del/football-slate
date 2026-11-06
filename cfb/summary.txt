@@ -1,4 +1,4 @@
-College Football Week 10 (124 games, pulled Thu 11/5, 7:02 PM ET, lines DraftKings via ESPN)
+College Football Week 10 (124 games, pulled Fri 11/6, 1:19 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week10.html
   cfb/ forwards to the one page
   Tue 11/3: 2 on TV, 0 not
@@ -7,10 +7,10 @@ College Football Week 10 (124 games, pulled Thu 11/5, 7:02 PM ET, lines DraftKin
   Fri 11/6: 5 on TV, 0 not
   Sat 11/7: 39 on TV, 72 not
   ranked matchups:
-    Fri 22:15 ET  TCU at #22 Arizona  [ESPN]  ARIZ -7.5, o/u 45.5
+    Fri 22:15 ET  TCU at #22 Arizona  [ESPN]  ARIZ -7.5, o/u 46.5
     Sat 12:00 ET  #9 BYU at #3 Utah  [ABC]  UTAH -4.5, o/u 48.5
     Sat 12:00 ET  #7 Texas at #18 Missouri  [ESPN]  TEX -2.5, o/u 42.5
-    Sat 12:00 ET  #8 UCLA at Minnesota  [FOX]  UCLA -4.5, o/u 38.5
+    Sat 12:00 ET  #8 UCLA at Minnesota  [FOX]  UCLA -5.5, o/u 38.5
     Sat 15:00 ET  Texas A&M at #21 South Carolina  [ESPN]  SC -7.0, o/u 50.5
     Sat 15:30 ET  #5 Alabama at #14 LSU  [ABC]  LSU -6.0, o/u 52.5
     Sat 15:30 ET  Merrimack at #16 Wake Forest  [ACCN]  WAKE -47.5, o/u 58.5
@@ -22,6 +22,6 @@ College Football Week 10 (124 games, pulled Thu 11/5, 7:02 PM ET, lines DraftKin
     Sat 19:30 ET  #19 Iowa at Northwestern  [FOX]  NU -2.5, o/u 45.5
     Sat 19:30 ET  #1 Miami (FL) at #11 Notre Dame  [NBC]  ND -7.5, o/u 54.5
     Sat 19:45 ET  Oklahoma at #24 Florida  [SECN]  FLA -6.5, o/u 45.5
-    Sat 21:30 ET  West Virginia at #15 Texas Tech  [ESPN]  TTU -17.5, o/u 65.5
+    Sat 21:30 ET  West Virginia at #15 Texas Tech  [ESPN]  TTU -16.5, o/u 65.5
   TV games without a line: 0
   time TBD: 0
