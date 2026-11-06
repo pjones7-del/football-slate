@@ -1,4 +1,4 @@
-College Football Week 10 (124 games, pulled Fri 11/6, 1:19 AM ET, lines DraftKings via ESPN)
+College Football Week 10 (124 games, pulled Fri 11/6, 9:55 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week10.html
   cfb/ forwards to the one page
   Tue 11/3: 2 on TV, 0 not
@@ -7,26 +7,26 @@ College Football Week 10 (124 games, pulled Fri 11/6, 1:19 AM ET, lines DraftKin
   Fri 11/6: 5 on TV, 0 not
   Sat 11/7: 39 on TV, 72 not
   ranked matchups:
-    Fri 22:15 ET  TCU at #22 Arizona  [ESPN]  ARIZ -7.5, o/u 46.5
+    Fri 22:15 ET  TCU at #22 Arizona  [ESPN]  ARIZ -7.0, o/u 46.5
     Sat 12:00 ET  #9 BYU at #3 Utah  [ABC]  UTAH -4.5, o/u 48.5
     Sat 12:00 ET  #7 Texas at #18 Missouri  [ESPN]  TEX -2.5, o/u 42.5
-    Sat 12:00 ET  #8 UCLA at Minnesota  [FOX]  UCLA -5.5, o/u 38.5
-    Sat 15:00 ET  Texas A&M at #21 South Carolina  [ESPN]  SC -7.0, o/u 50.5
+    Sat 12:00 ET  #8 UCLA at Minnesota  [FOX]  UCLA -4.5, o/u 38.5
+    Sat 15:00 ET  Texas A&M at #21 South Carolina  [ESPN]  SC -7.0, o/u 51.5
     Sat 15:30 ET  #5 Alabama at #14 LSU  [ABC]  LSU -6.0, o/u 52.5
     Sat 15:30 ET  Merrimack at #16 Wake Forest  [ACCN]  WAKE -47.5, o/u 58.5
-    Sat 15:30 ET  #23 Oregon at #12 Ohio State  [CBS]  OSU -7.5, o/u 46.5
+    Sat 15:30 ET  #23 Oregon at #12 Ohio State  [CBS]  OSU -7.5, o/u 45.5
     Sat 15:30 ET  Cincinnati at #17 Houston  [FOX]  HOU -10.5, o/u 62.5
     Sat 18:00 ET  #25 Boise State at Colorado State  [USA]  BOIS -17.5, o/u 68.5
     Sat 18:15 ET  #6 Kentucky at #13 Tennessee  [ESPN]  TENN -6.5, o/u 49.5
     Sat 19:30 ET  #2 Georgia at #10 Ole Miss  [ABC]  UGA -3.5, o/u 56.5
     Sat 19:30 ET  #19 Iowa at Northwestern  [FOX]  NU -2.5, o/u 45.5
     Sat 19:30 ET  #1 Miami (FL) at #11 Notre Dame  [NBC]  ND -7.5, o/u 54.5
-    Sat 19:45 ET  Oklahoma at #24 Florida  [SECN]  FLA -6.5, o/u 45.5
+    Sat 19:45 ET  Oklahoma at #24 Florida  [SECN]  FLA -6.0, o/u 45.5
     Sat 21:30 ET  West Virginia at #15 Texas Tech  [ESPN]  TTU -16.5, o/u 65.5
   TV games without a line: 0
   time TBD: 0
 
-NFL Week 9 (15 games, pulled Fri 11/6, 1:20 AM ET, lines DraftKings via ESPN)
+NFL Week 9 (15 games, pulled Fri 11/6, 9:55 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week9.html
   nfl/ forwards to the one page
   Thu 11/5: 0 on TV, 1 not
@@ -36,10 +36,10 @@ NFL Week 9 (15 games, pulled Fri 11/6, 1:20 AM ET, lines DraftKings via ESPN)
     Thu 20:15 ET  Jacksonville Jaguars at Baltimore Ravens  [Prime Video]  JAX -9.5, o/u 39.5
     Sun 09:30 ET  Cincinnati Bengals vs Atlanta Falcons  [NFL Network]  CIN -3.0, o/u 52.5
     Sun 13:00 ET  Denver Broncos at Carolina Panthers  [CBS]  DEN -2.5, o/u 44.5
-    Sun 13:00 ET  New York Jets at Kansas City Chiefs  [CBS]  KC -10.0, o/u 47.5
+    Sun 13:00 ET  New York Jets at Kansas City Chiefs  [CBS]  KC -9.5, o/u 47.5
     Sun 13:00 ET  Cleveland Browns at New Orleans Saints  [CBS]  NO -3.0, o/u 42.5
     Sun 13:00 ET  Dallas Cowboys at Indianapolis Colts  [FOX]  DAL -5.5, o/u 51.5
-    Sun 13:00 ET  Detroit Lions at Miami Dolphins  [FOX]  DET -7.0, o/u 50.5
+    Sun 13:00 ET  Detroit Lions at Miami Dolphins  [FOX]  DET -6.5, o/u 50.5
     Sun 13:00 ET  New York Giants at Philadelphia Eagles  [FOX]  NYG -3.5, o/u 38.5
     Sun 13:00 ET  Los Angeles Rams at Washington Commanders  [FOX]  LAR -4.5, o/u 48.5
     Sun 16:05 ET  Houston Texans at Los Angeles Chargers  [CBS]  HOU -6.0, o/u 40.5
