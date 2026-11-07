@@ -2060,13 +2060,19 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
      or a live or final mini scoreboard (its header with the quarters, then the two teams). A total names no team, so its game comes
      from its block, and the market line says a team total or a player prop.
      A Caesars slip (11/7): a header "8 Leg Flex Parlay +1150", then per leg the pick ("Oregon Ducks +8.0") over the market and the game
-     on one line ("Spread | Oregon Ducks at Ohio State Buckeyes"); no summary, no Wager line before the legs. */
+     on one line ("Spread | Oregon Ducks at Ohio State Buckeyes"); no summary, no Wager line before the legs.
+     FanDuel, BetMGM and Fanatics (11/7): the pick with its price after it ("Denver Broncos -8 -110"), the market ("SPREAD", "Run Line
+     Spread", "Total Points 40.5"), the game written out ("Kansas City Chiefs @ Denver Broncos SUN 4:26PM ET", "NFL • Los Angeles Rams v
+     San Francisco 49ers Sep 11"); FanDuel's same game parlays put their game before their legs; BetMGM's My Bets puts the pick on its
+     market line ("Celtics Money Line") and the game on two lines. */
+  /* the price after a pick: three to five digits, EVEN or a decimal price, BetMGM's swap icon and close button around it ("s 1.91 X") */
+  const ODDSTAIL = /\s+(?:[s5=~]\s+)?(?:[+-]\s?\d{3,5}|ev(?:en)?|\d\.\d{2})(?:\s+[x×])?\s*$/i;
   const SLIPWORD = /\b(moneyline|spread|alternate|total|parlay|wager|to pay|bonus|boost|cash|open|final|today|pick|q[1-4]|ot|ht)\b/i;
   function parseLeg(s){
     let m, t = s.replace(/[−–]/g, "-").replace(/\s+/g, " ").trim(), hint = "";
     let label = ""; const lm = t.match(/^([^:()]{2,40}):\s*/); if (lm){ label = lm[1].trim(); t = t.slice(lm[0].length); }   /* a label before the pick ("Tailgate Special: Ole Miss +7.5") */
     if ((m = t.match(/\((?:@|vs\.?|at)?\s*([^)]+)\)/i))){ hint = m[1].trim(); t = t.replace(m[0], "").trim(); }
-    t = t.replace(/\bto win\b/i, "").replace(/\s+ml$/i, "").trim();
+    t = t.replace(ODDSTAIL, "").replace(/\bto win\b/i, "").replace(/\s+ml$/i, "").trim();
     if ((m = t.match(/^(over|under|o|u)\s*(\d+(?:\.\d)?)$/i))){ let n = +m[2]; if (n >= 100 && !/\./.test(m[2]) && /5$/.test(m[2])) n = n / 10;   /* "Over415": the screenshot lost the point */
       return { team: hint, kind: "total", side: /^o/i.test(m[1]) ? "over" : "under", num: n, text: s.trim(), label }; }
     if ((m = t.match(/^(\d+)\s*\+$/))) return { team: "", kind: "prop", num: null, short: m[1] + "+", text: s.trim(), label };   /* a player prop's pick ("1+"); its market line says the rest */
@@ -2076,12 +2082,13 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   function mktOf(s){   /* a block's market line: the kind of leg (null: not a market line) */
     const t = s.toLowerCase(); if (/^if\b/.test(t)) return null;   /* the book's fine print under a prop */
-    if (/wager|payout|\bcash\b/.test(t)) return null;   /* the stake ("Total Cash Wagered", "Max Payout"; Caesars 11/7) */
+    if (/wager|payout|\bstake\b|\bodds\b|\bto\s+pay\b|\$\s?\d/.test(t)) return null;   /* the stake ("Total Cash Wagered", "Max Payout", "To win $46.69", "Total odds +480") */
+    if (/[a-z]{2},\s*[a-z]/.test(t)) return null;   /* a summary of picks ("Falcons to Win, Bijan Robinson Anytime Touchdown Scorer,") */
     if (/team\s*total/.test(t)) return "tt";
     if (/to\s+score|touchdown|scorer|passing|rushing|receiving|receptions|\byards\b|\bsacks?\b|interception|field\s*goals?\s*made|player\s+props?/.test(t)) return "prop";
     if (/(?:^|[^a-z])m?oneyline\b|money\s*line|\bto win\b/.test(t)) return "ml";
     if (/(?:^|[^a-z])s?pread\b|handicap/.test(t)) return "spread";
-    if (/(?:^|[^a-z])t?otal\b/.test(t)) return "total";
+    if (/(?:^|[^a-z])t?otals?\b|over\s*\/\s*under/.test(t)) return "total";
     return null;
   }
   const perOf = s => { const t = s.toLowerCase(), m = t.match(/\b(1st|2nd|3rd|4th|first|second|third|fourth)\s+(half|quarter)\b/) || t.match(/\b([1-4])(h|q)\b/);   /* a half or quarter market */
@@ -2108,16 +2115,46 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const m = g.match(/^(.+?)\s+(?:at|@)\s+(.+)$/i) || g.match(/^(.+?)\s+(?:vs\.?|v)\s+(.+)$/i);
     return m && /[A-Za-z]{3}/.test(m[1]) && /[A-Za-z]{3}/.test(m[2]) ? { a: m[1].trim(), h: m[2].trim(), x: "" } : null;
   }
+  /* a game written out (FanDuel, BetMGM, Fanatics, a Caesars bet slip; 11/7): "Kansas City Chiefs @ Denver Broncos SUN 4:26PM ET",
+     "Miami Marlins at Atlanta Braves", "NFL • Los Angeles Rams v San Francisco 49ers Sep 11, 2026,", or BetMGM's "Utah Jazz @" over
+     "Boston Celtics". The league before it and the date and time after it are dropped ("Sun" only before a date or a time, so the
+     Sun Devils keep their name); both sides must read as names */
+  const WHEN = /\s*[(•·«»,-]*\s*\(?\s*(?:(?:today|tonight|tomorrow|tmrw)\b|(?:mon|tue|wed|thu|fri|sat|sun)[a-z]*\.?,?\s+(?=\d|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec))|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{1,2}\b|\d{1,2}\/\d{1,2}\b|\d{1,2}:\d{2}|starting\s+in\b|(?:live|final|finished)\s*$).*$/i;
+  const LEAGUE = /^(?:nfl|ncaaf|ncaa\s*football|cfb|college\s+football|nba|wnba|ncaab|mlb|nhl)\b\s*\S{0,2}\s+/i;
+  const nameLike = s => { const t = s.replace(/[.…(\s]+$/, "").trim();
+    return /[A-Za-z]{3}/.test(t) && t.split(/\s+/).length <= 6 && !/[+-]\s?\d|\d\.\d|,|\$|\b(?:over|under|spread|money\s*line|moneyline|total|points|parlay|wager|odds)\b/i.test(t) ? t : ""; };
+  function gameLine(lines, i){
+    const ln = lines[i]; if (/\|/.test(ln)) return null;   /* Caesars' "Spread | A at B" is read with its market */
+    const g = ln.replace(/^[^A-Za-z0-9(]+/, "").replace(LEAGUE, "").replace(WHEN, "").trim();
+    let m = g.match(/^(.+?)\s+@\s+(.+)$/) || g.match(/^(.+?)\s+(?:at|vs\.?|v)\s+(.+)$/i);
+    if (m){ const a = nameLike(m[1]), h = nameLike(m[2]); return a && h ? { a, h, x: "", end: i } : null; }
+    if ((m = g.match(/^(.+?)\s*@$/)) && i + 1 < lines.length && !mktOf(lines[i + 1])){   /* BetMGM: "Utah Jazz @" over "Boston Celtics" */
+      const a = nameLike(m[1]), h = nameLike(lines[i + 1].replace(WHEN, "")); if (a && h) return { a, h, x: "", end: i + 1 };
+    }
+    return null;
+  }
+  /* a pick on its market line (BetMGM: "Celtics Money Line", "Oregon +8.5 Spread", "Money Line - Diamondbacks") */
+  const MKTWORDS = "(?:alt(?:ernate)?\\s+)?(?:point\\s+)?(?:money\\s*line|moneyline|spread|totals?(?:\\s+points)?|to\\s+win)";
+  function mktPick(s){
+    s = s.replace(ODDSTAIL, "").trim();
+    let m = s.match(new RegExp("^(.+?)\\s+" + MKTWORDS + "\\s*$", "i"));
+    if (m && /[A-Za-z]{3}|\d/.test(m[1]) && !/^\W*(?:1st|2nd|3rd|4th|first|second|game|team|live|alt(?:ernate)?|point|match|total|run|puck|\d+[hq])\b/i.test(m[1])) return m[1].replace(/^\W+/, "").trim();
+    m = s.match(new RegExp("^\\W*" + MKTWORDS + "\\s+-\\s+(.+)$", "i"));
+    return m ? m[1].trim() : "";
+  }
   /* the leg blocks under "Wager", read in order: the pick, then the market line, then the game. A missed game line ends its block at
      the next market line (its leftovers start the next block); a market on two lines stays one */
   const GRP = /^\s*(?:sgpx?\s*)?\d+\s*pick\s*(?:parlay|sgp)\b/i;   /* a ticket's header, or a group's inside one ("3 Pick SGP | +108": legs that share a game) */
+  const SGPHEAD = /^\W*(?:[A-Za-z]{1,4}\W*\s+)?(?:\d+\s*legs?\s+)?same\s*game\s*parlay/i;   /* "Same Game Parlay™", "3 Leg Same Game Parlay +500" (11/7) */
   function slipBlocks(lines){
     const out = []; let grp = 0;
-    const fresh = head => ({ head, mkt: "", kind: null, more: [], mu: null, grp });
+    let lead = null;   /* a group's game named before its legs (FanDuel's same game parlays, 11/7) */
+    const fresh = head => ({ head, mkt: "", kind: null, more: [], mu: null, grp, lead });
     let cur = fresh([]), state = 0, lastMkt = -9;
     for (let i = 0; i < lines.length; i++){
-      if (GRP.test(lines[i]) && !/,/.test(lines[i])){ if (state === 1) out.push(cur); grp++; cur = fresh([]); state = 0; continue; }   /* a group (an SGP inside a parlay, 11/2): its legs share the game line at its end */
-      const mu = matchupAt(lines, i);
+      if ((GRP.test(lines[i]) || SGPHEAD.test(lines[i])) && !/,/.test(lines[i])){ if (state === 1) out.push(cur); grp++; lead = null; cur = fresh([]); state = 0; continue; }   /* a group (an SGP inside a parlay, 11/2): its legs share the game line at its end */
+      const mu = gameLine(lines, i) || matchupAt(lines, i);
+      if (mu && state === 0 && !cur.head.some(l => headPick({ head: [l] }))){ lead = cur.lead = mu; i = mu.end; continue; }   /* a game before its legs: theirs */
       if (mu){ cur.mu = mu; out.push(cur);
         if (cur.grp) for (let k = out.length - 2; k >= 0 && out[k].grp === cur.grp && !out[k].mu; k--) out[k].mu = mu;
         grp = 0; cur = fresh([]); state = 0; i = mu.end; continue; }
@@ -2125,6 +2162,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (k){
         if (state === 1 && i === lastMkt + 1){ cur.mkt += " " + lines[i]; lastMkt = i; continue; }
         if (state === 1){ const left = cur.more; cur.more = []; out.push(cur); cur = fresh(left); }
+        if (!cur.head.some(l => headPick({ head: [l] }))){ const sp = mktPick(lines[i]); if (sp) cur.head.push(sp); }   /* the pick on its market line (BetMGM) */
         cur.mkt = lines[i]; cur.kind = k; state = 1; lastMkt = i;
         const pg = pipeGame(lines[i], lines[i + 1]); if (pg) cur.mu = pg;   /* the game on the market line (Caesars) */
         continue;
@@ -2132,11 +2170,11 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       (state === 0 ? cur.head : cur.more).push(lines[i]);
     }
     if (state === 1) out.push(cur);
-    return out.map(b => Object.assign(b, { headText: b.head.join(" ") }));
+    return out.map(b => Object.assign(b, { mu: b.mu || b.lead || null, headText: b.head.join(" ") }));
   }
   /* without a summary line, a block's pick is its last real line before the market (the icon's specks and the odds trimmed) */
-  const headPick = b => { const ls = b.head.filter(l => !/cash|bonus|promo|boost|wager|to pay|^if\b/i.test(l) && /[a-z]{4}|over|under|\d\+|\d\.5/i.test(l));   /* a line with a name or a number, not the icon's specks */
-    const t = (ls.pop() || "").replace(/[−–]/g, "-").replace(/^(?:[^A-Za-z0-9+]+|[A-Za-z0-9]{1,2}[^A-Za-z0-9\s+]*\s+)+/, "").replace(/\s+[+-]\d{3,5}\s*$/, "").replace(/(\d)s\b/g, "$1.5");   /* the icon's specks ("i.", "oO"), the odds; "Over41s": the OCR's ".5" */
+  const headPick = b => { const ls = b.head.filter(l => !/cash|bonus|promo|boost|wager|to pay|^if\b|[a-z]{2},\s*[a-z]|\bparlays?\b/i.test(l) && /[a-z]{4}|over|under|\d\+|\d\.5/i.test(l));   /* a line with a name or a number, not the icon's specks */
+    const t = (ls.pop() || "").replace(/[−–]/g, "-").replace(/^(?:[^A-Za-z0-9+]+|[A-Za-z0-9]{1,2}[^A-Za-z0-9\s+]*\s+)+/, "").replace(ODDSTAIL, "").replace(/(\d)s\b/g, "$1.5");   /* the icon's specks ("i.", "oO"), the odds; "Over41s": the OCR's ".5" */
     const m = t.match(/^(.*?[+-]\s?\d{1,2}(?:\.\d)?)(?![\d.])/) || t.match(/((?:over|under)\s*\d+(?:\.\d)?)/i);
     return (m ? m[1] : t).trim(); };
   const KINDFIT = { total: ["total", "tt", "prop"], ml: ["ml", "spread", "prop"], spread: ["spread", "ml"], prop: ["prop"] };   /* the market kinds a pick's text can sit under */
@@ -2175,7 +2213,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const k = b.kind;
     if (l && k && !(KINDFIT[l.kind] || []).includes(k)){ if ((k === "tt" || k === "prop") && l.kind === "ml") l = null; else return l; }   /* the block doesn't fit the pick: the pick as read, unless a team total's or a prop's pick line came out as junk */
     let leg = l ? Object.assign({}, l) : null;
-    const per = b.mkt ? perOf(b.mkt) : "", alt = /alternate/i.test(b.mkt) ? " Alternate" : "", lead = x => x.replace(/^(?:[^A-Za-z0-9]+|[A-Za-z0-9](?=\s)\s*)+/, "").trim();   /* the market's name without the icon's specks */
+    const per = b.mkt ? perOf(b.mkt) : "", alt = /alternate/i.test(b.mkt) ? " Alternate" : "", lead = x => x.replace(/^(?:[^A-Za-z0-9]+|[A-Za-z0-9](?=\s)\s*)+/, "").replace(/\s*\bcash\s*out\b/ig, "").trim();   /* the market's name without the icon's specks or the CASH OUT badge */
     const mk = (k === "tt" || k === "prop" || per ? [lead(b.mkt)].concat(k === "prop" ? b.more.filter(x => !/^if\b/i.test(x) && /[A-Za-z]{2}/.test(x)) : []).join(" ")
       : k === "ml" ? "Moneyline" : k === "spread" ? "Spread" + alt : k === "total" ? "Total" + alt : "").replace(/(?:\s+[^A-Za-z0-9\s]+)+$/, "").slice(0, 90);
     const ou = l && l.kind === "total" ? l.side : /\bunder\b|^\s*u\b/i.test(p) ? "under" : "over";
@@ -2187,7 +2225,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     else if (k === "spread" && leg.kind === "ml"){ const sm = b.headText.replace(/[−–]/g, "-").match(/[+-]\s?\d{1,2}(?:\.\d)?(?![\d.])/); if (sm) Object.assign(leg, { kind: "spread", num: parseFloat(sm[0].replace(/\s/, "")) }); }
     if (per) leg.per = per;
     if (mk) leg.mkt = mk;
-    leg.mu = b.mu;
+    leg.mu = b.mu; if (b.grp) leg.grp = b.grp;
     return leg;
   }
   function slipLegs(text){
@@ -2195,8 +2233,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     /* the summary line of picks between the slip's header and "Wager" (it wraps in a screenshot; stray one-letter lines dropped) */
     const hdr = lines.findIndex(l => /pick\s*parlay|^(yes|no)\b|special|parlay|\bsgp/i.test(l));
     const wag = lines.findIndex((l, i) => i > hdr && /^wager/i.test(l)), end = wag > hdr ? wag : hdr >= 0 ? lines.findIndex((l, i) => i > hdr && /to pay|cashed out|bonus bet/i.test(l)) : -1;
-    const sum = hdr >= 0 && end > hdr + 1 ? lines.slice(hdr + 1, end).filter(l => l.length > 2).join(" ") : "";
-    const blocks = slipBlocks(end >= 0 ? lines.slice(end + 1) : lines);
+    let sum = hdr >= 0 && end > hdr + 1 ? lines.slice(hdr + 1, end).filter(l => l.length > 2).join(" ") : "";
+    if (!/,/.test(sum)) sum = "";   /* a summary names two picks or more (DraftKings); a header and a Wager line with only the book's chrome between them is no summary (11/7) */
+    const blocks = slipBlocks(sum ? lines.slice(end + 1) : lines);
     let picks = [], loose = false;
     if (sum) picks = sum.split(/,\s*/);
     else if (blocks.length) picks = blocks.map(headPick);
@@ -2254,23 +2293,28 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const slipGames = lg => (GAMES[lg] || []).slice().sort((a, b) => a.kick < b.kick ? -1 : 1);
   let pend = null, pendLg = "";   /* the slips being confirmed, and the board they were found on */
   /* a text may hold several slips (several screenshots read together): one section per slip header */
+  const LEGHEAD = /\b\d+\s*[- ]?\s*legs?\b(?!\s+pays)|\bparlay\s*[-(]\s*\d+\s*picks?\b|^\W*same\s*game\s*parlay\W*(?:tm)?\W*[+-]\d{3,}/i;
   function slipSections(text){
     const lines = text.split(/\n/).map(s => s.trim()).filter(Boolean), claim = new Map();
     /* a ticket's header is the last header-looking line before its Wager line (its summary between them): a "3 Pick SGP | +108" farther up is a
        group inside a ticket (an SGPx parlay, 11/2), and a "2 Pick SGP" right before Wager is the tail of a wrapped summary */
-    lines.forEach((l, i) => { if (/\b\d+\s*legs?\b.*\bparlay\b/i.test(l) && !/,/.test(l)){ claim.set(-1 - i, i); return; }   /* Caesars' "8 Leg Flex Parlay +1150" (11/7) */
+    const legHeads = [];
+    lines.forEach((l, i) => { if (LEGHEAD.test(l) && !/,/.test(l)){ legHeads.push(i); return; }   /* "8 Leg Flex Parlay +1150", "3 Leg Parlay +8826", "PARLAY - 4 picks", "Same Game Parlay +549" (11/7) */
       if (!(/^\s*(?:sgpx?\s*)?\d+\s*pick\s*(?:parlay|sgp)\b/i.test(l) && !/,/.test(l)) && !/^(yes|no)\s*\||\bparlay\s*\||same\s*game\s*parlay|\bsgpx?\s*\|/i.test(l)) return;
       const w = lines.slice(i + 1, i + 13).findIndex(x => /^wager/i.test(x)); if (w <= 0) return; claim.set(i + 1 + w, i); });
-    const heads = [...claim.values()].sort((a, b) => a - b);
+    if (legHeads.length){   /* no market line after the last one: they close their tickets (FanDuel's bet slip) */
+      const foot = !lines.slice(legHeads[legHeads.length - 1] + 1).some(l => mktOf(l));
+      (foot ? [0].concat(legHeads.slice(0, -1).map(h => h + 1)) : legHeads).forEach(h => claim.set(-1 - h, h)); }
+    const heads = [...new Set(claim.values())].sort((a, b) => a - b);
     if (!heads.length) return [lines.join("\n")];
     const out = heads.map((h, k) => lines.slice(h, heads[k + 1] == null ? lines.length : heads[k + 1]).join("\n"));
-    if (heads[0] > 0 && lines.slice(0, heads[0]).some(l => l.split(/,\s*/).length >= 2)) out.unshift(lines.slice(0, heads[0]).join("\n"));
+    if (heads[0] > 0 && lines.slice(0, heads[0]).some(l => l.split(/,\s*/).length >= 2 && !/\d{1,2}:\d{2}|\b20\d\d\b|\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d/i.test(l))) out.unshift(lines.slice(0, heads[0]).join("\n"));
     return out;
   }
   const legKey = l => [l.id, l.side, l.kind, l.num, l.ou || "", l.per || "", l.kind === "prop" ? (l.who || l.short || "") : ""].join(":"), slipKey = legs => legs.map(legKey).sort().join("|");
   function slipName(sec, legs){
-    const head = sec.split(/\n/)[0] || "", odds = (head.match(/[+-]\d{3,4}/g) || []).pop() || "", n = head.match(/(\d+)\s*[- ]?(pick|leg)/i), label = legs.find(l => l.label) ? legs.find(l => l.label).label : "";
-    return ((n ? n[1] + "-" + n[2].toLowerCase() : (label || "Slip")) + (odds ? " " + odds : "")).slice(0, 24);   /* "7-pick +968", "8-leg +1150" */
+    const ls = sec.split(/\n/), head = ls.find(l => LEGHEAD.test(l) && !/,/.test(l)) || ls[0] || "", odds = (head.match(/[+-]\d{3,5}/g) || []).pop() || "", n = head.match(/(\d+)\s*[- ]?(pick|leg)/i), label = legs.find(l => l.label) ? legs.find(l => l.label).label : "";
+    return ((n ? n[1] + "-" + n[2].toLowerCase() : /same\s*game|\bsgp\b/i.test(head) ? "SGP" : (label || "Slip")) + (odds ? " " + odds : "")).slice(0, 24);   /* "7-pick +968", "8-leg +1150", "SGP +549" */
   }
   /* each leg to a game on the board: a block's game first (a total's only source), then the team's name; one copy of each leg */
   function placeLegs(legs, games){
@@ -2283,6 +2327,10 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         if (legs.loose && (o.kind === "ml" || o.kind === "spread")){ const sk = "side:" + id + ":" + side, j = seen[sk];   /* the loose read can catch one pick twice: the spread beats the moneyline */
           if (j != null){ if (out[j].kind === "ml" && o.kind === "spread") out[j] = o; return; } seen[sk] = out.length; } }
       out.push(o); });
+    /* a same game parlay's legs share one game: a leg placed by its team lends it to the group's legs that found none (11/7) */
+    const grpGame = {}; out.forEach(o => { if (o.grp && o.id) (grpGame[o.grp] = grpGame[o.grp] || new Set()).add(o.id); });
+    out.forEach(o => { const ids = o.grp && !o.id ? grpGame[o.grp] : null; if (!ids || ids.size !== 1) return; const id = [...ids][0], g = games.find(x => x.id === id); if (!g) return;
+      if (gameOnly(o)) o.id = id; else { const s = sideIn(g, o.team); if (s){ o.id = id; o.side = s; } } });
     return out;
   }
   function readSlip(text){
