@@ -182,6 +182,79 @@
   .tb .col > .legm.mid{top:calc(25% + 3px);bottom:calc(25% + 3px)}   /* a total or a prop: centered across the two teams (Phil, 10/25) */
   .tb .pl.away .legm.half{bottom:50%}.tb .pl.home .legm.half{top:50%}   /* a team's leg beside a game leg: its outer half, so they stack away / game / home */
 
+  /* ---- the slip as a card (Phil, 11/7, options 1 and 2): the + on the bar, the sheet after a read, the strip and its card ---- */
+  .sadd{flex:none;display:inline-flex;align-items:center;gap:4px;font-family:var(--cond);font-weight:800;font-size:13px;letter-spacing:.05em;text-transform:uppercase;padding:5px 11px;border-radius:999px;background:var(--accent);color:var(--accent-ink);cursor:pointer;white-space:nowrap;box-shadow:var(--shadow);-webkit-tap-highlight-color:transparent}
+  .sadd b{font-size:17px;line-height:.8;font-weight:800}
+  .sadd[hidden]{display:none}
+  .bar.hasslips .sadd span{display:none}   /* beside the slips, the + alone */
+  .row.sstrip:not([hidden]){display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:6px;margin-top:7px;width:100%;flex-basis:100%;min-width:0}
+  @media (max-width:419px){.sadd span{display:none}}   /* a narrow phone's folded bar has room for the + alone */
+  .row.sstrip > *{max-width:640px}   /* on a wide screen the strip and its card keep a phone's proportions */
+  .bar.off > .row.sstrip:not([hidden]),.bar > .row.sstrip:not([hidden]){display:flex}
+  .sline{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;padding:0;margin:0;color:inherit;cursor:pointer;font:inherit;text-align:left;-webkit-tap-highlight-color:transparent}
+  .sline .snm{flex:none;font-family:var(--cond);font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+  .sline .spills{display:flex;gap:4px;flex:1 1 auto;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .sline .spills::-webkit-scrollbar{display:none}
+  .spill{flex:1 0 auto;min-width:34px;max-width:76px;box-sizing:border-box;font-family:var(--cond);font-weight:800;font-size:12px;letter-spacing:.03em;text-align:center;border-radius:5px;padding:2px 4px;border:1.5px solid var(--line2);color:var(--muted);white-space:nowrap}
+    .sline .scar{flex:none;margin-left:auto;color:var(--muted);font-size:12px;transition:transform .15s}
+  .sline[aria-expanded="true"] .scar{transform:rotate(180deg)}
+  .scard{background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:12px 14px 14px;color:var(--ink);text-align:left;min-width:0;box-sizing:border-box}
+  .skick{font-family:var(--cond);font-weight:700;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .sttl{display:flex;align-items:baseline;gap:10px;margin:2px 0 4px;min-width:0}
+  .sttl .sname{font-family:var(--cond);font-weight:800;font-size:28px;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);background:transparent;border:0;border-bottom:1px dashed transparent;border-radius:0;padding:0;margin:0;width:auto;min-width:2ch;max-width:62%;field-sizing:content;outline:0;box-shadow:none}
+  .sttl .sname:focus{border-bottom-color:var(--line2);outline:0}
+  .sttl .sodds{font-family:var(--cond);font-weight:800;font-size:28px;color:var(--accent);flex:none}
+  .sttl .sstake{margin-left:auto;font-family:var(--cond);font-weight:700;font-size:15px;color:var(--muted);white-space:nowrap;flex:none}
+  .sttl .sstake em{font-style:normal;color:#3ccf8e}
+  .stally{display:flex;gap:14px;font-size:13px;color:var(--muted);margin:0 0 8px}
+  .stally b{color:var(--ink);font-weight:700;margin-right:3px}
+  .slegs{border-top:1px solid var(--line)}
+  .sleg{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);min-height:40px}
+  .sleg .slogo{width:26px;height:26px;flex:none;object-fit:contain}
+  .sleg .sbadge{width:26px;height:26px;flex:none;box-sizing:border-box;border-radius:50%;border:1.5px solid var(--line2);display:flex;align-items:center;justify-content:center;font-family:var(--cond);font-weight:800;font-size:12px;color:var(--muted)}
+  .sleg .spk{font-family:var(--cond);font-weight:800;font-size:18px;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:0 1 auto}
+  .sleg .spk i{font-style:normal;color:var(--accent);margin-left:6px}
+  .sleg .sgm{margin-left:auto;font-size:12.5px;color:var(--muted);text-align:right;line-height:1.3;flex:none;white-space:nowrap}
+  .sleg .sst{flex:none;min-width:76px;box-sizing:border-box;text-align:center;font-family:var(--cond);font-weight:800;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;border-radius:5px;padding:2px 6px;border:1.5px solid var(--line2);color:var(--muted);white-space:nowrap}
+  :root[data-skin="app"] .sleg .sst{font-size:11px;letter-spacing:.01em;min-width:68px;padding:2px 5px}
+  :root[data-skin="app"] .sleg .spk{font-size:16px}
+  .spill.won,.spill.ahead,.sleg .sst.won,.sleg .sst.ahead{background:#1f8f5a;border-color:#1f8f5a;color:#fff}
+  .spill.lost,.spill.behind,.sleg .sst.lost,.sleg .sst.behind{background:#c9382b;border-color:#c9382b;color:#fff}
+  .spill.tied,.spill.push,.sleg .sst.tied,.sleg .sst.push{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .spill.untracked,.sleg .sst.untracked{border-style:dashed}
+  .sleg .sok{flex:none;width:22px;height:22px;border-radius:50%;background:#1f8f5a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+  .sleg .sfix{flex:none;font-family:var(--cond);font-weight:800;font-size:13px;letter-spacing:.06em;color:var(--accent-ink);background:var(--accent);border:0;border-radius:999px;padding:3px 10px;cursor:pointer}
+  .sleg .sgm.ask{color:var(--accent)}
+  .sleg.tap{cursor:pointer}
+  .spick{padding:8px 0 10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+  .spick input{background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:7px 10px;font-family:var(--body);font-size:16px}
+  .spick .sopts{display:flex;flex-direction:column;max-height:240px;overflow:auto}
+  .spick .sopt{text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:var(--ink);font-family:var(--body);font-size:14.5px;padding:9px 2px;cursor:pointer}
+  .spick .sopt small{color:var(--muted);margin-left:6px;font-size:12.5px}
+  .spick .sopt.drop{color:#ff6b5f;border-bottom:0}
+  .sbtns{display:flex;gap:8px;margin-top:12px}
+  .sbtns button{flex:1 1 auto;min-width:0;font-family:var(--cond);font-weight:700;font-size:14px;letter-spacing:.04em;text-transform:uppercase;border:1.5px solid var(--line2);border-radius:999px;padding:7px 8px;background:transparent;color:var(--ink);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  :root[data-skin="app"] .sbtns button{font-size:12.5px;letter-spacing:0}
+  .sbtns button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .sbtns button.warn{border-color:#c9382b;color:#ff6b5f}
+  #spanel .scard{margin-top:10px}
+  .ssheet{position:fixed;inset:0;z-index:1000;display:flex;align-items:flex-end;justify-content:center}
+  .ssheet .ssbg{position:absolute;inset:0;background:rgba(5,8,12,.6);opacity:0;transition:opacity .2s}
+  .ssheet .sspanel{position:relative;width:100%;max-width:520px;max-height:88vh;overflow:auto;box-sizing:border-box;background:var(--bg2);border-radius:18px 18px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.5);padding:8px 16px calc(18px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .22s ease-out;color:var(--ink)}
+  .ssheet.open .ssbg{opacity:1}.ssheet.open .sspanel{transform:none}
+  .ssgrab{width:40px;height:5px;border-radius:3px;background:var(--line2);margin:2px auto 10px}
+  .ssheet .scard{background:transparent;border:0;padding:0;margin-bottom:14px}
+  .ssgo{display:block;width:100%;background:var(--accent);color:var(--accent-ink);border:0;font-family:var(--cond);font-weight:800;font-size:18px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:12px 0;cursor:pointer}
+  .ssgo[disabled]{opacity:.45;cursor:default}
+  .sssub{display:flex;justify-content:center;gap:22px;margin-top:10px}
+  .sssub button{background:none;border:0;color:var(--muted);font-family:var(--body);font-size:14px;cursor:pointer;padding:6px 2px}
+  .ssmsg{font-size:14.5px;color:var(--muted);margin:6px 0 14px;line-height:1.4}
+  .ssbusy{height:4px;border-radius:2px;background:var(--line);overflow:hidden;margin:14px 0}
+  .ssbusy span{display:block;height:100%;width:35%;background:var(--accent);border-radius:2px;animation:ssbusy 1.1s ease-in-out infinite}
+  @keyframes ssbusy{0%{transform:translateX(-100%)}100%{transform:translateX(300%)}}
+  .sspaste textarea{display:block;width:100%;min-height:96px;box-sizing:border-box;background:var(--card);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:9px 11px;font-family:var(--body);font-size:16px;margin:6px 0 12px}
+  .ssdup{font-size:12.5px;color:var(--accent);margin:-2px 0 6px}
+
   .panel h2{margin:6px 0 5px;font-family:var(--cond);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
   /* Settings (Phil, 11/2): the set-once things in labeled rows; the Package, Market and Save-view panels open under their rows */
   .panel.set .srow{display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;margin:4px 0 8px}
@@ -619,6 +692,7 @@
     <div class="row top">
       <div class="brand"><span id="brand">Football Slate</span> <small id="sub"></small><small id="cdate"></small></div>
       <div class="seg" id="cslips" role="group" aria-label="Slips" title="Your slips: a slip on keeps just its games, two on show both"></div>
+      <label class="sadd" id="sadd" for="simg" title="Add a slip: pick its screenshot"><b>+</b><span>Slip</span></label><input type="file" id="simg" accept="image/*" multiple hidden>
       <button type="button" class="wk" id="wkBtn" aria-expanded="false" aria-controls="wkrow" title="Look at another week">Week<b>&#x25BE;</b></button>
       <button type="button" class="filters" id="bshow" aria-expanded="true" title="Hide the controls">Filters <b>&#x25B4;</b></button>
     </div>
@@ -626,6 +700,7 @@
       <div class="wkline"><button type="button" class="chip" id="wkBack" hidden>This week</button><div class="wkscroll"><div class="seg two" id="wkSeg" role="group" aria-label="Week"></div></div></div>
       <span class="note" id="wknote"></span>
     </div>
+    <div class="row sstrip" id="sstrip" hidden></div>
     <div class="row pick">
         <div class="seg two" role="group" aria-label="League" id="leagueSeg">
           <button type="button" data-key="league" data-v="cfb">College<small></small></button>
@@ -704,11 +779,11 @@
       </div>
     </div>
     <div class="panel" id="spanel" hidden>
-      <h2>Slips <span>a parlay as a filter: paste the slip's picks or read a screenshot, check the legs, save; the slip gets a button beside FBS / Top 25 / All and its legs show on the bars</span></h2>
+      <h2>Slips <span>your parlays, tracked on the board: add one with the + up top (pick its screenshot), or paste the picks here</span></h2>
       <div id="slist"></div>
       <div class="snew">
         <textarea id="stext" rows="3" placeholder="Paste the picks, e.g. Indiana, Miami FL -3.5, Virginia Tech +8.5, Over 55.5 (Army at Tulsa)"></textarea>
-        <div class="srow"><button type="button" class="chip" id="sread">Find the games</button><label class="chip" for="simg">Read a screenshot</label><input type="file" id="simg" accept="image/*" multiple hidden><span id="snote"></span></div>
+        <div class="srow"><button type="button" class="chip" id="sread">Find the games</button><label class="chip" for="simg">Read a screenshot</label><span id="snote"></span></div>
         <div class="sconf" id="sconf" hidden></div>
       </div>
     </div>
@@ -1163,7 +1238,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         p.now = !!o.now; p.stars = new Set((o.stars || []).filter(n => typeof n === "string")); if (typeof o.mkt === "string") p.mkt = o.mkt; if (/^\d{5}$/.test(o.zip || "")) p.zip = o.zip;
         p.views = (o.views || []).filter(v => v && typeof v.name === "string").slice(0, MAX_VIEWS);
         p.slips = (o.slips || []).filter(s => s && typeof s.name === "string" && Array.isArray(s.legs) && Date.now() - (+s.created || 0) < 6 * 86400000)
-          .map(s => ({ name: s.name, on: !!s.on, created: +s.created || Date.now(), legs: s.legs.filter(l => l && l.id).map(l => { const o = { id: String(l.id), side: l.side || "", kind: ["ml", "spread", "total", "tt", "prop"].includes(l.kind) ? l.kind : "ml", num: l.num == null ? null : +l.num, text: String(l.text || "") };
+          .map(s => ({ name: s.name, on: !!s.on, created: +s.created || Date.now(), book: typeof s.book === "string" ? s.book.slice(0, 20) : "", stake: +s.stake || 0, pay: +s.pay || 0, flex: +s.flex || 0, sgp: !!s.sgp, legs: s.legs.filter(l => l && l.id).map(l => { const o = { id: String(l.id), side: l.side || "", kind: ["ml", "spread", "total", "tt", "prop"].includes(l.kind) ? l.kind : "ml", num: l.num == null ? null : +l.num, text: String(l.text || "") };
             ["ou", "per", "short", "who", "mkt"].forEach(k => { if (typeof l[k] === "string" && l[k]) o[k] = l[k].slice(0, 90); }); return o; }) })).slice(0, 12);   /* slips (Phil, 10/24): kept six days; team totals and props 10/25 */
       } catch (e) {} });
     }
@@ -2338,69 +2413,198 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const tryLg = lg => { const games = slipGames(lg), slips = [];
       secs.forEach(({ sec, legs }) => { const placed = placeLegs(legs, games); if (!placed.length) return;
         const key = slipKey(placed); if (slips.some(x => x.key === key)) return;   /* the same slip read twice */
-        slips.push({ name: slipName(sec, legs), legs: placed, key, dup: S.per[lg].slips.some(x => slipKey(x.legs) === key) }); });
+        slips.push(Object.assign({ name: slipName(sec, legs), legs: placed, key, dup: S.per[lg].slips.some(x => slipKey(x.legs) === key) }, slipMeta(sec, text))); });
       return { lg, slips, found: slips.reduce((a, x) => a + x.legs.filter(l => l.id).length, 0), all: slips.reduce((a, x) => a + x.legs.length, 0) }; };
     let r = tryLg(S.league); const other = S.league === "nfl" ? "cfb" : "nfl";
     if (r.found < r.all && has(other)){ const r2 = tryLg(other); if (r2.found > r.found) r = r2; }   /* read on the other league's board: the slip goes to its own (10/25) */
-    if (!r.slips.length){ snote.textContent = "No picks found. Paste them as a comma list: Indiana, Miami FL -3.5, Over 55.5 (Army at Tulsa)."; sconf.hidden = true; return; }
+    if (!r.slips.length){ sheetMsg("No picks found in that. A screenshot of the whole slip reads best, or paste the picks as a list: Indiana, Miami FL -3.5, Over 55.5 (Army at Tulsa)."); return; }
     pend = r.slips; pendLg = r.lg;
-    snote.textContent = r.slips.length + (r.slips.length === 1 ? " slip, " : " slips, ") + r.found + " of " + r.all + " legs found on the " + (r.lg === "nfl" ? "NFL" : "college") + " board; check them, then save.";
     drawConfirm();
   }
-  function drawConfirm(){
-    sconf.hidden = false; sconf.textContent = "";
-    const games = slipGames(pendLg);
-    pend.forEach((sp, si) => {
-      const box = el("div", "sc1"), top = el("div", "srow"), nm = el("input"); nm.value = sp.name; nm.maxLength = 24; nm.setAttribute("aria-label", "Slip name"); nm.addEventListener("input", () => { sp.name = nm.value; }); top.appendChild(nm);
-      if (sp.dup) top.appendChild(el("span", "muted", "already saved"));
-      const drop = el("button", "chip", "Drop slip"); drop.type = "button"; drop.addEventListener("click", () => { pend.splice(si, 1); if (pend.length) drawConfirm(); else { sconf.hidden = true; snote.textContent = ""; } }); top.appendChild(drop); box.appendChild(top);
-      sp.legs.forEach((l, i) => { const r = el("div", "leg"); r.appendChild(el("span", "legtag", legText(l) + (l.kind === "prop" && l.who ? " " + l.who : "")));
-        const sel = el("select"); const o0 = el("option", null, "not on the board"); o0.value = ""; sel.appendChild(o0);
-        games.forEach(g => ["away", "home"].forEach(side => { if (gameOnly(l) && side === "home") return;
-          const o = el("option", null, gameOnly(l) ? g.away.ab + " at " + g.home.ab : g[side].name + " (" + g.away.ab + " at " + g.home.ab + ")"); o.value = g.id + ":" + side;
-          if (g.id === l.id && (gameOnly(l) || side === l.side)) o.selected = true; sel.appendChild(o); }));
-        sel.addEventListener("change", () => { const [id, side] = sel.value.split(":"); l.id = id || ""; if (!gameOnly(l)) l.side = side || ""; });
-        r.appendChild(sel); const x = el("button", "chip", "×"); x.type = "button"; x.title = "Drop this leg"; x.addEventListener("click", () => { sp.legs.splice(i, 1); drawConfirm(); }); r.appendChild(x); box.appendChild(r); });
-      sconf.appendChild(box); });
-    const save = el("button", "chip", pend.length === 1 ? "Save slip" : "Save " + pend.length + " slips"); save.type = "button"; save.setAttribute("aria-pressed", "true");
-    save.addEventListener("click", () => {
-      const lg = pendLg, ps = S.per[lg].slips; let n = 0;
-      pend.forEach(sp => { const legs = sp.legs.filter(l => l.id); if (!legs.length || sp.dup) return; n++;
-        ps.push({ name: (sp.name || "").trim().slice(0, 24) || "Slip " + (ps.length + 1), on: true, created: Date.now(),
-          legs: legs.map(l => { const o = { id: l.id, side: l.side, kind: l.kind, num: l.num == null ? null : l.num, text: l.text }; ["ou", "per", "short", "who", "mkt"].forEach(k => { if (l[k]) o[k] = l[k]; }); return o; }) }); });
-      if (!n){ snote.textContent = "Nothing to save: pick a game for at least one leg."; return; }
-      pend = null; sconf.hidden = true; stext.value = ""; snote.textContent = ""; tally("slip", "Slip saved");
-      if (lg !== S.league){ S.league = lg; S.day = ""; S.open = ""; snote.textContent = "Saved on the " + (lg === "nfl" ? "NFL" : "college") + " board."; remember(); render(); poll(true); return; }   /* to the board the slip is on */
-      remember(); render(); });
-    sconf.appendChild(save);
+  /* ---- the slip as a card (Phil, 11/7: "a more elegant way to do the whole slip bit"; options 1 and 2) ----
+     Adding: the + on the bar opens the photos; the read shows a slipSheet shaped like the slip (logos, picks, games, a check per leg; PICK on
+     a leg it couldn't place, a search over the week's games under any leg tapped) and one Track this slip button. Following: a line
+     per slip under the bar with a pill per leg, and a tap opens its card with each leg's score and standing in words. */
+  const BOOKS = [["Caesars", /caesars/i], ["FanDuel", /fan\s?duel/i], ["DraftKings", /draft\s?kings|\bto\s+pay:/i], ["BetMGM", /bet\s?mgm/i], ["Fanatics", /fanatics|fancash/i], ["Hard Rock", /hard\s?rock/i], ["ESPN BET", /espn\s?bet/i], ["bet365", /bet\s?365/i]];
+  function slipMeta(sec, all){   /* the book, the stake and payout, a flex rule ("6 legs pays out"), a same game parlay */
+    const t = sec + "\n", book = (BOOKS.find(b => b[1].test(t)) || BOOKS.find(b => b[1].test(all || "")) || [""])[0], amt = s => +String(s).replace(/,/g, "");
+    let m, stake = 0, pay = 0;
+    if ((m = t.match(/\$\s?([\d,]+\.\d\d)\s+\$\s?([\d,]+\.\d\d)\s*\n[^\n]*total\s+wager/i))){ stake = amt(m[1]); pay = amt(m[2]); }   /* FanDuel: the amounts over their labels */
+    else if ((m = t.match(/total\s+cash\s+wagered[^\n]*\n\s*\$\s?([\d,]+\.\d\d)\s+\$\s?([\d,]+\.\d\d)/i))){ stake = amt(m[1]); pay = amt(m[2]); }   /* Caesars */
+    else { const s = t.match(/\b(?:wager(?:ed)?|stake|risk)\b[^$\n]{0,24}\$\s?([\d,]+(?:\.\d\d)?)/i), p = t.match(/\b(?:to\s+pay|payout|pays)\b[^$\n]{0,24}\$\s?([\d,]+(?:\.\d\d)?)/i); if (s && p){ stake = amt(s[1]); pay = amt(p[1]); } }
+    const f = t.match(/(\d+)\s+legs?\s+pays?\s+out/i), ok = stake > 0 && pay > stake;
+    return { book, stake: ok ? stake : 0, pay: ok ? pay : 0, flex: f ? +f[1] : 0, sgp: /same\s*game\s*parlay|\bsgp\b/i.test(t) };
   }
-  /* the slips list in the panel, and the seg beside FBS / Top 25 / All */
+  const slipRedraw = () => { wrap.dataset.view = ""; remember(); render(); };   /* the games kept change, so the board's start time does: back to the now line */
+  const kindWord = s => s.sgp ? "same game parlay" : s.flex ? "flex parlay" : s.legs.length > 1 ? "parlay" : "straight";
+  const money = n => n >= 1000 ? Math.round(n).toLocaleString("en-US") : (Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, "");
+  const gameOf = (id, lg) => (GAMES[lg || S.league] || []).find(g => g.id === id);
+  const whenTxt = g => { if (!g) return ""; if (g.state === "in") return /half/i.test(g.detail || "") ? "Half" : (g.period > 4 ? "OT" : "Q" + g.period) + " " + (g.clock || "");
+    if (g.state === "post") return g.detail || "Final"; if (g.tbd) return "TBD";
+    const wd = d => new Intl.DateTimeFormat("en-US", { timeZone: TZ[S.tz], weekday: "short" }).format(d), k = new Date(g.kick);
+    return (wd(k) !== wd(new Date()) ? wd(k) + " " : "") + fmtTime(g.kick); };
+  const scoreTxt = g => g.state === "pre" ? g.away.ab + " at " + g.home.ab : g.away.ab + " " + g.away.score + "  " + g.home.ab + " " + g.home.score;
+  function legFace(l, g, lg){   /* the team's logo (a badge for a total or a prop), its name and the pick */
+    const t = g && !gameOnly(l) && l.side ? g[l.side] : null;
+    let img; if (t){ img = el("img", "slogo"); img.alt = ""; img.src = LOGO(lg, t.logo); }
+    else img = el("span", "sbadge", l.kind === "total" ? (l.side === "under" ? "U" : "O") : l.kind === "prop" ? "P" : "?");
+    const nm = t ? (t.short || t.name) : l.kind === "total" ? (g ? g.away.ab + " / " + g.home.ab : "Total") : l.kind === "prop" ? (l.who || "Prop") : (l.team || l.text || "");
+    const pk = l.kind === "total" ? (l.per ? l.per + " " : "") + (l.side === "under" ? "Under " : "Over ") + l.num : l.kind === "prop" ? (l.short || "PROP") : legText(l);
+    const s = el("span", "spk", nm); s.appendChild(el("i", null, pk)); return [img, s];
+  }
+  function legNow(g, l){   /* the standing, and in words: covering by 4, short by 3, needs 12, 20 to spare, won */
+    const st = legStatus(g, l);
+    if (st === "untracked") return [st, "not tracked"];
+    if (st === "pending") return [st, "not started"];
+    if (st === "won") return [st, l.kind === "spread" ? "covered" : "won"];
+    if (st === "lost" || st === "push") return [st, st];
+    const per = l.per || "", q = +per.charAt(0) || 0, half = per.charAt(1) === "H";
+    const pts = side => { const t = g[side], ln = t.line || []; return !per ? t.score : half ? (q === 1 ? (ln[0] || 0) + (ln[1] || 0) : ln.slice(2).reduce((x, y) => x + y, 0)) : (ln[q - 1] || 0); };
+    const a = pts("away"), h = pts("home"), n = x => String(Math.round(x * 10) / 10);
+    if (l.kind === "total" || l.kind === "tt"){ const ou = l.kind === "total" ? l.side : l.ou, t = l.kind === "total" ? a + h : (l.side === "home" ? h : a);
+      return [st, ou === "under" ? (Math.ceil(l.num) - 1 - t) + " to spare" : "needs " + (Math.floor(l.num) + 1 - t)]; }
+    if (l.kind === "ml") return [st, st === "ahead" ? "winning" : st === "behind" ? "losing" : "tied"];
+    const me = l.side === "home" ? h : a, op = l.side === "home" ? a : h, m = me - op + l.num;
+    return [st, m > 0 ? "covering by " + n(m) : m < 0 ? "short by " + n(-m) : "on the number"];
+  }
+  function slipTitle(s, save){   /* the name (tap to rename), the odds, the stake and payout */
+    const m = (s.name || "").match(/^(.*?)\s*([+-]\d{3,5})\s*$/), row = el("div", "sttl"), inp = el("input", "sname");
+    inp.value = m ? m[1] : (s.name || "Slip"); inp.maxLength = 18; inp.setAttribute("aria-label", "Slip name"); inp.setAttribute("enterkeyhint", "done"); inp.size = Math.max(3, inp.value.length);
+    inp.addEventListener("input", () => { inp.size = Math.max(3, inp.value.length); });
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") inp.blur(); });
+    inp.addEventListener("change", () => { const v = inp.value.trim(); s.name = ((v || (m ? m[1] : "Slip")) + (m ? " " + m[2] : "")).slice(0, 24); if (save){ remember(); render(); } });
+    row.appendChild(inp); if (m) row.appendChild(el("span", "sodds", m[2]));
+    if (s.stake && s.pay){ const k = el("span", "sstake", "$" + money(s.stake) + " → "); k.appendChild(el("em", null, "$" + money(s.pay))); row.appendChild(k); }
+    return row;
+  }
+  function slipCard(s, i){   /* a saved slip as a card: the strip's and the panel's */
+    const lg = S.league, c = el("div", "scard"), gs = s.legs.map(l => gameOf(l.id, lg)), st = s.legs.map((l, k) => gs[k] ? legNow(gs[k], l) : ["pending", "not on the board"]);
+    c.appendChild(el("div", "skick", [s.book, kindWord(s), s.flex ? s.flex + " of " + s.legs.length + " pays" : ""].filter(Boolean).join(" · ")));
+    c.appendChild(slipTitle(s, true));
+    const cnt = ks => st.filter(x => ks.includes(x[0])).length, done = gs.length && gs.every(g => g && g.state === "post"), ty = el("div", "stally");
+    (done ? [[cnt(["won"]), "won"], [cnt(["lost"]), "lost"], [cnt(["push"]), "push"]].filter((x, k) => k < 2 || x[0]) : [[cnt(["won", "ahead"]), "winning"], [cnt(["lost", "behind"]), "losing"], [cnt(["pending", "tied", "untracked"]), "to go"]])
+      .forEach(([n, t]) => { const sp = el("span"); sp.appendChild(el("b", null, String(n))); sp.appendChild(document.createTextNode(t)); ty.appendChild(sp); });
+    c.appendChild(ty);
+    const list = el("div", "slegs");
+    s.legs.forEach((l, k) => { const g = gs[k], r = el("div", "sleg"); legFace(l, g, lg).forEach(x => r.appendChild(x));
+      const gm = el("span", "sgm"); if (g){ gm.appendChild(document.createTextNode(scoreTxt(g))); gm.appendChild(el("br")); gm.appendChild(document.createTextNode(whenTxt(g))); } r.appendChild(gm);
+      r.appendChild(el("span", "sst " + st[k][0], st[k][1])); list.appendChild(r); });
+    c.appendChild(list);
+    const btns = el("div", "sbtns"), on = el("button", null, "Only these games"); on.type = "button"; on.setAttribute("aria-pressed", String(s.on)); on.title = "Keep just this slip's games on the board";
+    on.addEventListener("click", () => { s.on = !s.on; slipRedraw(); }); btns.appendChild(on);
+    const rn = el("button", null, "Rename"); rn.type = "button"; rn.addEventListener("click", () => { const x = c.querySelector("input.sname"); if (x){ x.focus(); x.select(); } }); btns.appendChild(rn);
+    const del = el("button", null, "Delete"); del.type = "button";
+    del.addEventListener("click", () => { if (!del.classList.contains("warn")){ del.classList.add("warn"); del.textContent = "Tap to delete"; setTimeout(() => { del.classList.remove("warn"); del.textContent = "Delete"; }, 3000); return; }
+      P().slips.splice(i, 1); stripOpen = -1; slipRedraw(); });
+    btns.appendChild(del); c.appendChild(btns); return c;
+  }
+  /* the slipSheet: busy while the screenshot is read, then the slip to confirm, or a note, or the paste box */
+  let slipSheet = null;
+  function sheetOpen(){
+    if (!slipSheet){ slipSheet = el("div", "ssheet"); const bg = el("div", "ssbg"), pnl = el("div", "sspanel"); pnl.setAttribute("role", "dialog"); pnl.setAttribute("aria-label", "Your slip");
+      pnl.appendChild(el("div", "ssgrab")); pnl.appendChild(el("div", "ssbody")); slipSheet.appendChild(bg); slipSheet.appendChild(pnl); document.body.appendChild(slipSheet);
+      bg.addEventListener("click", sheetClose); requestAnimationFrame(() => requestAnimationFrame(() => { if (slipSheet) slipSheet.classList.add("open"); })); }
+    const b = slipSheet.querySelector(".ssbody"); b.textContent = ""; return b;
+  }
+  function sheetClose(){ if (!slipSheet) return; const s = slipSheet; slipSheet = null; pend = null; s.classList.remove("open"); setTimeout(() => s.remove(), 240); }
+  function sheetLinks(b, list){ const sub = el("div", "sssub"); list.forEach(([t, f]) => { const x = el("button", null, t); x.type = "button"; x.addEventListener("click", f); sub.appendChild(x); }); b.appendChild(sub); }
+  function sheetBusy(msg){ const b = sheetOpen(); b.appendChild(el("div", "skick", "Reading your screenshot")); const bar = el("div", "ssbusy"); bar.appendChild(el("span")); b.appendChild(bar); if (msg) b.appendChild(el("div", "ssmsg", msg)); sheetLinks(b, [["Cancel", sheetClose]]); }
+  function sheetMsg(msg){ const b = sheetOpen(); b.appendChild(el("div", "skick", "Slips")); b.appendChild(el("div", "ssmsg", msg)); sheetLinks(b, [["Paste picks instead", pasteMode], ["Cancel", sheetClose]]); }
+  function pasteMode(){
+    const b = sheetOpen(); b.appendChild(el("div", "skick", "Paste the picks")); const box = el("div", "sspaste"), ta = el("textarea");
+    ta.placeholder = "Indiana, Miami FL -3.5, Virginia Tech +8.5, Over 55.5 (Army at Tulsa)"; ta.value = stext.value || ""; box.appendChild(ta); b.appendChild(box);
+    const go = el("button", "ssgo", "Find the games"); go.type = "button"; go.addEventListener("click", () => { stext.value = ta.value; if (ta.value.trim()) readSlip(ta.value); }); b.appendChild(go);
+    sheetLinks(b, [["Cancel", sheetClose]]); setTimeout(() => ta.focus(), 260);
+  }
+  function drawConfirm(){
+    const b = sheetOpen(), lg = pendLg;
+    pend.forEach(sp => {
+      const c = el("div", "scard"), got = sp.legs.filter(l => l.id).length;
+      c.appendChild(el("div", "skick", [sp.book, kindWord(sp), got === sp.legs.length ? "read from your screenshot" : got + " of " + sp.legs.length + " matched"].filter(Boolean).join(" · ")));
+      c.appendChild(slipTitle(sp, false));
+      if (sp.dup) c.appendChild(el("div", "ssdup", "You're already tracking this one"));
+      if (lg !== S.league) c.appendChild(el("div", "ssdup", "These are " + (lg === "nfl" ? "NFL" : "college") + " games; the slip goes on that board"));
+      const list = el("div", "slegs"); sp.legs.forEach((l, k) => list.appendChild(confirmRow(sp, l, k, lg))); c.appendChild(list); b.appendChild(c); });
+    const n = pend.filter(sp => !sp.dup && sp.legs.some(l => l.id)).length;
+    const go = el("button", "ssgo", n > 1 ? "Track these " + n + " slips" : "Track this slip"); go.type = "button"; go.disabled = !n; go.addEventListener("click", trackPending); b.appendChild(go);
+    sheetLinks(b, [["Rename", () => { const x = b.querySelector("input.sname"); if (x){ x.focus(); x.select(); } }], ["Paste picks instead", pasteMode], ["Cancel", sheetClose]]);
+  }
+  function confirmRow(sp, l, k, lg){
+    const g = l.id ? gameOf(l.id, lg) : null, r = el("div", "sleg tap");
+    legFace(l, g, lg).forEach(x => r.appendChild(x));
+    if (g){ r.appendChild(el("span", "sgm", g.away.ab + " at " + g.home.ab + " · " + whenTxt(g))); r.appendChild(el("span", "sok", "✓")); }
+    else { r.appendChild(el("span", "sgm ask", "which game?")); const f = el("button", "sfix", "PICK"); f.type = "button"; r.appendChild(f); }
+    r.addEventListener("click", () => openPicker(sp, l, k, lg, r));
+    return r;
+  }
+  function openPicker(sp, l, k, lg, row){   /* under a leg: search the week's games for it, or drop it */
+    const was = row.nextSibling && row.nextSibling.classList && row.nextSibling.classList.contains("spick"); row.parentNode.querySelectorAll(".spick").forEach(x => x.remove()); if (was) return;
+    const box = el("div", "spick"), q = el("input"), opts = el("div", "sopts"), games = slipGames(lg), one = gameOnly(l);
+    q.type = "search"; q.placeholder = one ? "Search a team in the game" : "Search the team"; q.setAttribute("enterkeyhint", "search"); box.appendChild(q); box.appendChild(opts);
+    const list = () => { opts.textContent = ""; const t = q.value.trim(), lt = t.toLowerCase(), cand = [];
+      games.forEach(g => (one ? ["home"] : ["away", "home"]).forEach(side => {
+        const sc = t ? Math.max(teamHit(t, g[side]), one ? teamHit(t, g.away) : 0, (g[side].name || "").toLowerCase().includes(lt) || (one && (g.away.name || "").toLowerCase().includes(lt)) ? 2 : 0) : (l.team ? teamHit(l.team, g[side]) : 0);
+        if (t ? sc >= 0.9 : sc > 0) cand.push({ g, side, sc }); }));
+      cand.sort((a, b) => b.sc - a.sc || (a.g.kick < b.g.kick ? -1 : 1));
+      cand.slice(0, 8).forEach(({ g, side }) => { const o = el("button", "sopt", one ? g.away.name + " at " + g.home.name : g[side].name); o.type = "button";
+        o.appendChild(el("small", null, (one ? "" : g.away.ab + " at " + g.home.ab + " · ") + whenTxt(g)));
+        o.addEventListener("click", e => { e.stopPropagation(); l.id = g.id; if (!one) l.side = side; drawConfirm(); }); opts.appendChild(o); });
+      if (!cand.length) opts.appendChild(el("div", "ssmsg", t ? "No game this week with that name" : "Type a team to find its game")); };
+    q.addEventListener("input", list); box.addEventListener("click", e => e.stopPropagation()); list();
+    const drop = el("button", "sopt drop", "Drop this leg"); drop.type = "button";
+    drop.addEventListener("click", e => { e.stopPropagation(); sp.legs.splice(k, 1); if (!sp.legs.length) pend.splice(pend.indexOf(sp), 1); if (pend && pend.length) drawConfirm(); else sheetClose(); });
+    box.appendChild(drop); row.after(box); setTimeout(() => q.focus(), 60);
+  }
+  function trackPending(){
+    const lg = pendLg, ps = S.per[lg].slips; let n = 0;
+    pend.forEach(sp => { const legs = sp.legs.filter(l => l.id); if (!legs.length || sp.dup) return; n++;
+      const o = { name: (sp.name || "").trim().slice(0, 24) || "Slip " + (ps.length + 1), on: true, created: Date.now(),
+        legs: legs.map(l => { const o = { id: l.id, side: l.side, kind: l.kind, num: l.num == null ? null : l.num, text: l.text }; ["ou", "per", "short", "who", "mkt"].forEach(k => { if (l[k]) o[k] = l[k]; }); return o; }) };
+      ["book", "stake", "pay", "flex", "sgp"].forEach(k => { if (sp[k]) o[k] = sp[k]; }); ps.push(o); });
+    if (!n) return;
+    sheetClose(); stext.value = ""; snote.textContent = ""; tally("slip", "Slip saved");
+    if (lg !== S.league){ S.league = lg; S.day = ""; S.open = ""; remember(); render(); poll(true); return; }   /* to the board the slip is on */
+    slipRedraw();
+  }
+  /* the slips in the panel and under the bar, and the slip buttons beside FBS / Top 25 / All and on the folded bar */
+  let stripOpen = -1;   /* the slip whose card is open under the bar */
+  const shortName = s => { const m = (s.name || "").match(/^(.*?)\s*[+-]\d{3,5}\s*$/); return ((m ? m[1] : s.name) || "Slip").slice(0, 12); };
+  const pillTxt = (l, g) => l.kind === "total" ? (l.side === "under" ? "U" : "O") + l.num : l.kind === "prop" ? ((l.who || "prop").split(/\s+or\s+/)[0]).slice(0, 7).toUpperCase() : (g && g[l.side] ? g[l.side].ab : (l.team || "?").slice(0, 4).toUpperCase());
+  function drawStrip(){
+    const box = document.getElementById("sstrip"), p = P();
+    if (box.contains(document.activeElement) && document.activeElement.tagName === "INPUT") return;   /* a rename in progress */
+    box.textContent = "";
+    if (awayWeek() || !p.slips.length){ box.hidden = true; return; } box.hidden = false;
+    if (stripOpen >= p.slips.length) stripOpen = -1;
+    p.slips.forEach((s, i) => {
+      const line = el("button", "sline"); line.type = "button"; line.setAttribute("aria-expanded", String(stripOpen === i)); line.title = "Open the slip";
+      line.appendChild(el("span", "snm", shortName(s))); const pills = el("span", "spills");
+      s.legs.forEach(l => { const g = gameOf(l.id); pills.appendChild(el("span", "spill " + (g ? legStatus(g, l) : "pending"), pillTxt(l, g))); });
+      line.appendChild(pills); line.appendChild(el("span", "scar", "▾"));
+      line.addEventListener("click", () => { stripOpen = stripOpen === i ? -1 : i; drawStrip(); if (stripOpen === i) tally("slip-card", "Slip card opened"); });
+      box.appendChild(line); if (stripOpen === i) box.appendChild(slipCard(s, i)); });
+  }
   function drawSlips(){
-    const p = P(), game = id => (GAMES[S.league] || []).find(g => g.id === id);
-    slist.textContent = "";
-    p.slips.forEach((s, i) => { const box = el("div", "sl"), h = el("div", "slh"), on = el("button", "chip", s.name); on.type = "button"; on.setAttribute("aria-pressed", String(s.on));
-      on.addEventListener("click", () => { s.on = !s.on; remember(); render(); }); h.appendChild(on);
-      const nm = el("input"); nm.value = s.name; nm.maxLength = 24; nm.setAttribute("aria-label", "Rename"); nm.addEventListener("change", () => { s.name = nm.value.trim().slice(0, 24) || s.name; remember(); render(); }); h.appendChild(nm);
-      const del = el("button", "chip", "Delete"); del.type = "button"; del.addEventListener("click", () => { p.slips.splice(i, 1); remember(); render(); }); h.appendChild(del); box.appendChild(h);
-      s.legs.forEach(l => { const g = game(l.id), r = el("div", "leg"); r.appendChild(g ? legTag(g, l) : el("span", "legtag", legText(l)));
-        r.appendChild(el("span", null, g ? legWhere(g, l) : l.text));
-        r.appendChild(el("span", "muted", g ? (g.state === "pre" ? "not started" : g.away.ab + " " + g.away.score + " " + g.home.ab + " " + g.home.score + (g.state === "post" ? " final" : "")) : "not on this week's board")); box.appendChild(r); });
-      slist.appendChild(box); });
-    slipSeg.textContent = ""; slipSeg.hidden = !p.slips.length || awayWeek(); cslips.textContent = ""; document.querySelector(".bar").classList.remove("hasslips"); if (awayWeek()){ slipN.textContent = p.slips.length ? String(p.slips.length) : ""; return; }
-    [slipSeg, cslips].forEach(seg => p.slips.forEach(s => { const b = el("button", null, s.name); b.type = "button"; b.setAttribute("aria-pressed", String(s.on)); b.addEventListener("click", () => { s.on = !s.on; remember(); render(); }); seg.appendChild(b); }));
+    const p = P();
+    if (!(slist.contains(document.activeElement) && document.activeElement.tagName === "INPUT")){ slist.textContent = ""; p.slips.forEach((s, i) => slist.appendChild(slipCard(s, i))); }
+    slipSeg.textContent = ""; slipSeg.hidden = !p.slips.length || awayWeek(); cslips.textContent = ""; document.querySelector(".bar").classList.remove("hasslips"); sadd.hidden = awayWeek();
+    drawStrip();
+    if (awayWeek()){ slipN.textContent = p.slips.length ? String(p.slips.length) : ""; return; }
+    [slipSeg, cslips].forEach(seg => p.slips.forEach(s => { const b = el("button", null, seg === cslips ? shortName(s) : s.name); b.type = "button"; b.setAttribute("aria-pressed", String(s.on)); b.title = s.name + ": only its games";
+      b.addEventListener("click", () => { s.on = !s.on; slipRedraw(); }); seg.appendChild(b); }));   /* the folded bar's buttons by the short name; the strip under it has the rest */
     slipN.textContent = p.slips.length ? String(p.slips.length) : "";
     document.querySelector(".bar").classList.toggle("hasslips", cslips.children.length > 0);   /* the folded title line gives the date's room to the slips (11/2) */
   }
-  const spanel = document.getElementById("spanel"), slipBtn = document.getElementById("slipBtn"), slipSeg = document.getElementById("slipSeg"), cslips = document.getElementById("cslips"), slipN = document.getElementById("slipN"), slist = document.getElementById("slist"), stext = document.getElementById("stext"), simg = document.getElementById("simg"), sread = document.getElementById("sread"), snote = document.getElementById("snote"), sconf = document.getElementById("sconf");
+  const spanel = document.getElementById("spanel"), slipBtn = document.getElementById("slipBtn"), slipSeg = document.getElementById("slipSeg"), cslips = document.getElementById("cslips"), slipN = document.getElementById("slipN"), slist = document.getElementById("slist"), stext = document.getElementById("stext"), simg = document.getElementById("simg"), sread = document.getElementById("sread"), snote = document.getElementById("snote"), sconf = document.getElementById("sconf"), sadd = document.getElementById("sadd");
   sread.addEventListener("click", () => readSlip(stext.value));
   simg.addEventListener("change", async () => {
     const files = [...simg.files]; if (!files.length) return;
-    snote.textContent = "Reading the screenshot…";
+    sheetBusy(window.Tesseract ? "" : "Getting the reader ready; the first time takes a few seconds.");
     try {
       if (!window.Tesseract) await new Promise((res, rej) => { const s = document.createElement("script"); s.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
       let text = ""; for (const f of files){ const r = await Tesseract.recognize(f, "eng"); text += "\n" + (r.data.text || ""); }
-      stext.value = text.trim(); readSlip(text);
-    } catch (e) { snote.textContent = "Couldn't read the screenshot here; paste the slip's picks instead."; }
+      if (slipSheet){ stext.value = text.trim(); readSlip(text); }   /* not if Cancel was tapped while it read */
+    } catch (e) { if (slipSheet) sheetMsg("Couldn't read the screenshot here. Paste the slip's picks instead."); }
     simg.value = "";
   });
   const pkgBtn = document.getElementById("pkgBtn"), panel = document.getElementById("panel"), confBtn = document.getElementById("confBtn"), cpanel = document.getElementById("cpanel"), wpanel = document.getElementById("wpanel");
