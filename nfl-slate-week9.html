@@ -126,6 +126,13 @@
   #brand .wshort{display:none}
   .bar.off #brand .wfull{display:none}
   .bar.off #brand .wshort{display:inline;font-size:1.15em}   /* folded (11/7): SLATE alone, a size up (11/8); the open bar says which league */
+  /* the opening (Phil, 11/8): once a session the mark plays in over the board and settles into the title bar; it never blocks a tap */
+  #intro{display:none}
+  .intro #intro{display:block;position:fixed;inset:0;z-index:5000;pointer-events:none}
+  #intro .ibg{position:absolute;inset:0;background:var(--bg)}
+  #intro svg{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible}
+  .intro #brand{visibility:hidden}
+  @media print{#intro{display:none!important}}
   .row.pick{margin-top:8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:6px}
   .row.pick::-webkit-scrollbar{display:none}
   .row.pick > *{flex:none}
@@ -687,9 +694,16 @@
     .fx{padding:4px 12px 5px;font-size:11px}
   }
 </style>
+<script>/* before the first paint: the saved theme and skin (so the opening's cover matches), and whether the opening plays (once a session, never with reduced motion; Phil, 11/8) */
+(function(){ try { var s = JSON.parse(localStorage.getItem("slate-v2") || "null"), d = document.documentElement;
+  if (s && s.theme) d.setAttribute("data-theme", s.theme); if (s && (s.skin === "app" || s.skin === "broadcast")) d.setAttribute("data-skin", s.skin);
+  if (!sessionStorage.getItem("slate-intro") && !matchMedia("(prefers-reduced-motion: reduce)").matches){ sessionStorage.setItem("slate-intro", "1"); d.classList.add("intro"); }
+} catch (e) {} })();
+</script>
 <script data-goatcounter="https://slatetober.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
+<div id="intro" aria-hidden="true"><div class="ibg"></div></div>
 <div class="app">
   <div class="bar">
     <div class="row top">
@@ -3316,6 +3330,59 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   render();
   if (migrated) remember();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (S.view === "timeline") render(); });   /* the name slot is measured in the real font once it lands */
+  /* the opening (Phil, 11/8): once a session the day's games slide in behind the word, the gold now line drops into the L, the lines
+     clear and the mark settles into the title bar as the board comes up, about 1.4s (the head decides whether it plays) */
+  (function opening(){
+    const root = document.documentElement, cover = document.getElementById("intro");
+    if (!cover || !root.classList.contains("intro")) return;
+    let over = false; const finish = () => { if (over) return; over = true; root.classList.remove("intro"); cover.remove(); };
+    setTimeout(finish, 4000);   /* the board within 4 seconds, whatever happens */
+    const lift = () => { cover.style.transition = "opacity .25s"; cover.style.opacity = "0"; setTimeout(finish, 280); };
+    const app = root.getAttribute("data-skin") === "app", font = app ? WM_FONT.app : WM_FONT.broadcast, word = app ? "Slate" : "SLATE", lsx = app ? -0.02 : 0.012;
+    new Promise(res => { try { document.fonts.load(font.replace("100px", "20px")).then(f => res(f.length > 0), () => res(false)); } catch (e) { res(false); } setTimeout(() => res(false), 900); }).then(ok => {
+      if (!ok || over) return lift();
+      const c = document.createElement("canvas").getContext("2d"); c.font = font; const w = s => c.measureText(s).width, ls = lsx * 100;
+      const pos = t => { let x = 0; return [...t].map(ch => { const p = [ch, x]; x += w(ch) + ls; return p; }); };
+      const chars = pos(word), W = chars[4][1] + w(chars[4][0]), st = stemOf(font, word[1]); if (!st) return lift();
+      const sx = chars[1][1] + st.x0, gw = (st.x1 - st.x0) * 0.36, cap = st.cap, band = app ? c.measureText("x").actualBoundingBoxAscent : cap, th = band * 0.13;
+      const inkR = chars[4][1] + c.measureText(chars[4][0]).actualBoundingBoxRight, end = i => Math.min(chars[i][1] + w(chars[i][0]), inkR - th / 2);
+      const lanes = [[0.75, end(2), 0.35], [0.5, end(3), 0.6], [0.25, end(4), 0.92]];   /* top to bottom: after the A, the T, the E; the icon's strengths */
+      const vw = innerWidth, vh = innerHeight, hk = Math.min(233, vw * 0.6) / W, home = { x: (vw - W * hk) / 2, y: vh / 2 + cap * hk / 2, k: hk };   /* the app's launch logo size */
+      const NS = "http://www.w3.org/2000/svg", mk = (tag, at) => { const e = document.createElementNS(NS, tag); for (const a in at) e.setAttribute(a, at[a]); return e; };
+      const svg = mk("svg", { viewBox: "0 0 " + vw + " " + vh }), g = mk("g", {}), text = mk("g", { style: "fill:var(--ink);font:" + font }), gold = mk("rect", { x: sx, width: gw, style: "fill:var(--accent);opacity:0" });
+      const lines = lanes.map(([f]) => mk("line", { y1: -band * f, y2: -band * f, "stroke-width": th, "stroke-linecap": "round", style: "stroke:var(--ink);opacity:0" }));
+      chars.forEach(([ch, x]) => { const t = mk("text", { x, y: 0 }); t.textContent = ch; text.appendChild(t); });
+      lines.forEach(l => g.appendChild(l)); g.appendChild(text); g.appendChild(gold); svg.appendChild(g); cover.appendChild(svg);
+      const bg = cover.querySelector(".ibg"), sky = -home.y / home.k - 30;
+      const seg = (t, a, b) => Math.max(0, Math.min(1, (t - a) / (b - a))), out = p => 1 - Math.pow(1 - p, 3), io = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+      const target = () => {   /* where the title's SLATE sits: the folded lockup, or the last word of the open one */
+        const el = [...document.querySelectorAll("#brand svg")].find(s => s.getBoundingClientRect().width > 0); if (!el) return null;
+        const r = el.getBoundingClientRect(), vb = el.viewBox.baseVal, k = r.width / vb.width;
+        let off = 0; if (el.closest(".wfull")){ const t = app ? (NFL() ? "NFL" : "College") + " Slate" : (NFL() ? "NFL SLATE" : "COLLEGE SLATE"); off = pos(t)[t.lastIndexOf(" ") + 1][1]; }
+        return { x: r.left + off * k, y: r.top - vb.y * k, k };
+      };
+      let t0 = 0, head = null;
+      const frame = now => {
+        if (over) return;
+        if (!t0) t0 = now;
+        const T = (now - t0) / 1000;
+        if (T >= 0.9 && !head) head = target() || Object.assign({ gone: true }, home);
+        const m = io(seg(T, 0.9, 1.35)), h = head || home, k = home.k + (h.k - home.k) * m;
+        g.setAttribute("transform", "translate(" + (home.x + (h.x - home.x) * m) + " " + (home.y + (h.y - home.y) * m) + ") scale(" + k + ")");
+        text.style.opacity = out(seg(T, 0, 0.18));
+        const clear = 1 - seg(T, 0.66, 0.88);
+        lanes.forEach(([, x1, op], i) => { const s0 = 0.04 + (2 - i) * 0.04, p = out(seg(T, s0, s0 + 0.44)), off = (1 - p) * ((vw - home.x) / home.k - sx + 40);
+          lines[i].setAttribute("x1", sx + off); lines[i].setAttribute("x2", x1 + off); lines[i].style.opacity = T > s0 ? op * clear : 0; });
+        if (T >= 0.36){ const bot = sky * (1 - out(seg(T, 0.36, 0.62))), tp = Math.min(sky + (-cap - sky) * io(seg(T, 0.64, 0.86)), bot - 1);
+          gold.setAttribute("y", tp); gold.setAttribute("height", bot - tp); gold.style.opacity = 1; }
+        bg.style.opacity = 1 - seg(T, 0.95, 1.3);
+        if (h.gone) svg.style.opacity = 1 - seg(T, 0.95, 1.3);
+        if (T >= 1.36) return finish();
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    });
+  })();
   poll(true);
 })();
 </script>
