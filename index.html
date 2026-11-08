@@ -125,7 +125,7 @@
   .filters.ico[aria-expanded="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}   /* filled while the filters are open */
   #brand .wshort{display:none}
   .bar.off #brand .wfull{display:none}
-  .bar.off #brand .wshort{display:inline}   /* folded (11/7): SLATE alone; the open bar says which league */
+  .bar.off #brand .wshort{display:inline;font-size:1.15em}   /* folded (11/7): SLATE alone, a size up (11/8); the open bar says which league */
   .row.pick{margin-top:8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:6px}
   .row.pick::-webkit-scrollbar{display:none}
   .row.pick > *{flex:none}
@@ -2946,8 +2946,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* ============================ render ============================ */
   const wrap = document.getElementById("wrap"), daysEl = document.getElementById("days");
   let builtFor = "";
-  /* the title line as one lockup (Phil, 11/2): the league and SLATE in the skin's own title type, the L's stem running on past
-     the cap in the accent color, no head. Drawn from the glyphs once the face is in; the plain words until then. */
+  /* the title line as one lockup: the league and SLATE in the skin's own title type, the L plain with one thin gold line down its
+     left edge, cap to baseline (Phil, 11/8: the icon's now line, nothing else). Drawn from the glyphs once the face is in; the plain
+     words until then. */
   const brandEl = document.getElementById("brand"), WM_FONT = { broadcast: "800 100px 'Barlow Condensed'", app: "700 100px 'Chakra Petch'" }, wmOk = {};
   function stemOf(font, ch){   /* the glyph's vertical bar, read at 4x: every column with ink through the band above the baseline, edge pixels included, and where it starts */
     const K = 4, W = 160 * K, H = 140 * K, c = document.createElement("canvas"); c.width = W; c.height = H; const x = c.getContext("2d");
@@ -2965,14 +2966,13 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     let xs = 0; const chars = []; for (const ch of text){ chars.push([ch, xs]); xs += w(ch) + ls; } const W = xs - ls;
     const sx = chars[j][1] + st.x0, sw = st.x1 - st.x0, cap = st.cap, tip = -cap, H = -tip + 4;   /* flush with the cap (R2, 11/3): nothing above the letter */
     return '<svg class="wm" viewBox="0 ' + (tip - 2) + ' ' + W + ' ' + H + '" style="height:' + (H / 100) + 'em" aria-hidden="true">' +
-      '<defs><linearGradient id="wmg" gradientUnits="userSpaceOnUse" x1="0" y1="' + (-cap * 0.23) + '" x2="0" y2="' + (-cap * 0.43) + '"><stop offset="0" style="stop-color:var(--ink)"/><stop offset="1" style="stop-color:var(--accent)"/></linearGradient></defs>' +
       '<g fill="currentColor" style="font:' + font + '">' + chars.map(([ch, x]) => '<text x="' + x + '" y="0">' + ch + '</text>').join("") + '</g>' +
-      '<rect x="' + sx + '" y="' + tip + '" width="' + sw + '" height="' + (-tip) + '" fill="url(#wmg)"/></svg>';   /* gold from the cap down, ink by the foot */
+      '<rect x="' + sx + '" y="' + tip + '" width="' + (sw * 0.36) + '" height="' + (-tip) + '" style="fill:var(--accent)"/></svg>';   /* the now line: the stem's left .36, as on the icon */
   }
   function setBrand(){
     const app = document.documentElement.getAttribute("data-skin") === "app", word = NFL() ? "NFL" : "College";
     const mk = t => app ? (wmOk.app ? lockup(t, WM_FONT.app, true, -0.02) : "") : (wmOk.broadcast ? lockup(t.toUpperCase(), WM_FONT.broadcast, false, 0.012) : "");
-    const full = mk(word + " Slate") || word + " Slate", short = mk("Slate").split("wmg").join("wmgs") || "Slate";   /* folded, SLATE alone (11/7); its gradient has its own id */
+    const full = mk(word + " Slate") || word + " Slate", short = mk("Slate") || "Slate";   /* folded, SLATE alone (11/7) */
     brandEl.innerHTML = '<span class="wfull">' + full + '</span><span class="wshort">' + short + '</span>';
   }
   Object.keys(WM_FONT).forEach(k => { try { document.fonts.load(WM_FONT[k].replace("100px", "20px")).then(fs => { if (fs.length){ wmOk[k] = true; setBrand(); } }).catch(() => {}); } catch (e) {} });
