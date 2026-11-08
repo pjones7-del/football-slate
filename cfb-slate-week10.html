@@ -228,6 +228,11 @@
   .sleg .sst{flex:none;min-width:76px;box-sizing:border-box;text-align:center;font-family:var(--cond);font-weight:800;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;border-radius:5px;padding:2px 6px;border:1.5px solid var(--line2);color:var(--muted);white-space:nowrap}
   :root[data-skin="app"] .sleg .sst{font-size:11px;letter-spacing:.01em;min-width:68px;padding:2px 5px}
   :root[data-skin="app"] .sleg .spk{font-size:16px}
+  .sleg .spk.pp{display:flex;flex-direction:column;justify-content:center;line-height:1.15}   /* a prop (11/8): the pick stays whole (the names give way), its players' numbers under it */
+  .sleg .spk .spl{display:flex;align-items:baseline;min-width:0}
+  .sleg .spk .spn{overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .sleg .spk .spl i{flex:none}
+  .sleg .spk .spv{font-family:var(--body);font-weight:600;font-size:12.5px;letter-spacing:0;color:var(--muted);overflow:hidden;text-overflow:ellipsis;margin-top:2px}
   .spill.won,.spill.ahead,.sleg .sst.won,.sleg .sst.ahead{background:#1f8f5a;border-color:#1f8f5a;color:#fff}
   .spill.lost,.spill.behind,.sleg .sst.lost,.sleg .sst.behind{background:#c9382b;border-color:#c9382b;color:#fff}
   .spill.tied,.spill.push,.sleg .sst.tied,.sleg .sst.push{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
@@ -1549,7 +1554,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     c.dataset.id = g.id;
     c.appendChild(stat);
     const foot = el("div", "foot");
-    gameLegs(g).filter(gameOnly).forEach(l => { const s = el("span", "ln"); s.appendChild(legTag(g, l)); s.appendChild(document.createTextNode(" " + (l.kind === "prop" ? (l.who || "prop") : "total"))); foot.appendChild(s); });   /* a game leg in the foot, not on the home row (10/25) */
+    gameLegs(g).filter(gameOnly).forEach(l => { const s = el("span", "ln"); s.appendChild(legTag(g, l)); s.appendChild(document.createTextNode(" " + (l.kind === "prop" ? propLbl(g, l) : "total"))); foot.appendChild(s); });   /* a game leg in the foot, not on the home row (10/25) */
     const lv = liveLine(g);
     if (lv){ const s = el("span", "ln"); s.appendChild(document.createTextNode("live ")); s.appendChild(el("b", null, lv)); foot.appendChild(s); }
     const ln = lineText(g, t => t.ab);
@@ -1641,7 +1646,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     p.appendChild(sc);
     const f = el("span", "p" + (st.rz && st.poss === side ? " rz" : "")); f.innerHTML = FOOTBALL; p.appendChild(f);
     const legs = gameLegs(g).filter(l => !gameOnly(l) && l.side === side), mid = gameLegs(g).some(gameOnly);   /* a slip's leg: a stripe at the plate's edge (Phil, 10/24); a game leg's sits between the plates (10/25) */
-    if (legs.length){ const m = el("i", "legm " + legStatus(g, legs[0]) + (mid ? " half" : "")); m.title = legs.map(l => legText(l) + " " + LEGWORD[legStatus(g, l)]).join(", "); p.appendChild(m); }
+    if (legs.length){ const m = el("i", "legm " + legStatus(g, legs[0]) + (mid ? " half" : "")); m.title = legs.map(l => legText(l) + " " + legWord(g, l)).join(", "); p.appendChild(m); }
     return p;
   }
   /* the open card (Phil's pick, 10/23): the row's channels and Close, then one card: the scoreboard in the team colors, the status
@@ -1654,7 +1659,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     xin.appendChild(head);
     const c = el("div", "xc " + st.phase + (st.rz ? " rz" : "") + (S.xc === "compact" ? " compact" : "") + (g.fav ? " fav" : ""));
     c.appendChild(xScore(g, st));
-    { const legs = gameLegs(g); if (legs.length){ const lr = el("div", "xlegs"); legs.forEach(l => { lr.appendChild(legTag(g, l)); lr.appendChild(el("span", "xlt", l.kind === "total" ? "total" : l.kind === "prop" ? (l.who || "prop") : g[l.side] ? g[l.side].ab : "")); }); c.appendChild(lr); } }   /* the slip's legs on this game (Phil, 10/24) */
+    { const legs = gameLegs(g); if (legs.length){ const lr = el("div", "xlegs"); legs.forEach(l => { lr.appendChild(legTag(g, l)); lr.appendChild(el("span", "xlt", l.kind === "total" ? "total" : l.kind === "prop" ? propLbl(g, l) : g[l.side] ? g[l.side].ab : "")); }); c.appendChild(lr); } }   /* the slip's legs on this game (Phil, 10/24) */
     c.appendChild(xStatus(g, st));
     if (g.state !== "pre" && !g.ghost) c.appendChild(gcBlock(g));
     else { const ln = xLines(g); if (ln) c.appendChild(ln); }
@@ -1759,10 +1764,11 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     gcBusy = true;
     try {
       const r = await fetch(SUMMARY(S.league, g.id), { cache: "no-store" }); if (!r.ok) throw new Error(r.status);
-      const d = parseSummary(await r.json()), key = JSON.stringify([d.plays.length, d.plays[0] && d.plays[0].id, d.wp.length, d.scoring.length, (d.box[g.away.ab] || {})["Total Yards"], (d.box[g.home.ab] || {})["Total Yards"]]);
+      const j = await r.json(), d = parseSummary(j), key = JSON.stringify([d.plays.length, d.plays[0] && d.plays[0].id, d.wp.length, d.scoring.length, (d.box[g.away.ab] || {})["Total Yards"], (d.box[g.home.ab] || {})["Total Yards"]]);
       const changed = !c || c.key !== key;
       GCD[g.id] = { at: Date.now(), d, key, final: g.state === "post" };
       if (changed || !c) redrawGc(g);
+      propShare(g, j);   /* the same box score for the slips' props on this game (11/8) */
     } catch (e) { if (!c) GCD[g.id] = { at: Date.now(), d: null, key: "", final: false }; redrawGc(g); }
     finally { gcBusy = false; }
   }
@@ -1967,7 +1973,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         if (nowX != null && nowX > x(g._start) + 1 && nowX < x(g._start) + w - 1){ const seg = el("div", "now"); seg.style.left = (nowX - x(g._start)) + "px"; seg.dataset.x = String(nowX - x(g._start)); b.appendChild(seg); }
         const tb = el("div", "tb");
         const col = el("div", "col"); col.appendChild(plate(g, "away", st)); col.appendChild(plate(g, "home", st)); tb.appendChild(col);
-        { const gl = gameLegs(g).filter(gameOnly); if (gl.length){ const m = el("i", "legm mid " + legStatus(g, gl[0])); m.title = gl.map(l => legText(l) + " " + LEGWORD[legStatus(g, l)]).join(", "); col.appendChild(m); } }   /* a total or a prop: between the teams (Phil, 10/25) */
+        { const gl = gameLegs(g).filter(gameOnly); if (gl.length){ const m = el("i", "legm mid " + legStatus(g, gl[0])); m.title = gl.map(l => legText(l) + " " + legWord(g, l)).join(", "); col.appendChild(m); } }   /* a total or a prop: between the teams (Phil, 10/25) */
         const stc = el("div", "st");
         const big = el("div", "big", st.big);
         if (st.tag) big.appendChild(el("span", "tag", st.tag));   /* a break in play: TIMEOUT, 2-MIN WARNING ... (the down stays below) */
@@ -2122,11 +2128,129 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const ouText = (ou, n) => (ou === "under" ? "U " : "O ") + n;
   const legText = l => (l.per ? l.per + " " : "") + (l.kind === "ml" ? "ML" : l.kind === "spread" ? (l.num > 0 ? "+" : "") + l.num : l.kind === "total" ? ouText(l.side, l.num)
     : l.kind === "tt" ? "TT " + ouText(l.ou, l.num) : (l.short || "PROP"));
+  /* ---- player props (Phil, 11/8: "very common to do player props ... Would be great if the app could track it") ----
+     A prop leg is read into players, a stat and a line from its market ("Jahmyr Gibbs & Ollie Gordon II - Combined Total Touchdowns",
+     "Kenneth Walker III or Xavier Worthy - Either Player to Score X TD's", "Jahmyr Gibbs - Rushing Yards") and its pick ("2+", "Over
+     64.5", "70+", the player for an anytime touchdown). Several players count together (combined, &), any one of them (either, or) or
+     each (both). The numbers come from ESPN's game summary (the open card's box score): for a live game with a prop leg about every 45
+     seconds and right after its score changes, a final's once. A touchdown is a rushing, receiving or return touchdown. A player the
+     game's injury report has out, with no numbers, makes the leg void. A first touchdown scorer, or a market it can't read, stays
+     outlined as before. Nothing new is stored: a slip saved before this reads the same way. */
+  const PROPSTAT = [   /* the stat a market names, the most specific first */
+    ["first", /\b(?:first|1st|last)\s+(?:td|touchdown)|\bfirst\s+(?:td\s+)?scorer/i],
+    ["rryd", /rush(?:ing)?\s*(?:\+|&|and|plus|\/)\s*rec|rec(?:eiving)?\s*(?:\+|&|and|plus|\/)\s*rush|scrimmage/i], ["pryd", /pass(?:ing)?\s*(?:\+|&|and|plus|\/)\s*rush/i],
+    ["passtd", /pass(?:ing)?\s*(?:touchdowns?|tds?)\b/i], ["rushtd", /rush(?:ing)?\s*(?:touchdowns?|tds?)\b/i], ["rectd", /rec(?:eiving)?\s*(?:touchdowns?|tds?)\b/i],
+    ["longrush", /longest\s+rush/i], ["longrec", /longest\s+(?:reception|catch)/i],
+    ["passyd", /pass(?:ing)?\s*(?:yards|yds)/i], ["rushyd", /rush(?:ing)?\s*(?:yards|yds)/i], ["recyd", /rec(?:eiving)?\s*(?:yards|yds)/i],
+    ["comp", /completions/i], ["patt", /pass(?:ing)?\s*attempts/i], ["rushatt", /rush(?:ing)?\s*attempts|carries/i], ["int", /interceptions?/i], ["rec", /receptions|catches/i],
+    ["sacks", /\bsacks?\b/i], ["solo", /solo\s+tackles/i], ["tackles", /tackles/i], ["kpts", /kicking\s*points/i], ["xpm", /extra\s*points?/i], ["fgm", /field\s*goals?/i],
+    ["td", /touchdowns?|\btds?\b|to\s+score|scorer|anytime/i]];
+  const PV = { td: s => (s.rtd || 0) + (s.ctd || 0) + (s.ktd || 0) + (s.utd || 0) + Math.max(s.itd || 0, s.dtd || 0), rushtd: s => s.rtd || 0, rectd: s => s.ctd || 0,
+    passtd: s => s.ptd || 0, passyd: s => s.pyd || 0, rushyd: s => s.ryd || 0, recyd: s => s.cyd || 0, rryd: s => (s.ryd || 0) + (s.cyd || 0), pryd: s => (s.pyd || 0) + (s.ryd || 0),
+    rec: s => s.rec || 0, rushatt: s => s.ratt || 0, comp: s => s.comp || 0, patt: s => s.patt || 0, int: s => "pyd" in s ? s.pint || 0 : s.dint || 0,
+    longrush: s => s.rlong || 0, longrec: s => s.clong || 0, sacks: s => s.sk || 0, solo: s => s.solo || 0, tackles: s => s.tk || 0, kpts: s => s.kp || 0, xpm: s => s.xpm || 0, fgm: s => s.fgm || 0 };
+  const PKEYS = { "passing.passingYards": "pyd", "passing.passingTouchdowns": "ptd", "passing.interceptions": "pint", "passing.completions/passingAttempts": "comp/patt",
+    "rushing.rushingAttempts": "ratt", "rushing.rushingYards": "ryd", "rushing.rushingTouchdowns": "rtd", "rushing.longRushing": "rlong", "receiving.receptions": "rec",
+    "receiving.receivingYards": "cyd", "receiving.receivingTouchdowns": "ctd", "receiving.longReception": "clong", "kickReturns.kickReturnTouchdowns": "ktd",
+    "puntReturns.puntReturnTouchdowns": "utd", "interceptions.interceptions": "dint", "interceptions.interceptionTouchdowns": "itd", "defensive.defensiveTouchdowns": "dtd",
+    "defensive.sacks": "sk", "defensive.totalTackles": "tk", "defensive.soloTackles": "solo", "kicking.totalKickingPoints": "kp",
+    "kicking.fieldGoalsMade/fieldGoalAttempts": "fgm/", "kicking.extraPointsMade/extraPointAttempts": "xpm/" };
+  const pnorm = s => { const w = (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[’'`.]/g, "").replace(/[^a-z0-9]+/g, " ").trim().split(" ").filter(Boolean);
+    while (w.length > 2 && /^(?:jr|sr|[il1]{2,3}|iv|v)$/.test(w[w.length - 1])) w.pop(); return w.join(" "); };   /* "Ollie Gordon II", read "Gordon Il": ollie gordon */
+  function propBox(j){   /* a summary's players (name, team, the numbers props read) and the injury report's outs */
+    const by = {}, outs = [];
+    (((j || {}).boxscore || {}).players || []).forEach(t => { const ab = ((t.team || {}).abbreviation) || "";
+      (t.statistics || []).forEach(c => { const ks = c.keys || []; (c.athletes || []).forEach(x => { const a = x.athlete || {}, nm = a.displayName || ""; if (!nm) return;
+        const p = by[a.id || nm] = by[a.id || nm] || { nm, n: pnorm(nm), team: ab, s: {} };
+        ks.forEach((k, i) => { const to = PKEYS[c.name + "." + k], v = String((x.stats || [])[i] == null ? "" : x.stats[i]); if (!to) return;
+          to.split("/").forEach((f, q) => { const n = parseFloat(to.includes("/") ? v.split("/")[q] : v); if (f && !isNaN(n)) p.s[f] = n; }); }); }); }); });
+    ((j || {}).injuries || []).forEach(t => (t.injuries || []).forEach(i => { if (/^(?:out|injured reserve|suspended|inactive)/i.test(i.status || "")) outs.push({ n: pnorm(((i.athlete || {}).displayName) || "") }); }));
+    return { players: Object.values(by), outs };
+  }
+  const lev = (a, b) => { if (Math.abs(a.length - b.length) > 2) return 9; let p = [...Array(b.length + 1).keys()];
+    for (let i = 1; i <= a.length; i++){ const q = [i]; for (let k = 1; k <= b.length; k++) q[k] = Math.min(p[k] + 1, q[k - 1] + 1, p[k - 1] + (a[i - 1] === b[k - 1] ? 0 : 1)); p = q; } return p[b.length]; };
+  function pmatch(name, list, min){   /* the box score's player for a name on the slip: the whole name, the last name and first initial, a near miss (a letter the
+                                         screenshot misread), both names among junk ("Lai Jahmyr Gibbs"), or a last name alone that only one player has */
+    const q = pnorm(name), qw = q.split(" "), qf = qw[0] || "", ql = qw[qw.length - 1] || ""; if (!ql) return null;
+    let best = null, top = 0;
+    list.forEach(p => { const w = p.n.split(" "), f = w[0] || "", l = w[w.length - 1] || "";
+      const s = p.n === q ? 1 : l === ql && qw.length > 1 && f.charAt(0) === qf.charAt(0) ? 0.9 : q.length > 6 && lev(p.n, q) <= (q.length > 14 ? 2 : 1) ? 0.8
+        : w.length > 1 && qw.includes(f) && qw.includes(l) ? 0.7 : qw.length === 1 && l === ql && list.filter(x => x.n.split(" ").pop() === ql).length === 1 ? 0.6 : 0;
+      if (s > top){ top = s; best = p; } });
+    return top > (min || 0) ? best : null;
+  }
+  const PSPEC = new Map();
+  function propSpec(l){   /* { names, lasts, stat, mode (one, sum, any, all), ou, line, who }; null: a prop it can't track */
+    const k = [l.mkt, l.short, l.text, l.who].join("|"); if (!PSPEC.has(k)){ let sp = null; try { sp = readProp(l); } catch (e) {} PSPEC.set(k, sp); } return PSPEC.get(k);
+  }
+  const statOf = s => (PROPSTAT.find(x => x[1].test(s)) || [])[0] || "";
+  const STATWORDS = /\b(?:anytime|touchdowns?|tds?|scorer|to\s+score|rushing|receiving|passing|rush|rec|pass|yards|yds|receptions|attempts|completions|alt(?:ernate)?|total|combined|either|player|points)\b.*$/i;
+  function readProp(l){
+    const cl = s => (s || "").replace(/[−–—]/g, "-").replace(/\s+/g, " ").trim(), mk = cl(l.mkt), pk = cl(l.text), sh = cl(l.short), parts = mk.split(/\s+-\s+/);
+    const nameish = (s, two) => { const t = s.replace(/[^A-Za-z.' &,\/+-]/g, " ").replace(/\s+/g, " ").trim(); return /[A-Za-z]{2}/.test(t) && !/\b(?:over|under)\b|^(?:o|u|alt|yes|no)$/i.test(t) && (!two || /\S\s+\S/.test(t)) ? t : ""; };
+    let names = "", stat = "";
+    if (parts.length > 1 && !statOf(parts[0]) && /[A-Za-z]{2}/.test(parts[0])){ names = parts[0]; stat = statOf(parts.slice(1).join(" ")); }   /* "Names - Stat" (DraftKings, FanDuel) */
+    else { stat = statOf(mk) || statOf(pk); const at = PROPSTAT.reduce((m, x) => { const i = mk.search(x[1]); return i >= 0 && i < m ? i : m; }, mk.length); names = mk.slice(0, at); }   /* "Name Stat", or the stat alone */
+    names = nameish(names) || nameish(pk.replace(/(?:^|\s)[0-9IlZSB|]{1,3}\s*\+/g, " ").replace(/\b(?:over|under)\s*\d+(?:\.\d)?/ig, " ").replace(ODDSTAIL, "").replace(STATWORDS, ""), true) || nameish(l.who || "");   /* the pick is the player ("Jahmyr Gibbs", "Jahmyr Gibbs 70+ Yards") */
+    const list = names.split(/\s*(?:&|\+|,|\/|\band\b|\bor\b)\s*/i).map(s => s.replace(/^[^A-Za-z]+|[^A-Za-z.]+$/g, "").trim()).filter(s => /[A-Za-z]{2}/.test(s) && s.split(" ").length <= 5);
+    if (!list.length || !stat || stat === "first") return null;
+    const mode = list.length < 2 ? "one" : /\bboth\b|\beach\b|\ball\b/i.test(mk) ? "all" : /\beither\b|\bany\b/i.test(mk) || /\sor\s/i.test(" " + names + " ") ? "any" : "sum";
+    const fix = d => +d >= 10 && !/\./.test(d) && /5$/.test(d) ? +d / 10 : +d;   /* "Over 645": the screenshot lost the point (prop lines end in .5) */
+    let m, ou = "over", line = null;
+    if ((m = (pk + " " + sh).match(/(?:^|\s)([0-9IlZSB|]{1,3})\s*\+/))) line = +m[1].replace(/[Il|]/g, "1").replace(/Z/g, "2").replace(/S/g, "5").replace(/B/g, "8") - 0.5;   /* "2+" (read "Z+", "I+") */
+    else if ((m = (pk + " " + mk).match(/\b(over|under)\s*(\d+(?:\.\d)?)/i) || sh.match(/^([OU])\s+(\d+(?:\.\d)?)/))){ ou = /^u/i.test(m[1]) ? "under" : "over"; line = fix(m[2]); }
+    else if ((m = mk.match(/(\d+)\s*\+/))) line = +m[1] - 0.5;
+    else if (/td/.test(stat) && /to\s+score|scorer|anytime|either|both|\bany\b/i.test(mk + " " + pk)) line = 0.5;   /* "to score", its number lost: 1+ */
+    if (line == null || isNaN(line)) return null;
+    const lasts = list.map(s => { const w = s.split(/\s+/), ln = lastName(w), i = w.lastIndexOf(ln); return i > 0 && /^(?:st\.?|van|von|de|del|da|di|la|le)$/i.test(w[i - 1]) ? w[i - 1] + " " + ln : ln; });   /* "St. Brown" */
+    return { names: list, lasts, stat, mode, ou, line, who: lasts.join(mode === "sum" ? " + " : mode === "all" ? " & " : " or ").slice(0, 28) };
+  }
+  const PSTAT = {}, PNOW = new Map();   /* game id -> { at, box, key, sk: the score it was read at, fin, fail }; the standings worked out from it */
+  function propNow(g, l){   /* a prop's standing { st, w: in words, line: its players' numbers }; null: a prop it can't track */
+    const sp = propSpec(l); if (!sp) return null;
+    if (g.state === "pre") return { st: "pending", w: "not started", line: "" };
+    const c = PSTAT[g.id]; if (!c || !c.box) return { st: "pending", w: "checking", line: "" };
+    const k = [l.id, l.mkt, l.short, l.text, c.at, g.state].join("|"); if (PNOW.has(k)) return PNOW.get(k);
+    const fin = g.state === "post", n = x => String(Math.round(x * 10) / 10), over = sp.ou === "over";
+    const ps = sp.names.map((nm, i) => { const p = pmatch(nm, c.box.players); return { last: sp.lasts[i], p, v: p ? PV[sp.stat](p.s) : 0, out: !p && !!pmatch(nm, c.box.outs, 0.65) }; });   /* an out needs more than a shared last name */
+    const vs = ps.map(x => x.v), v = sp.mode === "any" || sp.mode === "all" ? ((sp.mode === "any") === over ? Math.max(...vs) : Math.min(...vs)) : vs.reduce((a, b) => a + b, 0);
+    let r;
+    if (ps.some(x => x.out)) r = { st: "push", w: "void" };   /* a player ruled out: the book voids the leg */
+    else if (v > sp.line) r = over ? { st: "won", w: "won" } : { st: "lost", w: "lost" };   /* stats only go up: an over is in, an under is out */
+    else if (fin && !ps.some(x => x.p)) r = { st: "untracked", w: "not found" };   /* nobody by those names in the final box score: a misread name */
+    else if (fin) r = v === sp.line ? { st: "push", w: "push" } : over ? { st: "lost", w: "lost" } : { st: "won", w: "won" };
+    else if (v === sp.line) r = { st: "tied", w: "on the number" };
+    else r = over ? { st: "behind", w: "needs " + n(Math.floor(sp.line) + 1 - v) } : { st: "ahead", w: n(Math.ceil(sp.line) - 1 - v) + " to spare" };
+    r.line = ps.map(x => x.last + " " + (x.out ? "out" : n(x.v))).join(sp.mode === "sum" ? " + " : " · ");
+    PNOW.set(k, r); return r;
+  }
+  const whoOf = l => { const sp = l.kind === "prop" ? propSpec(l) : null; return sp ? sp.who : l.who || ""; };   /* "Gibbs + Gordon", "Walker or Worthy" */
+  const propLbl = (g, l) => { const r = propNow(g, l); return r && r.line ? r.line : whoOf(l) || "prop"; };   /* "Gibbs 1 + Gordon 0" once it's on */
+  function propTake(g, j){ const box = propBox(j); PSTAT[g.id] = { at: Date.now(), box, key: JSON.stringify(box), sk: g.away.score + "-" + g.home.score, fin: g.state === "post", fail: false }; PNOW.clear(); }
+  const propPrint = () => JSON.stringify(P().slips.map(s => s.legs.map(l => { if (l.kind !== "prop") return 0; const g = gameOf(l.id), r = g ? propNow(g, l) : null; return r ? [r.st, r.w, r.line] : 1; })));
+  let propBusy = false;
+  async function pollProps(){   /* the slips' prop games: a live one about every 45 seconds and right after its score changes, a final once */
+    if (propBusy || document.hidden) return;
+    propBusy = true;
+    try {
+      if (awayWeek()) return;
+      const lg = S.league, now = Date.now(), ids = new Set(); S.per[lg].slips.forEach(s => s.legs.forEach(l => { if (l.kind === "prop" && l.id && propSpec(l)) ids.add(l.id); }));
+      const due = [...ids].map(id => gameOf(id, lg)).filter(g => { if (!g || g.state === "pre") return false; const c = PSTAT[g.id]; if (!c) return true; if (c.fin) return false;
+        const age = now - c.at; return c.fail ? age > 30000 : g.state === "post" ? age > 4000 : age > 45000 || (c.sk !== g.away.score + "-" + g.home.score && age > 8000); });
+      if (!due.length) return;
+      const before = propPrint();
+      for (const g of due){ try { const r = await fetch(SUMMARY(lg, g.id), { cache: "no-store" }); if (!r.ok) throw new Error(r.status); propTake(g, await r.json()); }
+        catch (e) { PSTAT[g.id] = Object.assign({ box: null, key: "", sk: "", fin: false }, PSTAT[g.id] || {}, { at: Date.now(), fail: true }); } }
+      if (propPrint() !== before) render();
+    } catch (e) {} finally { propBusy = false; }
+  }
+  function propShare(g, j){ try { if (!P().slips.some(s => s.legs.some(l => l.kind === "prop" && l.id === g.id))) return; const before = propPrint(); propTake(g, j); if (propPrint() !== before) render(); } catch (e) {} }   /* an open card's summary */
   /* a leg's standing from the score: pending before kickoff; ahead, behind or tied while it's on; won, lost or push at the end. An over
      past its number has won and an under past it has lost (points only go up). A half or quarter leg reads that part of the score
-     (the scoreboard's quarters). A player prop isn't tracked (the board has no player feed): its tag is outlined instead (10/25). */
+     (the scoreboard's quarters). A player prop reads its players' numbers (above, 11/8); one it can't read stays outlined (10/25). */
   function legStatus(g, l){
-    if (l.kind === "prop" || (l.kind === "tt" && !l.side)) return "untracked";
+    if (l.kind === "prop"){ const r = propNow(g, l); return r ? r.st : "untracked"; }
+    if (l.kind === "tt" && !l.side) return "untracked";
     const per = l.per || "", q = +per.charAt(0) || 0, pd = g.period || 0, half = per.charAt(1) === "H";
     if (g.state === "pre" || (per && (half ? q === 2 && pd < 3 : pd < q))) return "pending";
     const pts = side => { const t = g[side], ln = t.line || []; return !per ? t.score : half ? (q === 1 ? (ln[0] || 0) + (ln[1] || 0) : ln.slice(2).reduce((x, y) => x + y, 0)) : (ln[q - 1] || 0); };
@@ -2141,7 +2265,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     return m > 0 ? "won" : m < 0 ? "lost" : "push";
   }
   const LEGWORD = { pending: "not started", ahead: "covering", behind: "not covering", tied: "on the number", won: "won", lost: "lost", push: "push", untracked: "not tracked here" };
-  const legTag = (g, l) => { const st = legStatus(g, l), t = el("span", "legtag " + st, legText(l)); t.title = (l.mkt ? l.mkt + ": " : "") + LEGWORD[st]; return t; };
+  const legWord = (g, l) => { const r = l.kind === "prop" ? propNow(g, l) : null; return r ? r.w + (r.line ? " (" + r.line + ")" : "") : LEGWORD[legStatus(g, l)]; };   /* a prop in its own words: needs 1 (Gibbs 1 + Gordon 0) */
+  const legTag = (g, l) => { const st = legStatus(g, l), t = el("span", "legtag " + st, legText(l)); t.title = (l.mkt ? l.mkt + ": " : "") + legWord(g, l); return t; };
   const legWhere = (g, l) => { const m = g.away.ab + " at " + g.home.ab; return l.kind === "prop" ? (l.who ? l.who + " (" + m + ")" : m) : l.kind === "total" || !g[l.side] ? m : g[l.side].name + (l.kind === "tt" ? " team total" : "") + " (" + m + ")"; };
 
   /* ---- reading a slip (10/24; the leg blocks, NFL, team totals and props 10/25) ----
@@ -2177,7 +2302,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (/[a-z]{2},\s*[a-z]/.test(t)) return null;   /* a summary of picks ("Falcons to Win, Bijan Robinson Anytime Touchdown Scorer,") */
     if (/team\s*total/.test(t)) return "tt";
     if (/to\s+score|touchdown|scorer|passing|rushing|receiving|receptions|\byards\b|\bsacks?\b|interception|field\s*goals?\s*made|player\s+props?/.test(t)) return "prop";
-    if (/(?:^|[^a-z])m?oneyline\b|money\s*line|\bto win\b/.test(t)) return "ml";
+    if (/(?:^|[^a-z])[mnli]?oneyl[il1]ne\b|money\s*line|\bto win\b/.test(t)) return "ml";   /* "Moneyline" read "oneyline" or "loneyline" (11/8) */
     if (/(?:^|[^a-z])s?pread\b|handicap/.test(t)) return "spread";
     if (/(?:^|[^a-z])t?otals?\b|over\s*\/\s*under/.test(t)) return "total";
     return null;
@@ -2286,11 +2411,21 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const T = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(0));
     for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) T[i][j] = Math.max(T[i + 1][j], T[i][j + 1], W[i][j] > 0 ? W[i][j] + T[i + 1][j + 1] : 0);
     for (let i = 0, j = 0; i < n && j < m;){ if (W[i][j] > 0 && T[i][j] === W[i][j] + T[i + 1][j + 1]){ pair[i] = j; i++; j++; } else if (T[i][j] === T[i + 1][j]) i++; else j++; }
+    /* the one pick left unpaired between two paired ones takes the one fitting block left between theirs (11/8: the screenshot lost
+       "Over 16.5" off its own block, "HOU Texans: Team Total Points", so only the order tied them); a group's blocks are its "3 Pick SGP"'s */
+    for (let i = 0; i < n; i++){ if (pair[i] != null || !raw[i]) continue;
+      let lo = -1, hi = m, a = -1, z = n; for (let k = i - 1; k >= 0; k--) if (pair[k] != null){ lo = pair[k]; a = k; break; } for (let k = i + 1; k < n; k++) if (pair[k] != null){ hi = pair[k]; z = k; break; }
+      if (raw.slice(a + 1, z).filter((x, k) => x && pair[a + 1 + k] == null).length !== 1) continue;   /* one pick left over there, or it's a guess */
+      const free = []; for (let j = lo + 1; j < hi; j++){ const b = blocks[j]; if (pair.includes(j) || b.grp || !b.kind || !(KINDFIT[raw[i].kind] || []).includes(b.kind)) continue;
+        if (/\d/.test(b.head.filter(x => !/cash|bonus|boost|promo|^if\b/i.test(x)).join(" ").replace(/[+-]\s?\d{3,}/g, ""))) continue;   /* a number of its own: another pick's block */
+        free.push(j); }
+      if (free.length === 1) pair[i] = free[0]; }
     return pair;
   }
-  const propShort = (p, mk, l) => { const td = /to\s+score|touchdown|\btds?\b/i.test(mk), yd = /yards|yds/i.test(mk), n = (p.match(/(\d+)\s*\+/) || [])[1];
+  const propShort = (p, mk, l) => { const td = /to\s+score|touchdown|\btds?\b/i.test(mk), yd = /yards|yds/i.test(mk), n = (p.match(/(\d+)\s*\+/) || [])[1], o = mk.match(/\b(over|under)\s*(\d+(?:\.\d)?)/i);
     if (n) return n + "+" + (td ? " TD" : yd ? " YDS" : "");
     if (l && l.kind === "total") return ouText(l.side, l.num) + (yd ? " YDS" : "");
+    if (o) return ouText(o[1].toLowerCase(), +o[2]) + (yd ? " YDS" : "");   /* the line on the market ("OVER 224.5 PASSING YARDS", FanDuel; 11/8) */
     return td ? "TD" : yd ? "YDS" : "PROP"; };
   const lastName = ws => { const w = ws.slice(); while (w.length > 1 && /^(?:[il1]{1,3}|iv|jr\.?|sr\.?)$/i.test(w[w.length - 1])) w.pop(); return w[w.length - 1] || ""; };   /* "Ollie Gordon II" is Gordon */
   const propWho = (p, mk) => { const pw = p.match(/[A-Za-z][A-Za-z'.-]+/g) || [];
@@ -2402,7 +2537,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (heads[0] > 0 && lines.slice(0, heads[0]).some(l => l.split(/,\s*/).length >= 2 && !/\d{1,2}:\d{2}|\b20\d\d\b|\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d/i.test(l))) out.unshift(lines.slice(0, heads[0]).join("\n"));
     return out;
   }
-  const legKey = l => [l.id, l.side, l.kind, l.num, l.ou || "", l.per || "", l.kind === "prop" ? (l.who || l.short || "") : ""].join(":"), slipKey = legs => legs.map(legKey).sort().join("|");
+  const legKey = l => [l.id, l.side, l.kind, l.num, l.ou || "", l.per || "", l.kind === "prop" ? (l.who || "") + "/" + (l.short || "") : ""].join(":"), slipKey = legs => legs.map(legKey).sort().join("|");
   function slipName(sec, legs){
     const ls = sec.split(/\n/), head = ls.find(l => LEGHEAD.test(l) && !/,/.test(l)) || ls[0] || "", odds = (head.match(/[+-]\d{3,5}/g) || []).pop() || "", n = head.match(/(\d+)\s*[- ]?(pick|leg)/i), label = legs.find(l => l.label) ? legs.find(l => l.label).label : "";
     return ((n ? n[1] + "-" + n[2].toLowerCase() : /same\s*game|\bsgp\b/i.test(head) ? "SGP" : (label || "Slip")) + (odds ? " " + odds : "")).slice(0, 24);   /* "7-pick +968", "8-leg +1150", "SGP +549" */
@@ -2464,11 +2599,14 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const t = g && !gameOnly(l) && l.side ? g[l.side] : null;
     let img; if (t){ img = el("img", "slogo"); img.alt = ""; img.src = LOGO(lg, t.logo); }
     else img = el("span", "sbadge", l.kind === "total" ? (l.side === "under" ? "U" : "O") : l.kind === "prop" ? "P" : "?");
-    const nm = t ? (t.short || t.name) : l.kind === "total" ? (g ? g.away.ab + " / " + g.home.ab : "Total") : l.kind === "prop" ? (l.who || "Prop") : (l.team || l.text || "");
+    const nm = t ? (t.short || t.name) : l.kind === "total" ? (g ? g.away.ab + " / " + g.home.ab : "Total") : l.kind === "prop" ? (whoOf(l) || "Prop") : (l.team || l.text || "");
     const pk = l.kind === "total" ? (l.per ? l.per + " " : "") + (l.side === "under" ? "Under " : "Over ") + l.num : l.kind === "prop" ? (l.short || "PROP") : legText(l);
+    if (l.kind === "prop"){ const r = g ? propNow(g, l) : null, s = el("span", "spk pp"), a = el("span", "spl"); a.appendChild(el("span", "spn", nm)); a.appendChild(el("i", null, pk)); s.appendChild(a);
+      if (r && r.line) s.appendChild(el("small", "spv", r.line)); return [img, s]; }   /* a prop: the pick whole, its players' numbers under it (11/8) */
     const s = el("span", "spk", nm); s.appendChild(el("i", null, pk)); return [img, s];
   }
   function legNow(g, l){   /* the standing, and in words: covering by 4, short by 3, needs 12, 20 to spare, won */
+    if (l.kind === "prop"){ const r = propNow(g, l); return r ? [r.st, r.w] : ["untracked", "not tracked"]; }   /* a player prop: needs 1, 20 to spare, won, void (11/8) */
     const st = legStatus(g, l);
     if (st === "untracked") return [st, "not tracked"];
     if (st === "pending") return [st, "not started"];
@@ -2585,7 +2723,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* the slips in the panel and under the bar, and the slip buttons beside FBS / Top 25 / All */
   let stripOpen = -1;   /* the slip whose card is open under the bar */
   const shortName = s => { const m = (s.name || "").match(/^(.*?)\s*[+-]\d{3,5}\s*$/); return ((m ? m[1] : s.name) || "Slip").slice(0, 12); };
-  const pillTxt = (l, g) => l.kind === "total" ? (l.side === "under" ? "U" : "O") + l.num : l.kind === "prop" ? ((l.who || "prop").split(/\s+or\s+/)[0]).slice(0, 7).toUpperCase() : (g && g[l.side] ? g[l.side].ab : (l.team || "?").slice(0, 4).toUpperCase());
+  const pillTxt = (l, g) => l.kind === "total" ? (l.side === "under" ? "U" : "O") + l.num : l.kind === "prop" ? ((whoOf(l) || "prop").split(/\s+(?:or|\+|&)\s+/)[0]).slice(0, 7).toUpperCase() : (g && g[l.side] ? g[l.side].ab : (l.team || "?").slice(0, 4).toUpperCase());
   function drawStrip(){
     const box = document.getElementById("sstrip"), p = P();
     if (box.contains(document.activeElement) && document.activeElement.tagName === "INPUT") return;   /* a rename in progress */
@@ -3188,12 +3326,13 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (changed){ const before = [...PRESENT[lg].keys()].sort().join("|"); recount(lg); if ([...PRESENT[lg].keys()].sort().join("|") !== before) builtFor = ""; }   /* a new channel gets its chip */
       if (changed) render(); else footer();
       pollOdds(false);   /* the card shows the live line with the button off too (11/2) */
+      pollProps();   /* and the slips' player props (11/8) */
     } catch (e) { pollFails++; footer(); }
     finally { pollBusy = false; pollAt = started + pollEvery(); }
   }
   /* the schedule: a 5-second tick polls when one is due, and right away when the view needs a different set of feeds (another day,
      a filter that brings FCS games on screen) */
-  setInterval(() => { if (document.hidden || pollBusy) return; const k = wanted() ? pollUrls().join("|") : ""; if (k && k !== pollKey) poll(true); else poll(); }, 5000);
+  setInterval(() => { pollProps(); if (document.hidden || pollBusy) return; const k = wanted() ? pollUrls().join("|") : ""; if (k && k !== pollKey) poll(true); else poll(); }, 5000);
   /* a home-screen app (or a tab) coming back after hours resumes the old page: past six hours, reload for the newest build (settings are saved) */
   const loadedAt = Date.now();
   let hiddenAt = 0;
