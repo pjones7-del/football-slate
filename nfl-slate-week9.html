@@ -232,6 +232,18 @@
   .sleg .spk .spl{display:flex;align-items:baseline;min-width:0}
   .sleg .spk .spn{overflow:hidden;text-overflow:ellipsis;min-width:0}
   .sleg .spk .spl i{flex:none}
+  .spill.pf,.sleg .sst.pf{position:relative;overflow:hidden}   /* a prop's pill filling toward its number (11/8): a faint track of the color, the words in ink on it */
+  .spill.pf.behind,.sleg .sst.pf.behind{background:rgba(201,56,43,.2);border-color:#c9382b;color:var(--ink)}
+  .spill.pf.ahead,.sleg .sst.pf.ahead{background:rgba(31,143,90,.2);border-color:#1f8f5a;color:var(--ink)}
+  .spill.pf.tied,.sleg .sst.pf.tied{background:rgba(245,184,46,.2);border-color:var(--accent);color:var(--ink)}
+  .pf .pfl{position:absolute;inset:0;box-sizing:border-box;padding:inherit;color:#fff;clip-path:inset(0 calc(100% - var(--p)) 0 0);pointer-events:none}   /* the same words, solid, clipped to the fill */
+  .pf.behind .pfl{background:#c9382b}.pf.ahead .pfl{background:#1f8f5a}.pf.tied .pfl{background:var(--accent);color:var(--accent-ink)}
+  .sleg.hasbar{border-bottom:0;padding-bottom:3px}   /* Settings > Props > Bar: the bar under the leg (11/8) */
+  .spbar{display:flex;align-items:center;gap:8px;padding:2px 0 10px 36px;border-bottom:1px solid var(--line)}
+  .spbar .tr{flex:1;height:6px;border-radius:3px;background:rgba(128,128,128,.25);position:relative;overflow:hidden}
+  .spbar .fl{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--ink)}
+  .spbar.won .fl{background:#2ecc71}.spbar.lost .fl{background:#ff5a4f}.spbar.push .fl,.spbar.tied .fl{background:var(--accent)}
+  .spbar .lb{font-family:var(--body);font-weight:600;font-size:12.5px;color:var(--muted);white-space:nowrap;min-width:48px;text-align:right}
   .sleg .spk .spv{font-family:var(--body);font-weight:600;font-size:12.5px;letter-spacing:0;color:var(--muted);overflow:hidden;text-overflow:ellipsis;margin-top:2px}
   .spill.won,.spill.ahead,.sleg .sst.won,.sleg .sst.ahead{background:#1f8f5a;border-color:#1f8f5a;color:#fff}
   .spill.lost,.spill.behind,.sleg .sst.lost,.sleg .sst.behind{background:#c9382b;border-color:#c9382b;color:#fff}
@@ -783,6 +795,12 @@
           <button type="button" id="themeBtn" aria-pressed="false" title="Switch between the dark and light look">Light</button>
         </div>
       </div>
+      <div class="srow"><span class="lbl">Props</span>
+        <div class="seg" role="group" aria-label="Prop progress" title="How a player prop on a slip shows how close it is: its pill fills, or a bar under the leg">
+          <button type="button" data-pp="pill">Pill fills</button>
+          <button type="button" data-pp="bar">Progress bar</button>
+        </div>
+      </div>
       <div class="srow"><span class="lbl">Channels</span>
         <div class="seg"><button type="button" id="pkgBtn" aria-pressed="false" aria-controls="panel">Package<small id="pkgN"></small></button></div>
         <div class="seg"><button type="button" id="dtvBtn" aria-pressed="false" title="Put each channel's DirecTV number under its logo (the locals are the Phoenix stations)">DirecTV</button></div>
@@ -1182,7 +1200,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const has = lg => !!(LG[lg] && LG[lg].days && LG[lg].days.length);
   const fresh = () => ({ on: new Set(), off: new Set(), confs: new Set(), show: "fbs", mine: false, now: false, stars: new Set(), views: [], mkt: "", zip: "", dome: false, wx: new Set(), slips: [] });
   /* ml: what the plates show before kickoff: the spread, each team's moneyline, or both (shared by both leagues) */
-  const S = { league: "cfb", day: "", tz: "AZ", tzSet: false, view: "timeline", open: "", openRow: "", odds: true, ml: "spread", dtv: false, gct: "wp", xc: "full", foot: "on", bar: "on", chg: "on", more: false, fold: {}, per: { cfb: fresh(), nfl: fresh() } };
+  const S = { league: "cfb", day: "", tz: "AZ", tzSet: false, view: "timeline", open: "", openRow: "", odds: true, ml: "spread", dtv: false, gct: "wp", xc: "full", pp: "pill", foot: "on", bar: "on", chg: "on", more: false, fold: {}, per: { cfb: fresh(), nfl: fresh() } };
   /* which league opens (10/3: one page for both): a league named in the address (?league=nfl or #nfl; the old cfb/ and nfl/ links
      forward with one) beats the league last looked at on this device, which beats the file's own default. A copy built with lock
      set (the weekly files, the artifacts) always opens on its own league. A hint in the address is dropped once applied, so a
@@ -1247,6 +1265,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       S.dtv = !!saved.dtv;
       if (typeof saved.gct === "string") S.gct = ["box", "plays", "drives", "scoring", "wp", "lines", ""].includes(saved.gct) ? saved.gct : "wp";   /* the gamecast tab left open (empty: none) */
       if (saved.xc === "compact") S.xc = "compact";   /* the open card with the lines behind a tab (Phil, 10/23) */
+      if (saved.pp === "bar") S.pp = "bar";   /* a prop's progress as a bar under its leg, not the pill filling (Phil, 11/8) */
       if (!SLATE.lock && has(saved.league)) S.league = saved.league;
       if (saved.foot === "off") S.foot = "off";
       if (saved.bar === "off" || (saved.bar == null && matchMedia("(max-width: 640px)").matches)) S.bar = "off";   /* a phone starts folded (Phil, 10/24) */
@@ -1271,7 +1290,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function remember(){
     try {
       let old = {}; try { old = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; if (typeof old !== "object" || Array.isArray(old)) old = {}; } catch (e) { old = {}; }
-      const rec = Object.assign({}, old, { v: 3, tz: S.tz, tzSet: S.tzSet, view: S.view, odds: S.odds, odds2: true, ml: S.ml, dtv: S.dtv, gct: S.gct, xc: S.xc, foot: S.foot, bar: S.bar, chg: S.chg, more: S.more, theme: document.documentElement.getAttribute("data-theme") || "", skin: document.documentElement.getAttribute("data-skin") || "broadcast" });
+      const rec = Object.assign({}, old, { v: 3, tz: S.tz, tzSet: S.tzSet, view: S.view, odds: S.odds, odds2: true, ml: S.ml, dtv: S.dtv, gct: S.gct, xc: S.xc, pp: S.pp, foot: S.foot, bar: S.bar, chg: S.chg, more: S.more, theme: document.documentElement.getAttribute("data-theme") || "", skin: document.documentElement.getAttribute("data-skin") || "broadcast" });
       if (!SLATE.lock) rec.league = S.league;   /* a locked copy (weekly file, artifact) never moves the one page's league */
       ["cfb", "nfl"].forEach(lg => { const p = S.per[lg]; rec[lg] = Object.assign({}, (old[lg] && typeof old[lg] === "object") ? old[lg] : {}, { on: [...p.on], off: [...p.off], confs: confOrder(lg).filter(c => p.confs.has(c)), show: p.show, mine: p.mine, now: p.now, stars: [...p.stars], views: p.views, mkt: p.mkt, zip: p.zip, dome: p.dome, wx: WXKEYS.filter(k => p.wx.has(k)), slips: p.slips }); });
       localStorage.setItem(KEY, JSON.stringify(rec));
@@ -2222,7 +2241,24 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     else if (v === sp.line) r = { st: "tied", w: "on the number" };
     else r = over ? { st: "behind", w: "needs " + n(Math.floor(sp.line) + 1 - v) } : { st: "ahead", w: n(Math.ceil(sp.line) - 1 - v) + " to spare" };
     r.line = ps.map(x => x.last + " " + (x.out ? "out" : n(x.v))).join(sp.mode === "sum" ? " + " : " · ");
+    r.v = v; r.goal = over ? Math.floor(sp.line) + 1 : sp.line; r.ou = sp.ou;   /* for its progress (11/8) */
     PNOW.set(k, r); return r;
+  }
+  /* a prop's progress (Phil, 11/8): by default its standing pill fills toward the number (an under drains: the fill is the cushion left);
+     Settings > Props > Bar puts a bar under its leg on the slip card instead */
+  const propPct = r => r.ou === "under" ? Math.max(0, 1 - r.v / Math.max(r.goal, 0.5)) : Math.min(1, r.v / r.goal);
+  function propFill(e, g, l){   /* the pill: the status color over a faint track of it, the words laid out again in white on the fill */
+    if (S.pp === "bar" || !g || l.kind !== "prop") return e;
+    const r = propNow(g, l); if (!r || r.v == null || !["behind", "ahead", "tied"].includes(r.st)) return e;
+    e.classList.add("pf"); e.style.setProperty("--p", (propPct(r) * 100).toFixed(1) + "%");
+    const f = el("span", "pfl", e.textContent); f.setAttribute("aria-hidden", "true"); e.appendChild(f); return e;
+  }
+  function propBar(g, l){   /* the bar: in ink toward the number, green once it hits, red when an under busts; the count at its right */
+    if (S.pp !== "bar" || !g || l.kind !== "prop") return null;
+    const r = propNow(g, l); if (!r || r.v == null || r.st === "pending" || r.st === "untracked") return null;
+    const n = x => String(Math.round(x * 10) / 10), under = r.ou === "under", b = el("div", "spbar " + r.st), tr = el("span", "tr"), fl = el("span", "fl");
+    fl.style.width = (Math.min(1, r.v / Math.max(r.goal, 0.5)) * 100).toFixed(1) + "%"; tr.appendChild(fl); b.appendChild(tr);
+    b.appendChild(el("span", "lb", under ? n(r.v) + " (U " + n(r.goal) + ")" : n(r.v) + " / " + n(r.goal))); return b;
   }
   const whoOf = l => { const sp = l.kind === "prop" ? propSpec(l) : null; return sp ? sp.who : l.who || ""; };   /* "Gibbs + Gordon", "Walker or Worthy" */
   const propLbl = (g, l) => { const r = propNow(g, l); return r && r.line ? r.line : whoOf(l) || "prop"; };   /* "Gibbs 1 + Gordon 0" once it's on */
@@ -2642,7 +2678,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const list = el("div", "slegs");
     s.legs.forEach((l, k) => { const g = gs[k], r = el("div", "sleg"); legFace(l, g, lg).forEach(x => r.appendChild(x));
       const gm = el("span", "sgm"); if (g){ gm.appendChild(document.createTextNode(scoreTxt(g))); gm.appendChild(el("br")); gm.appendChild(document.createTextNode(whenTxt(g))); } r.appendChild(gm);
-      r.appendChild(el("span", "sst " + st[k][0], st[k][1])); list.appendChild(r); });
+      r.appendChild(propFill(el("span", "sst " + st[k][0], st[k][1]), g, l)); list.appendChild(r);
+      const pb = propBar(g, l); if (pb){ r.classList.add("hasbar"); list.appendChild(pb); } });   /* a prop's progress (11/8) */
     c.appendChild(list);
     const btns = el("div", "sbtns"), on = el("button", null, "Only these games"); on.type = "button"; on.setAttribute("aria-pressed", String(s.on)); on.title = "Keep just this slip's games on the board";
     on.addEventListener("click", () => { s.on = !s.on; slipRedraw(); }); btns.appendChild(on);
@@ -2735,7 +2772,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       nm.type = "button"; nm.setAttribute("aria-pressed", String(s.on)); nm.title = s.name + ": only its games";
       nm.addEventListener("click", () => { s.on = !s.on; slipRedraw(); });   /* the name is the slip's filter switch (Phil, 11/7) */
       body.type = "button"; body.setAttribute("aria-expanded", String(stripOpen === i)); body.title = "Open the slip";
-      s.legs.forEach(l => { const g = gameOf(l.id); pills.appendChild(el("span", "spill " + (g ? legStatus(g, l) : "pending"), pillTxt(l, g))); });
+      s.legs.forEach(l => { const g = gameOf(l.id); pills.appendChild(propFill(el("span", "spill " + (g ? legStatus(g, l) : "pending"), pillTxt(l, g)), g, l)); });
       body.appendChild(pills); body.appendChild(el("span", "scar", "▾"));
       body.addEventListener("click", () => { stripOpen = stripOpen === i ? -1 : i; drawStrip(); if (stripOpen === i) tally("slip-card", "Slip card opened"); });
       line.appendChild(nm); line.appendChild(body);
@@ -3208,6 +3245,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   document.querySelectorAll("button[data-skin]").forEach(b => b.addEventListener("click", () => { document.documentElement.setAttribute("data-skin", b.dataset.skin); remember(); syncSkin(); render(); }));
   const syncXc = () => document.querySelectorAll("button[data-xc]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.xc === S.xc)));
   document.querySelectorAll("button[data-xc]").forEach(b => b.addEventListener("click", () => { S.xc = b.dataset.xc; remember(); syncXc(); render(); })); syncXc();
+  const syncPp = () => document.querySelectorAll("button[data-pp]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.pp === S.pp)));
+  document.querySelectorAll("button[data-pp]").forEach(b => b.addEventListener("click", () => { S.pp = b.dataset.pp; remember(); syncPp(); render(); })); syncPp();
   syncSkin();
   const oddsBtn = document.getElementById("oddsBtn");
   const syncOdds = () => oddsBtn.setAttribute("aria-pressed", String(S.odds));
