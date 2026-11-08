@@ -3039,9 +3039,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (!mkEl){ if (!want) return; mkEl = el("div", "mkask"); mkEl.setAttribute("role", "region"); mkEl.setAttribute("aria-label", "Your TV market"); wrap.before(mkEl); }
     mkEl.hidden = !want; if (!want){ mkMode = ""; return; }
     if (done){ if (mkMode === "done") return; mkMode = "done"; mkEl.textContent = ""; mkEl.classList.add("done"); const q = el("div", "mkq");
-      q.appendChild(el("span", null, "Market set: " + (S.per.nfl.zip ? "ZIP " + S.per.nfl.zip + ", " : "") + marketLabel(S.per.nfl.mkt) + " market. Your stations' games are tagged LOCAL.")); mkEl.appendChild(q); return; }
+      q.appendChild(el("span", null, "Location set: " + (S.per.nfl.zip ? "ZIP " + S.per.nfl.zip + " (" + marketLabel(S.per.nfl.mkt) + " market)" : marketLabel(S.per.nfl.mkt) + " market") + ". Your local broadcasts are tagged LOCAL.")); mkEl.appendChild(q); return; }
     if (mkMode === "ask") return; mkMode = "ask"; mkEl.textContent = ""; mkEl.classList.remove("done");
-    const q = el("div", "mkq"), x = el("button", "mkx", "\u2715"); q.appendChild(el("span", null, "Which CBS and FOX games are on your TV?"));
+    const q = el("div", "mkq"), x = el("button", "mkx", "\u2715"); q.appendChild(el("span", null, "Set your location to see local broadcasts for your area"));
     x.type = "button"; x.title = "Not now (Settings > Market has it)"; x.setAttribute("aria-label", "Not now"); x.addEventListener("click", () => { S.mkask = "no"; remember(); render(); }); q.appendChild(x); mkEl.appendChild(q);
     const r = el("div", "mkr"), loc = el("button", "mkloc"), zi = el("input"), set = el("button", "mkset", "Set");
     loc.type = "button"; loc.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6-5.6-6-11a6 6 0 1 1 12 0c0 5.4-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg>'; loc.appendChild(document.createTextNode("Use my location"));
