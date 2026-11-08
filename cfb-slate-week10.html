@@ -120,7 +120,12 @@
   #wknote{font-family:var(--body);font-weight:500;font-size:12px;letter-spacing:0;text-transform:none;color:var(--muted);max-width:100%;white-space:normal}
   #leagueSeg button small.away{color:var(--accent);opacity:1}
   .filters b{font-weight:700;margin-left:3px;font-size:11px}
-  #cslips{display:none}
+  .filters.ico{display:inline-flex;align-items:center;justify-content:center;padding:5px 10px;line-height:0}   /* the funnel (Phil, 11/7): the filter sign in place of FILTERS, as tall as the week pill */
+  .filters.ico svg{width:19px;height:19px;display:block}
+  .filters.ico[aria-expanded="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}   /* filled while the filters are open */
+  #brand .wshort{display:none}
+  .bar.off #brand .wfull{display:none}
+  .bar.off #brand .wshort{display:inline}   /* folded (11/7): SLATE alone; the open bar says which league */
   .row.pick{margin-top:8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:6px}
   .row.pick::-webkit-scrollbar{display:none}
   .row.pick > *{flex:none}
@@ -133,12 +138,7 @@
   .bar.off .brand #sub{display:none}
   .bar.off .brand #brand{display:inline;flex:none}
   .bar.off .brand #cdate{display:inline;font-family:var(--cond);font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);white-space:nowrap;flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
-  .bar.off.hasslips .brand{flex:none}
-  .bar.off.hasslips .brand #cdate{display:none}   /* the slips take the room on a slips day */
   :root[data-skin="app"] .bar.off .brand{font-size:18px}
-  .bar.off #cslips:not(:empty){display:flex;flex:0 1 auto;min-width:0;overflow-x:auto;scrollbar-width:none;margin-left:auto;-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 14px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 14px),transparent)}
-  .bar.off #cslips::-webkit-scrollbar{display:none}
-  .bar.off #cslips button{flex:none}
   #mktSeg.hot{border-color:var(--accent)}
   #mktSeg.hot button{background:var(--accent);color:var(--accent-ink)}
   #mktSeg.hot button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
@@ -191,13 +191,16 @@
   @media (max-width:419px){.sadd span{display:none}}   /* a narrow phone's folded bar has room for the + alone */
   .row.sstrip > *{max-width:640px}   /* on a wide screen the strip and its card keep a phone's proportions */
   .bar.off > .row.sstrip:not([hidden]),.bar > .row.sstrip:not([hidden]){display:flex}
-  .sline{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;padding:0;margin:0;color:inherit;cursor:pointer;font:inherit;text-align:left;-webkit-tap-highlight-color:transparent}
-  .sline .snm{flex:none;font-family:var(--cond);font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+  .sline{display:flex;align-items:center;gap:8px;width:100%;min-width:0}
+  .sline .snm{flex:none;position:relative;font-family:var(--cond);font-weight:800;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);white-space:nowrap;background:transparent;border:1.5px solid var(--line2);border-radius:6px;padding:2px 7px;margin:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .sline .snm::after{content:"";position:absolute;inset:-3px -4px}   /* a finger-sized target around the name */
+  .sline .snm[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}   /* the name is the slip's filter (11/7): filled = only its games */
+  .sline .sbody{display:flex;align-items:center;gap:8px;flex:1 1 auto;min-width:0;background:none;border:0;padding:0;margin:0;color:inherit;cursor:pointer;font:inherit;text-align:left;-webkit-tap-highlight-color:transparent}
   .sline .spills{display:flex;gap:4px;flex:1 1 auto;min-width:0;overflow-x:auto;scrollbar-width:none}
   .sline .spills::-webkit-scrollbar{display:none}
   .spill{flex:1 0 auto;min-width:34px;max-width:76px;box-sizing:border-box;font-family:var(--cond);font-weight:800;font-size:12px;letter-spacing:.03em;text-align:center;border-radius:5px;padding:2px 4px;border:1.5px solid var(--line2);color:var(--muted);white-space:nowrap}
     .sline .scar{flex:none;margin-left:auto;color:var(--muted);font-size:12px;transition:transform .15s}
-  .sline[aria-expanded="true"] .scar{transform:rotate(180deg)}
+  .sline .sbody[aria-expanded="true"] .scar{transform:rotate(180deg)}
   .scard{background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:12px 14px 14px;color:var(--ink);text-align:left;min-width:0;box-sizing:border-box}
   .skick{font-family:var(--cond);font-weight:700;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
   .sttl{display:flex;align-items:baseline;gap:10px;margin:2px 0 4px;min-width:0}
@@ -691,10 +694,9 @@
   <div class="bar">
     <div class="row top">
       <div class="brand"><span id="brand">Football Slate</span> <small id="sub"></small><small id="cdate"></small></div>
-      <div class="seg" id="cslips" role="group" aria-label="Slips" title="Your slips: a slip on keeps just its games, two on show both"></div>
       <label class="sadd" id="sadd" for="simg" title="Add a slip: pick its screenshot"><b>+</b><span>Slip</span></label><input type="file" id="simg" accept="image/*" multiple hidden>
       <button type="button" class="wk" id="wkBtn" aria-expanded="false" aria-controls="wkrow" title="Look at another week">Week<b>&#x25BE;</b></button>
-      <button type="button" class="filters" id="bshow" aria-expanded="true" title="Hide the controls">Filters <b>&#x25B4;</b></button>
+      <button type="button" class="filters ico" id="bshow" aria-expanded="true" aria-label="Filters" title="Hide the controls"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3.5 5h17l-6.6 7.6v5.6l-3.8 2V12.6z"/></svg></button>
     </div>
     <div class="row weeks" id="wkrow" hidden>
       <div class="wkline"><button type="button" class="chip" id="wkBack" hidden>This week</button><div class="wkscroll"><div class="seg two" id="wkSeg" role="group" aria-label="Week"></div></div></div>
@@ -2566,7 +2568,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (lg !== S.league){ S.league = lg; S.day = ""; S.open = ""; remember(); render(); poll(true); return; }   /* to the board the slip is on */
     slipRedraw();
   }
-  /* the slips in the panel and under the bar, and the slip buttons beside FBS / Top 25 / All and on the folded bar */
+  /* the slips in the panel and under the bar, and the slip buttons beside FBS / Top 25 / All */
   let stripOpen = -1;   /* the slip whose card is open under the bar */
   const shortName = s => { const m = (s.name || "").match(/^(.*?)\s*[+-]\d{3,5}\s*$/); return ((m ? m[1] : s.name) || "Slip").slice(0, 12); };
   const pillTxt = (l, g) => l.kind === "total" ? (l.side === "under" ? "U" : "O") + l.num : l.kind === "prop" ? ((l.who || "prop").split(/\s+or\s+/)[0]).slice(0, 7).toUpperCase() : (g && g[l.side] ? g[l.side].ab : (l.team || "?").slice(0, 4).toUpperCase());
@@ -2577,25 +2579,28 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (awayWeek() || !p.slips.length){ box.hidden = true; return; } box.hidden = false;
     if (stripOpen >= p.slips.length) stripOpen = -1;
     p.slips.forEach((s, i) => {
-      const line = el("button", "sline"); line.type = "button"; line.setAttribute("aria-expanded", String(stripOpen === i)); line.title = "Open the slip";
-      line.appendChild(el("span", "snm", shortName(s))); const pills = el("span", "spills");
+      const line = el("div", "sline"), nm = el("button", "snm", shortName(s)), body = el("button", "sbody"), pills = el("span", "spills");
+      nm.type = "button"; nm.setAttribute("aria-pressed", String(s.on)); nm.title = s.name + ": only its games";
+      nm.addEventListener("click", () => { s.on = !s.on; slipRedraw(); });   /* the name is the slip's filter switch (Phil, 11/7) */
+      body.type = "button"; body.setAttribute("aria-expanded", String(stripOpen === i)); body.title = "Open the slip";
       s.legs.forEach(l => { const g = gameOf(l.id); pills.appendChild(el("span", "spill " + (g ? legStatus(g, l) : "pending"), pillTxt(l, g))); });
-      line.appendChild(pills); line.appendChild(el("span", "scar", "▾"));
-      line.addEventListener("click", () => { stripOpen = stripOpen === i ? -1 : i; drawStrip(); if (stripOpen === i) tally("slip-card", "Slip card opened"); });
+      body.appendChild(pills); body.appendChild(el("span", "scar", "▾"));
+      body.addEventListener("click", () => { stripOpen = stripOpen === i ? -1 : i; drawStrip(); if (stripOpen === i) tally("slip-card", "Slip card opened"); });
+      line.appendChild(nm); line.appendChild(body);
       box.appendChild(line); if (stripOpen === i) box.appendChild(slipCard(s, i)); });
   }
   function drawSlips(){
     const p = P();
     if (!(slist.contains(document.activeElement) && document.activeElement.tagName === "INPUT")){ slist.textContent = ""; p.slips.forEach((s, i) => slist.appendChild(slipCard(s, i))); }
-    slipSeg.textContent = ""; slipSeg.hidden = !p.slips.length || awayWeek(); cslips.textContent = ""; document.querySelector(".bar").classList.remove("hasslips"); sadd.hidden = awayWeek();
+    slipSeg.textContent = ""; slipSeg.hidden = !p.slips.length || awayWeek(); document.querySelector(".bar").classList.remove("hasslips"); sadd.hidden = awayWeek();
     drawStrip();
     if (awayWeek()){ slipN.textContent = p.slips.length ? String(p.slips.length) : ""; return; }
-    [slipSeg, cslips].forEach(seg => p.slips.forEach(s => { const b = el("button", null, seg === cslips ? shortName(s) : s.name); b.type = "button"; b.setAttribute("aria-pressed", String(s.on)); b.title = s.name + ": only its games";
-      b.addEventListener("click", () => { s.on = !s.on; slipRedraw(); }); seg.appendChild(b); }));   /* the folded bar's buttons by the short name; the strip under it has the rest */
+    p.slips.forEach(s => { const b = el("button", null, s.name); b.type = "button"; b.setAttribute("aria-pressed", String(s.on)); b.title = s.name + ": only its games";
+      b.addEventListener("click", () => { s.on = !s.on; slipRedraw(); }); slipSeg.appendChild(b); });   /* on the folded bar the strip line's name is the switch (11/7) */
     slipN.textContent = p.slips.length ? String(p.slips.length) : "";
-    document.querySelector(".bar").classList.toggle("hasslips", cslips.children.length > 0);   /* the folded title line gives the date's room to the slips (11/2) */
+    document.querySelector(".bar").classList.toggle("hasslips", p.slips.length > 0);   /* a slips day: the + alone */
   }
-  const spanel = document.getElementById("spanel"), slipBtn = document.getElementById("slipBtn"), slipSeg = document.getElementById("slipSeg"), cslips = document.getElementById("cslips"), slipN = document.getElementById("slipN"), slist = document.getElementById("slist"), stext = document.getElementById("stext"), simg = document.getElementById("simg"), sread = document.getElementById("sread"), snote = document.getElementById("snote"), sconf = document.getElementById("sconf"), sadd = document.getElementById("sadd");
+  const spanel = document.getElementById("spanel"), slipBtn = document.getElementById("slipBtn"), slipSeg = document.getElementById("slipSeg"), slipN = document.getElementById("slipN"), slist = document.getElementById("slist"), stext = document.getElementById("stext"), simg = document.getElementById("simg"), sread = document.getElementById("sread"), snote = document.getElementById("snote"), sconf = document.getElementById("sconf"), sadd = document.getElementById("sadd");
   sread.addEventListener("click", () => readSlip(stext.value));
   simg.addEventListener("change", async () => {
     const files = [...simg.files]; if (!files.length) return;
@@ -2966,8 +2971,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   function setBrand(){
     const app = document.documentElement.getAttribute("data-skin") === "app", word = NFL() ? "NFL" : "College";
-    const svg = app ? (wmOk.app ? lockup(word + " Slate", WM_FONT.app, true, -0.02) : "") : (wmOk.broadcast ? lockup((word + " SLATE").toUpperCase(), WM_FONT.broadcast, false, 0.012) : "");
-    if (svg) brandEl.innerHTML = svg; else brandEl.textContent = word + " Slate";
+    const mk = t => app ? (wmOk.app ? lockup(t, WM_FONT.app, true, -0.02) : "") : (wmOk.broadcast ? lockup(t.toUpperCase(), WM_FONT.broadcast, false, 0.012) : "");
+    const full = mk(word + " Slate") || word + " Slate", short = mk("Slate").split("wmg").join("wmgs") || "Slate";   /* folded, SLATE alone (11/7); its gradient has its own id */
+    brandEl.innerHTML = '<span class="wfull">' + full + '</span><span class="wshort">' + short + '</span>';
   }
   Object.keys(WM_FONT).forEach(k => { try { document.fonts.load(WM_FONT[k].replace("100px", "20px")).then(fs => { if (fs.length){ wmOk[k] = true; setBrand(); } }).catch(() => {}); } catch (e) {} });
   function render(){
@@ -3298,7 +3304,6 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     fnotes.appendChild(key);
     fxEl.classList.toggle("off", S.foot === "off");
     barEl.classList.toggle("off", S.bar === "off");
-    bshow.innerHTML = ""; bshow.appendChild(document.createTextNode("Filters ")); bshow.appendChild(el("b", null, S.bar === "off" ? "\u25BE" : "\u25B4"));
     bshow.title = S.bar === "off" ? "Show the controls" : "Hide the controls"; bshow.setAttribute("aria-expanded", String(S.bar !== "off"));
     document.getElementById("cdate").textContent = S.day ? dayLabel(S.day).wd + " " + dayLabel(S.day).md : "";
   }
