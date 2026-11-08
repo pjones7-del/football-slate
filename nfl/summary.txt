@@ -1,4 +1,4 @@
-NFL Week 9 (15 games, pulled Sun 11/8, 11:59 AM ET, lines DraftKings via ESPN)
+NFL Week 9 (15 games, pulled Sun 11/8, 2:46 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week9.html
   nfl/ forwards to the one page
   Thu 11/5: 0 on TV, 1 not
@@ -9,16 +9,17 @@ NFL Week 9 (15 games, pulled Sun 11/8, 11:59 AM ET, lines DraftKings via ESPN)
     Sun 09:30 ET  Cincinnati Bengals vs Atlanta Falcons  [NFL Network]  CIN -3.0, o/u 52.5
     Sun 13:00 ET  Denver Broncos at Carolina Panthers  [CBS]  DEN -3.0, o/u 44.5
     Sun 13:00 ET  New York Jets at Kansas City Chiefs  [CBS]  KC -9.5, o/u 47.5
+    Sun 13:00 ET  Detroit Lions at Miami Dolphins  [CBS]  DET -6.5, o/u 49.5
     Sun 13:00 ET  Cleveland Browns at New Orleans Saints  [CBS]  NO -3.5, o/u 42.5
     Sun 13:00 ET  Dallas Cowboys at Indianapolis Colts  [FOX]  DAL -4.5, o/u 51.5
-    Sun 13:00 ET  Detroit Lions at Miami Dolphins  [FOX]  DET -6.5, o/u 49.5
     Sun 13:00 ET  New York Giants at Philadelphia Eagles  [FOX]  NYG -3.0, o/u 38.5
     Sun 13:00 ET  Los Angeles Rams at Washington Commanders  [FOX]  LAR -4.5, o/u 47.5
     Sun 16:05 ET  Houston Texans at Los Angeles Chargers  [CBS]  HOU -5.5, o/u 40.5
     Sun 16:25 ET  Green Bay Packers at New England Patriots  [FOX]  NE -3.0, o/u 44.5
-    Sun 16:25 ET  Las Vegas Raiders at San Francisco 49ers  [FOX]  SF -9.5, o/u 51.5
+    Sun 16:25 ET  Las Vegas Raiders at San Francisco 49ers  [FOX]  SF -8.5, o/u 51.5
     Sun 16:25 ET  Arizona Cardinals at Seattle Seahawks  [FOX]  SEA -8.5, o/u 39.5
     Sun 20:20 ET  Tampa Bay Buccaneers at Chicago Bears  [NBC]  CHI -6.0, o/u 47.5
     Mon 20:15 ET  Buffalo Bills at Minnesota Vikings  [ESPN]  BUF -3.0, o/u 43.5
   TV games without a line: 0
   time TBD: 0
+  schedule changes on game day: Sun DET at MIA: FOX -> CBS (2:46 PM ET)
