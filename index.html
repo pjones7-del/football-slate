@@ -471,6 +471,21 @@
   .chgi{display:inline-flex;align-items:baseline;gap:6px;background:transparent;border:1px solid var(--line2);border-radius:999px;padding:2px 10px;font-family:var(--cond);font-size:13px;color:var(--muted);cursor:pointer;white-space:nowrap}
   .chgi .who{font-weight:700;color:var(--ink)}
   .chgi:hover{border-color:var(--ink)}
+  /* the TV market ask (Phil, 11/8): between the bar and the board, once, on an NFL Sunday with no market set */
+  .mkask{flex:none;box-sizing:border-box;padding:9px 16px 11px;background:var(--bg2);border-bottom:1px solid var(--line2)}
+  .mkask[hidden]{display:none}
+  .mkask .mkq{display:flex;align-items:center;gap:8px;font-family:var(--cond);font-weight:800;font-size:15px;letter-spacing:.03em;color:var(--ink)}
+  .mkask .mkq span{flex:1;min-width:0}
+  .mkask.done .mkq{color:var(--accent);font-size:14px}
+  .mkask .mkx{flex:none;background:none;border:0;color:var(--muted);font-size:17px;line-height:1;padding:4px 2px;cursor:pointer}
+  .mkask .mkr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
+  .mkask .mkloc{flex:none;display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;font-family:var(--cond);font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase;padding:7px 14px;cursor:pointer}
+  .mkask .mkor{font-size:12.5px;color:var(--muted)}
+  .mkask input{width:92px;box-sizing:border-box;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:6px 9px;font-family:var(--body);font-size:16px}
+  .mkask .mkset{flex:none;background:transparent;color:var(--ink);border:1.5px solid var(--line2);border-radius:999px;font-family:var(--cond);font-weight:800;font-size:14px;padding:5px 12px;text-transform:uppercase;cursor:pointer}
+  .mkask .mknote{flex-basis:100%;font-size:12.5px;color:var(--muted)}
+  .mkask .mknote:empty{display:none}
+  @media (max-width:389px){ .mkask .mkor{display:none} .mkask input{width:72px} .mkask .mkloc{padding:7px 11px} }   /* a 360 or 375 phone keeps it on one row */
   .gbar.final .tb .st .big{opacity:.8}
   .gbar.final .tb .st .sub{opacity:.75}
   .gbar.tight .tb .st{display:none}
@@ -1200,7 +1215,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const has = lg => !!(LG[lg] && LG[lg].days && LG[lg].days.length);
   const fresh = () => ({ on: new Set(), off: new Set(), confs: new Set(), show: "fbs", mine: false, now: false, stars: new Set(), views: [], mkt: "", zip: "", dome: false, wx: new Set(), slips: [] });
   /* ml: what the plates show before kickoff: the spread, each team's moneyline, or both (shared by both leagues) */
-  const S = { league: "cfb", day: "", tz: "AZ", tzSet: false, view: "timeline", open: "", openRow: "", odds: true, ml: "spread", dtv: false, gct: "wp", xc: "full", pp: "pill", foot: "on", bar: "on", chg: "on", more: false, fold: {}, per: { cfb: fresh(), nfl: fresh() } };
+  const S = { league: "cfb", day: "", tz: "AZ", tzSet: false, view: "timeline", open: "", openRow: "", odds: true, ml: "spread", dtv: false, gct: "wp", xc: "full", pp: "pill", mkask: "", foot: "on", bar: "on", chg: "on", more: false, fold: {}, per: { cfb: fresh(), nfl: fresh() } };
   /* which league opens (10/3: one page for both): a league named in the address (?league=nfl or #nfl; the old cfb/ and nfl/ links
      forward with one) beats the league last looked at on this device, which beats the file's own default. A copy built with lock
      set (the weekly files, the artifacts) always opens on its own league. A hint in the address is dropped once applied, so a
@@ -1265,7 +1280,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       S.dtv = !!saved.dtv;
       if (typeof saved.gct === "string") S.gct = ["box", "plays", "drives", "scoring", "wp", "lines", ""].includes(saved.gct) ? saved.gct : "wp";   /* the gamecast tab left open (empty: none) */
       if (saved.xc === "compact") S.xc = "compact";   /* the open card with the lines behind a tab (Phil, 10/23) */
-      if (saved.pp === "bar") S.pp = "bar";   /* a prop's progress as a bar under its leg, not the pill filling (Phil, 11/8) */
+      if (saved.pp === "bar") S.pp = "bar";
+      if (saved.mkask === "no") S.mkask = "no";   /* the TV market ask put away (Phil, 11/8) */   /* a prop's progress as a bar under its leg, not the pill filling (Phil, 11/8) */
       if (!SLATE.lock && has(saved.league)) S.league = saved.league;
       if (saved.foot === "off") S.foot = "off";
       if (saved.bar === "off" || (saved.bar == null && matchMedia("(max-width: 640px)").matches)) S.bar = "off";   /* a phone starts folded (Phil, 10/24) */
@@ -1290,7 +1306,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function remember(){
     try {
       let old = {}; try { old = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; if (typeof old !== "object" || Array.isArray(old)) old = {}; } catch (e) { old = {}; }
-      const rec = Object.assign({}, old, { v: 3, tz: S.tz, tzSet: S.tzSet, view: S.view, odds: S.odds, odds2: true, ml: S.ml, dtv: S.dtv, gct: S.gct, xc: S.xc, pp: S.pp, foot: S.foot, bar: S.bar, chg: S.chg, more: S.more, theme: document.documentElement.getAttribute("data-theme") || "", skin: document.documentElement.getAttribute("data-skin") || "broadcast" });
+      const rec = Object.assign({}, old, { v: 3, tz: S.tz, tzSet: S.tzSet, view: S.view, odds: S.odds, odds2: true, ml: S.ml, dtv: S.dtv, gct: S.gct, xc: S.xc, pp: S.pp, mkask: S.mkask, foot: S.foot, bar: S.bar, chg: S.chg, more: S.more, theme: document.documentElement.getAttribute("data-theme") || "", skin: document.documentElement.getAttribute("data-skin") || "broadcast" });
       if (!SLATE.lock) rec.league = S.league;   /* a locked copy (weekly file, artifact) never moves the one page's league */
       ["cfb", "nfl"].forEach(lg => { const p = S.per[lg]; rec[lg] = Object.assign({}, (old[lg] && typeof old[lg] === "object") ? old[lg] : {}, { on: [...p.on], off: [...p.off], confs: confOrder(lg).filter(c => p.confs.has(c)), show: p.show, mine: p.mine, now: p.now, stars: [...p.stars], views: p.views, mkt: p.mkt, zip: p.zip, dome: p.dome, wx: WXKEYS.filter(k => p.wx.has(k)), slips: p.slips }); });
       localStorage.setItem(KEY, JSON.stringify(rec));
@@ -1379,7 +1395,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const loc = known ? !!(LISTINGS.map[g.id] && LISTINGS.map[g.id].net === g.carriers[0]) : reg && (mk.includes(g.home.ab) || mk.includes(g.away.ab));
     /* game-day changes: the original channel and kick ride on g.sched (set by the build, or by the poll below when it sees a change) */
     const sc = g.sched || null, cur = g.carriers[0] || "";
-    const moved = !!(sc && sc.chan && sc.chan !== cur), retimed = !!(sc && sc.kick && kickGap(sc.kick, g.kick) >= 20);   /* under 20 minutes is ESPN posting the actual kickoff, not a change */
+    const moved = !NFL() && !!(sc && sc.chan && sc.chan !== cur), retimed = !NFL() && !!(sc && sc.kick && kickGap(sc.kick, g.kick) >= 20);   /* under 20 minutes is ESPN posting the actual kickoff, not a change */
+    /* the NFL board shows no game-day changes (Phil, 11/8: "Don't really need to see this in NFL"): its CBS and FOX listings shift with the regional maps */
     let movedMin = null, wasMin = null;
     if (moved && sc.at){ const a = slateDay(sc.at); if (a.date === g.date) movedMin = a.m; }
     if (retimed){ const k = slateDay(sc.kick); if (k.date === g.date) wasMin = k.m; }
@@ -2939,13 +2956,17 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     return MARKETS[best];
   };
   const mzip = document.getElementById("mzip"), mnote = document.getElementById("mnote"), mhelp = document.getElementById("mhelp");
-  function setMarket(code, zip, how){ S.per.nfl.mkt = code; S.per.nfl.zip = zip || ""; mnote.textContent = how || ""; remember(); render(); }
-  function marketFromZip(how){
-    const z = mzip.value.trim();
-    if (!/^\d{5}$/.test(z)){ mnote.textContent = "Five digits."; return; }
+  let mkFrom = 0, mkDone = 0, mkMode = "", mkNote = "";   /* the market ask: when it started a set, when the set landed, what it shows, its note */
+  function setMarket(code, zip, how){ S.per.nfl.mkt = code; S.per.nfl.zip = zip || ""; mnote.textContent = how || "";
+    if (!code) S.mkask = "no";   /* Clear: no market on purpose, so the ask stays away */
+    else if (Date.now() - mkFrom < 30000){ mkDone = Date.now(); mkFrom = 0; setTimeout(render, 6100); }   /* set from the ask: it says so, then goes */
+    remember(); render(); }
+  function marketFromZip(how, say){
+    const z = mzip.value.trim(), msg = typeof say === "function" ? say : t => { mnote.textContent = t; };
+    if (!/^\d{5}$/.test(z)){ msg("Five digits."); return false; }
     const ch = ZIP3[+z.slice(0, 3)], i = "0123456789abcdefghijklmnopqrstuvwxyz".indexOf(ch);
-    if (ch === "-" || ch === undefined || i < 0 || i >= MARKETS.length){ mnote.textContent = "Not a US ZIP."; return; }
-    setMarket(MARKETS[i], z, typeof how === "string" ? how : "From ZIP " + z);
+    if (ch === "-" || ch === undefined || i < 0 || i >= MARKETS.length){ msg("Not a US ZIP."); return false; }
+    setMarket(MARKETS[i], z, typeof how === "string" ? how : "From ZIP " + z); return true;
   }
   /* ---- local listings: which Sunday afternoon CBS and FOX games the market's own stations carry, from Gracenote's TV
      listings (the feed behind the usual TV guide sites), looked up in the browser for the ZIP the person typed, or the
@@ -2990,9 +3011,10 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   document.getElementById("mset").addEventListener("click", () => marketFromZip());
   mzip.addEventListener("keydown", e => { if (e.key === "Enter") marketFromZip(); });
-  document.getElementById("mloc").addEventListener("click", () => {
-    if (!navigator.geolocation){ mnote.textContent = "No location here; type a ZIP."; return; }
-    mnote.textContent = "Finding your ZIP...";
+  function useLocation(say){
+    const msg = typeof say === "function" ? say : t => { mnote.textContent = t; };
+    if (!navigator.geolocation){ msg("No location here; type a ZIP."); return; }
+    msg("Finding your ZIP...");
     /* your ZIP from where you are, typed in and set the way Set does (Phil, 11/1): OpenStreetMap's reverse geocoder, the position
        rounded to about a block; no ZIP back (offline, outside the US, blocked) and the closest team's market stands in */
     navigator.geolocation.getCurrentPosition(async p => {
@@ -3001,10 +3023,34 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         const r = await fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=" + lat.toFixed(3) + "&lon=" + lon.toFixed(3));
         if (r.ok){ const a = (await r.json()).address || {}; if (a.country_code === "us") zip = ((a.postcode || "").match(/\b\d{5}\b/) || [""])[0]; }
       } catch (e) {}
-      if (zip){ mzip.value = zip; marketFromZip("ZIP " + zip + " from your location (OpenStreetMap)"); return; }
+      if (zip){ mzip.value = zip; marketFromZip("ZIP " + zip + " from your location (OpenStreetMap)", msg); return; }
       mzip.value = ""; setMarket(nearestMarket(lat, lon), "", "Couldn't find your ZIP, so this is the closest team's market. Type your ZIP for your own stations.");
-    }, () => { mnote.textContent = "Location not available; type a ZIP."; }, { maximumAge: 600000, timeout: 10000 });
-  });
+    }, () => { mkFrom = 0; msg("Location not available; type a ZIP."); }, { maximumAge: 600000, timeout: 10000 });
+  }
+  document.getElementById("mloc").addEventListener("click", () => useLocation());
+  /* the TV market ask (Phil, 11/8: "the market feature needs to prompt you to set first load ... elegant, easy, not annoying"): a slim
+     banner between the bar and the board on a day with Sunday afternoon CBS and FOX games while no market is set. Use my location or a
+     ZIP sets it the way Settings > Market does; the x puts it away for good (Market stays in Settings). Outside the board's scroller, so
+     a poll's redraw never takes the ZIP box away mid-typing; rebuilt only when what it shows changes */
+  let mkEl = null;   /* made on the first draw, above the board */
+  const mkSay = t => { mkNote = t; const n = mkEl && mkEl.querySelector(".mknote"); if (n) n.textContent = t; };
+  function syncAsk(list){
+    const done = mkDone && Date.now() - mkDone < 6000, want = NFL() && (done || (!S.per.nfl.mkt && S.mkask !== "no" && list.some(g => g.reg)));
+    if (!mkEl){ if (!want) return; mkEl = el("div", "mkask"); mkEl.setAttribute("role", "region"); mkEl.setAttribute("aria-label", "Your TV market"); wrap.before(mkEl); }
+    mkEl.hidden = !want; if (!want){ mkMode = ""; return; }
+    if (done){ if (mkMode === "done") return; mkMode = "done"; mkEl.textContent = ""; mkEl.classList.add("done"); const q = el("div", "mkq");
+      q.appendChild(el("span", null, "Market set: " + (S.per.nfl.zip ? "ZIP " + S.per.nfl.zip + ", " : "") + marketLabel(S.per.nfl.mkt) + " market. Your stations' games are tagged LOCAL.")); mkEl.appendChild(q); return; }
+    if (mkMode === "ask") return; mkMode = "ask"; mkEl.textContent = ""; mkEl.classList.remove("done");
+    const q = el("div", "mkq"), x = el("button", "mkx", "\u2715"); q.appendChild(el("span", null, "Which CBS and FOX games are on your TV?"));
+    x.type = "button"; x.title = "Not now (Settings > Market has it)"; x.setAttribute("aria-label", "Not now"); x.addEventListener("click", () => { S.mkask = "no"; remember(); render(); }); q.appendChild(x); mkEl.appendChild(q);
+    const r = el("div", "mkr"), loc = el("button", "mkloc"), zi = el("input"), set = el("button", "mkset", "Set");
+    loc.type = "button"; loc.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6-5.6-6-11a6 6 0 1 1 12 0c0 5.4-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg>'; loc.appendChild(document.createTextNode("Use my location"));
+    loc.addEventListener("click", () => { mkFrom = Date.now(); useLocation(mkSay); });
+    zi.type = "text"; zi.inputMode = "numeric"; zi.maxLength = 5; zi.placeholder = "ZIP"; zi.autocomplete = "postal-code"; zi.setAttribute("aria-label", "ZIP code");
+    const go = () => { mzip.value = zi.value.trim(); mkFrom = Date.now(); if (!marketFromZip(undefined, mkSay)) mkFrom = 0; };
+    set.type = "button"; set.addEventListener("click", go); zi.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+    r.appendChild(loc); r.appendChild(el("span", "mkor", "or")); r.appendChild(zi); r.appendChild(set); const nt = el("span", "mknote", mkNote); r.appendChild(nt); mkEl.appendChild(r);
+  }
   document.getElementById("mclear").addEventListener("click", () => { mzip.value = ""; setMarket("", "", ""); });
   function refreshMarket(){
     if (!NFL()) return;
@@ -3193,6 +3239,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     wrap._trim = null;
     const list = dayGames(), main = list.filter(g => g.ok), no = list.filter(g => !g.ok && g.carriers.length), tba = list.filter(g => !g.ok && !g.carriers.length);
     const chg = days.length ? changesStrip(list) : null; if (chg) wrap.appendChild(chg);
+    syncAsk(list);   /* the TV market ask (11/8) */
     if (!days.length) wrap.appendChild(el("div", "empty", "No games loaded."));
     else if (S.view === "timeline"){
       renderTimeline(wrap, main.filter(g => !g.tbd), S.day);
