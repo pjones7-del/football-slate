@@ -1,4 +1,4 @@
-NFL Week 9 (15 games, pulled Sun 11/8, 3:23 PM ET, lines DraftKings via ESPN)
+NFL Week 9 (15 games, pulled Sun 11/8, 4:01 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week9.html
   nfl/ forwards to the one page
   Thu 11/5: 0 on TV, 1 not
