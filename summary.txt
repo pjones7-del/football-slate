@@ -1,4 +1,4 @@
-College Football Week 10 (124 games, pulled Sun 11/8, 7:42 PM ET, lines DraftKings via ESPN)
+College Football Week 10 (124 games, pulled Mon 11/9, 2:50 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week10.html
   cfb/ forwards to the one page
   Tue 11/3: 2 on TV, 0 not
@@ -26,7 +26,7 @@ College Football Week 10 (124 games, pulled Sun 11/8, 7:42 PM ET, lines DraftKin
   TV games without a line: 0
   time TBD: 0
 
-NFL Week 9 (15 games, pulled Sun 11/8, 7:42 PM ET, lines DraftKings via ESPN)
+NFL Week 9 (15 games, pulled Mon 11/9, 2:50 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week9.html
   nfl/ forwards to the one page
   Thu 11/5: 0 on TV, 1 not
