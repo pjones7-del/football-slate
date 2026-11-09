@@ -1,4 +1,4 @@
-NFL Week 9 (15 games, pulled Mon 11/9, 2:50 AM ET, lines DraftKings via ESPN)
+NFL Week 9 (15 games, pulled Mon 11/9, 1:39 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week9.html
   nfl/ forwards to the one page
   Thu 11/5: 0 on TV, 1 not
@@ -19,7 +19,7 @@ NFL Week 9 (15 games, pulled Mon 11/9, 2:50 AM ET, lines DraftKings via ESPN)
     Sun 16:25 ET  Las Vegas Raiders at San Francisco 49ers  [FOX]  SF -8.5, o/u 51.5
     Sun 16:25 ET  Arizona Cardinals at Seattle Seahawks  [FOX]  SEA -8.5, o/u 39.5
     Sun 20:20 ET  Tampa Bay Buccaneers at Chicago Bears  [NBC]  CHI -6.0, o/u 47.5
-    Mon 20:15 ET  Buffalo Bills at Minnesota Vikings  [ESPN]  BUF -3.0, o/u 43.5
+    Mon 20:15 ET  Buffalo Bills at Minnesota Vikings  [ESPN]  BUF -3.5, o/u 45.5
   TV games without a line: 0
   time TBD: 0
   schedule changes on game day: Sun DET at MIA: FOX -> CBS (2:46 PM ET)
