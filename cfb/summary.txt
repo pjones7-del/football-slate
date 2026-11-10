@@ -1,4 +1,4 @@
-College Football Week 11 (130 games, pulled Tue 11/10, 4:36 AM ET, lines DraftKings via ESPN)
+College Football Week 11 (130 games, pulled Tue 11/10, 12:38 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week11.html
   cfb/ forwards to the one page
   Tue 11/10: 3 on TV, 0 not
@@ -8,10 +8,10 @@ College Football Week 11 (130 games, pulled Tue 11/10, 4:36 AM ET, lines DraftKi
   Sat 11/14: 43 on TV, 75 not
   ranked matchups:
     Fri 21:00 ET  Illinois at #8 UCLA  [FOX]  UCLA -10.0, o/u 47.5
-    Fri 22:15 ET  #17 Houston at Colorado  [ESPN]  HOU -10.5, o/u 50.5
+    Fri 22:15 ET  #17 Houston at Colorado  [ESPN]  HOU -10.0, o/u 51.5
     Sat 12:00 ET  Duke at #1 Miami (FL)  [ABC]  MIA -13.5, o/u 54.5
     Sat 12:00 ET  #16 Wake Forest at SMU  [ESPN]  WAKE -1.5, o/u 61.5
-    Sat 12:00 ET  Northwestern at #12 Ohio State  [FOX]  OSU -12.5, o/u 46.5
+    Sat 12:00 ET  Northwestern at #12 Ohio State  [FOX]  OSU -12.5, o/u 45.5
     Sat 12:45 ET  #5 Alabama at Vanderbilt  [SECN]  ALA -15.5, o/u 50.5
     Sat 15:00 ET  #13 Tennessee at Texas A&M  [ESPN]  TENN -2.5, o/u 43.5
     Sat 15:30 ET  #18 Missouri at #2 Georgia  [ABC]  UGA -15.5, o/u 47.5
@@ -19,9 +19,9 @@ College Football Week 11 (130 games, pulled Tue 11/10, 4:36 AM ET, lines DraftKi
     Sat 15:30 ET  Baylor at #9 BYU  [FOX]  BYU -7.5, o/u 49.5
     Sat 15:30 ET  Michigan at #23 Oregon  [FS1]  ORE -11.5, o/u 38.5
     Sat 15:30 ET  Boston College at #11 Notre Dame  [NBC]  ND -29.5, o/u 52.5
-    Sat 16:15 ET  #10 Ole Miss at Oklahoma  [SECN]  MISS -1.5, o/u 48.5
+    Sat 16:15 ET  #10 Ole Miss at Oklahoma  [SECN]  MISS -1.5, o/u 49.5
     Sat 18:00 ET  Oregon State at #25 Boise State  [USA]  BOIS -13.5, o/u 65.5
-    Sat 18:15 ET  #24 Florida at #6 Kentucky  [ESPN]  UK -3.5, o/u 53.5
+    Sat 18:15 ET  #24 Florida at #6 Kentucky  [ESPN]  UK -3.5, o/u 52.5
     Sat 19:30 ET  #7 Texas at #14 LSU  [ABC]  LSU -3.5, o/u 46.5
     Sat 19:30 ET  #3 Utah at #22 Arizona  [FOX]  UTAH -2.5, o/u 54.5
     Sat 19:30 ET  Purdue at #19 Iowa  [NBC]  IOWA -16.5, o/u 47.5
@@ -29,4 +29,5 @@ College Football Week 11 (130 games, pulled Tue 11/10, 4:36 AM ET, lines DraftKi
     Sat 21:30 ET  #15 Texas Tech at Oklahoma State  [ESPN]  OKST -3.5, o/u 72.5
   TV games without a line: 1
   time TBD: 0
+  network from CBS Sports (ESPN lists none): New Mexico State at Missouri State ESPN+
   non-Division I or unknown conference ids: none: Virginia Lynchburg
