@@ -1,27 +1,32 @@
-College Football Week 10 (124 games, pulled Mon 11/9, 8:57 PM ET, lines DraftKings via ESPN)
-  weekly file written to cfb-slate-week10.html
+College Football Week 11 (130 games, pulled Tue 11/10, 4:36 AM ET, lines DraftKings via ESPN)
+  weekly file written to cfb-slate-week11.html
   cfb/ forwards to the one page
-  Tue 11/3: 2 on TV, 0 not
-  Wed 11/4: 3 on TV, 0 not
-  Thu 11/5: 3 on TV, 0 not
-  Fri 11/6: 5 on TV, 0 not
-  Sat 11/7: 39 on TV, 72 not
+  Tue 11/10: 3 on TV, 0 not
+  Wed 11/11: 3 on TV, 0 not
+  Thu 11/12: 2 on TV, 0 not
+  Fri 11/13: 3 on TV, 1 not
+  Sat 11/14: 43 on TV, 75 not
   ranked matchups:
-    Fri 22:15 ET  TCU at #22 Arizona  [ESPN]  ARIZ -7.0, o/u 46.5
-    Sat 12:00 ET  #9 BYU at #3 Utah  [ABC]  UTAH -4.5, o/u 48.5
-    Sat 12:00 ET  #7 Texas at #18 Missouri  [ESPN]  TEX -2.5, o/u 42.5
-    Sat 12:00 ET  #8 UCLA at Minnesota  [FOX]  UCLA -4.0, o/u 38.5
-    Sat 15:00 ET  Texas A&M at #21 South Carolina  [ESPN]  SC -6.5, o/u 52.5
-    Sat 15:30 ET  #5 Alabama at #14 LSU  [ABC]  LSU -6.0, o/u 53.5
-    Sat 15:30 ET  Merrimack at #16 Wake Forest  [ACCN]  WAKE -46.5, o/u 57.5
-    Sat 15:30 ET  #23 Oregon at #12 Ohio State  [CBS]  OSU -7.5, o/u 44.5
-    Sat 15:30 ET  Cincinnati at #17 Houston  [FOX]  HOU -10.5, o/u 61.5
-    Sat 18:00 ET  #25 Boise State at Colorado State  [USA]  BOIS -15.5, o/u 68.5
-    Sat 18:15 ET  #6 Kentucky at #13 Tennessee  [ESPN]  TENN -6.5, o/u 49.5
-    Sat 19:30 ET  #2 Georgia at #10 Ole Miss  [ABC]  UGA -3.5, o/u 56.5
-    Sat 19:30 ET  #19 Iowa at Northwestern  [FOX]  IOWA -3.0, o/u 42.5
-    Sat 19:30 ET  #1 Miami (FL) at #11 Notre Dame  [NBC]  ND -7.5, o/u 54.5
-    Sat 19:45 ET  Oklahoma at #24 Florida  [SECN]  FLA -4.0, o/u 46.5
-    Sat 21:30 ET  West Virginia at #15 Texas Tech  [ESPN]  TTU -16.5, o/u 68.5
-  TV games without a line: 0
+    Fri 21:00 ET  Illinois at #8 UCLA  [FOX]  UCLA -10.0, o/u 47.5
+    Fri 22:15 ET  #17 Houston at Colorado  [ESPN]  HOU -10.5, o/u 50.5
+    Sat 12:00 ET  Duke at #1 Miami (FL)  [ABC]  MIA -13.5, o/u 54.5
+    Sat 12:00 ET  #16 Wake Forest at SMU  [ESPN]  WAKE -1.5, o/u 61.5
+    Sat 12:00 ET  Northwestern at #12 Ohio State  [FOX]  OSU -12.5, o/u 46.5
+    Sat 12:45 ET  #5 Alabama at Vanderbilt  [SECN]  ALA -15.5, o/u 50.5
+    Sat 15:00 ET  #13 Tennessee at Texas A&M  [ESPN]  TENN -2.5, o/u 43.5
+    Sat 15:30 ET  #18 Missouri at #2 Georgia  [ABC]  UGA -15.5, o/u 47.5
+    Sat 15:30 ET  #20 USC at #4 Indiana  [CBS]  IU -7.5, o/u 49.5
+    Sat 15:30 ET  Baylor at #9 BYU  [FOX]  BYU -7.5, o/u 49.5
+    Sat 15:30 ET  Michigan at #23 Oregon  [FS1]  ORE -11.5, o/u 38.5
+    Sat 15:30 ET  Boston College at #11 Notre Dame  [NBC]  ND -29.5, o/u 52.5
+    Sat 16:15 ET  #10 Ole Miss at Oklahoma  [SECN]  MISS -1.5, o/u 48.5
+    Sat 18:00 ET  Oregon State at #25 Boise State  [USA]  BOIS -13.5, o/u 65.5
+    Sat 18:15 ET  #24 Florida at #6 Kentucky  [ESPN]  UK -3.5, o/u 53.5
+    Sat 19:30 ET  #7 Texas at #14 LSU  [ABC]  LSU -3.5, o/u 46.5
+    Sat 19:30 ET  #3 Utah at #22 Arizona  [FOX]  UTAH -2.5, o/u 54.5
+    Sat 19:30 ET  Purdue at #19 Iowa  [NBC]  IOWA -16.5, o/u 47.5
+    Sat 19:45 ET  #21 South Carolina at Arkansas  [SECN]  SC -7.5, o/u 51.5
+    Sat 21:30 ET  #15 Texas Tech at Oklahoma State  [ESPN]  OKST -3.5, o/u 72.5
+  TV games without a line: 1
   time TBD: 0
+  non-Division I or unknown conference ids: none: Virginia Lynchburg
