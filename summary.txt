@@ -1,4 +1,4 @@
-College Football Week 11 (130 games, pulled Tue 11/10, 12:38 PM ET, lines DraftKings via ESPN)
+College Football Week 11 (130 games, pulled Tue 11/10, 6:07 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week11.html
   cfb/ forwards to the one page
   Tue 11/10: 3 on TV, 0 not
@@ -8,9 +8,9 @@ College Football Week 11 (130 games, pulled Tue 11/10, 12:38 PM ET, lines DraftK
   Sat 11/14: 43 on TV, 75 not
   ranked matchups:
     Fri 21:00 ET  Illinois at #8 UCLA  [FOX]  UCLA -10.0, o/u 47.5
-    Fri 22:15 ET  #17 Houston at Colorado  [ESPN]  HOU -10.0, o/u 51.5
+    Fri 22:15 ET  #17 Houston at Colorado  [ESPN]  HOU -9.5, o/u 51.5
     Sat 12:00 ET  Duke at #1 Miami (FL)  [ABC]  MIA -13.5, o/u 54.5
-    Sat 12:00 ET  #16 Wake Forest at SMU  [ESPN]  WAKE -1.5, o/u 61.5
+    Sat 12:00 ET  #16 Wake Forest at SMU  [ESPN]  SMU -1.5, o/u 61.5
     Sat 12:00 ET  Northwestern at #12 Ohio State  [FOX]  OSU -12.5, o/u 45.5
     Sat 12:45 ET  #5 Alabama at Vanderbilt  [SECN]  ALA -15.5, o/u 50.5
     Sat 15:00 ET  #13 Tennessee at Texas A&M  [ESPN]  TENN -2.5, o/u 43.5
@@ -22,7 +22,7 @@ College Football Week 11 (130 games, pulled Tue 11/10, 12:38 PM ET, lines DraftK
     Sat 16:15 ET  #10 Ole Miss at Oklahoma  [SECN]  MISS -1.5, o/u 49.5
     Sat 18:00 ET  Oregon State at #25 Boise State  [USA]  BOIS -13.5, o/u 65.5
     Sat 18:15 ET  #24 Florida at #6 Kentucky  [ESPN]  UK -3.5, o/u 52.5
-    Sat 19:30 ET  #7 Texas at #14 LSU  [ABC]  LSU -3.5, o/u 46.5
+    Sat 19:30 ET  #7 Texas at #14 LSU  [ABC]  LSU -4.0, o/u 46.5
     Sat 19:30 ET  #3 Utah at #22 Arizona  [FOX]  UTAH -2.5, o/u 54.5
     Sat 19:30 ET  Purdue at #19 Iowa  [NBC]  IOWA -16.5, o/u 47.5
     Sat 19:45 ET  #21 South Carolina at Arkansas  [SECN]  SC -7.5, o/u 51.5
@@ -32,7 +32,7 @@ College Football Week 11 (130 games, pulled Tue 11/10, 12:38 PM ET, lines DraftK
   network from CBS Sports (ESPN lists none): New Mexico State at Missouri State ESPN+
   non-Division I or unknown conference ids: none: Virginia Lynchburg
 
-NFL Week 10 (14 games, pulled Tue 11/10, 12:38 PM ET, lines DraftKings via ESPN)
+NFL Week 10 (14 games, pulled Tue 11/10, 6:07 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week10.html
   nfl/ forwards to the one page
   Thu 11/12: 0 on TV, 1 not
@@ -42,17 +42,17 @@ NFL Week 10 (14 games, pulled Tue 11/10, 12:38 PM ET, lines DraftKings via ESPN)
     Thu 20:15 ET  Washington Commanders at New York Giants  [Prime Video]  NYG -2.5, o/u 41.5
     Sun 09:30 ET  New England Patriots vs Detroit Lions  [FOX]  DET -2.5, o/u 51.5
     Sun 13:00 ET  Kansas City Chiefs at Atlanta Falcons  [CBS]  KC -3.5, o/u 45.5
-    Sun 13:00 ET  Miami Dolphins at Indianapolis Colts  [CBS]  IND -2.5, o/u 40.5
+    Sun 13:00 ET  Miami Dolphins at Indianapolis Colts  [CBS]  IND -3.5, o/u 38.5
     Sun 13:00 ET  Buffalo Bills at New York Jets  [CBS]  BUF -8.5, o/u 50.5
     Sun 13:00 ET  Houston Texans at Cleveland Browns  [FOX]  HOU -4.5, o/u 39.5
-    Sun 13:00 ET  Minnesota Vikings at Green Bay Packers  [FOX]  GB -5.5, o/u 40.5
-    Sun 13:00 ET  Carolina Panthers at New Orleans Saints  [FOX]  NO -1.5, o/u 48.5
+    Sun 13:00 ET  Minnesota Vikings at Green Bay Packers  [FOX]  GB -3.5, o/u 41.5
+    Sun 13:00 ET  Carolina Panthers at New Orleans Saints  [FOX]  NO -2.5, o/u 48.5
     Sun 13:00 ET  Jacksonville Jaguars at Tennessee Titans  [FOX]  JAX -10.5, o/u 46.5
-    Sun 16:05 ET  Los Angeles Rams at Arizona Cardinals  [CBS]  LAR -9.5, o/u 40.5
-    Sun 16:05 ET  Seattle Seahawks at Las Vegas Raiders  [CBS]  SEA -3.5, o/u 43.5
-    Sun 16:25 ET  San Francisco 49ers at Dallas Cowboys  [FOX]  SF -4.5, o/u 55.5
-    Sun 20:20 ET  Pittsburgh Steelers at Cincinnati Bengals  [NBC]  CIN -3.5, o/u 48.5
-    Mon 20:15 ET  Los Angeles Chargers at Baltimore Ravens  [ESPN]  BAL -5.5, o/u 38.5
+    Sun 16:05 ET  Los Angeles Rams at Arizona Cardinals  [CBS]  LAR -9.5, o/u 39.5
+    Sun 16:05 ET  Seattle Seahawks at Las Vegas Raiders  [CBS]  SEA -6.5, o/u 40.5
+    Sun 16:25 ET  San Francisco 49ers at Dallas Cowboys  [FOX]  SF -3.5, o/u 55.5
+    Sun 20:20 ET  Pittsburgh Steelers at Cincinnati Bengals  [NBC]  CIN -3.5, o/u 49.5
+    Mon 20:15 ET  Los Angeles Chargers at Baltimore Ravens  [ESPN]  BAL -4.5, o/u 38.5
   TV games without a line: 0
   time TBD: 0
 
