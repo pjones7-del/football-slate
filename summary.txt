@@ -1,4 +1,4 @@
-College Football Week 11 (130 games, pulled Wed 11/11, 9:48 PM ET, lines DraftKings via ESPN)
+College Football Week 11 (130 games, pulled Thu 11/12, 5:52 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week11.html
   cfb/ forwards to the one page
   Tue 11/10: 3 on TV, 0 not
@@ -8,9 +8,9 @@ College Football Week 11 (130 games, pulled Wed 11/11, 9:48 PM ET, lines DraftKi
   Sat 11/14: 43 on TV, 75 not
   ranked matchups:
     Fri 21:00 ET  Illinois at #4 UCLA  [FOX]  UCLA -10.0, o/u 47.5
-    Fri 22:15 ET  #14 Houston at Colorado  [ESPN]  HOU -10.0, o/u 51.5
+    Fri 22:15 ET  #14 Houston at Colorado  [ESPN]  HOU -9.5, o/u 51.5
     Sat 12:00 ET  Duke at #7 Miami (FL)  [ABC]  MIA -13.5, o/u 54.5
-    Sat 12:00 ET  #13 Wake Forest at SMU  [ESPN]  SMU -1.5, o/u 61.5
+    Sat 12:00 ET  #13 Wake Forest at SMU  [ESPN]  SMU -1.5, o/u 60.5
     Sat 12:00 ET  Northwestern at #20 Ohio State  [FOX]  OSU -14.0, o/u 44.5
     Sat 12:45 ET  #3 Alabama at Vanderbilt  [SECN]  ALA -17.5, o/u 50.5
     Sat 15:00 ET  #8 Tennessee at Texas A&M  [ESPN]  TENN -2.5, o/u 43.5
@@ -20,7 +20,7 @@ College Football Week 11 (130 games, pulled Wed 11/11, 9:48 PM ET, lines DraftKi
     Sat 15:30 ET  Michigan at #16 Oregon  [FS1]  ORE -10.5, o/u 38.5
     Sat 15:30 ET  Boston College at #5 Notre Dame  [NBC]  ND -29.5, o/u 52.5
     Sat 16:15 ET  #19 Ole Miss at Oklahoma  [SECN]  OU -1.5, o/u 49.5
-    Sat 18:00 ET  Oregon State at #24 Boise State  [USA]  BOIS -13.5, o/u 65.5
+    Sat 18:00 ET  Oregon State at #24 Boise State  [USA]  BOIS -15.5, o/u 65.5
     Sat 18:15 ET  Florida at #11 Kentucky  [ESPN]  UK -3.5, o/u 52.5
     Sat 19:30 ET  #6 Texas at #21 LSU  [ABC]  LSU -4.0, o/u 46.5
     Sat 19:30 ET  #2 Utah at #23 Arizona  [FOX]  UTAH -2.5, o/u 54.5
@@ -31,7 +31,7 @@ College Football Week 11 (130 games, pulled Wed 11/11, 9:48 PM ET, lines DraftKi
   time TBD: 0
   non-Division I or unknown conference ids: none: Virginia Lynchburg
 
-NFL Week 10 (14 games, pulled Wed 11/11, 9:48 PM ET, lines DraftKings via ESPN)
+NFL Week 10 (14 games, pulled Thu 11/12, 5:52 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week10.html
   nfl/ forwards to the one page
   Thu 11/12: 0 on TV, 1 not
