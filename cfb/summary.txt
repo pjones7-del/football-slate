@@ -1,4 +1,4 @@
-College Football Week 11 (130 games, pulled Thu 11/12, 5:52 AM ET, lines DraftKings via ESPN)
+College Football Week 11 (130 games, pulled Thu 11/12, 1:47 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week11.html
   cfb/ forwards to the one page
   Tue 11/10: 3 on TV, 0 not
@@ -15,12 +15,12 @@ College Football Week 11 (130 games, pulled Thu 11/12, 5:52 AM ET, lines DraftKi
     Sat 12:45 ET  #3 Alabama at Vanderbilt  [SECN]  ALA -17.5, o/u 50.5
     Sat 15:00 ET  #8 Tennessee at Texas A&M  [ESPN]  TENN -2.5, o/u 43.5
     Sat 15:30 ET  #22 Missouri at #1 Georgia  [ABC]  UGA -15.5, o/u 47.5
-    Sat 15:30 ET  #18 USC at #9 Indiana  [CBS]  IU -10.0, o/u 50.5
+    Sat 15:30 ET  #18 USC at #9 Indiana  [CBS]  IU -8.5, o/u 50.5
     Sat 15:30 ET  Baylor at #10 BYU  [FOX]  BYU -7.5, o/u 48.5
     Sat 15:30 ET  Michigan at #16 Oregon  [FS1]  ORE -10.5, o/u 38.5
     Sat 15:30 ET  Boston College at #5 Notre Dame  [NBC]  ND -29.5, o/u 52.5
     Sat 16:15 ET  #19 Ole Miss at Oklahoma  [SECN]  OU -1.5, o/u 49.5
-    Sat 18:00 ET  Oregon State at #24 Boise State  [USA]  BOIS -15.5, o/u 65.5
+    Sat 18:00 ET  Oregon State at #24 Boise State  [USA]  BOIS -14.5, o/u 64.5
     Sat 18:15 ET  Florida at #11 Kentucky  [ESPN]  UK -3.5, o/u 52.5
     Sat 19:30 ET  #6 Texas at #21 LSU  [ABC]  LSU -4.0, o/u 46.5
     Sat 19:30 ET  #2 Utah at #23 Arizona  [FOX]  UTAH -2.5, o/u 54.5
