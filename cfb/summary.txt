@@ -1,4 +1,4 @@
-College Football Week 11 (130 games, pulled Thu 11/12, 7:05 PM ET, lines DraftKings via ESPN)
+College Football Week 11 (130 games, pulled Fri 11/13, 1:26 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week11.html
   cfb/ forwards to the one page
   Tue 11/10: 3 on TV, 0 not
@@ -25,7 +25,7 @@ College Football Week 11 (130 games, pulled Thu 11/12, 7:05 PM ET, lines DraftKi
     Sat 19:30 ET  #6 Texas at #21 LSU  [ABC]  LSU -4.0, o/u 46.5
     Sat 19:30 ET  #2 Utah at #23 Arizona  [FOX]  UTAH -2.5, o/u 54.5
     Sat 19:30 ET  Purdue at #15 Iowa  [NBC]  IOWA -17.5, o/u 47.5
-    Sat 19:45 ET  #17 South Carolina at Arkansas  [SECN]  SC -7.0, o/u 51.5
+    Sat 19:45 ET  #17 South Carolina at Arkansas  [SECN]  SC -7.5, o/u 51.5
     Sat 21:30 ET  #12 Texas Tech at #25 Oklahoma State  [ESPN]  OKST -3.5, o/u 73.5
   TV games without a line: 1
   time TBD: 0
