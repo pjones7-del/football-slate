@@ -1,4 +1,4 @@
-College Football Week 11 (130 games, pulled Thu 11/12, 1:47 PM ET, lines DraftKings via ESPN)
+College Football Week 11 (130 games, pulled Thu 11/12, 7:05 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week11.html
   cfb/ forwards to the one page
   Tue 11/10: 3 on TV, 0 not
@@ -14,31 +14,31 @@ College Football Week 11 (130 games, pulled Thu 11/12, 1:47 PM ET, lines DraftKi
     Sat 12:00 ET  Northwestern at #20 Ohio State  [FOX]  OSU -14.0, o/u 44.5
     Sat 12:45 ET  #3 Alabama at Vanderbilt  [SECN]  ALA -17.5, o/u 50.5
     Sat 15:00 ET  #8 Tennessee at Texas A&M  [ESPN]  TENN -2.5, o/u 43.5
-    Sat 15:30 ET  #22 Missouri at #1 Georgia  [ABC]  UGA -15.5, o/u 47.5
+    Sat 15:30 ET  #22 Missouri at #1 Georgia  [ABC]  UGA -16.5, o/u 47.5
     Sat 15:30 ET  #18 USC at #9 Indiana  [CBS]  IU -8.5, o/u 50.5
-    Sat 15:30 ET  Baylor at #10 BYU  [FOX]  BYU -7.5, o/u 48.5
+    Sat 15:30 ET  Baylor at #10 BYU  [FOX]  BYU -7.5, o/u 49.5
     Sat 15:30 ET  Michigan at #16 Oregon  [FS1]  ORE -10.5, o/u 38.5
     Sat 15:30 ET  Boston College at #5 Notre Dame  [NBC]  ND -29.5, o/u 52.5
     Sat 16:15 ET  #19 Ole Miss at Oklahoma  [SECN]  OU -1.5, o/u 49.5
-    Sat 18:00 ET  Oregon State at #24 Boise State  [USA]  BOIS -14.5, o/u 64.5
+    Sat 18:00 ET  Oregon State at #24 Boise State  [USA]  BOIS -14.5, o/u 63.5
     Sat 18:15 ET  Florida at #11 Kentucky  [ESPN]  UK -3.5, o/u 52.5
     Sat 19:30 ET  #6 Texas at #21 LSU  [ABC]  LSU -4.0, o/u 46.5
     Sat 19:30 ET  #2 Utah at #23 Arizona  [FOX]  UTAH -2.5, o/u 54.5
     Sat 19:30 ET  Purdue at #15 Iowa  [NBC]  IOWA -17.5, o/u 47.5
     Sat 19:45 ET  #17 South Carolina at Arkansas  [SECN]  SC -7.0, o/u 51.5
-    Sat 21:30 ET  #12 Texas Tech at #25 Oklahoma State  [ESPN]  OKST -3.5, o/u 72.5
+    Sat 21:30 ET  #12 Texas Tech at #25 Oklahoma State  [ESPN]  OKST -3.5, o/u 73.5
   TV games without a line: 1
   time TBD: 0
   non-Division I or unknown conference ids: none: Virginia Lynchburg
 
-NFL Week 10 (14 games, pulled Thu 11/12, 1:47 PM ET, lines DraftKings via ESPN)
+NFL Week 10 (14 games, pulled Thu 11/12, 7:05 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week10.html
   nfl/ forwards to the one page
   Thu 11/12: 0 on TV, 1 not
   Sun 11/15: 12 on TV, 0 not
   Mon 11/16: 1 on TV, 0 not
   every game with its line:
-    Thu 20:15 ET  Washington Commanders at New York Giants  [Prime Video]  NYG -2.5, o/u 40.5
+    Thu 20:15 ET  Washington Commanders at New York Giants  [Prime Video]  NYG -1.5, o/u 40.5
     Sun 09:30 ET  New England Patriots vs Detroit Lions  [FOX]  DET -2.5, o/u 51.5
     Sun 13:00 ET  Kansas City Chiefs at Atlanta Falcons  [CBS]  KC -3.0, o/u 46.5
     Sun 13:00 ET  Miami Dolphins at Indianapolis Colts  [CBS]  IND -3.5, o/u 38.5

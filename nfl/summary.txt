@@ -1,11 +1,11 @@
-NFL Week 10 (14 games, pulled Thu 11/12, 1:47 PM ET, lines DraftKings via ESPN)
+NFL Week 10 (14 games, pulled Thu 11/12, 7:05 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week10.html
   nfl/ forwards to the one page
   Thu 11/12: 0 on TV, 1 not
   Sun 11/15: 12 on TV, 0 not
   Mon 11/16: 1 on TV, 0 not
   every game with its line:
-    Thu 20:15 ET  Washington Commanders at New York Giants  [Prime Video]  NYG -2.5, o/u 40.5
+    Thu 20:15 ET  Washington Commanders at New York Giants  [Prime Video]  NYG -1.5, o/u 40.5
     Sun 09:30 ET  New England Patriots vs Detroit Lions  [FOX]  DET -2.5, o/u 51.5
     Sun 13:00 ET  Kansas City Chiefs at Atlanta Falcons  [CBS]  KC -3.0, o/u 46.5
     Sun 13:00 ET  Miami Dolphins at Indianapolis Colts  [CBS]  IND -3.5, o/u 38.5
