@@ -1,4 +1,4 @@
-College Football Week 11 (130 games, pulled Fri 11/13, 4:53 PM ET, lines DraftKings via ESPN)
+College Football Week 11 (130 games, pulled Fri 11/13, 9:12 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week11.html
   cfb/ forwards to the one page
   Tue 11/10: 3 on TV, 0 not
@@ -8,22 +8,22 @@ College Football Week 11 (130 games, pulled Fri 11/13, 4:53 PM ET, lines DraftKi
   Sat 11/14: 43 on TV, 75 not
   ranked matchups:
     Fri 21:00 ET  Illinois at #4 UCLA  [FOX]  UCLA -10.5, o/u 48.5
-    Fri 22:15 ET  #14 Houston at Colorado  [ESPN]  HOU -7.5, o/u 52.5
+    Fri 22:15 ET  #14 Houston at Colorado  [ESPN]  HOU -7.5, o/u 53.5
     Sat 12:00 ET  Duke at #7 Miami (FL)  [ABC]  MIA -13.5, o/u 54.5
     Sat 12:00 ET  #13 Wake Forest at SMU  [ESPN]  SMU -1.5, o/u 60.5
     Sat 12:00 ET  Northwestern at #20 Ohio State  [FOX]  OSU -14.0, o/u 44.5
-    Sat 12:45 ET  #3 Alabama at Vanderbilt  [SECN]  ALA -15.5, o/u 49.5
-    Sat 15:00 ET  #8 Tennessee at Texas A&M  [ESPN]  TENN -2.5, o/u 43.5
+    Sat 12:45 ET  #3 Alabama at Vanderbilt  [SECN]  ALA -14.0, o/u 47.5
+    Sat 15:00 ET  #8 Tennessee at Texas A&M  [ESPN]  TENN -1.5, o/u 43.5
     Sat 15:30 ET  #22 Missouri at #1 Georgia  [ABC]  UGA -16.5, o/u 47.5
     Sat 15:30 ET  #18 USC at #9 Indiana  [CBS]  IU -9.5, o/u 50.5
-    Sat 15:30 ET  Baylor at #10 BYU  [FOX]  BYU -7.5, o/u 50.5
+    Sat 15:30 ET  Baylor at #10 BYU  [FOX]  BYU -8.5, o/u 50.5
     Sat 15:30 ET  Michigan at #16 Oregon  [FS1]  ORE -10.5, o/u 38.5
     Sat 15:30 ET  Boston College at #5 Notre Dame  [NBC]  ND -29.5, o/u 51.5
-    Sat 16:15 ET  #19 Ole Miss at Oklahoma  [SECN]  OU -1.5, o/u 49.5
-    Sat 18:00 ET  Oregon State at #24 Boise State  [USA]  BOIS -14.5, o/u 63.5
+    Sat 16:15 ET  #19 Ole Miss at Oklahoma  [SECN]  OU -2.5, o/u 49.5
+    Sat 18:00 ET  Oregon State at #24 Boise State  [USA]  BOIS -16.5, o/u 63.5
     Sat 18:15 ET  Florida at #11 Kentucky  [ESPN]  UK -3.0, o/u 52.5
-    Sat 19:30 ET  #6 Texas at #21 LSU  [ABC]  LSU -4.0, o/u 46.5
-    Sat 19:30 ET  #2 Utah at #23 Arizona  [FOX]  UTAH -2.5, o/u 55.5
+    Sat 19:30 ET  #6 Texas at #21 LSU  [ABC]  LSU -4.5, o/u 46.5
+    Sat 19:30 ET  #2 Utah at #23 Arizona  [FOX]  UTAH -1.5, o/u 55.5
     Sat 19:30 ET  Purdue at #15 Iowa  [NBC]  IOWA -17.5, o/u 47.5
     Sat 19:45 ET  #17 South Carolina at Arkansas  [SECN]  SC -7.5, o/u 51.5
     Sat 21:30 ET  #12 Texas Tech at #25 Oklahoma State  [ESPN]  OKST -3.5, o/u 73.5
@@ -31,7 +31,7 @@ College Football Week 11 (130 games, pulled Fri 11/13, 4:53 PM ET, lines DraftKi
   time TBD: 0
   non-Division I or unknown conference ids: none: Virginia Lynchburg
 
-NFL Week 10 (14 games, pulled Fri 11/13, 4:53 PM ET, lines DraftKings via ESPN)
+NFL Week 10 (14 games, pulled Fri 11/13, 9:12 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week10.html
   nfl/ forwards to the one page
   Thu 11/12: 0 on TV, 1 not
@@ -39,17 +39,17 @@ NFL Week 10 (14 games, pulled Fri 11/13, 4:53 PM ET, lines DraftKings via ESPN)
   Mon 11/16: 1 on TV, 0 not
   every game with its line:
     Thu 20:15 ET  Washington Commanders at New York Giants  [Prime Video]  NYG -1.5, o/u 40.5
-    Sun 09:30 ET  New England Patriots vs Detroit Lions  [FOX]  DET -3.0, o/u 49.5
+    Sun 09:30 ET  New England Patriots vs Detroit Lions  [FOX]  DET -2.5, o/u 49.5
     Sun 13:00 ET  Kansas City Chiefs at Atlanta Falcons  [CBS]  KC -3.0, o/u 47.5
     Sun 13:00 ET  Miami Dolphins at Indianapolis Colts  [CBS]  IND -3.5, o/u 38.5
     Sun 13:00 ET  Buffalo Bills at New York Jets  [CBS]  BUF -8.5, o/u 50.5
     Sun 13:00 ET  Houston Texans at Cleveland Browns  [FOX]  HOU -4.5, o/u 40.5
-    Sun 13:00 ET  Minnesota Vikings at Green Bay Packers  [FOX]  GB -3.0, o/u 42.5
+    Sun 13:00 ET  Minnesota Vikings at Green Bay Packers  [FOX]  GB -2.5, o/u 42.5
     Sun 13:00 ET  Carolina Panthers at New Orleans Saints  [FOX]  NO -2.5, o/u 48.5
     Sun 13:00 ET  Jacksonville Jaguars at Tennessee Titans  [FOX]  JAX -10.5, o/u 46.5
     Sun 16:05 ET  Los Angeles Rams at Arizona Cardinals  [CBS]  LAR -9.5, o/u 39.5
     Sun 16:05 ET  Seattle Seahawks at Las Vegas Raiders  [CBS]  SEA -6.5, o/u 40.5
-    Sun 16:25 ET  San Francisco 49ers at Dallas Cowboys  [FOX]  SF -3.5, o/u 55.5
+    Sun 16:25 ET  San Francisco 49ers at Dallas Cowboys  [FOX]  SF -4.5, o/u 55.5
     Sun 20:20 ET  Pittsburgh Steelers at Cincinnati Bengals  [NBC]  CIN -3.5, o/u 49.5
     Mon 20:15 ET  Los Angeles Chargers at Baltimore Ravens  [ESPN]  BAL -4.5, o/u 38.5
   TV games without a line: 0
