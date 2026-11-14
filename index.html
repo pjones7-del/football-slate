@@ -517,7 +517,7 @@
   .tb .ln .lc > div:first-child{color:var(--away-ink)}
   .tb .ln .lc > div:last-child{color:var(--home-ink)}
   .tb .ln .lcm > div{justify-content:flex-end}   /* the two prices end at one right edge, like the plates */
-  .tb .ln .lc.old{opacity:.5}   /* Live odds on, but DraftKings has no in-game number for it (a blowout): the close, faded. No red dots on a bar (Phil, 10/10) */
+  .tb .ln .lc.old,.tb .ln .lc > .old{opacity:.5}   /* Live odds on, but DraftKings has no in-game number for it (a blowout): the close, faded. No red dots on a bar (Phil, 10/10) */
   .gbar.ghost .tb .ln,.gbar.noln .tb .ln,.gbar.nolm .tb .ln .lcm{display:none}
   .gbar.nosp .tb .pl .sc{display:none}
   .stat .wxl{display:inline-flex;align-items:center;gap:5px;font-family:var(--cond);font-weight:600;font-size:13px;color:var(--muted);line-height:1}
@@ -588,6 +588,7 @@
   .xlines .xlv{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
   .xlines.xwrap .xlv.xlw{white-space:normal}   /* a moneyline pair that doesn't fit breaks after its slash (11/1) */
   .xlines .xlc{color:var(--muted);font-weight:600}
+  .xlines .xlv.xlo{color:var(--dim);font-weight:600}   /* a live number the book has pulled (11/13) */
   .xlines .xlh .xlv,.xlines .xlh .xlc{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:700}
   .xlines .xlnote{grid-column:1 / -1;color:var(--muted);font-size:12px;font-family:var(--body)}
   .xhead{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap;font-family:var(--cond);font-weight:600;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
@@ -1197,14 +1198,17 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     return c;
   }
   /* the line cell on a live bar, after the clock: the spread over the total (Spread and Both) and the two prices, each team's in its own
-     half (ML and Both). DraftKings' in-game numbers with Live odds on (a faded column is the close: the book has pulled its live number); the closing numbers otherwise. */
+     half (ML and Both). DraftKings' in-game numbers with Live odds on, each on its own: one the book has pulled (after a score, in a
+     review) or never posted shows its close, faded (Phil, 11/13: Illinois at UCLA's bar had the total and a hole for the spread); the
+     closing numbers otherwise. */
   function lineCell(g){
     const c = el("div", "ln"), tip = [];
-    const col = (cls, top, bot, live) => { const k = el("div", "lc " + cls + (S.odds && !live ? " old" : "")), a = el("div", null, top), h = el("div", null, bot); k.appendChild(a); k.appendChild(h); c.appendChild(k); };
+    const col = (cls, top, bot, liveTop, liveBot) => { const k = el("div", "lc " + cls), a = el("div", S.odds && !liveTop ? "old" : null, top), h = el("div", S.odds && !liveBot ? "old" : null, bot); k.appendChild(a); k.appendChild(h); c.appendChild(k); };
     const lmLive = !!(S.odds && g.lml), ml = lmLive ? g.lml : g.ml;
-    const lsLive = !!(S.odds && (g.lsp != null || g.lou != null)), sp = lsLive ? g.lsp : g.sp, ou = lsLive ? g.lou : g.ou;
-    if ((S.ml !== "ml" || !ml) && (sp != null || ou != null)){ col("lcs", sp != null ? fmtLine(g, sp, null, t => t.ab) : "", ou != null ? "o/u " + ou : "", lsLive); tip.push((lsLive ? "DraftKings' in-game line " : g.close ? "Closing line " : "Line ") + fmtLine(g, sp, ou, t => t.ab)); }
-    if (S.ml !== "spread" && ml){ col("lcm", fmtMl(ml[0]), fmtMl(ml[1]), lmLive); tip.push((lmLive ? "In-game " : g.close ? "Closing " : "") + mlText(g, ml)); }
+    const spLive = !!(S.odds && g.lsp != null), ouLive = !!(S.odds && g.lou != null), sp = spLive ? g.lsp : g.sp, ou = ouLive ? g.lou : g.ou;
+    if ((S.ml !== "ml" || !ml) && (sp != null || ou != null)){ col("lcs", sp != null ? fmtLine(g, sp, null, t => t.ab) : "", ou != null ? "o/u " + ou : "", spLive, ouLive);
+      tip.push((spLive || ouLive ? "DraftKings' in-game line " : g.close ? "Closing line " : "Line ") + fmtLine(g, sp, ou, t => t.ab) + (S.odds && spLive !== ouLive && sp != null && ou != null ? " (the " + (spLive ? "total" : "spread") + " is the close: DraftKings has no live one right now)" : "")); }
+    if (S.ml !== "spread" && ml){ col("lcm", fmtMl(ml[0]), fmtMl(ml[1]), lmLive, lmLive); tip.push((lmLive ? "In-game " : g.close ? "Closing " : "") + mlText(g, ml)); }
     if (!c.childNodes.length) return null;
     c.title = tip.join(". ");
     return c;
@@ -1759,17 +1763,19 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   /* the lines in columns: Live beside Close with Live odds on (Line before kickoff, Close alone otherwise); the spread, the total, the moneyline */
   function xLines(g){
-    const twoCol = g.lsp != null || g.lou != null || !!g.lml;   /* the live line beside the close whatever the Live odds button says (Phil, 11/2) */
+    const pull = g.lpull || [], OFF = "Off", twoCol = g.lsp != null || g.lou != null || !!g.lml || pull.some(Boolean);   /* the live line beside the close whatever the Live odds button says (Phil, 11/2), and while the book has a number pulled (11/13) */
     if (g.sp == null && g.ou == null && !g.ml && !twoCol && g.lsp == null) return null;
     const box = el("div", "xlines"), cols = twoCol ? ["Live", g.close ? "Close" : "Line"] : [g.state !== "pre" && g.close ? "Close" : "Line"];
     box.style.setProperty("--xcols", cols.length);
     const row = (lab, vals, hd, wrap) => { const r = el("div", "xlr" + (hd ? " xlh" : "")); r.appendChild(el("span", "xll", lab));
-      vals.forEach((v, i) => r.appendChild(el(i === 0 && twoCol ? "b" : "span", "xlv" + (i === vals.length - 1 && twoCol ? " xlc" : "") + (wrap ? " xlw" : ""), v))); box.appendChild(r); };
+      vals.forEach((v, i) => { const off = i === 0 && twoCol && !hd && v === OFF, e = el(i === 0 && twoCol ? "b" : "span", "xlv" + (i === vals.length - 1 && twoCol ? " xlc" : "") + (wrap ? " xlw" : "") + (off ? " xlo" : ""), v);
+        if (off) e.title = "DraftKings has pulled this live number for now (it does after a score or during a review); it comes back on its own"; r.appendChild(e); }); box.appendChild(r); };
     row("", cols, true);
     const spTxt = sp => sp == null ? "" : sp === 0 ? "PK" : (sp < 0 ? g.home.ab : g.away.ab) + " " + (sp < 0 ? sp : -sp);
     const ouTxt = ou => ou == null ? "" : String(ou);
     const mlv = ml => ml ? g.away.ab + "\u00a0" + fmtMl(ml[0]) + "\u00a0/ " + g.home.ab + "\u00a0" + fmtMl(ml[1]) : "", mlc = ml => ml ? fmtMl(ml[0]) + "\u00a0/ " + fmtMl(ml[1]) : "";   /* a pair breaks only after its slash */
-    const sp = twoCol ? [spTxt(g.lsp), spTxt(g.sp)] : [spTxt(g.sp)], ou = twoCol ? [ouTxt(g.lou), ouTxt(g.ou)] : [ouTxt(g.ou)], ml = twoCol ? [mlv(g.lml), mlc(g.ml)] : [mlv(g.ml)];
+    const lv = (has, txt, i) => has ? txt : pull[i] ? OFF : "";   /* a live number the book has pulled for now */
+    const sp = twoCol ? [lv(g.lsp != null, spTxt(g.lsp), 0), spTxt(g.sp)] : [spTxt(g.sp)], ou = twoCol ? [lv(g.lou != null, ouTxt(g.lou), 1), ouTxt(g.ou)] : [ouTxt(g.ou)], ml = twoCol ? [lv(!!g.lml, mlv(g.lml), 2), mlc(g.ml)] : [mlv(g.ml)];
     if (sp.some(Boolean)) row("Spread", sp); if (ou.some(Boolean)) row("Total", ou); if (ml.some(Boolean)) row("ML", ml, false, true);
     requestAnimationFrame(() => { if (box.isConnected && box.scrollWidth > box.clientWidth + 1) box.classList.add("xwrap"); });   /* only a grid that doesn't fit lets the pairs break (11/1) */
     return box;
@@ -3419,7 +3425,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         if (!p.wx && old.wx) p.wx = old.wx;   /* and a forecast ESPN stops sending stays for the card */
         if (!p.carriers.length && old.carriers.length){ p.carriers = old.carriers; p.tv = old.tv; }   /* a network ESPN leaves blank (the build fills those from CBS Sports' schedule) stays put, so the game isn't read as moved to no broadcast */
         tailKeys(p);
-        p.lsp = old.lsp; p.lou = old.lou; p.lml = old.lml;
+        p.lsp = old.lsp; p.lou = old.lou; p.lml = old.lml; p.lpull = old.lpull;
         /* a channel or kickoff that changed since the last look: keep the original (and when the channel first left it), so the board can say where the game went */
         let sc = old.sched ? Object.assign({}, old.sched) : null;
         const oc = old.carriers[0] || "", nc = p.carriers[0] || "";
@@ -3446,10 +3452,13 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   document.addEventListener("visibilitychange", () => { if (document.hidden){ hiddenAt = Date.now(); return; }
     if (hiddenAt && Date.now() - hiddenAt > 60000){ Object.keys(KEEP_AT).forEach(k => { delete KEEP_AT[k]; }); try { localStorage.removeItem("slate-keep"); } catch (e) {} }   /* polls stopped while hidden: the downs it knew can't vouch for anything now */
     if (Date.now() - loadedAt > 6 * 3600000 && navigator.onLine !== false) location.reload(); else poll(true); });
-  /* live odds: DraftKings' in-game line per live game from ESPN's core odds endpoint (cross-origin allowed). One request per
-     live game per poll; ESPN's own cache lets that feed lag by up to about 15 minutes. */
-  const CORE = (league, id) => "https://sports.core.api.espn.com/v2/sports/football/leagues/" + (league === "nfl" ? "nfl" : "college-football") + "/events/" + id + "/competitions/" + id + "/odds?limit=20";
+  /* live odds: DraftKings' in-game line per live game from ESPN's core odds endpoint (cross-origin allowed). One request per live game
+     per poll, with the minute in the address: ESPN's edge hands out one copy of a plain address for up to 15 minutes (Phil, 11/13:
+     Illinois at UCLA's Live column had a total from before the last score and nothing else; the plain address served a copy 8 minutes
+     old while the line moved). */
+  const CORE = (league, id) => "https://sports.core.api.espn.com/v2/sports/football/leagues/" + (league === "nfl" ? "nfl" : "college-football") + "/events/" + id + "/competitions/" + id + "/odds?limit=20&_=" + Math.floor(Date.now() / 60000);
   let oddsBusy = false, oddsStamp = "";
+  const LSEEN = new Set();   /* games whose live line has shown since the page opened: a number missing from it now is one the book has pulled */
   async function pollOdds(force){
     if (oddsBusy || document.hidden) return;
     if (!force && Date.now() - oddsAt < 55000) return;   /* once a minute at most: ESPN caches this feed about 10 minutes, so the faster score poll doesn't pull it faster */
@@ -3461,11 +3470,13 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       let changed = false;
       for (const g of live){
         const r = await fetch(CORE(lg, g.id), { cache: "no-store" }); if (!r.ok) continue;
-        const j = await r.json(); let lsp = null, lou = null, lml = null, csp = null, cou = null;
+        const j = await r.json(); let lsp = null, lou = null, lml = null, csp = null, cou = null, item = false;
         (j.items || []).forEach(it => { const name = ((it.provider || {}).name) || ""; const num = v => (v == null || v === "") ? null : parseFloat(v);
-          if (/Live/.test(name)){ lsp = num(it.spread); lou = num(it.overUnder); const a = num((it.awayTeamOdds || {}).moneyLine), h = num((it.homeTeamOdds || {}).moneyLine); lml = a != null && h != null ? [a, h] : null; }
+          if (/Live/.test(name)){ item = true; lsp = num(it.spread); lou = num(it.overUnder); const a = num((it.awayTeamOdds || {}).moneyLine), h = num((it.homeTeamOdds || {}).moneyLine); lml = a != null && h != null ? [a, h] : null; }
           else if (/^DraftKings/.test(name)){ csp = num((((it.homeTeamOdds || {}).close || {}).pointSpread || {}).american); cou = num((((it.close || {}).total) || {}).american); } });
-        GAMES[lg] = GAMES[lg].map(x => { if (x.id !== g.id) return x; const y = Object.assign({}, x, { lsp, lou, lml }); if (csp != null){ y.sp = csp; y.ou = cou; y.close = true; } if (JSON.stringify(y) !== JSON.stringify(x)) changed = true; return y; });
+        if (lsp != null || lou != null || lml) LSEEN.add(g.id);
+        const lpull = (item || LSEEN.has(g.id)) && (lsp == null || lou == null || !lml) ? [lsp == null, lou == null, !lml] : null;   /* the book's live market with numbers pulled for now (11/13) */
+        GAMES[lg] = GAMES[lg].map(x => { if (x.id !== g.id) return x; const y = Object.assign({}, x, { lsp, lou, lml, lpull }); if (csp != null){ y.sp = csp; y.ou = cou; y.close = true; } if (JSON.stringify(y) !== JSON.stringify(x)) changed = true; return y; });
       }
       oddsStamp = nowText();
       if (changed || force) render();
