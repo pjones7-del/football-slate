@@ -2568,7 +2568,11 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* how well a bit of slip text names team t: 5 exactly (name, nickname or abbreviation), 4 and up the full name inside it (the longer
      name wins: "North Texas" over "Texas"), 3.8 all its words, 3.5 the nickname ("NY Jets"), 3 the abbreviation (2.5 a two-letter
      one), 2.2 the city alone, 2 run together ("MiamiFL"), under 1 part of the name */
-  function teamHit(text, t){
+  function teamHit(text, t){   /* ... and the same text with a word's first lowercase "l" read as "I" (the OCR's "lowa" for Iowa, 11/14), a notch lower so a true reading wins */
+    const s = teamHit0(text, t), v = String(text || "").replace(/\bl(?=[a-z])/g, "I");
+    return v === String(text || "") ? s : Math.max(s, teamHit0(v, t) - 0.6);
+  }
+  function teamHit0(text, t){
     const q = normTeam(text); if (!q || !t) return 0;
     const Q = " " + q + " ", nm = normTeam(t.name), sh = normTeam(t.short), ab = normTeam(t.ab), ax = ABX[ab] || "";
     if (q === nm || q === sh || q === ab || (ax && q === ax)) return 5;
@@ -2588,6 +2592,13 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     games.forEach(g => ["away", "home"].forEach(side => { const sc = teamHit(name, g[side]);
       if (sc > top + 0.001 || (sc && Math.abs(sc - top) <= 0.001 && best && g.state !== "post" && best.g.state === "post")){ top = sc; best = { g, side }; } }));
     return top >= 2 ? best : null;
+  }
+  /* the side of a leg block's game whose name the pick is a letter or two from, when the OCR garbled it and neither name is in it (11/14) */
+  function sideNear(g, text){
+    const q = normTeam(text).replace(/ /g, ""); if (q.length < 3) return "";
+    const d = side => Math.min(1, ...[g[side].name, g[side].short, g[side].ab].map(s => normTeam(s).replace(/ /g, "")).filter(Boolean).map(t => lev(q, t) / Math.max(q.length, t.length)));
+    const a = d("away"), h = d("home");
+    return a <= 0.34 && a < h - 0.2 ? "away" : h <= 0.34 && h < a - 0.2 ? "home" : "";
   }
   const sideIn = (g, text) => { const a = teamHit(text, g.away), h = teamHit(text, g.home); return a > h && a >= 0.9 ? "away" : h > a && h >= 0.9 ? "home" : ""; };
   function blockGame(mu, games){   /* the game a leg block names: its two teams (away first), plus the live spot's team */
@@ -2629,7 +2640,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const out = [], seen = {};
     legs.forEach(l => { const bg = l.mu ? blockGame(l.mu, games) : null; let id = "", side = l.kind === "total" ? l.side : "";
       if (gameOnly(l)){ const g = bg || ((matchGame(l.team, games) || {}).g); if (g) id = g.id; }
-      else { const s = bg ? sideIn(bg, l.team) : "", hit = s ? null : matchTeam(l.team, games); if (s){ id = bg.id; side = s; } else if (hit){ id = hit.g.id; side = hit.side; } }
+      else { const s = bg ? sideIn(bg, l.team) || sideNear(bg, l.team) : "", hit = s ? null : matchTeam(l.team, games); if (s){ id = bg.id; side = s; } else if (hit){ id = hit.g.id; side = hit.side; } }
       const o = Object.assign({}, l, { id, side }); delete o.mu;
       if (id){ const k = legKey(o); if (seen[k]) return; seen[k] = true;
         if (legs.loose && (o.kind === "ml" || o.kind === "spread")){ const sk = "side:" + id + ":" + side, j = seen[sk];   /* the loose read can catch one pick twice: the spread beats the moneyline */
