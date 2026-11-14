@@ -1,4 +1,4 @@
-College Football Week 11 (130 games, pulled Sat 11/14, 11:31 AM ET, lines DraftKings via ESPN)
+College Football Week 11 (130 games, pulled Sat 11/14, 12:16 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week11.html
   cfb/ forwards to the one page
   Tue 11/10: 3 on TV, 0 not
@@ -13,21 +13,21 @@ College Football Week 11 (130 games, pulled Sat 11/14, 11:31 AM ET, lines DraftK
     Sat 12:00 ET  Duke at #7 Miami (FL)  [ABC]  MIA -14.0, o/u 55.5
     Sat 12:00 ET  #13 Wake Forest at SMU  [ESPN]  SMU -2.5, o/u 60.5
     Sat 12:00 ET  Northwestern at #20 Ohio State  [FOX]  OSU -14.0, o/u 45.5
-    Sat 12:45 ET  #3 Alabama at Vanderbilt  [SECN]  ALA -14.0, o/u 47.5
+    Sat 12:45 ET  #3 Alabama at Vanderbilt  [SECN]  ALA -14.0, o/u 48.5
     Sat 15:00 ET  #8 Tennessee at Texas A&M  [ESPN]  TENN -1.5, o/u 43.5
     Sat 15:30 ET  #22 Missouri at #1 Georgia  [ABC]  UGA -16.5, o/u 48.5
     Sat 15:30 ET  #18 USC at #9 Indiana  [CBS]  IU -9.5, o/u 51.5
     Sat 15:30 ET  Michigan at #16 Oregon  [FS1]  ORE -10.0, o/u 39.5
     Sat 15:30 ET  Boston College at #5 Notre Dame  [NBC]  ND -29.5, o/u 51.5
-    Sat 18:00 ET  Oregon State at #24 Boise State  [USA]  BOIS -16.5, o/u 63.5
+    Sat 18:00 ET  Oregon State at #24 Boise State  [USA]  BOIS -16.5, o/u 64.5
     Sat 18:15 ET  Florida at #11 Kentucky  [ESPN]  UK -3.0, o/u 52.5
     Sat 19:00 ET  Baylor at #10 BYU  [FOX]  BYU -8.5, o/u 50.5
     Sat 19:30 ET  #6 Texas at #21 LSU  [ABC]  LSU -4.5, o/u 46.5
     Sat 19:30 ET  Purdue at #15 Iowa  [NBC]  IOWA -17.5, o/u 47.5
-    Sat 19:45 ET  #17 South Carolina at Arkansas  [SECN]  SC -7.5, o/u 51.5
+    Sat 19:45 ET  #17 South Carolina at Arkansas  [SECN]  SC -7.5, o/u 52.5
     Sat 21:30 ET  #12 Texas Tech at #25 Oklahoma State  [ESPN]  OKST -3.5, o/u 73.5
     Sat 22:30 ET  #2 Utah at #23 Arizona  [FOX]  UTAH -1.5, o/u 55.5
-    Sun 13:00 ET  #19 Ole Miss at Oklahoma  [SECN]  OU -2.5, o/u 49.5
+    Sun 13:00 ET  #19 Ole Miss at Oklahoma  [SECN]  OU -2.5, o/u 48.5
   TV games without a line: 0
   time TBD: 0
   schedule changes on game day: Sat ASU at UCF: ESPN2 -> ESPNU (11:31 AM ET)
