@@ -221,6 +221,28 @@
   .slegs{border-top:1px solid var(--line)}
   .sleg{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);min-height:40px}
   .sleg .slogo{width:26px;height:26px;flex:none;object-fit:contain}
+  .lx{margin:0 0 9px 36px;padding:9px 11px 8px;border-radius:10px;background:var(--card2);border:1px solid var(--line2);cursor:default}   /* a tapped leg's numbers (11/15) */
+  .lx .lx-h{display:flex;justify-content:space-between;gap:8px;font-family:var(--cond);font-weight:800;font-size:11.5px;letter-spacing:.07em;color:var(--muted);text-transform:uppercase}
+  .lx .lx-p + .lx-p{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+  .lx .lx-c{font-family:var(--cond);font-weight:700;font-size:10.5px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-top:6px}
+  .lx .lx-s{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:3px}
+  .lx .lx-s span{display:flex;flex-direction:column;align-items:flex-start}
+  .lx .lx-s b{font-family:var(--cond);font-weight:800;font-size:21px;line-height:1;color:var(--ink)}
+  .lx .lx-s i{font-style:normal;font-family:var(--cond);font-weight:700;font-size:10.5px;letter-spacing:.07em;color:var(--muted);margin-top:2px}
+  .lx .lx-s .hi b{color:var(--accent)}
+  .lx .lx-n{margin-top:5px;font-size:13px;color:var(--muted)}
+  .lx table{border-collapse:collapse;margin-top:5px;font-family:var(--cond);font-weight:800;font-size:15px;color:var(--ink)}
+  .lx td{padding:1px 10px 1px 0;text-align:right}.lx td:first-child{text-align:left;color:var(--muted);padding-right:14px}
+  .lx thead td{font-size:10.5px;color:var(--muted);letter-spacing:.06em}
+  .lx .lx-t{margin-top:6px;font-size:12.5px;color:var(--muted)}
+  .lx .lx-k{display:block;margin-top:7px;padding:2px 0;background:none;border:0;font-family:var(--cond);font-weight:800;font-size:12.5px;letter-spacing:.06em;color:var(--accent);text-transform:uppercase;cursor:pointer}
+  .bxp{margin-top:10px;border-top:1px solid var(--line);padding-top:4px}   /* the card's Box score: the players (11/15) */
+  .bxp .bxp-c{font-family:var(--cond);font-weight:800;font-size:11.5px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin:8px 0 3px}
+  .bxp .bxp-r{display:flex;gap:8px;align-items:baseline;padding:4px 6px;border-radius:6px;font-size:13.5px;color:var(--ink)}
+  .bxp .bxp-t{width:34px;flex:none;font-family:var(--cond);font-weight:800;color:var(--muted)}
+  .bxp .bxp-n{flex:1;min-width:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bxp .bxp-v{flex:none;font-family:var(--cond);font-weight:800;font-size:15px}
+  .bxp .bxp-r.me{background:rgba(245,184,46,.14);box-shadow:inset 3px 0 0 var(--accent)}
   .sleg .sjersey{width:26px;height:26px;flex:none;overflow:visible}   /* a prop's jersey and a total's two logos (11/15) */
   .sjersey .sjn{font-family:var(--cond);font-weight:800;font-size:11.5px}
   .sjersey .sjn.two{font-size:10px}
@@ -1824,7 +1846,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       const r = await fetch(SUMMARY(S.league, g.id), { cache: "no-store" }); if (!r.ok) throw new Error(r.status);
       const j = await r.json(), d = parseSummary(j), key = JSON.stringify([d.plays.length, d.plays[0] && d.plays[0].id, d.wp.length, d.scoring.length, (d.box[g.away.ab] || {})["Total Yards"], (d.box[g.home.ab] || {})["Total Yards"]]);
       const changed = !c || c.key !== key;
-      GCD[g.id] = { at: Date.now(), d, key, final: g.state === "post" };
+      GCD[g.id] = { at: Date.now(), d, key, final: g.state === "post" }; xboxTake(g.id, j, g.state === "post");
       if (changed || !c) redrawGc(g);
       propShare(g, j);   /* the same box score for the slips' props on this game (11/8) */
     } catch (e) { if (!c) GCD[g.id] = { at: Date.now(), d: null, key: "", final: false }; redrawGc(g); }
@@ -1903,7 +1925,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       [["1st Downs", "1st downs"], ["Total Yards", "Total yards"], ["Passing", "Passing"], ["Rushing", "Rushing"], ["3rd down efficiency", "3rd down"], ["Turnovers", "Turnovers"], ["Penalties", "Penalties"], ["Possession", "Possession"]].forEach(([k, lab]) => {
         if (A[k] == null && H[k] == null) return; n++; const r = el("div", "g-row"); r.appendChild(el("span", "g-v", A[k] == null ? "" : A[k])); r.appendChild(el("span", "g-lab", lab)); r.appendChild(el("span", "g-v", H[k] == null ? "" : H[k])); box.appendChild(r); });
       if (!n) box.appendChild(el("div", "g-none", "No box score yet."));
-      wrap.appendChild(box);
+      wrap.appendChild(box); const bp = boxPlayers(g); if (bp) wrap.appendChild(bp);   /* the players (11/15) */
     } else if (S.gct === "wp"){
       /* ESPN's win probability, laid out like its app (Phil's screenshot, 10/18): the visitor's row over the chart, the home side's under it, the
          line in the visitor's color above the midline and the home side's below, dotted lines at the quarter breaks, and a scrubber that shows
@@ -2319,7 +2341,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   const whoOf = l => { const sp = l.kind === "prop" ? propSpec(l) : null; return sp ? sp.who : l.who || ""; };   /* "Gibbs + Gordon", "Walker or Worthy" */
   const propLbl = (g, l) => { const r = propNow(g, l); return r && r.line ? r.line : whoOf(l) || "prop"; };   /* "Gibbs 1 + Gordon 0" once it's on */
-  function propTake(g, j){ const box = propBox(j); PSTAT[g.id] = { at: Date.now(), box, key: JSON.stringify(box), sk: g.away.score + "-" + g.home.score, fin: g.state === "post", fail: false }; PNOW.clear(); }
+  function propTake(g, j){ const box = propBox(j); PSTAT[g.id] = { at: Date.now(), box, key: JSON.stringify(box), sk: g.away.score + "-" + g.home.score, fin: g.state === "post", fail: false }; PNOW.clear(); xboxTake(g.id, j, g.state === "post"); }
   const propPrint = () => JSON.stringify(P().slips.map(s => s.legs.map(l => { if (l.kind !== "prop") return 0; const g = gameOf(l.id), r = g ? propNow(g, l) : null; return r ? [r.st, r.w, r.line] : 1; })));
   let propBusy = false;
   async function pollProps(){   /* the slips' prop games: a live one about every 45 seconds and right after its score changes, a final once */
@@ -2745,6 +2767,88 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function pairBadge(lg, g){   /* a total: the away team's logo, the home team's over its corner */
     const w = el("span", "spair"); [g.away, g.home].forEach(t => { const i = el("img"); i.alt = ""; i.src = LOGO(lg, t.logo); w.appendChild(i); }); return w;
   }
+  /* ---- a leg's numbers under it (Phil, 11/15, option 1 of three: "tap on a leg and have it open the box score ... or the player box
+     score stats") ---- XBOX: each game's players by category (ESPN's labels and values) and its team stats, from the game summary, which
+     the props, the open card and a tap all fetch and all feed. */
+  const XBOX = {}, XOPEN = new Set();   /* game id -> { at, d: { pl, tm }, fin, busy }; the slip legs open to their numbers (slip created:leg index) */
+  function xboxParse(j){
+    const pl = {}, tm = {}, bx = (j || {}).boxscore || {};
+    (bx.players || []).forEach(t => { const ab = ((t.team || {}).abbreviation) || "";
+      (t.statistics || []).forEach(c => (c.athletes || []).forEach(x => { const a = x.athlete || {}, nm = a.displayName || ""; if (!nm || !c.name) return;
+        const p = pl[a.id || nm] = pl[a.id || nm] || { nm, n: pnorm(nm), team: ab, cats: {} }; p.cats[c.name] = { labels: c.labels || [], vals: x.stats || [] }; })); });
+    (bx.teams || []).forEach(t => { const m = {}; (t.statistics || []).forEach(s => { m[s.label] = s.displayValue; }); tm[((t.team || {}).abbreviation) || ""] = m; });
+    return { pl: Object.values(pl), tm };
+  }
+  function xboxTake(id, j, fin){ try { XBOX[id] = { at: Date.now(), d: xboxParse(j), fin: !!fin }; } catch (e) {} }
+  async function xboxGet(lg, g){
+    if (!g || g.state === "pre") return; const c = XBOX[g.id];
+    if (c && (c.busy || (c.d && (c.fin || Date.now() - c.at < 25000)))) return;
+    XBOX[g.id] = Object.assign({}, c || {}, { busy: true });
+    try { const r = await fetch(SUMMARY(lg, g.id), { cache: "no-store" }); if (!r.ok) throw new Error(r.status); const j = await r.json();
+      xboxTake(g.id, j, g.state === "post"); propShare(g, j); }
+    catch (e) { XBOX[g.id] = Object.assign({}, c || {}, { busy: false, at: Date.now() }); }
+    drawSlips();
+  }
+  setInterval(() => { if (document.hidden || !XOPEN.size) return; const lg = S.league;   /* a live game with a leg open: its numbers every 30 seconds */
+    P().slips.forEach((s, i) => s.legs.forEach((l, k) => { if (!XOPEN.has((s.created || i) + ":" + k)) return; const g = gameOf(l.id, lg); if (g && g.state === "in") xboxGet(lg, g); })); }, 30000);
+  const xv = (p, cat, lab) => { const c = p.cats[cat]; if (!c) return ""; const i = c.labels.indexOf(lab); return i < 0 || c.vals[i] == null ? "" : String(c.vals[i]); };
+  const XCELLS = { receiving: [["REC", "REC"], ["TGTS", "TGT"], ["YDS", "YDS"], ["LONG", "LONG"], ["TD", "TD"]], rushing: [["CAR", "CAR"], ["YDS", "YDS"], ["AVG", "AVG"], ["LONG", "LONG"], ["TD", "TD"]],
+    passing: [["C/ATT", "C/ATT"], ["YDS", "YDS"], ["TD", "TD"], ["INT", "INT"]], defensive: [["TOT", "TKL"], ["SOLO", "SOLO"], ["SACKS", "SACKS"], ["TFL", "TFL"], ["PD", "PD"]],
+    interceptions: [["INT", "INT"], ["YDS", "YDS"], ["TD", "TD"]], kicking: [["FG", "FG"], ["XP", "XP"], ["PTS", "PTS"], ["LONG", "LONG"]] };
+  const XSTAT = { rec: ["receiving", "REC"], recyd: ["receiving", "YDS"], rectd: ["receiving", "TD"], longrec: ["receiving", "LONG"], rushyd: ["rushing", "YDS"], rushtd: ["rushing", "TD"],
+    rushatt: ["rushing", "CAR"], longrush: ["rushing", "LONG"], passyd: ["passing", "YDS"], passtd: ["passing", "TD"], comp: ["passing", "C/ATT"], patt: ["passing", "C/ATT"], int: ["passing", "INT"],
+    rryd: ["rushing", "YDS", "receiving", "YDS"], pryd: ["passing", "YDS", "rushing", "YDS"], td: ["rushing", "TD", "receiving", "TD"], sacks: ["defensive", "SACKS"], tackles: ["defensive", "TOT"],
+    solo: ["defensive", "SOLO"], kpts: ["kicking", "PTS"], xpm: ["kicking", "XP"], fgm: ["kicking", "FG"] };
+  function legBox(l, g, lg){   /* under a tapped leg: a prop's players' lines, or the game's quarters and team stats; the game's box score a tap away */
+    const x = el("div", "lx"), c = XBOX[g.id], d = c && c.d;
+    const head = (a, b) => { const h = el("div", "lx-h"); h.appendChild(el("span", null, a)); if (b) h.appendChild(el("span", null, b)); x.appendChild(h); };
+    if (g.state === "pre"){ head(g.away.ab + " at " + g.home.ab, whenTxt(g)); x.appendChild(el("div", "lx-n", "The box score fills in once it starts.")); }
+    else if (l.kind === "prop"){
+      const sp = propSpec(l), names = sp ? sp.names : [], hot = sp && XSTAT[sp.stat] ? XSTAT[sp.stat] : [];
+      if (!names.length) head(g.away.ab + " at " + g.home.ab, whenTxt(g));
+      names.forEach((nm, i) => { const p = d ? pmatch(nm, d.pl) : null, ro = rosterPlayer(lg, g, nm), w = el("div", "lx-p");
+        const h = el("div", "lx-h"); h.appendChild(el("span", null, (p ? p.nm : nm).split(" ").filter(t => !/^(jr|sr|ii|iii|iv)\.?$/i.test(t)).pop() + (p ? " · " + p.team : "") + (ro ? " #" + ro.num : ""))); if (!i) h.appendChild(el("span", null, whenTxt(g))); w.appendChild(h);
+        if (!p) w.appendChild(el("div", "lx-n", d ? "No numbers for him in the box score yet." : "Getting the box score..."));
+        else { const cats = []; for (let k = 0; k < hot.length; k += 2) if (!cats.includes(hot[k])) cats.push(hot[k]); ["passing", "rushing", "receiving"].forEach(k => { if (!cats.includes(k)) cats.push(k); });
+          cats.filter(k => p.cats[k] && XCELLS[k]).slice(0, 2).forEach(k => { w.appendChild(el("div", "lx-c", k)); const row = el("div", "lx-s");
+            XCELLS[k].forEach(([lab, show]) => { const v = xv(p, k, lab); if (v === "") return; let on = false; for (let q = 0; q < hot.length; q += 2) if (hot[q] === k && hot[q + 1] === lab) on = true;
+              const cell = el("span", on ? "hi" : null); cell.appendChild(el("b", null, v)); cell.appendChild(el("i", null, show)); row.appendChild(cell); }); w.appendChild(row); }); }
+        x.appendChild(w); });
+    } else {
+      head(g.away.ab + " at " + g.home.ab, whenTxt(g));
+      const t = el("table"), hd = el("thead"), hr = el("tr"), n = Math.max(4, (g.away.line || []).length, (g.home.line || []).length), bd = el("tbody");
+      hr.appendChild(el("td")); for (let q = 0; q < n; q++) hr.appendChild(el("td", null, q < 4 ? "Q" + (q + 1) : n > 5 ? "OT" + (q - 3) : "OT")); hr.appendChild(el("td", null, "T")); hd.appendChild(hr); t.appendChild(hd);
+      ["away", "home"].forEach(side => { const tr = el("tr"), ln = g[side].line || []; tr.appendChild(el("td", null, g[side].ab)); for (let q = 0; q < n; q++) tr.appendChild(el("td", null, ln[q] == null ? "" : String(ln[q])));
+        tr.appendChild(el("td", null, String(g[side].score == null ? "" : g[side].score))); bd.appendChild(tr); });
+      t.appendChild(bd); x.appendChild(t);
+      const A = d && d.tm[g.away.ab], H = d && d.tm[g.home.ab];
+      if (A && H){ const bits = [["Total Yards", "Yards", "-"], ["3rd down efficiency", "3rd down", ", "], ["Turnovers", "Turnovers", "-"]].filter(([k]) => A[k] != null && H[k] != null).map(([k, lab, sep]) => lab + " " + A[k] + sep + H[k]);
+        if (bits.length) x.appendChild(el("div", "lx-t", bits.join(" · "))); }
+      else if (!d) x.appendChild(el("div", "lx-n", "Getting the box score..."));
+    }
+    const lk = el("button", "lx-k", "Game box score ›"); lk.type = "button"; lk.addEventListener("click", e => { e.stopPropagation(); openGameBox(g); }); x.appendChild(lk);
+    return x;
+  }
+  function openGameBox(g){   /* the game's card on the board, on Box score with the players */
+    stripOpen = -1; if (!spanel.hidden) showPanel(spanel);
+    if (g.date && S.day !== g.date) S.day = g.date;
+    S.open = g.id; S.openRow = ""; S.gct = "box"; render(); pollGc(true);
+    requestAnimationFrame(() => { const b = document.querySelector(".gbar.open"); if (b) b.scrollIntoView({ block: "center", inline: "nearest", behavior: "smooth" }); });
+  }
+  function boxPlayers(g){   /* the card's Box score: the passers (one a team), rushers and receivers (two a team), the slips' players first and marked */
+    const c = XBOX[g.id], d = c && c.d; if (!d || !d.pl.length) return null;
+    const mine = new Set(); P().slips.forEach(s => s.legs.forEach(l => { if (l.id !== g.id || l.kind !== "prop") return; const sp = propSpec(l); (sp ? sp.names : []).forEach(nm => { const p = pmatch(nm, d.pl); if (p) mine.add(p.n); }); }));
+    const w = el("div", "bxp"), yd = (p, k) => parseFloat(xv(p, k, "YDS")) || 0;
+    [["passing", 1], ["rushing", 2], ["receiving", 2]].forEach(([k, per]) => {
+      const rows = []; [g.away.ab, g.home.ab].forEach(ab => d.pl.filter(p => p.team === ab && p.cats[k]).sort((a, b) => yd(b, k) - yd(a, k)).forEach((p, i) => { if (i < per || mine.has(p.n)) rows.push(p); }));
+      if (!rows.length) return; rows.sort((a, b) => mine.has(b.n) - mine.has(a.n));
+      w.appendChild(el("div", "bxp-c", k));
+      rows.forEach(p => { const r = el("div", "bxp-r" + (mine.has(p.n) ? " me" : "")); r.appendChild(el("span", "bxp-t", p.team)); r.appendChild(el("span", "bxp-n", p.nm));
+        const v = k === "passing" ? xv(p, k, "C/ATT") + ", " + xv(p, k, "YDS") + " yds, " + xv(p, k, "TD") + " TD, " + xv(p, k, "INT") + " INT" : k === "rushing" ? xv(p, k, "CAR") + " car, " + xv(p, k, "YDS") + " yds, " + xv(p, k, "TD") + " TD"
+          : xv(p, k, "REC") + " rec" + (xv(p, k, "TGTS") ? " (" + xv(p, k, "TGTS") + " tgt)" : "") + ", " + xv(p, k, "YDS") + " yds, " + xv(p, k, "TD") + " TD";
+        r.appendChild(el("span", "bxp-v", v)); w.appendChild(r); }); });
+    return w;
+  }
   function legFace(l, g, lg){   /* the team's logo (a badge for a total or a prop), its name and the pick */
     const t = g && !gameOnly(l) && l.side ? g[l.side] : null;
     let img; if (t){ img = el("img", "slogo"); img.alt = ""; img.src = LOGO(lg, t.logo); }
@@ -2794,7 +2898,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     s.legs.forEach((l, k) => { const g = gs[k], r = el("div", "sleg"); legFace(l, g, lg).forEach(x => r.appendChild(x));
       const gm = el("span", "sgm"); if (g){ gm.appendChild(document.createTextNode(scoreTxt(g))); gm.appendChild(el("br")); gm.appendChild(document.createTextNode(whenTxt(g))); } r.appendChild(gm);
       r.appendChild(propFill(el("span", "sst " + st[k][0], st[k][1]), g, l)); list.appendChild(r);
-      const pb = propBar(g, l); if (pb){ r.classList.add("hasbar"); list.appendChild(pb); } });   /* a prop's progress (11/8) */
+      const pb = propBar(g, l); if (pb){ r.classList.add("hasbar"); list.appendChild(pb); }   /* a prop's progress (11/8) */
+      if (g){ const xk = (s.created || i) + ":" + k, xo = XOPEN.has(xk), tog = () => { if (XOPEN.has(xk)) XOPEN.delete(xk); else { XOPEN.add(xk); xboxGet(lg, g); } drawSlips(); };   /* a tap: its numbers under it (11/15) */
+        r.classList.add("tap"); r.setAttribute("aria-expanded", String(xo)); r.addEventListener("click", tog); if (pb) pb.addEventListener("click", tog); if (xo) list.appendChild(legBox(l, g, lg)); } });
     c.appendChild(list);
     const btns = el("div", "sbtns"), on = el("button", null, "Only these games"); on.type = "button"; on.setAttribute("aria-pressed", String(s.on)); on.title = "Keep just this slip's games on the board";
     on.addEventListener("click", () => { s.on = !s.on; slipRedraw(); }); btns.appendChild(on);
