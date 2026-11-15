@@ -1,4 +1,4 @@
-College Football Week 11 (130 games, pulled Sat 11/14, 8:43 PM ET, lines DraftKings via ESPN)
+College Football Week 11 (130 games, pulled Sun 11/15, 4:09 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week11.html
   cfb/ forwards to the one page
   Tue 11/10: 3 on TV, 0 not
@@ -11,7 +11,7 @@ College Football Week 11 (130 games, pulled Sat 11/14, 8:43 PM ET, lines DraftKi
     Fri 21:00 ET  Illinois at #4 UCLA  [FOX]  UCLA -10.5, o/u 48.5
     Fri 22:15 ET  #14 Houston at Colorado  [ESPN]  HOU -7.5, o/u 53.5
     Sat 12:00 ET  Duke at #7 Miami (FL)  [ABC]  MIA -14.0, o/u 55.5
-    Sat 12:00 ET  #13 Wake Forest at SMU  [ESPNEWS]  SMU -2.5, o/u 60.5
+    Sat 12:00 ET  #13 Wake Forest at SMU  [ESPN]  SMU -2.5, o/u 60.5
     Sat 12:00 ET  Northwestern at #20 Ohio State  [FOX]  OSU -14.0, o/u 45.5
     Sat 12:45 ET  #3 Alabama at Vanderbilt  [SECN]  ALA -14.0, o/u 48.5
     Sat 15:00 ET  #8 Tennessee at Texas A&M  [ESPN]  TENN -1.5, o/u 43.5
@@ -30,5 +30,5 @@ College Football Week 11 (130 games, pulled Sat 11/14, 8:43 PM ET, lines DraftKi
     Sun 13:00 ET  #19 Ole Miss at Oklahoma  [SECN]  OU -2.5, o/u 48.5
   TV games without a line: 0
   time TBD: 0
-  schedule changes on game day: Sat WAKE at SMU: ESPN -> ESPNEWS (4:17 PM ET); Sat NICH at UIW: kick 3:00 PM -> 4:00 PM ET; Sat ASU at UCF: ESPN2 -> ESPNU (11:31 AM ET)
+  schedule changes on game day: Sat NICH at UIW: kick 3:00 PM -> 4:00 PM ET; Sat ASU at UCF: ESPN2 -> ESPNU (11:31 AM ET)
   non-Division I or unknown conference ids: none: Virginia Lynchburg
