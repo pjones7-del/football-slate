@@ -1,4 +1,4 @@
-College Football Week 11 (130 games, pulled Sun 11/15, 11:56 AM ET, lines DraftKings via ESPN)
+College Football Week 11 (130 games, pulled Sun 11/15, 12:24 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week11.html
   cfb/ forwards to the one page
   Tue 11/10: 3 on TV, 0 not
@@ -33,7 +33,7 @@ College Football Week 11 (130 games, pulled Sun 11/15, 11:56 AM ET, lines DraftK
   schedule changes on game day: Sat NICH at UIW: kick 3:00 PM -> 4:00 PM ET; Sat ASU at UCF: ESPN2 -> ESPNU (11:31 AM ET)
   non-Division I or unknown conference ids: none: Virginia Lynchburg
 
-NFL Week 10 (14 games, pulled Sun 11/15, 11:56 AM ET, lines DraftKings via ESPN)
+NFL Week 10 (14 games, pulled Sun 11/15, 12:24 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week10.html
   nfl/ forwards to the one page
   Thu 11/12: 0 on TV, 1 not
@@ -45,7 +45,7 @@ NFL Week 10 (14 games, pulled Sun 11/15, 11:56 AM ET, lines DraftKings via ESPN)
     Sun 13:00 ET  Kansas City Chiefs at Atlanta Falcons  [CBS]  KC -3.0, o/u 47.5
     Sun 13:00 ET  Miami Dolphins at Indianapolis Colts  [CBS]  IND -4.5, o/u 37.5
     Sun 13:00 ET  Buffalo Bills at New York Jets  [CBS]  BUF -8.5, o/u 50.5
-    Sun 13:00 ET  Houston Texans at Cleveland Browns  [FOX]  HOU -4.5, o/u 41.5
+    Sun 13:00 ET  Houston Texans at Cleveland Browns  [FOX]  HOU -4.5, o/u 40.5
     Sun 13:00 ET  Minnesota Vikings at Green Bay Packers  [FOX]  GB -2.5, o/u 42.5
     Sun 13:00 ET  Carolina Panthers at New Orleans Saints  [FOX]  NO -1.5, o/u 48.5
     Sun 13:00 ET  Jacksonville Jaguars at Tennessee Titans  [FOX]  JAX -10.5, o/u 45.5
