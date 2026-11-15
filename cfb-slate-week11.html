@@ -221,6 +221,12 @@
   .slegs{border-top:1px solid var(--line)}
   .sleg{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);min-height:40px}
   .sleg .slogo{width:26px;height:26px;flex:none;object-fit:contain}
+  .sleg .sjersey{width:26px;height:26px;flex:none;overflow:visible}   /* a prop's jersey and a total's two logos (11/15) */
+  .sjersey .sjn{font-family:var(--cond);font-weight:800;font-size:11.5px}
+  .sjersey .sjn.two{font-size:10px}
+  .sleg .spair{position:relative;width:26px;height:26px;flex:none}
+  .sleg .spair img{position:absolute;width:19px;height:19px;object-fit:contain;left:-1px;top:-1px}
+  .sleg .spair img + img{left:8px;top:8px;filter:drop-shadow(0 0 1.5px var(--card)) drop-shadow(0 0 1px var(--card))}
   .sleg .sbadge{width:26px;height:26px;flex:none;box-sizing:border-box;border-radius:50%;border:1.5px solid var(--line2);display:flex;align-items:center;justify-content:center;font-family:var(--cond);font-weight:800;font-size:12px;color:var(--muted)}
   .sleg .spk{font-family:var(--cond);font-weight:800;font-size:18px;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:0 1 auto}
   .sleg .spk i{font-style:normal;color:var(--accent);margin-left:6px}
@@ -2179,7 +2185,12 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const legSide = (l, side) => gameOnly(l) ? side === "home" : l.side === side;   /* the row or plate a leg's marker sits on */
   const ouText = (ou, n) => (ou === "under" ? "U " : "O ") + n;
   const legText = l => (l.per ? l.per + " " : "") + (l.kind === "ml" ? "ML" : l.kind === "spread" ? (l.num > 0 ? "+" : "") + l.num : l.kind === "total" ? ouText(l.side, l.num)
-    : l.kind === "tt" ? "TT " + ouText(l.ou, l.num) : (l.short || "PROP"));
+    : l.kind === "tt" ? "TT " + ouText(l.ou, l.num) : propTag(l));
+  /* a prop's tag says its stat (Phil, 11/15: "Jefferson 6+" ... "6+ what?"): one with no stat word gets the one the engine read from the market */
+  const STATTAG = { td: "TD", rushtd: "RUSH TD", rectd: "REC TD", passtd: "PASS TD", passyd: "PASS YDS", rushyd: "RUSH YDS", recyd: "REC YDS", rryd: "RUSH+REC YDS",
+    pryd: "PASS+RUSH YDS", rec: "REC", rushatt: "CARRIES", comp: "COMP", patt: "PASS ATT", int: "INT", longrush: "LONG RUSH", longrec: "LONG REC", sacks: "SACKS",
+    solo: "SOLO TKL", tackles: "TKL", kpts: "KICK PTS", xpm: "XP", fgm: "FG" };
+  function propTag(l){ const t = l.short || "PROP", sp = propSpec(l); return !sp || !STATTAG[sp.stat] || /[a-z]{2}/i.test(t.replace(/^[OU]\s/i, "")) ? t : t + " " + STATTAG[sp.stat]; }
   /* ---- player props (Phil, 11/8: "very common to do player props ... Would be great if the app could track it") ----
      A prop leg is read into players, a stat and a line from its market ("Jahmyr Gibbs & Ollie Gordon II - Combined Total Touchdowns",
      "Kenneth Walker III or Xavier Worthy - Either Player to Score X TD's", "Jahmyr Gibbs - Rushing Yards") and its pick ("2+", "Over
@@ -2688,12 +2699,59 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const wd = d => new Intl.DateTimeFormat("en-US", { timeZone: TZ[S.tz], weekday: "short" }).format(d), k = new Date(g.kick);
     return (wd(k) !== wd(new Date()) ? wd(k) + " " : "") + fmtTime(g.kick); };
   const scoreTxt = g => g.state === "pre" ? g.away.ab + " at " + g.home.ab : g.away.ab + " " + g.away.score + "  " + g.home.ab + " " + g.home.score;
+  /* ---- a prop's badge: the player's jersey (Phil, 11/15, option 1 of three) ----
+     Team color and number, the number from ESPN's team roster: fetched for both teams of a game with a prop leg when its row draws, once
+     a day (slate-roster keeps names and numbers). A total's badge is the two teams' logos. */
+  const ROSTER = {}, RKEY = "slate-roster", RDAY = 86400000;   /* lg:team id -> { at, ps: [{ nm, n, num }] } | { at, fail } | { busy } */
+  try { const o = JSON.parse(localStorage.getItem(RKEY) || "{}"); Object.entries(o).forEach(([k, v]) => { if (v && Array.isArray(v.ps) && Date.now() - v.at < RDAY) ROSTER[k] = { at: v.at, ps: v.ps.map(([nm, num]) => ({ nm, n: pnorm(nm), num: String(num) })) }; }); } catch (e) {}
+  const rosterSave = () => { try { const o = {}; Object.entries(ROSTER).forEach(([k, v]) => { if (v && v.ps && Date.now() - v.at < RDAY) o[k] = { at: v.at, ps: v.ps.map(p => [p.nm, p.num]) }; }); localStorage.setItem(RKEY, JSON.stringify(o)); } catch (e) {} };
+  let rosterTimer = 0;
+  const rosterDone = () => { clearTimeout(rosterTimer); rosterTimer = setTimeout(() => {   /* the rows redraw once a roster is in: the board, and the sheet while it shows its list */
+    if (slipSheet && pend && slipSheet.querySelector(".ssgo") && !slipSheet.querySelector(".spick, textarea")) drawConfirm(); render(); }, 150); };
+  async function rosterGet(lg, id){
+    const k = lg + ":" + id, r = ROSTER[k]; if (!id || (r && (r.ps || r.busy || (r.fail && Date.now() - r.at < 600000)))) return;
+    ROSTER[k] = { busy: true };
+    try { const res = await fetch("https://site.api.espn.com/apis/site/v2/sports/football/" + (lg === "nfl" ? "nfl" : "college-football") + "/teams/" + id + "/roster"); if (!res.ok) throw new Error(res.status);
+      const j = await res.json(), ps = [];
+      (j.athletes || []).forEach(gp => (Array.isArray(gp.items) ? gp.items : [gp]).forEach(a => { const nm = (a && (a.fullName || a.displayName)) || ""; if (nm && a.jersey != null && a.jersey !== "") ps.push({ nm, n: pnorm(nm), num: String(a.jersey) }); }));
+      ROSTER[k] = { at: Date.now(), ps }; rosterSave(); rosterDone(); }
+    catch (e) { ROSTER[k] = { at: Date.now(), fail: true }; }
+  }
+  function rosterPlayer(lg, g, name){   /* { side, num } of a prop's player on either team's roster; asks for a roster not yet in */
+    const all = []; ["away", "home"].forEach(side => { const r = ROSTER[lg + ":" + g[side].id]; if (!r || !r.ps){ rosterGet(lg, g[side].id); return; } r.ps.forEach(p => all.push(Object.assign({ side }, p))); });
+    const p = all.length ? pmatch(name, all, 0.55) : null; return p ? { side: p.side, num: p.num } : null;
+  }
+  const JPATH = "M8.5 2.5 L3 4.8 L0.8 10.5 L4.6 12.2 L6 10.3 L6 24.5 L20 24.5 L20 10.3 L21.4 12.2 L25.2 10.5 L23 4.8 L17.5 2.5 C16.4 4.3 14.8 5.1 13 5.1 C11.2 5.1 9.6 4.3 8.5 2.5 Z";
+  function jerseyBadge(ps){   /* one jersey, or two overlapped: the team color, the number in white (ink on a light jersey) */
+    const NS = "http://www.w3.org/2000/svg", s = document.createElementNS(NS, "svg"), two = ps.length > 1, card = (getComputedStyle(document.documentElement).getPropertyValue("--card") || "").trim() || "#182130";
+    s.setAttribute("viewBox", "0 0 26 26"); s.setAttribute("class", "sjersey"); s.setAttribute("aria-hidden", "true");
+    ps.slice(0, 2).forEach((p, i) => { const g = document.createElementNS(NS, "g"), path = document.createElementNS(NS, "path"), t = document.createElementNS(NS, "text");
+      if (two) g.setAttribute("transform", i ? "translate(9 8.5) scale(.74)" : "translate(-3 -3) scale(.74)");
+      path.setAttribute("d", JPATH); path.setAttribute("fill", p.color); path.setAttribute("stroke-width", two ? "1.6" : "0.9"); path.setAttribute("stroke-linejoin", "round");
+      path.style.stroke = /^#[0-9a-f]{6}$/i.test(card) && contrast(p.color, card) < 1.6 ? "var(--muted)" : "var(--card)"; g.appendChild(path);
+      t.setAttribute("x", "13"); t.setAttribute("y", "19.6"); t.setAttribute("text-anchor", "middle"); t.setAttribute("class", "sjn" + (p.num.length > 1 ? " two" : ""));
+      t.setAttribute("fill", lum(p.color) > 0.45 ? "#14181f" : "#fff"); t.textContent = p.num; g.appendChild(t); s.appendChild(g); });
+    return s;
+  }
+  function propBadge(l, g, lg){   /* the jersey(s) of a prop's player(s); the team's logo when only the box score knows the team; null: the P badge */
+    const sp = propSpec(l); if (!sp || !sp.names.length) return null;
+    const c = PSTAT[g.id], ps = sp.names.map(nm => { const r = rosterPlayer(lg, g, nm); if (r) return { num: r.num, color: baseColor(g[r.side]) };
+      const b = c && c.box ? pmatch(nm, c.box.players) : null; return b ? { team: b.team } : null; });
+    if (ps.every(p => p && p.num != null)) return jerseyBadge(ps);
+    const ab = (ps.find(p => p && p.team) || {}).team, side = ab ? (g.away.ab === ab ? "away" : g.home.ab === ab ? "home" : "") : "";
+    if (!side) return null;
+    const i = el("img", "slogo"); i.alt = ""; i.src = LOGO(lg, g[side].logo); return i;
+  }
+  function pairBadge(lg, g){   /* a total: the away team's logo, the home team's over its corner */
+    const w = el("span", "spair"); [g.away, g.home].forEach(t => { const i = el("img"); i.alt = ""; i.src = LOGO(lg, t.logo); w.appendChild(i); }); return w;
+  }
   function legFace(l, g, lg){   /* the team's logo (a badge for a total or a prop), its name and the pick */
     const t = g && !gameOnly(l) && l.side ? g[l.side] : null;
     let img; if (t){ img = el("img", "slogo"); img.alt = ""; img.src = LOGO(lg, t.logo); }
-    else img = el("span", "sbadge", l.kind === "total" ? (l.side === "under" ? "U" : "O") : l.kind === "prop" ? "P" : "?");
+    else img = (g && l.kind === "total" ? pairBadge(lg, g) : g && l.kind === "prop" ? propBadge(l, g, lg) : null)
+      || el("span", "sbadge", l.kind === "total" ? (l.side === "under" ? "U" : "O") : l.kind === "prop" ? "P" : "?");   /* the jersey or the two logos (11/15); the letter until they're known */
     const nm = t ? (t.short || t.name) : l.kind === "total" ? (g ? g.away.ab + " / " + g.home.ab : "Total") : l.kind === "prop" ? (whoOf(l) || "Prop") : (l.team || l.text || "");
-    const pk = l.kind === "total" ? (l.per ? l.per + " " : "") + (l.side === "under" ? "Under " : "Over ") + l.num : l.kind === "prop" ? (l.short || "PROP") : legText(l);
+    const pk = l.kind === "total" ? (l.per ? l.per + " " : "") + (l.side === "under" ? "Under " : "Over ") + l.num : l.kind === "prop" ? propTag(l) : legText(l);
     if (l.kind === "prop"){ const r = g ? propNow(g, l) : null, s = el("span", "spk pp"), a = el("span", "spl"); a.appendChild(el("span", "spn", nm)); a.appendChild(el("i", null, pk)); s.appendChild(a);
       if (r && r.line) s.appendChild(el("small", "spv", r.line)); return [img, s]; }   /* a prop: the pick whole, its players' numbers under it (11/8) */
     const s = el("span", "spk", nm); s.appendChild(el("i", null, pk)); return [img, s];
