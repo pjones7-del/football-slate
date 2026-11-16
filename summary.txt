@@ -1,4 +1,4 @@
-College Football Week 11 (130 games, pulled Sun 11/15, 4:38 PM ET, lines DraftKings via ESPN)
+College Football Week 11 (130 games, pulled Sun 11/15, 8:48 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week11.html
   cfb/ forwards to the one page
   Tue 11/10: 3 on TV, 0 not
@@ -33,7 +33,7 @@ College Football Week 11 (130 games, pulled Sun 11/15, 4:38 PM ET, lines DraftKi
   schedule changes on game day: Sat NICH at UIW: kick 3:00 PM -> 4:00 PM ET; Sat ASU at UCF: ESPN2 -> ESPNU (11:31 AM ET)
   non-Division I or unknown conference ids: none: Virginia Lynchburg
 
-NFL Week 10 (14 games, pulled Sun 11/15, 4:38 PM ET, lines DraftKings via ESPN)
+NFL Week 10 (14 games, pulled Sun 11/15, 8:48 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week10.html
   nfl/ forwards to the one page
   Thu 11/12: 0 on TV, 1 not
