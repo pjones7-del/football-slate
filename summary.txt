@@ -1,4 +1,4 @@
-College Football Week 11 (130 games, pulled Mon 11/16, 4:24 AM ET, lines DraftKings via ESPN)
+College Football Week 11 (130 games, pulled Mon 11/16, 3:16 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week11.html
   cfb/ forwards to the one page
   Tue 11/10: 3 on TV, 0 not
@@ -33,7 +33,7 @@ College Football Week 11 (130 games, pulled Mon 11/16, 4:24 AM ET, lines DraftKi
   schedule changes on game day: Sat NICH at UIW: kick 3:00 PM -> 4:00 PM ET; Sat ASU at UCF: ESPN2 -> ESPNU (11:31 AM ET)
   non-Division I or unknown conference ids: none: Virginia Lynchburg
 
-NFL Week 10 (14 games, pulled Mon 11/16, 4:24 AM ET, lines DraftKings via ESPN)
+NFL Week 10 (14 games, pulled Mon 11/16, 3:16 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week10.html
   nfl/ forwards to the one page
   Thu 11/12: 0 on TV, 1 not
@@ -53,7 +53,7 @@ NFL Week 10 (14 games, pulled Mon 11/16, 4:24 AM ET, lines DraftKings via ESPN)
     Sun 16:05 ET  Seattle Seahawks at Las Vegas Raiders  [CBS]  SEA -6.5, o/u 40.5
     Sun 16:25 ET  San Francisco 49ers at Dallas Cowboys  [FOX]  SF -4.5, o/u 55.5
     Sun 20:20 ET  Pittsburgh Steelers at Cincinnati Bengals  [NBC]  CIN -3.5, o/u 49.5
-    Mon 20:15 ET  Los Angeles Chargers at Baltimore Ravens  [ESPN]  BAL -4.5, o/u 38.5
+    Mon 20:15 ET  Los Angeles Chargers at Baltimore Ravens  [ESPN]  BAL -4.5, o/u 39.5
   TV games without a line: 0
   time TBD: 0
 
