@@ -1,4 +1,4 @@
-NFL Week 10 (14 games, pulled Mon 11/16, 3:16 PM ET, lines DraftKings via ESPN)
+NFL Week 10 (14 games, pulled Mon 11/16, 10:39 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week10.html
   nfl/ forwards to the one page
   Thu 11/12: 0 on TV, 1 not
