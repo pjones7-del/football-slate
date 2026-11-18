@@ -1,4 +1,4 @@
-College Football Week 12 (130 games, pulled Tue 11/17, 10:34 PM ET, lines DraftKings via ESPN)
+College Football Week 12 (130 games, pulled Wed 11/18, 7:55 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week12.html
   cfb/ forwards to the one page
   Tue 11/17: 3 on TV, 0 not
@@ -11,7 +11,7 @@ College Football Week 12 (130 games, pulled Tue 11/17, 10:34 PM ET, lines DraftK
     Sat 12:00 ET  #10 BYU at Kansas  [ABC]  BYU -5.5, o/u 47.5
     Sat 12:00 ET  #11 Wake Forest at Georgia Tech  [ESPN]  WAKE -20.5, o/u 56.5
     Sat 12:00 ET  #14 Ohio State at Nebraska  [FOX]  OSU -3.0, o/u 41.5
-    Sat 12:00 ET  Vanderbilt at #24 Florida  [SECN]  FLA -13.5, o/u 47.5
+    Sat 12:00 ET  Vanderbilt at #24 Florida  [SECN]  FLA -13.5, o/u 46.5
     Sat 12:00 ET  Wofford at #25 Ole Miss  [SECN+]
     Sat 13:00 ET  #20 Houston at West Virginia  [TNT]  HOU -8.5, o/u 70.5
     Sat 14:00 ET  Chattanooga at #3 Alabama  [SECN+]
@@ -30,6 +30,6 @@ College Football Week 12 (130 games, pulled Tue 11/17, 10:34 PM ET, lines DraftK
     Sat 19:30 ET  SMU at #6 Notre Dame  [NBC]  ND -20.5, o/u 56.5
     Sat 19:30 ET  #16 Kentucky at Missouri  [SECN]  MIZ -5.5, o/u 48.5
     Sat 21:00 ET  #2 Utah at TCU  [FOX]  UTAH -7.0, o/u 46.5
-    Sat 21:30 ET  San Diego State at #17 Boise State  [USA]  BOIS -16.5, o/u 62.5
+    Sat 21:30 ET  San Diego State at #17 Boise State  [USA]  BOIS -16.5, o/u 61.5
   TV games without a line: 2
   time TBD: 0
