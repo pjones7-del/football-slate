@@ -1,4 +1,4 @@
-NFL Week 11 (13 games, pulled Thu 11/19, 9:57 PM ET, lines DraftKings via ESPN)
+NFL Week 11 (13 games, pulled Fri 11/20, 6:16 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week11.html
   nfl/ forwards to the one page
   Thu 11/19: 0 on TV, 1 not
@@ -8,10 +8,10 @@ NFL Week 11 (13 games, pulled Thu 11/19, 9:57 PM ET, lines DraftKings via ESPN)
     Thu 20:15 ET  Indianapolis Colts at Houston Texans  [Prime Video]  HOU -12.5, o/u 44.5
     Sun 13:00 ET  Miami Dolphins at Buffalo Bills  [CBS]  BUF -16.5, o/u 44.5
     Sun 13:00 ET  Arizona Cardinals at Kansas City Chiefs  [CBS]  KC -16.5, o/u 40.5
-    Sun 13:00 ET  Pittsburgh Steelers at Philadelphia Eagles  [CBS]  PIT -4.5, o/u 38.5
+    Sun 13:00 ET  Pittsburgh Steelers at Philadelphia Eagles  [CBS]  PIT -3.5, o/u 38.5
     Sun 13:00 ET  Baltimore Ravens at Carolina Panthers  [FOX]  CAR -3.0, o/u 43.5
     Sun 13:00 ET  New Orleans Saints at Chicago Bears  [FOX]  CHI -11.5, o/u 48.5
-    Sun 13:00 ET  Tennessee Titans at Dallas Cowboys  [FOX]  DAL -8.5, o/u 55.5
+    Sun 13:00 ET  Tennessee Titans at Dallas Cowboys  [FOX]  DAL -8.5, o/u 54.5
     Sun 13:00 ET  Tampa Bay Buccaneers at Detroit Lions  [FOX]  DET -6.0, o/u 45.5
     Sun 16:05 ET  New York Jets at Los Angeles Chargers  [FOX]  LAC -3.0, o/u 41.5
     Sun 16:25 ET  Las Vegas Raiders at Denver Broncos  [CBS]  DEN -10.5, o/u 40.5
