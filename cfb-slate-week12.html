@@ -847,6 +847,9 @@
           <button type="button" data-pp="pill">Pill fills</button>
         </div>
       </div>
+      <div class="srow"><span class="lbl">Slips</span>
+        <div class="seg"><button type="button" id="cashBtn" aria-pressed="false" title="Take what you risked and what it pays off every slip (saved on this device)">Hide $</button></div>
+      </div>
       <div class="srow"><span class="lbl">Channels</span>
         <div class="seg"><button type="button" id="pkgBtn" aria-pressed="false" aria-controls="panel">Package<small id="pkgN"></small></button></div>
         <div class="seg"><button type="button" id="dtvBtn" aria-pressed="false" title="Put each channel's DirecTV number under its logo (the locals are the Phoenix stations)">DirecTV</button></div>
@@ -1253,7 +1256,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const has = lg => !!(LG[lg] && LG[lg].days && LG[lg].days.length);
   const fresh = () => ({ on: new Set(), off: new Set(), confs: new Set(), show: "fbs", mine: false, now: false, stars: new Set(), views: [], mkt: "", zip: "", dome: false, wx: new Set(), slips: [] });
   /* ml: what the plates show before kickoff: the spread, each team's moneyline, or both (shared by both leagues) */
-  const S = { league: "cfb", day: "", tz: "AZ", tzSet: false, view: "timeline", open: "", openRow: "", odds: true, ml: "spread", dtv: false, gct: "wp", xc: "full", pp: "bar", mkask: "", foot: "on", bar: "on", chg: "on", more: false, fold: {}, per: { cfb: fresh(), nfl: fresh() } };
+  const S = { league: "cfb", day: "", tz: "AZ", tzSet: false, view: "timeline", open: "", openRow: "", odds: true, ml: "spread", dtv: false, gct: "wp", xc: "full", pp: "bar", cash: "show", mkask: "", foot: "on", bar: "on", chg: "on", more: false, fold: {}, per: { cfb: fresh(), nfl: fresh() } };
   /* which league opens (10/3: one page for both): a league named in the address (?league=nfl or #nfl; the old cfb/ and nfl/ links
      forward with one) beats the league last looked at on this device, which beats the file's own default. A copy built with lock
      set (the weekly files, the artifacts) always opens on its own league. A hint in the address is dropped once applied, so a
@@ -1321,6 +1324,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (saved.pp === "pill" && saved.pp2) S.pp = "pill";   /* a prop's or a total's progress as its pill filling, not the bar under the leg: the bar is the
                                                                  default since 11/8 (Phil: "This is how DK shows it"), and pp2 marks a record saved after that */
       if (saved.mkask === "no") S.mkask = "no";   /* the TV market ask put away (Phil, 11/8) */
+      if (saved.cash === "hide") S.cash = "hide";   /* Settings > Slips > Hide $ (Phil, 11/20) */
       if (!SLATE.lock && has(saved.league)) S.league = saved.league;
       if (saved.foot === "off") S.foot = "off";
       if (saved.bar === "off" || (saved.bar == null && matchMedia("(max-width: 640px)").matches)) S.bar = "off";   /* a phone starts folded (Phil, 10/24) */
@@ -1345,7 +1349,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function remember(){
     try {
       let old = {}; try { old = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; if (typeof old !== "object" || Array.isArray(old)) old = {}; } catch (e) { old = {}; }
-      const rec = Object.assign({}, old, { v: 3, tz: S.tz, tzSet: S.tzSet, view: S.view, odds: S.odds, odds2: true, ml: S.ml, dtv: S.dtv, gct: S.gct, xc: S.xc, pp: S.pp, pp2: 1, mkask: S.mkask, foot: S.foot, bar: S.bar, chg: S.chg, more: S.more, theme: document.documentElement.getAttribute("data-theme") || "", skin: document.documentElement.getAttribute("data-skin") || "broadcast" });
+      const rec = Object.assign({}, old, { v: 3, tz: S.tz, tzSet: S.tzSet, view: S.view, odds: S.odds, odds2: true, ml: S.ml, dtv: S.dtv, gct: S.gct, xc: S.xc, pp: S.pp, pp2: 1, cash: S.cash, mkask: S.mkask, foot: S.foot, bar: S.bar, chg: S.chg, more: S.more, theme: document.documentElement.getAttribute("data-theme") || "", skin: document.documentElement.getAttribute("data-skin") || "broadcast" });
       if (!SLATE.lock) rec.league = S.league;   /* a locked copy (weekly file, artifact) never moves the one page's league */
       ["cfb", "nfl"].forEach(lg => { const p = S.per[lg]; rec[lg] = Object.assign({}, (old[lg] && typeof old[lg] === "object") ? old[lg] : {}, { on: [...p.on], off: [...p.off], confs: confOrder(lg).filter(c => p.confs.has(c)), show: p.show, mine: p.mine, now: p.now, stars: [...p.stars], views: p.views, mkt: p.mkt, zip: p.zip, dome: p.dome, wx: WXKEYS.filter(k => p.wx.has(k)), slips: p.slips }); });
       localStorage.setItem(KEY, JSON.stringify(rec));
@@ -2880,7 +2884,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     inp.addEventListener("keydown", e => { if (e.key === "Enter") inp.blur(); });
     inp.addEventListener("change", () => { const v = inp.value.trim(); s.name = ((v || (m ? m[1] : "Slip")) + (m ? " " + m[2] : "")).slice(0, 24); if (save){ remember(); render(); } });
     row.appendChild(inp); if (m) row.appendChild(el("span", "sodds", m[2]));
-    if (s.stake && s.pay){ const k = el("span", "sstake", "$" + money(s.stake) + " → "); k.appendChild(el("em", null, "$" + money(s.pay))); row.appendChild(k); }
+    if (s.stake && s.pay && S.cash !== "hide"){ const k = el("span", "sstake", "$" + money(s.stake) + " → "); k.appendChild(el("em", null, "$" + money(s.pay))); row.appendChild(k); }
     return row;
   }
   function slipCard(s, i){   /* a saved slip as a card: the strip's and the panel's */
@@ -3500,6 +3504,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const syncOdds = () => oddsBtn.setAttribute("aria-pressed", String(S.odds));
   oddsBtn.addEventListener("click", () => { S.odds = !S.odds; if (S.odds) tally("live-odds", "Live odds on"); remember(); syncOdds(); render(); if (S.odds) pollOdds(true); });
   syncOdds();
+  const cashBtn = document.getElementById("cashBtn"), syncCash = () => cashBtn.setAttribute("aria-pressed", String(S.cash === "hide"));   /* Settings > Slips (11/20) */
+  cashBtn.addEventListener("click", () => { S.cash = S.cash === "hide" ? "show" : "hide"; remember(); syncCash(); render(); }); syncCash();
   const dtvBtn = document.getElementById("dtvBtn");
   dtvBtn.addEventListener("click", () => { S.dtv = !S.dtv; remember(); render(); });
   const moreBtn = document.getElementById("moreBtn"), more = document.getElementById("more");
