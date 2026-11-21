@@ -294,6 +294,13 @@
   :root[data-skin="app"] .sbtns button{font-size:12.5px;letter-spacing:0}
   .sbtns button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
   .sbtns button.warn{border-color:#c9382b;color:#ff6b5f}
+  .scard.cp{position:relative}   /* a slip card's copy icon, top right (11/21) */
+  .scard.cp > .skick{padding-right:30px}
+  .scopy{position:absolute;top:5px;right:7px;width:34px;height:30px;display:flex;align-items:center;justify-content:center;background:none;border:0;border-radius:8px;padding:0;margin:0;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .scopy svg{width:21px;height:21px;display:block}
+  .scopy.busy{opacity:.45;cursor:progress}
+  .scopy.ok{color:#3ccf8e}
+  .scopy.err{color:#ff6b5f}
   #spanel .scard{margin-top:10px}
   .ssheet{position:fixed;inset:0;z-index:1000;display:flex;align-items:flex-end;justify-content:center}
   .ssheet .ssbg{position:absolute;inset:0;background:rgba(5,8,12,.6);opacity:0;transition:opacity .2s}
@@ -2887,6 +2894,63 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (s.stake && s.pay && S.cash !== "hide"){ const k = el("span", "sstake", "$" + money(s.stake) + " → "); k.appendChild(el("em", null, "$" + money(s.pay))); row.appendChild(k); }
     return row;
   }
+  /* ---- a picture of the slip as it stands, to the clipboard (Phil, 11/21, option 2 of three: the copy icon at the card's top right) ----
+     The card drawn by html2canvas (loaded on first use), its buttons left off, on the board's background with the address and the time
+     under it; Hide $ holds. The app (build 9 on) takes it through its copyImage handler; a browser through the Clipboard API, the picture
+     handed over as a promise so Safari counts the tap. The icon dims while it draws, then a check for 1.6 s, red if it failed. */
+  const H2C = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js", H2C_SRI = "sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==";
+  const ICON_COPY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11.5" height="11.5" rx="2.2"/><path d="M15 9V6.2A2.2 2.2 0 0 0 12.8 4H6.2A2.2 2.2 0 0 0 4 6.2v6.6A2.2 2.2 0 0 0 6.2 15H9"/></svg>',
+        ICON_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.6l4.3 4.3L19.2 7"/></svg>';
+  let h2cP = null, copyTok = 0; const COPYST = {};   /* slip (created) -> { st: "busy" | "ok" | "err", tok } */
+  const h2cLoad = () => h2cP || (h2cP = new Promise((ok, no) => { if (window.html2canvas) return ok(window.html2canvas);
+    const s = document.createElement("script"); s.src = H2C; s.integrity = H2C_SRI; s.crossOrigin = "anonymous";
+    s.onload = () => window.html2canvas ? ok(window.html2canvas) : no(new Error("html2canvas")); s.onerror = () => { h2cP = null; no(new Error("html2canvas")); }; document.head.appendChild(s); }));
+  async function slipPicture(cardOf){   /* cardOf: the card as it is once the drawing starts (a poll may have redrawn it since the tap) */
+    const h2c = await h2cLoad(); try { await document.fonts.ready; } catch (e) {}
+    const card = cardOf(); if (!card.isConnected || !card.offsetWidth) throw new Error("no card");
+    const css = getComputedStyle(document.documentElement), v = k => css.getPropertyValue(k).trim(), k = 3;
+    card.setAttribute("data-snap", "1"); let cv;
+    try { cv = await h2c(card, { scale: k, useCORS: true, backgroundColor: null, logging: false, onclone: doc => {
+        const c = doc.querySelector("[data-snap]"); if (!c) return; c.querySelectorAll(".sbtns, .scopy").forEach(x => x.remove());
+        c.querySelectorAll("input.sname").forEach(i => { const t = doc.createElement("span"); t.className = i.className; t.textContent = i.value; i.replaceWith(t); });
+        const fits = e => e.scrollWidth <= e.clientWidth + 1;
+        c.querySelectorAll("*").forEach(e => { if (doc.defaultView.getComputedStyle(e).textOverflow !== "ellipsis" || fits(e)) return;   /* html2canvas cuts text without the dots */
+          const w = doc.createTreeWalker(e, NodeFilter.SHOW_TEXT), ts = []; while (w.nextNode()) if (w.currentNode.data.trim()) ts.push(w.currentNode);
+          for (let j = ts.length - 1; j >= 0; j--){ const t = ts[j], full = t.data; let lo = 0, hi = full.length;
+            while (lo < hi){ const m = (lo + hi + 1) >> 1; t.data = full.slice(0, m).trimEnd() + "\u2026"; if (fits(e)) lo = m; else hi = m - 1; }
+            t.data = lo ? full.slice(0, lo).trimEnd() + "\u2026" : ""; if (lo || fits(e)) break; } }); } }); }   /* none of a piece fits: the one before it takes the dots */
+    finally { card.removeAttribute("data-snap"); }
+    const pad = 16 * k, foot = 26 * k, out = document.createElement("canvas"), x = out.getContext("2d"), now = new Date();
+    out.width = cv.width + pad * 2; out.height = cv.height + pad + foot;
+    x.fillStyle = v("--bg") || "#101722"; x.fillRect(0, 0, out.width, out.height); x.drawImage(cv, pad, pad);
+    x.font = "600 " + 12 * k + "px " + (v("--body") || "system-ui, sans-serif"); x.fillStyle = v("--muted") || "#9aa5b5"; x.textBaseline = "middle";
+    const y = cv.height + pad + foot / 2, day = new Intl.DateTimeFormat("en-US", { timeZone: TZ[S.tz], weekday: "short", month: "numeric", day: "numeric" }).format(now).replace(",", "");
+    x.fillText("slatescoreboard.com", pad + 4, y); x.textAlign = "right"; x.fillText(day + " \u00b7 " + fmtTime(now.toISOString()) + " " + S.tz, out.width - pad - 4, y);
+    return new Promise((ok, no) => out.toBlob(b => b ? ok(b) : no(new Error("toBlob")), "image/png"));
+  }
+  function copyDraw(b, st){
+    b.classList.toggle("busy", st === "busy"); b.classList.toggle("ok", st === "ok"); b.classList.toggle("err", st === "err"); b.innerHTML = st === "ok" ? ICON_OK : ICON_COPY;
+    b.title = st === "ok" ? "Copied" : st === "err" ? "Couldn't copy the picture" : "Copy a picture of this slip";
+  }
+  function copyState(key, st){
+    const tok = ++copyTok; COPYST[key] = { st, tok }; document.querySelectorAll('.scopy[data-k="' + key + '"]').forEach(b => copyDraw(b, st));
+    if (st !== "busy") setTimeout(() => { if (!COPYST[key] || COPYST[key].tok !== tok) return; delete COPYST[key]; document.querySelectorAll('.scopy[data-k="' + key + '"]').forEach(b => copyDraw(b, "")); }, 1600);
+  }
+  function copySlip(s, card){
+    const key = String(s.created), where = card.closest("#slist") ? "#slist" : "#sstrip"; if (COPYST[key] && COPYST[key].st === "busy") return;
+    copyState(key, "busy"); tally("slip-copy", "Copy a slip's picture");
+    const pic = slipPicture(() => { const b = document.querySelector(where + ' .scopy[data-k="' + key + '"]'); return (b && b.closest(".scard")) || card; }), app = window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.copyImage; let done;
+    if (app) done = pic.then(b => new Promise((ok, no) => { const r = new FileReader(); r.onload = () => { app.postMessage(String(r.result)); ok(); }; r.onerror = no; r.readAsDataURL(b); }));
+    else if (navigator.clipboard && navigator.clipboard.write && window.ClipboardItem){
+      const later = () => pic.then(b => navigator.clipboard.write([new ClipboardItem({ "image/png": b })]));   /* a browser that wants the picture itself */
+      try { done = navigator.clipboard.write([new ClipboardItem({ "image/png": pic })]).catch(later); } catch (e) { done = later(); }   /* Safari: the picture as a promise, inside the tap */
+    } else done = pic.then(() => { throw new Error("no clipboard"); });
+    pic.catch(() => {}); done.then(() => copyState(key, "ok"), () => copyState(key, "err"));
+  }
+  function copyBtn(s, card){
+    const b = el("button", "scopy"), key = String(s.created), cs = COPYST[key]; b.type = "button"; b.dataset.k = key; b.setAttribute("aria-label", "Copy a picture of this slip");
+    copyDraw(b, cs ? cs.st : ""); b.addEventListener("click", e => { e.stopPropagation(); copySlip(s, card); }); return b;
+  }
   function slipCard(s, i){   /* a saved slip as a card: the strip's and the panel's */
     const lg = S.league, c = el("div", "scard"), gs = s.legs.map(l => gameOf(l.id, lg)), st = s.legs.map((l, k) => gs[k] ? legNow(gs[k], l) : ["pending", "not on the board"]);
     c.appendChild(el("div", "skick", [s.book, kindWord(s), s.flex ? s.flex + " of " + s.legs.length + " pays" : ""].filter(Boolean).join(" · ")));
@@ -2909,7 +2973,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const del = el("button", null, "Delete"); del.type = "button";
     del.addEventListener("click", () => { if (!del.classList.contains("warn")){ del.classList.add("warn"); del.textContent = "Tap to delete"; setTimeout(() => { del.classList.remove("warn"); del.textContent = "Delete"; }, 3000); return; }
       P().slips.splice(i, 1); stripOpen = -1; slipRedraw(); });
-    btns.appendChild(del); c.appendChild(btns); return c;
+    btns.appendChild(del); c.appendChild(btns); c.classList.add("cp"); c.insertBefore(copyBtn(s, c), c.children[1] || null); return c;   /* the copy icon (11/21) */
   }
   /* the slipSheet: busy while the screenshot is read, then the slip to confirm, or a note, or the paste box */
   let slipSheet = null;
