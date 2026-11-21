@@ -1,4 +1,4 @@
-NFL Week 11 (13 games, pulled Sat 11/21, 4:34 AM ET, lines DraftKings via ESPN)
+NFL Week 11 (13 games, pulled Sat 11/21, 12:18 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week11.html
   nfl/ forwards to the one page
   Thu 11/19: 0 on TV, 1 not
@@ -7,16 +7,16 @@ NFL Week 11 (13 games, pulled Sat 11/21, 4:34 AM ET, lines DraftKings via ESPN)
   every game with its line:
     Thu 20:15 ET  Indianapolis Colts at Houston Texans  [Prime Video]  HOU -12.5, o/u 44.5
     Sun 13:00 ET  Miami Dolphins at Buffalo Bills  [CBS]  BUF -16.5, o/u 44.5
-    Sun 13:00 ET  Arizona Cardinals at Kansas City Chiefs  [CBS]  KC -16.5, o/u 40.5
+    Sun 13:00 ET  Arizona Cardinals at Kansas City Chiefs  [CBS]  KC -15.5, o/u 40.5
     Sun 13:00 ET  Pittsburgh Steelers at Philadelphia Eagles  [CBS]  PIT -3.5, o/u 37.5
     Sun 13:00 ET  Baltimore Ravens at Carolina Panthers  [FOX]  CAR -3.0, o/u 43.5
     Sun 13:00 ET  New Orleans Saints at Chicago Bears  [FOX]  CHI -11.5, o/u 48.5
-    Sun 13:00 ET  Tennessee Titans at Dallas Cowboys  [FOX]  DAL -8.5, o/u 54.5
-    Sun 13:00 ET  Tampa Bay Buccaneers at Detroit Lions  [FOX]  DET -5.5, o/u 45.5
-    Sun 16:05 ET  New York Jets at Los Angeles Chargers  [FOX]  LAC -3.0, o/u 41.5
+    Sun 13:00 ET  Tennessee Titans at Dallas Cowboys  [FOX]  DAL -7.5, o/u 54.5
+    Sun 13:00 ET  Tampa Bay Buccaneers at Detroit Lions  [FOX]  DET -4.5, o/u 46.5
+    Sun 16:05 ET  New York Jets at Los Angeles Chargers  [FOX]  LAC -3.0, o/u 42.5
     Sun 16:25 ET  Las Vegas Raiders at Denver Broncos  [CBS]  DEN -10.5, o/u 40.5
     Sun 16:25 ET  Jacksonville Jaguars at New York Giants  [CBS]  JAX -6.0, o/u 46.5
-    Sun 20:20 ET  Minnesota Vikings vs San Francisco 49ers  [NBC]  SF -3.0, o/u 46.5
+    Sun 20:20 ET  Minnesota Vikings vs San Francisco 49ers  [NBC]  SF -3.5, o/u 46.5
     Mon 20:15 ET  Cincinnati Bengals at Washington Commanders  [ESPN]  CIN -6.0, o/u 53.5
   TV games without a line: 0
   time TBD: 0
