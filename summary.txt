@@ -1,4 +1,4 @@
-College Football Week 12 (130 games, pulled Sun 11/22, 7:08 PM ET, lines DraftKings via ESPN)
+College Football Week 12 (130 games, pulled Mon 11/23, 3:51 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week12.html
   cfb/ forwards to the one page
   Tue 11/17: 3 on TV, 0 not
@@ -35,7 +35,7 @@ College Football Week 12 (130 games, pulled Sun 11/22, 7:08 PM ET, lines DraftKi
   time TBD: 0
   schedule changes on game day: Sat CHST at SUU: kick 2:00 PM -> 5:00 PM ET
 
-NFL Week 11 (13 games, pulled Sun 11/22, 7:08 PM ET, lines DraftKings via ESPN)
+NFL Week 11 (13 games, pulled Mon 11/23, 3:51 AM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week11.html
   nfl/ forwards to the one page
   Thu 11/19: 0 on TV, 1 not
