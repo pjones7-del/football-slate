@@ -2414,7 +2414,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     t = t.replace(ODDSTAIL, "").replace(/\bto win\b/i, "").replace(/\s+ml$/i, "").trim();
     if ((m = t.match(/^(over|under|o|u)\s*(\d+(?:\.\d)?)$/i))){ let n = +m[2]; if (n >= 100 && !/\./.test(m[2]) && /5$/.test(m[2])) n = n / 10;   /* "Over415": the screenshot lost the point */
       return { team: hint, kind: "total", side: /^o/i.test(m[1]) ? "over" : "under", num: n, text: s.trim(), label }; }
-    if ((m = t.match(/^(\d+)\s*\+$/))) return { team: "", kind: "prop", num: null, short: m[1] + "+", text: s.trim(), label };   /* a player prop's pick ("1+"); its market line says the rest */
+    if ((m = t.match(/^(\d+)\s*\+(?:\s*[^A-Za-z0-9\s]+)*$/))) return { team: "", kind: "prop", num: null, short: m[1] + "+", text: s.trim(), label };   /* a player prop's pick ("1+"); its market line says the rest */
     if ((m = t.match(/^(.+?)\s*([+-]\s?\d+(?:\.\d)?)$/))) return { team: m[1].trim(), kind: "spread", num: parseFloat(m[2].replace(/\s/, "")), text: s.trim(), hint, label };
     if (/^\d/.test(t) || t.length < 2 || SLIPWORD.test(t)) return null;
     return { team: t, kind: "ml", text: s.trim(), hint, label };
@@ -2563,7 +2563,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (l && k && !(KINDFIT[l.kind] || []).includes(k)){ if ((k === "tt" || k === "prop") && l.kind === "ml") l = null; else return l; }   /* the block doesn't fit the pick: the pick as read, unless a team total's or a prop's pick line came out as junk */
     let leg = l ? Object.assign({}, l) : null;
     const per = b.mkt ? perOf(b.mkt) : "", alt = /alternate/i.test(b.mkt) ? " Alternate" : "", lead = x => x.replace(/^(?:[^A-Za-z0-9]+|[A-Za-z0-9](?=\s)\s*)+/, "").replace(/\s*\bcash\s*out\b/ig, "").trim();   /* the market's name without the icon's specks or the CASH OUT badge */
-    const mk = (k === "tt" || k === "prop" || per ? [lead(b.mkt)].concat(k === "prop" ? b.more.filter(x => !/^if\b/i.test(x) && /[A-Za-z]{2}/.test(x)) : []).join(" ")
+    const mk = (k === "tt" || k === "prop" || per ? [lead(b.mkt)].concat(k === "prop" ? b.more.filter(x => !/^if\b/i.test(x) && !/wager|payout|\$\s?\d|early\s*exit/i.test(x) && /[A-Za-z]{2}/.test(x)) : []).join(" ")
       : k === "ml" ? "Moneyline" : k === "spread" ? "Spread" + alt : k === "total" ? "Total" + alt : "").replace(/(?:\s+[^A-Za-z0-9\s]+)+$/, "").slice(0, 90);
     const ou = l && l.kind === "total" ? l.side : /\bunder\b|^\s*u\b/i.test(p) ? "under" : "over";
     const numOf = x => { const d = (x.match(/\d+(?:\.\d)?/) || [])[0]; if (!d) return NaN; let n = +d; if (n >= 100 && !/\./.test(d) && /5$/.test(d)) n = n / 10; return n; };   /* "Over275": the lost point */
@@ -2584,6 +2584,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const wag = lines.findIndex((l, i) => i > hdr && /^wager/i.test(l)), end = wag > hdr ? wag : hdr >= 0 ? lines.findIndex((l, i) => i > hdr && /to pay|cashed out|bonus bet/i.test(l)) : -1;
     let sum = hdr >= 0 && end > hdr + 1 ? lines.slice(hdr + 1, end).filter(l => l.length > 2).join(" ") : "";
     if (!/,/.test(sum)) sum = "";   /* a summary names two picks or more (DraftKings); a header and a Wager line with only the book's chrome between them is no summary (11/7) */
+    if (sum && (lines.slice(hdr + 1, end).some((l, k) => gameLine(lines, hdr + 1 + k)) || lines.slice(hdr + 1, end).filter(l => mktOf(l)).length >= 2)) sum = "";   /* the legs themselves: DraftKings' Bet Placed receipt, its game line under the header and the fine print's comma (11/23) */
+    const read = sum => {
     const blocks = slipBlocks(sum ? lines.slice(end + 1) : lines);
     let picks = [], loose = false;
     if (sum) picks = sum.split(/,\s*/);
@@ -2600,7 +2602,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const legs = raw.map((l, i) => withBlock(l, picks[i], pair[i] == null ? null : blocks[pair[i]])).filter(Boolean);
     if (sum) blocks.forEach((b, j) => { if (pair.includes(j) || !b.kind) return; const p = headPick(b), l = withBlock(parseLeg(p), p, b); if (l) legs.push(l); });   /* a leg the summary lists only as "3 Pick SGP": read from its block (11/2) */
     legs.loose = loose;
-    return legs;
+    return legs; };
+    const legs = read(sum); return sum && !legs.length ? read("") : legs;   /* a summary that gave nothing: the slip without one */
   }
 
 
@@ -2673,16 +2676,20 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   const legKey = l => [l.id, l.side, l.kind, l.num, l.ou || "", l.per || "", l.kind === "prop" ? (l.who || "") + "/" + (l.short || "") : ""].join(":"), slipKey = legs => legs.map(legKey).sort().join("|");
   function slipName(sec, legs){
-    const ls = sec.split(/\n/), head = ls.find(l => LEGHEAD.test(l) && !/,/.test(l)) || ls[0] || "", odds = (head.match(/[+-]\d{3,5}/g) || []).pop() || "", n = head.match(/(\d+)\s*[- ]?(pick|leg)/i), label = legs.find(l => l.label) ? legs.find(l => l.label).label : "";
+    const ls = sec.split(/\n/), head = ls.find(l => LEGHEAD.test(l) && !/,/.test(l)) || ls.find(l => /^\W*(?:sgpx?\s*)?\d+\s*pick\s*parlay\b/i.test(l) && !/,/.test(l)) || ls[0] || "", odds = (head.match(/[+-]\d{3,5}/g) || []).pop() || "", n = head.match(/(\d+)\s*[- ]?(pick|leg)/i), label = legs.find(l => l.label) ? legs.find(l => l.label).label : "";
     return ((n ? n[1] + "-" + n[2].toLowerCase() : /same\s*game|\bsgp\b/i.test(head) ? "SGP" : (label || "Slip")) + (odds ? " " + odds : "")).slice(0, 24);   /* "7-pick +968", "8-leg +1150", "SGP +549" */
   }
   /* each leg to a game on the board: a block's game first (a total's only source), then the team's name; one copy of each leg */
+  /* how well a placed leg names its game: both teams of its block's game line, or its team's name (11/23) */
+  function legFit(l, g){ if (!g) return 0;
+    if (l.mu) return Math.max(teamHit(l.mu.a, g.away) + teamHit(l.mu.h, g.home), teamHit(l.mu.a, g.home) + teamHit(l.mu.h, g.away) - 0.5);
+    return gameOnly(l) ? 0 : Math.max(teamHit(l.team, g.away), teamHit(l.team, g.home)); }
   function placeLegs(legs, games){
     const out = [], seen = {};
     legs.forEach(l => { const bg = l.mu ? blockGame(l.mu, games) : null; let id = "", side = l.kind === "total" ? l.side : "";
       if (gameOnly(l)){ const g = bg || ((matchGame(l.team, games) || {}).g); if (g) id = g.id; }
       else { const s = bg ? sideIn(bg, l.team) || sideNear(bg, l.team) : "", hit = s ? null : matchTeam(l.team, games); if (s){ id = bg.id; side = s; } else if (hit){ id = hit.g.id; side = hit.side; } }
-      const o = Object.assign({}, l, { id, side }); delete o.mu;
+      const o = Object.assign({}, l, { id, side }); o.fit = id ? legFit(l, games.find(g => g.id === id)) : 0; delete o.mu;
       if (id){ const k = legKey(o); if (seen[k]) return; seen[k] = true;
         if (legs.loose && (o.kind === "ml" || o.kind === "spread")){ const sk = "side:" + id + ":" + side, j = seen[sk];   /* the loose read can catch one pick twice: the spread beats the moneyline */
           if (j != null){ if (out[j].kind === "ml" && o.kind === "spread") out[j] = o; return; } seen[sk] = out.length; } }
@@ -2699,9 +2706,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       secs.forEach(({ sec, legs }) => { const placed = placeLegs(legs, games); if (!placed.length) return;
         const key = slipKey(placed); if (slips.some(x => x.key === key)) return;   /* the same slip read twice */
         slips.push(Object.assign({ name: slipName(sec, legs), legs: placed, key, dup: S.per[lg].slips.some(x => slipKey(x.legs) === key) }, slipMeta(sec, text))); });
-      return { lg, slips, found: slips.reduce((a, x) => a + x.legs.filter(l => l.id).length, 0), all: slips.reduce((a, x) => a + x.legs.length, 0) }; };
+      return { lg, slips, found: slips.reduce((a, x) => a + x.legs.filter(l => l.id).length, 0), all: slips.reduce((a, x) => a + x.legs.length, 0), q: slips.reduce((a, x) => a + x.legs.reduce((b, l) => b + (l.fit || 0), 0), 0) }; };
     let r = tryLg(S.league); const other = S.league === "nfl" ? "cfb" : "nfl";
-    if (r.found < r.all && has(other)){ const r2 = tryLg(other); if (r2.found > r.found) r = r2; }   /* read on the other league's board: the slip goes to its own (10/25) */
+    if (has(other)){ const r2 = tryLg(other); if (r2.found > r.found || (r2.found && r2.found === r.found && r2.q > r.q * 1.25)) r = r2; }   /* read on the other league's board: the slip goes to its own (10/25); placed as fully on both, the one that names its games better (11/23: "CIN Bengals @ WAS Commanders" is the Bengals, not Cincinnati's college game) */
     if (!r.slips.length){ sheetMsg("No picks found in that. A screenshot of the whole slip reads best, or paste the picks as a list: Indiana, Miami FL -3.5, Over 55.5 (Army at Tulsa)."); return; }
     pend = r.slips; pendLg = r.lg;
     drawConfirm();
@@ -2721,7 +2728,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     return { book, stake: ok ? stake : 0, pay: ok ? pay : 0, flex: f ? +f[1] : 0, sgp: /same\s*game\s*parlay|\bsgp\b/i.test(t) };
   }
   const slipRedraw = () => { wrap.dataset.view = ""; remember(); render(); };   /* the games kept change, so the board's start time does: back to the now line */
-  const kindWord = s => s.sgp ? "same game parlay" : s.flex ? "flex parlay" : s.legs.length > 1 ? "parlay" : "straight";
+  const kindWord = s => s.sgp || (s.legs.length > 1 && s.legs.every(l => l.id && l.id === s.legs[0].id)) ? "same game parlay" : s.flex ? "flex parlay" : s.legs.length > 1 ? "parlay" : "straight";
   const money = n => n >= 1000 ? Math.round(n).toLocaleString("en-US") : (Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, "");
   const gameOf = (id, lg) => (GAMES[lg || S.league] || []).find(g => g.id === id);
   const whenTxt = g => { if (!g) return ""; if (g.state === "in") return /half/i.test(g.detail || "") ? "Half" : (g.period > 4 ? "OT" : "Q" + g.period) + " " + (g.clock || "");
@@ -3000,10 +3007,10 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       c.appendChild(el("div", "skick", [sp.book, kindWord(sp), got === sp.legs.length ? "read from your screenshot" : got + " of " + sp.legs.length + " matched"].filter(Boolean).join(" · ")));
       c.appendChild(slipTitle(sp, false));
       if (sp.dup) c.appendChild(el("div", "ssdup", "You're already tracking this one"));
-      if (lg !== S.league) c.appendChild(el("div", "ssdup", "These are " + (lg === "nfl" ? "NFL" : "college") + " games; the slip goes on that board"));
+      if (lg !== S.league) c.appendChild(el("div", "ssdup", "These are " + (lg === "nfl" ? "NFL games, so this slip goes on the NFL board" : "college games, so this slip goes on the college board")));   /* 11/23 */
       const list = el("div", "slegs"); sp.legs.forEach((l, k) => list.appendChild(confirmRow(sp, l, k, lg))); c.appendChild(list); b.appendChild(c); });
     const n = pend.filter(sp => !sp.dup && sp.legs.some(l => l.id)).length;
-    const go = el("button", "ssgo", n > 1 ? "Track these " + n + " slips" : "Track this slip"); go.type = "button"; go.disabled = !n; go.addEventListener("click", trackPending); b.appendChild(go);
+    const go = el("button", "ssgo", lg !== S.league ? (n > 1 ? "Track these " + n + " on the " : "Track on the ") + (lg === "nfl" ? "NFL" : "college") + " board" : n > 1 ? "Track these " + n + " slips" : "Track this slip"); go.type = "button"; go.disabled = !n; go.addEventListener("click", trackPending); b.appendChild(go);
     sheetLinks(b, [["Rename", () => { const x = b.querySelector("input.sname"); if (x){ x.focus(); x.select(); } }], ["Paste picks instead", pasteMode], ["Cancel", sheetClose]]);
   }
   function confirmRow(sp, l, k, lg){
