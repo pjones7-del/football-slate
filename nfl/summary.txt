@@ -1,22 +1,27 @@
-NFL Week 11 (13 games, pulled Mon 11/23, 8:32 PM ET, lines DraftKings via ESPN)
-  weekly file written to nfl-slate-week11.html
+NFL Week 12 (16 games, pulled Tue 11/24, 12:52 AM ET, lines DraftKings via ESPN)
+  weekly file written to nfl-slate-week12.html
   nfl/ forwards to the one page
-  Thu 11/19: 0 on TV, 1 not
-  Sun 11/22: 11 on TV, 0 not
-  Mon 11/23: 1 on TV, 0 not
+  Wed 11/25: 0 on TV, 1 not
+  Thu 11/26: 3 on TV, 0 not
+  Fri 11/27: 0 on TV, 1 not
+  Sun 11/29: 10 on TV, 0 not
+  Mon 11/30: 1 on TV, 0 not
   every game with its line:
-    Thu 20:15 ET  Indianapolis Colts at Houston Texans  [Prime Video]  HOU -12.5, o/u 44.5
-    Sun 13:00 ET  Miami Dolphins at Buffalo Bills  [CBS]  BUF -16.5, o/u 44.5
-    Sun 13:00 ET  Arizona Cardinals at Kansas City Chiefs  [CBS]  KC -15.5, o/u 40.5
-    Sun 13:00 ET  Pittsburgh Steelers at Philadelphia Eagles  [CBS]  PIT -3.5, o/u 37.5
-    Sun 13:00 ET  Baltimore Ravens at Carolina Panthers  [FOX]  CAR -3.0, o/u 43.5
-    Sun 13:00 ET  New Orleans Saints at Chicago Bears  [FOX]  CHI -11.5, o/u 48.5
-    Sun 13:00 ET  Tennessee Titans at Dallas Cowboys  [FOX]  DAL -7.5, o/u 54.5
-    Sun 13:00 ET  Tampa Bay Buccaneers at Detroit Lions  [FOX]  DET -3.5, o/u 47.5
-    Sun 16:05 ET  New York Jets at Los Angeles Chargers  [FOX]  LAC -3.0, o/u 43.5
-    Sun 16:25 ET  Las Vegas Raiders at Denver Broncos  [CBS]  DEN -10.5, o/u 40.5
-    Sun 16:25 ET  Jacksonville Jaguars at New York Giants  [CBS]  JAX -6.0, o/u 45.5
-    Sun 20:20 ET  Minnesota Vikings vs San Francisco 49ers  [NBC]  SF -4.5, o/u 44.5
-    Mon 20:15 ET  Cincinnati Bengals at Washington Commanders  [ESPN]  CIN -6.0, o/u 54.5
+    Wed 20:00 ET  Green Bay Packers at Los Angeles Rams  [Netflix]  LAR -2.5, o/u 43.5
+    Thu 13:00 ET  Chicago Bears at Detroit Lions  [CBS]  CHI -2.5, o/u 55.5
+    Thu 16:30 ET  Philadelphia Eagles at Dallas Cowboys  [FOX]  DAL -8.5, o/u 47.5
+    Thu 20:20 ET  Kansas City Chiefs at Buffalo Bills  [NBC]  BUF -3.0, o/u 47.5
+    Fri 15:00 ET  Denver Broncos at Pittsburgh Steelers  [Prime Video]  DEN -3.0, o/u 38.5
+    Sun 13:00 ET  New Orleans Saints at Cincinnati Bengals  [CBS]  CIN -10.0, o/u 50.5
+    Sun 13:00 ET  Baltimore Ravens at Houston Texans  [CBS]  HOU -6.5, o/u 46.5
+    Sun 13:00 ET  New York Jets at Miami Dolphins  [CBS]  NYJ -3.5, o/u 40.5
+    Sun 13:00 ET  New York Giants at Indianapolis Colts  [FOX]  NYG -6.5, o/u 41.5
+    Sun 13:00 ET  Tennessee Titans at Jacksonville Jaguars  [FOX]  JAX -14.5, o/u 47.5
+    Sun 13:00 ET  Atlanta Falcons at Minnesota Vikings  [FOX]  MIN -7.0, o/u 42.5
+    Sun 16:05 ET  New England Patriots at Los Angeles Chargers  [CBS]  LAC -1.5, o/u 35.5
+    Sun 16:25 ET  Washington Commanders at Arizona Cardinals  [FOX]  WSH -7.5, o/u 40.5
+    Sun 16:25 ET  Seattle Seahawks at San Francisco 49ers  [FOX]  SF -3.0, o/u 46.5
+    Sun 20:20 ET  Las Vegas Raiders at Cleveland Browns  [NBC]  CLE -4.5, o/u 41.5
+    Mon 20:15 ET  Carolina Panthers at Tampa Bay Buccaneers  [ESPN]  TB -3.0, o/u 43.5
   TV games without a line: 0
   time TBD: 0

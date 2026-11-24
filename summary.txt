@@ -1,60 +1,63 @@
-College Football Week 12 (130 games, pulled Mon 11/23, 8:32 PM ET, lines DraftKings via ESPN)
-  weekly file written to cfb-slate-week12.html
+College Football Week 13 (79 games, pulled Tue 11/24, 12:52 AM ET, lines DraftKings via ESPN)
+  weekly file written to cfb-slate-week13.html
   cfb/ forwards to the one page
-  Tue 11/17: 3 on TV, 0 not
-  Wed 11/18: 2 on TV, 0 not
-  Thu 11/19: 1 on TV, 2 not
-  Fri 11/20: 6 on TV, 0 not
-  Sat 11/21: 41 on TV, 75 not
+  Tue 11/24: 1 on TV, 1 not
+  Thu 11/26: 1 on TV, 1 not
+  Fri 11/27: 12 on TV, 1 not
+  Sat 11/28: 37 on TV, 25 not
   ranked matchups:
-    Fri 20:00 ET  #13 Oregon at Michigan State  [FOX]  ORE -17.5, o/u 43.5
-    Sat 12:00 ET  #10 BYU at Kansas  [ABC]  BYU -4.5, o/u 46.5
-    Sat 12:00 ET  #11 Wake Forest at Georgia Tech  [ESPN]  WAKE -21.0, o/u 55.5
-    Sat 12:00 ET  #14 Ohio State at Nebraska  [FOX]  OSU -3.0, o/u 41.5
-    Sat 12:00 ET  Vanderbilt at #24 Florida  [SECN]  FLA -13.5, o/u 45.5
-    Sat 12:00 ET  Wofford at #25 Ole Miss  [SECN+]  MISS -50.5, o/u 59.5
-    Sat 13:00 ET  #20 Houston at West Virginia  [TNT]  HOU -6.5, o/u 71.5
-    Sat 14:00 ET  Chattanooga at #3 Alabama  [SECN+]  ALA -48.5, o/u 56.5
-    Sat 14:30 ET  #15 Iowa at Illinois  [BTN]  IOWA -8.5, o/u 40.5
-    Sat 15:30 ET  LSU at #9 Tennessee  [ABC]  LSU -1.5, o/u 45.5
-    Sat 15:30 ET  #4 UCLA at Michigan  [CBS]  UCLA -3.5, o/u 36.5
-    Sat 15:30 ET  Arkansas at #5 Texas  [ESPN]  TEX -18.5, o/u 46.5
-    Sat 15:30 ET  #12 Texas Tech at Baylor  [FOX]  TTU -5.5, o/u 57.5
-    Sat 15:30 ET  #8 Indiana at Washington  [Peacock]  IU -9.5, o/u 44.5
-    Sat 15:45 ET  Texas A&M at #22 Oklahoma  [ESPN2]  OU -7.0, o/u 36.5
-    Sat 18:15 ET  Maryland at #18 USC  [BTN]  USC -18.5, o/u 57.5
-    Sat 19:00 ET  Virginia Tech at #7 Miami (FL)  [ESPN]  MIA -20.5, o/u 61.5
-    Sat 19:00 ET  #19 Arizona at Kansas State  [FS1]  ARIZ -10.0, o/u 53.5
-    Sat 19:30 ET  #1 Georgia at #21 South Carolina  [ABC]  UGA -14.5, o/u 50.5
-    Sat 19:30 ET  Pitt at #23 Louisville  [ESPN2]  LOU -10.5, o/u 50.5
-    Sat 19:30 ET  SMU at #6 Notre Dame  [NBC]  ND -20.5, o/u 55.5
-    Sat 19:30 ET  #16 Kentucky at Missouri  [SECN]  MIZ -4.5, o/u 49.5
-    Sat 21:00 ET  #2 Utah at TCU  [FOX]  UTAH -8.5, o/u 46.5
-    Sat 21:30 ET  San Diego State at #17 Boise State  [USA]  BOIS -20.5, o/u 60.5
-  TV games without a line: 0
+    Thu 20:00 ET  TCU at #12 Texas Tech  [ESPN]  TTU -14.0, o/u 47.5
+    Fri 12:00 ET  Mississippi State at #25 Ole Miss  [ABC]  MISS -18.5, o/u 56.5
+    Fri 12:00 ET  Nebraska at #15 Iowa  [CBS]  IOWA -4.5, o/u 40.5
+    Fri 15:30 ET  #24 Florida at Florida State  [ABC]  FLA -6.0, o/u 52.5
+    Fri 19:30 ET  #5 Texas at Texas A&M  [ABC]  TEX -10.5, o/u 40.5
+    Fri 21:00 ET  West Virginia at #2 Utah  [FOX]  UTAH -22.5, o/u 68.5
+    Sat 12:00 ET  #6 Notre Dame at Syracuse  [ABC]  ND -24.5, o/u 52.5
+    Sat 12:00 ET  Boston College at #7 Miami (FL)  [ESPN]  MIA -25.5, o/u 53.5
+    Sat 12:00 ET  #23 Louisville at #16 Kentucky  [ESPN2]  LOU -3.0, o/u 54.5
+    Sat 12:00 ET  Michigan at #14 Ohio State  [FOX]  OSU -10.5, o/u 38.5
+    Sat 15:00 ET  #21 South Carolina at Clemson  [ESPN2]  SC -5.5, o/u 40.5
+    Sat 15:30 ET  Georgia Tech at #1 Georgia  [ABC]  UGA -35.5, o/u 55.5
+    Sat 15:30 ET  #18 USC at #4 UCLA  [CBS]  USC -7.0, o/u 45.5
+    Sat 15:30 ET  Duke at #11 Wake Forest  [ESPN]  WAKE -14.5, o/u 55.5
+    Sat 15:30 ET  Cincinnati at #10 BYU  [FOX]  BYU -15.5, o/u 55.5
+    Sat 16:15 ET  #22 Oklahoma at Missouri  [SECN]  MIZ -1.5, o/u 41.5
+    Sat 18:00 ET  #17 Boise State at Colorado State  [USA]  BOIS -21.0, o/u 76.5
+    Sat 19:00 ET  #9 Tennessee at Vanderbilt  [ESPN]  TENN -13.5, o/u 43.5
+    Sat 19:00 ET  Purdue at #8 Indiana  [FS1]  IU -22.5, o/u 52.5
+    Sat 19:30 ET  Auburn at #3 Alabama  [ABC]  ALA -16.5, o/u 49.5
+    Sat 19:30 ET  Washington at #13 Oregon  [NBC]  ORE -14.0, o/u 50.5
+    Sat 21:00 ET  Arizona State at #19 Arizona  [FOX]  ARIZ -8.5, o/u 54.5
+    Sat 21:30 ET  Baylor at #20 Houston  [ESPN2]  HOU -5.5, o/u 55.5
+  TV games without a line: 1
   time TBD: 0
-  schedule changes on game day: Sat CHST at SUU: kick 2:00 PM -> 5:00 PM ET
+  non-Division I or unknown conference ids: none: Tuskegee
 
-NFL Week 11 (13 games, pulled Mon 11/23, 8:32 PM ET, lines DraftKings via ESPN)
-  weekly file written to nfl-slate-week11.html
+NFL Week 12 (16 games, pulled Tue 11/24, 12:52 AM ET, lines DraftKings via ESPN)
+  weekly file written to nfl-slate-week12.html
   nfl/ forwards to the one page
-  Thu 11/19: 0 on TV, 1 not
-  Sun 11/22: 11 on TV, 0 not
-  Mon 11/23: 1 on TV, 0 not
+  Wed 11/25: 0 on TV, 1 not
+  Thu 11/26: 3 on TV, 0 not
+  Fri 11/27: 0 on TV, 1 not
+  Sun 11/29: 10 on TV, 0 not
+  Mon 11/30: 1 on TV, 0 not
   every game with its line:
-    Thu 20:15 ET  Indianapolis Colts at Houston Texans  [Prime Video]  HOU -12.5, o/u 44.5
-    Sun 13:00 ET  Miami Dolphins at Buffalo Bills  [CBS]  BUF -16.5, o/u 44.5
-    Sun 13:00 ET  Arizona Cardinals at Kansas City Chiefs  [CBS]  KC -15.5, o/u 40.5
-    Sun 13:00 ET  Pittsburgh Steelers at Philadelphia Eagles  [CBS]  PIT -3.5, o/u 37.5
-    Sun 13:00 ET  Baltimore Ravens at Carolina Panthers  [FOX]  CAR -3.0, o/u 43.5
-    Sun 13:00 ET  New Orleans Saints at Chicago Bears  [FOX]  CHI -11.5, o/u 48.5
-    Sun 13:00 ET  Tennessee Titans at Dallas Cowboys  [FOX]  DAL -7.5, o/u 54.5
-    Sun 13:00 ET  Tampa Bay Buccaneers at Detroit Lions  [FOX]  DET -3.5, o/u 47.5
-    Sun 16:05 ET  New York Jets at Los Angeles Chargers  [FOX]  LAC -3.0, o/u 43.5
-    Sun 16:25 ET  Las Vegas Raiders at Denver Broncos  [CBS]  DEN -10.5, o/u 40.5
-    Sun 16:25 ET  Jacksonville Jaguars at New York Giants  [CBS]  JAX -6.0, o/u 45.5
-    Sun 20:20 ET  Minnesota Vikings vs San Francisco 49ers  [NBC]  SF -4.5, o/u 44.5
-    Mon 20:15 ET  Cincinnati Bengals at Washington Commanders  [ESPN]  CIN -6.0, o/u 54.5
+    Wed 20:00 ET  Green Bay Packers at Los Angeles Rams  [Netflix]  LAR -2.5, o/u 43.5
+    Thu 13:00 ET  Chicago Bears at Detroit Lions  [CBS]  CHI -2.5, o/u 55.5
+    Thu 16:30 ET  Philadelphia Eagles at Dallas Cowboys  [FOX]  DAL -8.5, o/u 47.5
+    Thu 20:20 ET  Kansas City Chiefs at Buffalo Bills  [NBC]  BUF -3.0, o/u 47.5
+    Fri 15:00 ET  Denver Broncos at Pittsburgh Steelers  [Prime Video]  DEN -3.0, o/u 38.5
+    Sun 13:00 ET  New Orleans Saints at Cincinnati Bengals  [CBS]  CIN -10.0, o/u 50.5
+    Sun 13:00 ET  Baltimore Ravens at Houston Texans  [CBS]  HOU -6.5, o/u 46.5
+    Sun 13:00 ET  New York Jets at Miami Dolphins  [CBS]  NYJ -3.5, o/u 40.5
+    Sun 13:00 ET  New York Giants at Indianapolis Colts  [FOX]  NYG -6.5, o/u 41.5
+    Sun 13:00 ET  Tennessee Titans at Jacksonville Jaguars  [FOX]  JAX -14.5, o/u 47.5
+    Sun 13:00 ET  Atlanta Falcons at Minnesota Vikings  [FOX]  MIN -7.0, o/u 42.5
+    Sun 16:05 ET  New England Patriots at Los Angeles Chargers  [CBS]  LAC -1.5, o/u 35.5
+    Sun 16:25 ET  Washington Commanders at Arizona Cardinals  [FOX]  WSH -7.5, o/u 40.5
+    Sun 16:25 ET  Seattle Seahawks at San Francisco 49ers  [FOX]  SF -3.0, o/u 46.5
+    Sun 20:20 ET  Las Vegas Raiders at Cleveland Browns  [NBC]  CLE -4.5, o/u 41.5
+    Mon 20:15 ET  Carolina Panthers at Tampa Bay Buccaneers  [ESPN]  TB -3.0, o/u 43.5
   TV games without a line: 0
   time TBD: 0
 
