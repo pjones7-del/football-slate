@@ -255,7 +255,7 @@
   .sleg .spair img + img{left:8px;top:8px;filter:drop-shadow(0 0 1.5px var(--card)) drop-shadow(0 0 1px var(--card))}
   .sleg .sbadge{width:26px;height:26px;flex:none;box-sizing:border-box;border-radius:50%;border:1.5px solid var(--line2);display:flex;align-items:center;justify-content:center;font-family:var(--cond);font-weight:800;font-size:12px;color:var(--muted)}
   .sleg .spk{font-family:var(--cond);font-weight:800;font-size:18px;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:0 1 auto}
-  .sleg .spk i{font-style:normal;color:var(--accent);margin-left:6px}
+  .sleg .spk i{font-style:normal;color:var(--muted);margin-left:6px}   /* the pick in grey: the name leads, gold is left to the odds and the bar (Phil, 11/26: "Don't love the aggressive use of gold") */
   .sleg .sgm{margin-left:auto;font-size:12.5px;color:var(--muted);text-align:right;line-height:1.3;flex:none;white-space:nowrap}
   .sleg .sst{flex:none;min-width:76px;box-sizing:border-box;text-align:center;font-family:var(--cond);font-weight:800;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;border-radius:5px;padding:2px 6px;border:1.5px solid var(--line2);color:var(--muted);white-space:nowrap}
   :root[data-skin="app"] .sleg .sst{font-size:11px;letter-spacing:.01em;min-width:68px;padding:2px 5px}
@@ -1448,7 +1448,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (g.league && g.league !== S.league && LG[g.league]){ const own = P(); return asLg(g.league, () => passes(g, ignoreNow, ignoreWx, own)); }   /* its own level, conferences and teams; this board's On now and weather */
     const p = P(), v = vp || p, narrowed = p.confs.size > 0 || (p.mine && p.stars.size > 0);
     const level = NFL() ? true : p.show === "top25" ? !!(g.away.rank || g.home.rank) : (p.show === "fbs" && !narrowed) ? FBS().has(g.home.conf) : true;
-    return level && (!p.confs.size || p.confs.has(g.home.conf) || p.confs.has(g.away.conf)) && (!p.mine || starred(g)) && (ignoreNow || !v.now || g.state === "in")
+    /* a slip that's on shows all of its games: the level, the conference pick and only-my-teams step aside for them (Phil, 11/26: Conf on
+       Big Ten had taken Texas Tech off his 13-pick's board); On now and the weather still apply */
+    return (slipHas(g) || (level && (!p.confs.size || p.confs.has(g.home.conf) || p.confs.has(g.away.conf)) && (!p.mine || starred(g)))) && (ignoreNow || !v.now || g.state === "in")
         && (ignoreWx || (!v.dome && !v.wx.size) || (v.dome && !!g.dome) || [...wxKinds(g)].some(k => v.wx.has(k)))   /* the weather chips add up: Dome plus Rain is both sets */
         && slipOk(g);   /* a slip on keeps just its games (Phil, 10/24) */
   }
@@ -2178,6 +2180,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
      confirmed against the board. */
   const slipsOn = () => SL().filter(s => s.on);
   const slipOk = g => { if (awayWeek()) return true; const on = slipsOn(); return !on.length || on.some(s => s.legs.some(l => l.id === g.id)); };   /* another week: the slips are this week's games (11/2) */
+  const slipHas = g => !awayWeek() && slipsOn().some(s => s.legs.some(l => l.id === g.id));   /* a slip that's on has this game: it shows whatever the level, the conferences and the teams filter say (11/26) */
   const gameLegs = g => { const out = []; slipsOn().forEach(s => s.legs.forEach(l => { if (l.id === g.id) out.push(l); })); return out; };
   const gameOnly = l => l.kind === "total" || l.kind === "prop";   /* a leg on the game rather than on a team: a total, a player prop (10/25) */
   const legSide = (l, side) => gameOnly(l) ? side === "home" : l.side === side;   /* the row or plate a leg's marker sits on */
