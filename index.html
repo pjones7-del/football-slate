@@ -119,6 +119,11 @@
   #wkSeg button.past{opacity:.72}
   #wknote{font-family:var(--body);font-weight:500;font-size:12px;letter-spacing:0;text-transform:none;color:var(--muted);max-width:100%;white-space:normal}
   #leagueSeg button small.away{color:var(--accent);opacity:1}
+  /* Both (Phil, 11/26): the League picker's third pick, in gold, there only on a day both leagues play */
+  #leagueSeg #mixBtn{color:var(--accent)}
+  #leagueSeg #mixBtn small{color:var(--accent);opacity:.85}
+  #leagueSeg #mixBtn[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+  #leagueSeg #mixBtn[aria-pressed="true"] small{color:var(--accent-ink);opacity:.78}
   .filters b{font-weight:700;margin-left:3px;font-size:11px}
   .filters.ico{display:inline-flex;align-items:center;justify-content:center;padding:5px 10px;line-height:0}   /* the funnel (Phil, 11/7): the filter sign in place of FILTERS, as tall as the week pill */
   .filters.ico svg{width:19px;height:19px;display:block}
@@ -790,6 +795,7 @@
         <div class="seg two" role="group" aria-label="League" id="leagueSeg">
           <button type="button" data-key="league" data-v="cfb">College<small></small></button>
           <button type="button" data-key="league" data-v="nfl">NFL<small></small></button>
+          <button type="button" id="mixBtn" data-v="both" aria-pressed="false" title="Both leagues' games for the day on one board" hidden disabled>Both<small>Leagues</small></button>
         </div>
         <div class="seg two days" id="days" role="group" aria-label="Day"></div>
     </div>
@@ -1285,6 +1291,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
                                                                  default since 11/8 (Phil: "This is how DK shows it"), and pp2 marks a record saved after that */
       if (saved.mkask === "no") S.mkask = "no";   /* the TV market ask put away (Phil, 11/8) */
       if (saved.cash === "hide") S.cash = "hide";   /* Settings > Slips > Hide $ (Phil, 11/20) */
+      if (saved.mix === "on") S.mix = true;   /* Both: the two leagues on one board on a day both play (Phil, 11/26) */
       if (!SLATE.lock && has(saved.league)) S.league = saved.league;
       if (saved.foot === "off") S.foot = "off";
       if (saved.bar === "off" || (saved.bar == null && matchMedia("(max-width: 640px)").matches)) S.bar = "off";   /* a phone starts folded (Phil, 10/24) */
@@ -1311,7 +1318,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function remember(){
     try {
       let old = {}; try { old = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; if (typeof old !== "object" || Array.isArray(old)) old = {}; } catch (e) { old = {}; }
-      const rec = Object.assign({}, old, { v: 3, tz: S.tz, tzSet: S.tzSet, view: S.view, odds: S.odds, odds2: true, ml: S.ml, dtv: S.dtv, gct: S.gct, xc: S.xc, pp: S.pp, pp2: 1, cash: S.cash, mkask: S.mkask, foot: S.foot, bar: S.bar, chg: S.chg, more: S.more, theme: document.documentElement.getAttribute("data-theme") || "", skin: document.documentElement.getAttribute("data-skin") || "broadcast" });
+      const rec = Object.assign({}, old, { v: 3, tz: S.tz, tzSet: S.tzSet, view: S.view, odds: S.odds, odds2: true, ml: S.ml, dtv: S.dtv, gct: S.gct, xc: S.xc, pp: S.pp, pp2: 1, cash: S.cash, mix: S.mix ? "on" : "off", mkask: S.mkask, foot: S.foot, bar: S.bar, chg: S.chg, more: S.more, theme: document.documentElement.getAttribute("data-theme") || "", skin: document.documentElement.getAttribute("data-skin") || "broadcast" });
       if (!SLATE.lock) rec.league = S.league;   /* a locked copy (weekly file, artifact) never moves the one page's league */
       ["cfb", "nfl"].forEach(lg => { const p = S.per[lg]; rec[lg] = Object.assign({}, (old[lg] && typeof old[lg] === "object") ? old[lg] : {}, { on: [...p.on], off: [...p.off], confs: confOrder(lg).filter(c => p.confs.has(c)), show: p.show, mine: p.mine, now: p.now, stars: [...p.stars], views: p.views, mkt: p.mkt, zip: p.zip, dome: p.dome, wx: WXKEYS.filter(k => p.wx.has(k)), slips: p.slips }); });
       localStorage.setItem(KEY, JSON.stringify(rec));
@@ -1377,14 +1384,18 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const recount = lg => { const m = new Map(); GAMES[lg].forEach(g => g.carriers.forEach(n => m.set(n, (m.get(n) || 0) + 1))); PRESENT[lg] = m; };
   Object.keys(LG).forEach(recount);
   /* row order: the week's channels as the build ordered them; one that appears later slots in among its kind (TV_ORDER / STREAM_ORDER) */
-  const chanRank = n => {
+  const chanRank0 = n => {
     const o = L().order || []; const i = o.indexOf(n); if (i >= 0) return i;
     const among = (all, fallback) => { const k = all.indexOf(n); if (k < 0) return null; for (let j = k - 1; j >= 0; j--){ const q = o.indexOf(all[j]); if (q >= 0) return q + 0.5; } return fallback; };
     const t = among(L().tvAll || [], -0.5); if (t != null) return t;
     const s = among(L().streamAll || [], (L().networks || []).length - 0.5); if (s != null) return s;
     return 500;
   };
-  const isTV = n => (L().networks || []).includes(n) || (L().tvAll || []).includes(n);
+  /* with both leagues on the board (11/26): TV rows, then streaming ones, each in this league's order; a channel this league's lists don't have comes after those of its kind, in the other league's order, and is TV when it is there */
+  const chanRank = n => { if (!bothOn()) return chanRank0(n); const own = [L().order, L().tvAll, L().streamAll].some(a => (a || []).includes(n));
+    return (isTV(n) ? 0 : 1000) + (own ? chanRank0(n) : 100 + asLg(otherLg(S.league), () => chanRank0(n))); };
+  const isTV0 = n => (L().networks || []).includes(n) || (L().tvAll || []).includes(n);
+  const isTV = n => isTV0(n) || (bothOn() && asLg(otherLg(S.league), () => isTV0(n)));
   const channels = () => [...PRESENT[S.league].keys()].sort((a, b) => chanRank(a) - chanRank(b) || a.localeCompare(b));
   /* teams this week, per league, for the Teams panel and the star chips */
   const TEAMS = {};
@@ -1395,6 +1406,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* ---- the current filters: which channel a game files under, whether it's watchable, market tags, stars ---- */
   const isReg = g => NFL() && g.carriers.length && (g.carriers[0] === "CBS" || g.carriers[0] === "FOX") && !g.tbd && dayLabel(g.date).long === "Sunday" && g.kickMin >= 720 && g.kickMin < 1140;
   function view(g){
+    if (g.league && g.league !== S.league && LG[g.league]) return asLg(g.league, () => view(g));   /* the other league's game on a board with both: its own package, market and stars (11/26) */
     const disp = g.carriers.find(n => HAVE.has(n)) || "";
     const reg = isReg(g), mk = marketTeams(P().mkt), known = reg && LISTINGS.map && LISTINGS.key === listingsKey();
     const loc = known ? !!(LISTINGS.map[g.id] && LISTINGS.map[g.id].net === g.carriers[0]) : reg && (mk.includes(g.home.ab) || mk.includes(g.away.ab));
@@ -1432,14 +1444,15 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   /* FBS is the default level, so it steps aside when a conference pick or "only my teams" narrows the board on purpose
      (an FCS conference or a starred FCS team would otherwise show nothing). Top 25 is an explicit choice and stays. */
-  function passes(g, ignoreNow, ignoreWx){
-    const p = P(), narrowed = p.confs.size > 0 || (p.mine && p.stars.size > 0);
+  function passes(g, ignoreNow, ignoreWx, vp){   /* vp: this board's filters, when g is the other league's game on a board with both (11/26) */
+    if (g.league && g.league !== S.league && LG[g.league]){ const own = P(); return asLg(g.league, () => passes(g, ignoreNow, ignoreWx, own)); }   /* its own level, conferences and teams; this board's On now and weather */
+    const p = P(), v = vp || p, narrowed = p.confs.size > 0 || (p.mine && p.stars.size > 0);
     const level = NFL() ? true : p.show === "top25" ? !!(g.away.rank || g.home.rank) : (p.show === "fbs" && !narrowed) ? FBS().has(g.home.conf) : true;
-    return level && (!p.confs.size || p.confs.has(g.home.conf) || p.confs.has(g.away.conf)) && (!p.mine || starred(g)) && (ignoreNow || !p.now || g.state === "in")
-        && (ignoreWx || (!p.dome && !p.wx.size) || (p.dome && !!g.dome) || [...wxKinds(g)].some(k => p.wx.has(k)))   /* the weather chips add up: Dome plus Rain is both sets */
+    return level && (!p.confs.size || p.confs.has(g.home.conf) || p.confs.has(g.away.conf)) && (!p.mine || starred(g)) && (ignoreNow || !v.now || g.state === "in")
+        && (ignoreWx || (!v.dome && !v.wx.size) || (v.dome && !!g.dome) || [...wxKinds(g)].some(k => v.wx.has(k)))   /* the weather chips add up: Dome plus Rain is both sets */
         && slipOk(g);   /* a slip on keeps just its games (Phil, 10/24) */
   }
-  const dayList = () => (GAMES[S.league] || []).filter(g => g.date === S.day).map(view);
+  const dayList = () => { const a = (GAMES[S.league] || []).filter(g => g.date === S.day).map(view); return bothOn() ? a.concat(farGames(S.day).map(view)) : a; };   /* with Both on, the other league's games of the day too (11/26) */
   const dayGames = () => dayList().filter(g => passes(g, false));
 
   /* what the status cell says, by phase */
@@ -1546,7 +1559,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (t.logo){ const im = document.createElement("img"); im.src = LOGO(g.league, t.logo); im.alt = ""; im.loading = "lazy"; im.decoding = "async"; im.addEventListener("error", () => { im.remove(); lg.classList.add("empty"); }); lg.appendChild(im); }
     row.appendChild(lg);
     const nm = el("div", "nm");
-    if (P().stars.has(t.name)) nm.appendChild(el("span", "star", STAR));
+    if (starsOf(g).has(t.name)) nm.appendChild(el("span", "star", STAR));
     if (t.rank) nm.appendChild(el("span", "rk", "#" + t.rank));
     nm.appendChild(el("span", "txt", g.league === "nfl" ? t.short : t.name));
     if (t.rec) nm.appendChild(el("span", "rec", t.rec));
@@ -1678,7 +1691,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (t.logo){ const im = document.createElement("img"); im.src = LOGO(g.league, t.logo); im.alt = ""; im.decoding = "async"; im.addEventListener("error", () => im.remove()); lg.appendChild(im); }
     p.appendChild(lg);
     const nm = el("span", "nm");
-    if (P().stars.has(t.name)) nm.appendChild(el("span", "star", STAR + " "));
+    if (starsOf(g).has(t.name)) nm.appendChild(el("span", "star", STAR + " "));
     nm.appendChild(document.createTextNode(plateLabel(t)));
     p.appendChild(nm);
     const sc = el("span", "sc");
@@ -1725,7 +1738,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (st.phase === "final"){ r.style.setProperty("--c", res === "win" ? finColor(c) : side === "away" ? "#2a3039" : "#252b34"); r.style.setProperty("--ci", res === "win" ? "#eceef2" : "#99a1ad"); }
       else { r.style.setProperty("--c", c); r.style.setProperty("--ci", lum(c) > 0.45 ? "#111" : "#fff"); }
       const lg = el("span", "xlg"); if (t.logo){ const im = document.createElement("img"); im.src = LOGO(g.league, t.logo); im.alt = ""; im.decoding = "async"; im.addEventListener("error", () => im.remove()); lg.appendChild(im); } r.appendChild(lg);
-      const nm = el("div", "xnm"); if (P().stars.has(t.name)) nm.appendChild(el("span", "star", STAR)); if (t.rank) nm.appendChild(el("span", "rk", "#" + t.rank));
+      const nm = el("div", "xnm"); if (starsOf(g).has(t.name)) nm.appendChild(el("span", "star", STAR)); if (t.rank) nm.appendChild(el("span", "rk", "#" + t.rank));
       nm.appendChild(el("span", "txt", window.innerWidth < 390 ? t.ab : g.league === "nfl" ? t.short : t.name)); if (t.rec) nm.appendChild(el("span", "rec", t.rec));   /* the abbreviation on a narrow phone (11/3) */
       if (st.phase === "live"){ const to = timeouts(g, side); if (to) nm.appendChild(to); } r.appendChild(nm);
       for (let i = 0; i < n; i++) r.appendChild(el("span", "xq" + (g.state === "in" && i === arr.length - 1 && i === (g.period || 0) - 1 ? " on" : ""), i < arr.length ? String(arr[i]) : ""));
@@ -1800,13 +1813,13 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   async function pollGc(force){
     if (document.hidden || gcBusy || !S.open) return;
-    const g = (GAMES[S.league] || []).find(x => x.id === S.open); if (!g || g.state === "pre") return;
+    const g = (GAMES[S.league] || []).find(x => x.id === S.open) || (bothOn() ? farGames(S.day).find(x => x.id === S.open) : null); if (!g || g.state === "pre") return;   /* the other league's game on a board with both (11/26) */
     const c = GCD[g.id];
     if (c && g.state === "post" && c.final) return;   /* a final: fetched once */
     if (c && !force && Date.now() - c.at < 9000) return;
     gcBusy = true;
     try {
-      const r = await fetch(SUMMARY(S.league, g.id), { cache: "no-store" }); if (!r.ok) throw new Error(r.status);
+      const r = await fetch(SUMMARY(g.league || S.league, g.id), { cache: "no-store" }); if (!r.ok) throw new Error(r.status);
       const j = await r.json(), d = parseSummary(j), key = JSON.stringify([d.plays.length, d.plays[0] && d.plays[0].id, d.wp.length, d.scoring.length, (d.box[g.away.ab] || {})["Total Yards"], (d.box[g.home.ab] || {})["Total Yards"]]);
       const changed = !c || c.key !== key;
       GCD[g.id] = { at: Date.now(), d, key, final: g.state === "post" }; xboxTake(g.id, j, g.state === "post");
@@ -1980,7 +1993,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       /* a game that moved channels on game day: its bar sits in the new row from the move on, and a ghost stays in the old row up to it */
       g._start = g.moved && g.movedMin != null && g.movedMin > g.kickMin ? g.movedMin : g.kickMin;
       const rown = g.disp || NONE; (byNet[rown] = byNet[rown] || []).push(g);
-      if (g.moved && g.from && g.movedMin != null && g.movedMin > g.kickMin && HAVE.has(g.from)) (byNet[g.from] = byNet[g.from] || []).push(Object.assign({}, g, { ghost: true, to: g.disp || g.carriers[0] || NONE, disp: g.from, _start: g.kickMin, _gend: Math.max(g.movedMin, g.kickMin + GHOST_MIN) }));
+      if (g.moved && g.from && g.movedMin != null && g.movedMin > g.kickMin && haveOf(g).has(g.from)) (byNet[g.from] = byNet[g.from] || []).push(Object.assign({}, g, { ghost: true, to: g.disp || g.carriers[0] || NONE, disp: g.from, _start: g.kickMin, _gend: Math.max(g.movedMin, g.kickMin + GHOST_MIN) }));
     });
     Object.keys(byNet).sort((a, b) => chanRank(a) - chanRank(b) || a.localeCompare(b)).forEach(net => {
       const gs = byNet[net].sort((a, b) => a._start - b._start || (b.loc - a.loc) || (b.fav - a.fav));   /* your station's game takes the top lane */
@@ -2095,7 +2108,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const p = P(), games = dayGames().filter(g => g.ok && !g.tbd), d = dayLabel(S.day || "2026-01-01");
     sheet.innerHTML = "";
     const ph = el("div", "ph");
-    ph.appendChild(el("b", null, L().name));
+    ph.appendChild(el("b", null, bothOn() ? L().name + " + " + ((LG[otherLg(S.league)] || {}).name || "") : L().name));
     ph.appendChild(el("span", null, d.full + " (" + L().week + ")"));
     ph.appendChild(el("span", null, "All times " + S.tz));
     ph.appendChild(el("span", null, games.length + " games on your channels"));
@@ -2133,7 +2146,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         b.style.left = x(g._start) + "px"; b.style.width = (x(g._end) - x(g._start) - 2) + "px"; b.style.top = (i * LANE + 2) + "px"; b.style.height = (LANE - 4) + "px";
         b.style.borderLeft = "4px solid " + ca; b.style.borderRight = "4px solid " + ch;
         if (LANE >= 18) [g.away, g.home].forEach(t => { if (t.logo){ const im = document.createElement("img"); im.src = LOGO(g.league, t.logo); im.alt = ""; im.addEventListener("error", () => im.remove()); b.appendChild(im); } });
-        const nm = t => (P().stars.has(t.name) ? STAR + " " : "") + (t.rank ? "#" + t.rank + " " : "") + (NFL() ? t.short.toUpperCase() : t.name.toUpperCase().replace(" STATE", " ST"));
+        const nm = t => (starsOf(g).has(t.name) ? STAR + " " : "") + (t.rank ? "#" + t.rank + " " : "") + (g.league === "nfl" ? t.short.toUpperCase() : t.name.toUpperCase().replace(" STATE", " ST"));
         b.appendChild(el("span", "c1", nm(g.away) + (g.neutral ? " vs " : " at ") + nm(g.home)));
         const st = status(g);
         let txt = st.phase === "pre" ? lineText(g, t => t.ab) : st.big + " " + g.away.score + "-" + g.home.score + (st.phase === "final" && lineText(g, t => t.ab) ? " " + lineText(g, t => t.ab) : "");
@@ -2163,7 +2176,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
      A slip is a parlay: legs (a game, a side, moneyline / spread / total / team total / player prop, the number) kept for the week, a
      button beside FBS / Top 25 / All, and the legs' standing on the bars. Read from pasted text or a screenshot (OCR on the phone),
      confirmed against the board. */
-  const slipsOn = () => P().slips.filter(s => s.on);
+  const slipsOn = () => SL().filter(s => s.on);
   const slipOk = g => { if (awayWeek()) return true; const on = slipsOn(); return !on.length || on.some(s => s.legs.some(l => l.id === g.id)); };   /* another week: the slips are this week's games (11/2) */
   const gameLegs = g => { const out = []; slipsOn().forEach(s => s.legs.forEach(l => { if (l.id === g.id) out.push(l); })); return out; };
   const gameOnly = l => l.kind === "total" || l.kind === "prop";   /* a leg on the game rather than on a team: a total, a player prop (10/25) */
@@ -2305,14 +2318,14 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const whoOf = l => { const sp = l.kind === "prop" ? propSpec(l) : null; return sp ? sp.who : l.who || ""; };   /* "Gibbs + Gordon", "Walker or Worthy" */
   const propLbl = (g, l) => { const r = propNow(g, l); return r && r.line ? r.line : whoOf(l) || "prop"; };   /* "Gibbs 1 + Gordon 0" once it's on */
   function propTake(g, j){ const box = propBox(j); PSTAT[g.id] = { at: Date.now(), box, key: JSON.stringify(box), sk: g.away.score + "-" + g.home.score, fin: g.state === "post", fail: false }; PNOW.clear(); xboxTake(g.id, j, g.state === "post"); }
-  const propPrint = () => JSON.stringify(P().slips.map(s => s.legs.map(l => { if (l.kind !== "prop") return 0; const g = legGame(l), r = g ? propNow(g, l) : null; return r ? [r.st, r.w, r.line] : 1; })));
+  const propPrint = () => JSON.stringify(SL().map(s => s.legs.map(l => { if (l.kind !== "prop") return 0; const g = legGame(l), r = g ? propNow(g, l) : null; return r ? [r.st, r.w, r.line] : 1; })));
   let propBusy = false;
   async function pollProps(){   /* the slips' prop games: a live one about every 45 seconds and right after its score changes, a final once */
     if (propBusy || document.hidden) return;
     propBusy = true;
     try {
       if (awayWeek()) return;
-      const now = Date.now(), ids = new Map(); P().slips.forEach(s => s.legs.forEach(l => { if (l.kind === "prop" && l.id && propSpec(l)){ const g = legGame(l); if (g) ids.set(g.id, g); } }));   /* a leg on the other league's game too (11/26) */
+      const now = Date.now(), ids = new Map(); SL().forEach(s => s.legs.forEach(l => { if (l.kind === "prop" && l.id && propSpec(l)){ const g = legGame(l); if (g) ids.set(g.id, g); } }));   /* a leg on the other league's game too (11/26) */
       const due = [...ids.values()].filter(g => { if (g.state === "pre") return false; const c = PSTAT[g.id]; if (!c) return true; if (c.fin) return false;
         const age = now - c.at; return c.fail ? age > 30000 : g.state === "post" ? age > 4000 : age > 45000 || (c.sk !== g.away.score + "-" + g.home.score && age > 8000); });
       if (!due.length) return;
@@ -2322,7 +2335,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (propPrint() !== before) render();
     } catch (e) {} finally { propBusy = false; }
   }
-  function propShare(g, j){ try { if (!P().slips.some(s => s.legs.some(l => l.kind === "prop" && l.id === g.id))) return; const before = propPrint(); propTake(g, j); if (propPrint() !== before) render(); } catch (e) {} }   /* an open card's summary */
+  function propShare(g, j){ try { if (!SL().some(s => s.legs.some(l => l.kind === "prop" && l.id === g.id))) return; const before = propPrint(); propTake(g, j); if (propPrint() !== before) render(); } catch (e) {} }   /* an open card's summary */
   /* a leg's standing from the score: pending before kickoff; ahead, behind or tied while it's on; won, lost or push at the end. An over
      past its number has won and an under past it has lost (points only go up). A half or quarter leg reads that part of the score
      (the scoreboard's quarters). A player prop reads its players' numbers (above, 11/8); one it can't read stays outlined (10/25). */
@@ -2705,6 +2718,22 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const legLg = (l, dflt) => { const d = dflt || S.league; if (l.lg === "cfb" || l.lg === "nfl") return l.lg; const o = otherLg(d);
     return l.id && !weekGames(d).some(g => g.id === l.id) && weekGames(o).some(g => g.id === l.id) ? o : d; };   /* saved without its league (an older page): the league that has its game */
   const legGame = (l, dflt) => l.id ? weekGames(legLg(l, dflt)).find(g => g.id === l.id) : null;
+  /* ---- Both: the two leagues on one board (Phil, 11/26: "for days like today where there are both NFL and college games, there should
+     be a hybrid option ... that combines both boards") ----
+     A third pick in the League picker, offered on a day both leagues play. The board keeps its own league (its days, its week, its
+     filters row); with Both on, the other league's games of that day join it, each viewed and filtered as its own league (asLg: that
+     league's package, level, conferences, teams and market; this board's On now and weather over all), their scores from pollX at the
+     board's own pace, their odds and box scores from their own league. The pick is kept (mix in the saved record): on a day only one
+     league plays the board is that league's, as before, and Both is back on the next day both play. */
+  let XLG = "";   /* the board's own league while a game of the other one is being viewed or filtered as its league */
+  const homeLg = () => XLG || S.league;
+  const mixDay = d => { const h = homeLg(), o = otherLg(h); return !!d && !(S.wk && S.wk[h]) && has(o) && (GAMES[h] || []).some(g => g.date === d) && weekGames(o).some(g => g.date === d); };   /* a day both leagues play, this board on this week */
+  const bothOn = () => !!S.mix && mixDay(S.day);
+  function asLg(lg, f){ if (lg === S.league || !LG[lg]) return f(); const kl = S.league, kh = HAVE, kx = XLG; XLG = homeLg(); S.league = lg; HAVE = haveSet(); try { return f(); } finally { S.league = kl; HAVE = kh; XLG = kx; } }
+  const farGames = d => weekGames(otherLg(S.league)).filter(g => g.date === d);   /* the other league's games of a day */
+  const starsOf = g => (S.per[g.league] || P()).stars;
+  const haveOf = g => g.league && g.league !== S.league && LG[g.league] ? asLg(g.league, () => HAVE) : HAVE;
+  const SL = () => { const h = homeLg(), a = S.per[h].slips; return bothOn() ? a.concat(S.per[otherLg(h)].slips.filter(s => !a.includes(s))) : a; };   /* the slips on the board: both leagues' with Both on */
   /* a slip's legs by their games' start times, whichever league, wherever a slip lists them (Phil, 11/26: "it should display legs in
      chronological order, always, by start time, regardless of league"); the legs of one game in the slip's own order, a leg with no game last */
   const legOrder = (legs, dflt) => { const t = legs.map(l => { const g = legGame(l, dflt); return g ? new Date(g.kick).getTime() || 0 : Infinity; }); return legs.map((l, k) => k).sort((a, b) => t[a] - t[b] || a - b); };
@@ -2782,7 +2811,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     drawSlips();
   }
   setInterval(() => { if (document.hidden || !XOPEN.size) return; const lg = S.league;   /* a live game with a leg open: its numbers every 30 seconds */
-    P().slips.forEach((s, i) => s.legs.forEach((l, k) => { if (!XOPEN.has((s.created || i) + ":" + k)) return; const g = legGame(l, lg); if (g && g.state === "in") xboxGet(g.league, g); })); }, 30000);
+    SL().forEach((s, i) => s.legs.forEach((l, k) => { if (!XOPEN.has((s.created || i) + ":" + k)) return; const g = legGame(l, lg); if (g && g.state === "in") xboxGet(g.league, g); })); }, 30000);
   const xv = (p, cat, lab) => { const c = p.cats[cat]; if (!c) return ""; const i = c.labels.indexOf(lab); return i < 0 || c.vals[i] == null ? "" : String(c.vals[i]); };
   const XCELLS = { receiving: [["REC", "REC"], ["TGTS", "TGT"], ["YDS", "YDS"], ["LONG", "LONG"], ["TD", "TD"]], rushing: [["CAR", "CAR"], ["YDS", "YDS"], ["AVG", "AVG"], ["LONG", "LONG"], ["TD", "TD"]],
     passing: [["C/ATT", "C/ATT"], ["YDS", "YDS"], ["TD", "TD"], ["INT", "INT"]], defensive: [["TOT", "TKL"], ["SOLO", "SOLO"], ["SACKS", "SACKS"], ["TFL", "TFL"], ["PD", "PD"]],
@@ -2823,14 +2852,14 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   function openGameBox(g){   /* the game's card on the board, on Box score with the players */
     stripOpen = -1; if (!spanel.hidden) showPanel(spanel);
-    const sw = !!g.league && g.league !== S.league && has(g.league); if (sw){ S.league = g.league; S.day = ""; showPanel(null); remember(); }   /* a game on the other board (11/26) */
+    const sw = !!g.league && g.league !== S.league && has(g.league) && !(S.mix && mixDay(g.date)); /* with Both on, a day both play has the game on this board (11/26) */ if (sw){ S.league = g.league; S.day = ""; showPanel(null); remember(); }   /* a game on the other board (11/26) */
     if (g.date && S.day !== g.date) S.day = g.date;
     S.open = g.id; S.openRow = ""; S.gct = "box"; render(); pollGc(true); if (sw){ poll(true); pollX(true); }
     requestAnimationFrame(() => { const b = document.querySelector(".gbar.open"); if (b) b.scrollIntoView({ block: "center", inline: "nearest", behavior: "smooth" }); });
   }
   function boxPlayers(g){   /* the card's Box score: the passers (one a team), rushers and receivers (two a team), the slips' players first and marked */
     const c = XBOX[g.id], d = c && c.d; if (!d || !d.pl.length) return null;
-    const mine = new Set(); P().slips.forEach(s => s.legs.forEach(l => { if (l.id !== g.id || l.kind !== "prop") return; const sp = propSpec(l); (sp ? sp.names : []).forEach(nm => { const p = pmatch(nm, d.pl); if (p) mine.add(p.n); }); }));
+    const mine = new Set(); SL().forEach(s => s.legs.forEach(l => { if (l.id !== g.id || l.kind !== "prop") return; const sp = propSpec(l); (sp ? sp.names : []).forEach(nm => { const p = pmatch(nm, d.pl); if (p) mine.add(p.n); }); }));
     const w = el("div", "bxp"), yd = (p, k) => parseFloat(xv(p, k, "YDS")) || 0;
     [["passing", 1], ["rushing", 2], ["receiving", 2]].forEach(([k, per]) => {
       const rows = []; [g.away.ab, g.home.ab].forEach(ab => d.pl.filter(p => p.team === ab && p.cats[k]).sort((a, b) => yd(b, k) - yd(a, k)).forEach((p, i) => { if (i < per || mine.has(p.n)) rows.push(p); }));
@@ -2984,9 +3013,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (sp.dup) c.appendChild(el("div", "ssdup", "You're already tracking this one"));
       const nl = x => sp.legs.filter(l => l.id && legLg(l, lg) === x).length, nc = nl("cfb"), nn = nl("nfl"), its = nn ? "nfl" : "cfb";
       if (nc && nn) c.appendChild(el("div", "ssdup", nc + " college leg" + (nc > 1 ? "s" : "") + " and " + nn + " NFL leg" + (nn > 1 ? "s" : "") + ": this slip shows on both boards"));   /* 11/26 */
-      else if ((nc || nn) && its !== S.league) c.appendChild(el("div", "ssdup", "These are " + (its === "nfl" ? "NFL games, so this slip goes on the NFL board" : "college games, so this slip goes on the college board")));   /* 11/23 */
+      else if ((nc || nn) && its !== S.league && !bothOn()) c.appendChild(el("div", "ssdup", "These are " + (its === "nfl" ? "NFL games, so this slip goes on the NFL board" : "college games, so this slip goes on the college board")));   /* 11/23 */
       const list = el("div", "slegs"); legOrder(sp.legs, lg).forEach(k => list.appendChild(confirmRow(sp, sp.legs[k], k, lg))); c.appendChild(list); b.appendChild(c); });
-    const live = pend.filter(sp => !sp.dup && sp.legs.some(l => l.id)), n = live.length, away = n > 0 && !live.some(sp => sp.legs.some(l => l.id && legLg(l, lg) === S.league)), to = away ? legLg(live[0].legs.find(l => l.id), lg) : lg;   /* nothing of it on this board: it goes to the other */
+    const live = pend.filter(sp => !sp.dup && sp.legs.some(l => l.id)), n = live.length, away = n > 0 && !bothOn() && !live.some(sp => sp.legs.some(l => l.id && legLg(l, lg) === S.league)), to = away ? legLg(live[0].legs.find(l => l.id), lg) : lg;   /* nothing of it on this board: it goes to the other */
     const go = el("button", "ssgo", away ? (n > 1 ? "Track these " + n + " on the " : "Track on the ") + (to === "nfl" ? "NFL" : "college") + " board" : n > 1 ? "Track these " + n + " slips" : "Track this slip"); go.type = "button"; go.disabled = !n; go.addEventListener("click", trackPending); b.appendChild(go);
     sheetLinks(b, [["Rename", () => { const x = b.querySelector("input.sname"); if (x){ x.focus(); x.select(); } }], ["Paste picks instead", pasteMode], ["Cancel", sheetClose]]);
   }
@@ -3025,15 +3054,15 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       const lgs = new Set(o.legs.map(l => l.lg)); lgs.forEach(x => S.per[x].slips.push(o)); if (lgs.has(S.league)) here = true; if (lgs.size > 1) mixed = true; to = to || o.legs[0].lg; });   /* legs in both leagues: the one slip in both lists (11/26) */
     if (!n) return;
     sheetClose(); stext.value = ""; snote.textContent = ""; tally(mixed ? "slip-both" : "slip", mixed ? "Slip saved, both leagues" : "Slip saved");
-    if (!here){ S.league = to || lg; S.day = ""; S.open = ""; remember(); render(); poll(true); return; }   /* to the board the slip is on */
-    slipRedraw(); if (mixed) pollX(true);
+    if (!here && !bothOn()){ S.league = to || lg; S.day = ""; S.open = ""; remember(); render(); poll(true); return; }   /* to the board the slip is on (with Both on it shows here) */
+    slipRedraw(); if (mixed || bothOn()) pollX(true);
   }
   /* the slips in the panel and under the bar, and the slip buttons beside FBS / Top 25 / All */
   let stripOpen = -1;   /* the slip whose card is open under the bar */
   const shortName = s => { const m = (s.name || "").match(/^(.*?)\s*[+-]\d{3,5}\s*$/); return ((m ? m[1] : s.name) || "Slip").slice(0, 12); };
   const pillTxt = (l, g) => l.kind === "total" ? (l.side === "under" ? "U" : "O") + l.num : l.kind === "prop" ? ((whoOf(l) || "prop").split(/\s+(?:or|\+|&)\s+/)[0]).slice(0, 7).toUpperCase() : (g && g[l.side] ? g[l.side].ab : (l.team || "?").slice(0, 4).toUpperCase());
   function drawStrip(){
-    const box = document.getElementById("sstrip"), p = P();
+    const box = document.getElementById("sstrip"), p = { slips: SL() };   /* both leagues' slips with Both on (11/26) */
     if (box.contains(document.activeElement) && document.activeElement.tagName === "INPUT") return;   /* a rename in progress */
     box.textContent = "";
     if (awayWeek() || !p.slips.length){ box.hidden = true; return; } box.hidden = false;
@@ -3050,7 +3079,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       box.appendChild(line); if (stripOpen === i) box.appendChild(slipCard(s, i)); });
   }
   function drawSlips(){
-    const p = P();
+    const p = { slips: SL() };
     if (!(slist.contains(document.activeElement) && document.activeElement.tagName === "INPUT")){ slist.textContent = ""; p.slips.forEach((s, i) => slist.appendChild(slipCard(s, i))); }
     slipSeg.textContent = ""; slipSeg.hidden = !p.slips.length || awayWeek(); document.querySelector(".bar").classList.remove("hasslips"); sadd.hidden = awayWeek();
     drawStrip();
@@ -3332,7 +3361,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   /* ---- on now ---- */
   const nowBtn = document.getElementById("nowBtn");
-  const liveCount = date => (GAMES[S.league] || []).filter(g => g.date === date && g.state === "in").length;
+  const liveCount = date => (GAMES[S.league] || []).filter(g => g.date === date && g.state === "in").length + (S.mix && mixDay(date) ? farGames(date).filter(g => g.state === "in").length : 0);   /* the other league's too with Both on (11/26) */
   nowBtn.addEventListener("click", () => {
     const p = P(), today = etNow().date;
     p.now = !p.now;
@@ -3433,7 +3462,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   teamBtn.addEventListener("click", () => { showPanel(tpanel); if (!tpanel.hidden && !P().stars.size && matchMedia("(min-width: 900px)").matches) tfind.focus(); });
 
   /* ============================ render ============================ */
-  const wrap = document.getElementById("wrap"), daysEl = document.getElementById("days");
+  const wrap = document.getElementById("wrap"), daysEl = document.getElementById("days"), mixBtn = document.getElementById("mixBtn");
+  let dayAt = "";   /* the day the picker last brought into view (Both makes it a button wider) */
   let builtFor = "";
   /* the title line as one lockup: the league and SLATE in the skin's own title type, the L plain with one thin gold line down its
      left edge, cap to baseline (Phil, 11/8: the icon's now line, nothing else). Drawn from the glyphs once the face is in; the plain
@@ -3461,7 +3491,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function setBrand(){
     const app = document.documentElement.getAttribute("data-skin") === "app", word = NFL() ? "NFL" : "College";
     const mk = t => app ? (wmOk.app ? lockup(t, WM_FONT.app, true, -0.02) : "") : (wmOk.broadcast ? lockup(t.toUpperCase(), WM_FONT.broadcast, false, 0.012) : "");
-    const full = mk(word + " Slate") || word + " Slate", short = mk("Slate") || "Slate";   /* folded, SLATE alone (11/7) */
+    const short = mk("Slate") || "Slate", full = bothOn() ? short : mk(word + " Slate") || word + " Slate";   /* folded, SLATE alone (11/7); with both leagues on the board too (11/26) */
     brandEl.innerHTML = '<span class="wfull">' + full + '</span><span class="wshort">' + short + '</span>';
   }
   Object.keys(WM_FONT).forEach(k => { try { document.fonts.load(WM_FONT[k].replace("100px", "20px")).then(fs => { if (fs.length){ wmOk[k] = true; setBrand(); } }).catch(() => {}); } catch (e) {} });
@@ -3475,21 +3505,26 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     daysEl.innerHTML = "";
     const today = etNow().date;
     dates.forEach(d => { const l = dayLabel(d); const b = el("button", d === today ? "today" : ""); b.type = "button"; b.dataset.key = "day"; b.dataset.v = d; b.textContent = l.wd; b.appendChild(el("small", null, l.md)); b.setAttribute("aria-pressed", String(d === S.day));
-      b.addEventListener("click", () => { S.day = d; S.open = ""; wrap.scrollLeft = 0; wrap.scrollTop = 0; wrap._scrolled = false; if (P().now && d !== today){ P().now = false; remember(); } render(); poll(true); }); daysEl.appendChild(b); });
-    document.querySelectorAll("#leagueSeg button").forEach(b => { b.setAttribute("aria-pressed", String(S.league === b.dataset.v)); b.disabled = !has(b.dataset.v); b.querySelector("small").textContent = (LG[b.dataset.v] || {}).week || ""; });
+      b.addEventListener("click", () => { S.day = d; S.open = ""; wrap.scrollLeft = 0; wrap.scrollTop = 0; wrap._scrolled = false; if (P().now && d !== today){ P().now = false; remember(); } render(); poll(true); if (bothOn()) pollX(true); }); daysEl.appendChild(b); });
+    const mx = bothOn();   /* Both: offered on a day both leagues play; pressed, and the league's own button not, while it's on (11/26) */
+    document.querySelectorAll("#leagueSeg button[data-key=league]").forEach(b => { b.setAttribute("aria-pressed", String(S.league === b.dataset.v && !mx)); b.disabled = !has(b.dataset.v); b.querySelector("small").textContent = (LG[b.dataset.v] || {}).week || ""; });
+    mixBtn.hidden = mixBtn.disabled = !mixDay(S.day); mixBtn.setAttribute("aria-pressed", String(mx));
+    if (!mixBtn.hidden && dayAt !== S.day){ const on = daysEl.querySelector('button[aria-pressed="true"]'), row = daysEl.parentNode;   /* the picker is a button wider on such a day: the day picked stays in view */
+      if (on && row){ const a = on.getBoundingClientRect(), r = row.getBoundingClientRect(); if (a.right > r.right) row.scrollLeft += a.right - r.right + 8; else if (a.left < r.left) row.scrollLeft -= r.left - a.left + 8; } }
+    dayAt = mixBtn.hidden ? "" : S.day;
     document.querySelectorAll(".seg button[data-key=view]").forEach(b => b.setAttribute("aria-pressed", String(S.view === b.dataset.v)));
     syncTz();
     document.querySelectorAll(".seg button[data-key=show]").forEach(b => b.setAttribute("aria-pressed", String(P().show === b.dataset.v)));
     setBrand();
     document.getElementById("sub").textContent = S.day ? dayLabel(S.day).full : "";   /* the week sits under each league button now */
-    document.title = (NFL() ? "NFL Slate" : "CFB Slate") + (L().week ? " - " + L().week : "");
+    document.title = mx ? "NFL + College Slate" : (NFL() ? "NFL Slate" : "CFB Slate") + (L().week ? " - " + L().week : "");
     syncWeek();
     refreshNow(); settleWx(); syncMl(); dtvBtn.setAttribute("aria-pressed", String(S.dtv));
-    const keepX = wrap.scrollLeft, keepY = wrap.scrollTop, sameView = wrap.dataset.view === S.view + S.day + S.league;
+    const keepX = wrap.scrollLeft, keepY = wrap.scrollTop, sameView = wrap.dataset.view === S.view + S.day + S.league + (mx ? "+" : "");
     wrap.innerHTML = "";
     wrap.classList.toggle("mode-tl", S.view === "timeline");
     if (!sameView) wrap._scrolled = false;
-    wrap.dataset.view = S.view + S.day + S.league;
+    wrap.dataset.view = S.view + S.day + S.league + (mx ? "+" : "");
     wrap._trim = null;
     const list = dayGames(), main = list.filter(g => g.ok), no = list.filter(g => !g.ok && g.carriers.length), tba = list.filter(g => !g.ok && !g.carriers.length);
     const chg = days.length ? changesStrip(list) : null; if (chg) wrap.appendChild(chg);
@@ -3524,7 +3559,10 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   let trimTick = false;
   wrap.addEventListener("scroll", () => { if (S.view !== "timeline" || !wrap._trim || trimTick) return; trimTick = true; requestAnimationFrame(() => { trimTick = false; wrap._trim(); }); }, { passive: true });
-  document.querySelectorAll("#leagueSeg button").forEach(b => b.addEventListener("click", () => { if (S.league === b.dataset.v || !has(b.dataset.v)) return; S.league = b.dataset.v; S.day = ""; S.open = ""; showPanel(null); tally("league-" + S.league, "League: " + S.league); remember(); render(); poll(true); pollX(true); }));
+  document.querySelectorAll("#leagueSeg button[data-key=league]").forEach(b => b.addEventListener("click", () => { const v = b.dataset.v, mx = bothOn(); if (!has(v) || (S.league === v && !mx)) return;
+    if (mx){ S.mix = false; stripOpen = -1; }   /* out of Both, onto that league's own board (11/26) */
+    if (S.league !== v){ S.league = v; S.day = ""; } S.open = ""; showPanel(null); tally("league-" + S.league, "League: " + S.league); remember(); render(); poll(true); pollX(true); }));
+  mixBtn.addEventListener("click", () => { if (mixBtn.disabled || bothOn()) return; S.mix = true; S.open = ""; stripOpen = -1; xOdds = true; showPanel(null); tally("league-both", "League: both"); remember(); render(); poll(true); pollX(true); });
   document.querySelectorAll(".seg button[data-key=view]").forEach(b => b.addEventListener("click", () => { S.view = b.dataset.v; remember(); render(); }));
   /* time zone: the five-zone picker shows until a zone has been tapped once on this device (that first pick is needed), then folds
      to a chip with the zone on it; the chip opens the picker again. Any tap, the current zone included, counts as the pick. */
@@ -3619,7 +3657,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* the feeds the board needs (Phil, 10/18: don't pull what isn't on screen): the Eastern dates of the unfinished games that pass the
      filters (On now aside, so a game about to start is still watched), the next day only for a kick after midnight Eastern; for college
      the FCS feed only when an FCS-only game is on screen (ESPN's FBS feed carries every game with an FBS team) */
-  const pollGames = () => dayList().filter(g => g.state !== "post" && passes(g, true));
+  const pollGames = () => dayList().filter(g => g.league === S.league && g.state !== "post" && passes(g, true));   /* this league's: the other's on a board with both are pollX's (11/26) */
   const pollUrls = () => {
     const open = pollGames(); if (!open.length) return [];
     const dates = new Set([S.day]); open.forEach(g => { const d = partsIn(g.kick, TZ.ET).date; if (d > S.day) dates.add(d); });
@@ -3658,9 +3696,13 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   /* a slip with legs on the other league's games (Phil, 11/26): that league's scoreboard too, for the Eastern dates of those games still
      to finish (today's and yesterday's only), every 30 seconds while one is live or about to start and once a minute otherwise */
-  let xpollAt = 0, xpollBusy = false;
+  let xpollAt = 0, xpollBusy = false, xLast = 0, xOdds = true;   /* xOdds: the other league's live games get their odds with the first look, not a minute on */
+  /* with both leagues on the board (11/26), the other league's games on it are polled like the board's own: the day's unfinished games that pass the filters, every 15 seconds while one is live or about to start */
+  const xNear = g => { if (g.state === "in") return true; if (g.state !== "pre" || g.tbd) return false; const dt = new Date(g.kick).getTime() - Date.now(); return dt < 300000 && dt > -1800000; };
+  const xBoard = () => { const t = etNow().date; return bothOn() && (S.day === t || S.day === shiftDate(t, -1)) ? dayList().filter(g => g.league !== S.league && g.state !== "post" && passes(g, true)) : []; };
   const xGames = () => { if (awayWeek()) return []; const here = S.league, t = etNow().date, y = shiftDate(t, -1), m = new Map();
-    P().slips.forEach(s => s.legs.forEach(l => { if (!l.id || legLg(l) === here) return; const g = legGame(l); if (g && g.state !== "post" && (g.date === t || g.date === y)) m.set(g.id, g); }));
+    SL().forEach(s => s.legs.forEach(l => { if (!l.id || legLg(l) === here) return; const g = legGame(l); if (g && g.state !== "post" && (g.date === t || g.date === y)) m.set(g.id, g); }));
+    xBoard().forEach(g => m.set(g.id, g));
     return [...m.values()]; };
   const xSoon = () => { const now = Date.now(); return xGames().some(g => { if (g.state === "in") return true; if (g.state !== "pre" || g.tbd) return false; const dt = new Date(g.kick).getTime() - now; return dt < 300000 && dt > -1800000; }); };
   async function pollX(force){
@@ -3674,9 +3716,10 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       const feeds = lg === "cfb" ? [API.cfb("80")].concat(gs.some(g => !fbs.has(g.home.conf) && !fbs.has(g.away.conf)) ? [API.cfb("81")] : []) : [API.nfl()];
       for (const d of [...dates].sort()) for (const u of feeds){ const r = await fetch(u.replace("{d}", d.replace(/-/g, "")), { cache: "no-store" }); if (!r.ok) throw new Error(r.status);
         ((await r.json()).events || []).forEach(e => { const g = fromEspn(e, lg); if (g && !seen.has(g.id)) seen.set(g.id, g); }); }
-      const mg = feedMerge(weekGames(lg), seen, lg, false, {});
-      if (mg.changed){ if (S.wk[lg]) WEEKS.base[lg].games = mg.list; else { GAMES[lg] = mg.list; recount(lg); } pollProps(); drawSlips(); }
-    } catch (e) {} finally { xpollBusy = false; xpollAt = started + (xSoon() ? 30000 : 60000); }
+      const mx = bothOn(), mg = feedMerge(weekGames(lg), seen, lg, mx && !!xLast && Date.now() - xLast < 180000, mx ? keepStore() : {});
+      if (mg.changed){ if (S.wk[lg]) WEEKS.base[lg].games = mg.list; else { GAMES[lg] = mg.list; recount(lg); } pollProps(); if (!mx) drawSlips(); }
+      if (mx){ xLast = Date.now(); pollStamp = nowText(); keepSave(lg); if (mg.changed) render(); else footer(); if (xOdds && !oddsBusy){ xOdds = false; oddsAt = 0; } pollOdds(false); }   /* those games are on the board: drawn, stamped and priced like its own (11/26) */
+    } catch (e) {} finally { xpollBusy = false; xpollAt = started + (xBoard().some(xNear) ? 15000 : xSoon() ? 30000 : 60000); }
   }
   async function poll(force){
     ticks++;
@@ -3720,20 +3763,21 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (oddsBusy || document.hidden) return;
     if (!force && Date.now() - oddsAt < 55000) return;   /* once a minute at most: ESPN caches this feed about 10 minutes, so the faster score poll doesn't pull it faster */
     oddsAt = Date.now();
-    const lg = S.league, live = (GAMES[lg] || []).filter(g => g.date === S.day && g.state === "in");
+    const lg = S.league, live = (GAMES[lg] || []).filter(g => g.date === S.day && g.state === "in").concat(bothOn() ? farGames(S.day).filter(g => g.state === "in") : []);   /* the other league's live games too with both on the board (11/26) */
     if (!live.length) return;
     oddsBusy = true;
     try {
       let changed = false;
       for (const g of live){
-        const r = await fetch(CORE(lg, g.id), { cache: "no-store" }); if (!r.ok) continue;
+        const gl = g.league || lg, r = await fetch(CORE(gl, g.id), { cache: "no-store" }); if (!r.ok) continue;
         const j = await r.json(); let lsp = null, lou = null, lml = null, csp = null, cou = null, item = false;
         (j.items || []).forEach(it => { const name = ((it.provider || {}).name) || ""; const num = v => (v == null || v === "") ? null : parseFloat(v);
           if (/Live/.test(name)){ item = true; lsp = num(it.spread); lou = num(it.overUnder); const a = num((it.awayTeamOdds || {}).moneyLine), h = num((it.homeTeamOdds || {}).moneyLine); lml = a != null && h != null ? [a, h] : null; }
           else if (/^DraftKings/.test(name)){ csp = num((((it.homeTeamOdds || {}).close || {}).pointSpread || {}).american); cou = num((((it.close || {}).total) || {}).american); } });
         if (lsp != null || lou != null || lml) LSEEN.add(g.id);
         const lpull = (item || LSEEN.has(g.id)) && (lsp == null || lou == null || !lml) ? [lsp == null, lou == null, !lml] : null;   /* the book's live market with numbers pulled for now (11/13) */
-        GAMES[lg] = GAMES[lg].map(x => { if (x.id !== g.id) return x; const y = Object.assign({}, x, { lsp, lou, lml, lpull }); if (csp != null){ y.sp = csp; y.ou = cou; y.close = true; } if (JSON.stringify(y) !== JSON.stringify(x)) changed = true; return y; });
+        const put = x => { if (x.id !== g.id) return x; const y = Object.assign({}, x, { lsp, lou, lml, lpull }); if (csp != null){ y.sp = csp; y.ou = cou; y.close = true; } if (JSON.stringify(y) !== JSON.stringify(x)) changed = true; return y; };
+        if (gl === lg) GAMES[lg] = GAMES[lg].map(put); else if (S.wk[gl]) WEEKS.base[gl].games = WEEKS.base[gl].games.map(put); else GAMES[gl] = GAMES[gl].map(put);
       }
       oddsStamp = nowText();
       if (changed || force) render();
@@ -3747,7 +3791,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
      stays the build's board (forecasts, moves, local tags), kept aside while away. Nothing here is remembered across loads. */
   const WEEKS = { base: {}, cal: {}, cache: {} }; S.wk = { cfb: null, nfl: null };
   Object.keys(LG).forEach(lg => { WEEKS.base[lg] = { week: LG[lg].week, days: LG[lg].days, games: GAMES[lg] }; });
-  const awayWeek = () => !!S.wk[S.league];
+  const awayWeek = () => !!S.wk[homeLg()];
   const weekStamp = () => { const e = S.wk[S.league], c = e && WEEKS.cache[S.league] && WEEKS.cache[S.league][e.type + ":" + e.n]; return c ? c.stamp : ""; };
   /* ESPN's season calendar rides on every scoreboard answer: the regular season's weeks and the postseason's rounds (no preseason) */
   const calFrom = (j, lg) => { const cal = (((j.leagues || [])[0] || {}).calendar) || [], out = [];
@@ -3806,7 +3850,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const away = awayWeek(); wkBtn.classList.toggle("away", away); wkBtn.setAttribute("aria-expanded", String(!wkrow.hidden));
     wkBtn.textContent = wkShort(L().week) || "Week"; wkBtn.appendChild(el("b", null, wkrow.hidden ? "▾" : "▴"));
     wkBtn.title = away ? "On " + L().week + ": tap for this week or another" : "Look at another week";
-    document.querySelectorAll("#leagueSeg button small").forEach(s => s.classList.toggle("away", !!S.wk[s.parentNode.dataset.v]));
+    document.querySelectorAll("#leagueSeg button[data-key=league] small").forEach(s => s.classList.toggle("away", !!S.wk[s.parentNode.dataset.v]));
     if (!wkrow.hidden && wkSeg.dataset.lg !== S.league) openWeeks();
   }
 
@@ -3826,7 +3870,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       (NFL() ? "Sunday afternoon CBS and FOX games are regional (REG); set your Market (ZIP) and the games your own CBS and FOX stations carry are tagged LOCAL, from the TV listings, and take the top lane of their row. " : "") +
       "DirecTV under More puts each channel's DirecTV number under its logo (the locals are the Phoenix stations). " +
       "Weather: the icon over the temperature on a bar (and on a card) is ESPN's game-time forecast for the stadium, from AccuWeather, posted about a week out; DOME marks a roofed stadium. Weather opens the forecast filters (Dome, in gold, keeps just the games under a roof), and Spread / ML / Both sets what the plates show before kickoff: the line, each team's price, or both. " +
-      "Each league keeps its own package, " + (NFL() ? "divisions" : "conferences") + ", filters, teams and saved views on this device; time zone, style, theme, lines and the league you had open are shared."));
+      "Each league keeps its own package, " + (NFL() ? "divisions" : "conferences") + ", filters, teams and saved views on this device; time zone, style, theme, lines and the league you had open are shared. On a day both leagues play, Both in the League picker puts the two boards on one timeline, each league's games under its own package and filters."));
     const key = el("div", "wxkey"); key.appendChild(el("span", "lbl", "Weather"));
     WXLEGEND.forEach(([k, lab]) => { const it = el("span", "k"); it.innerHTML = WXI[k]; it.appendChild(el("span", null, lab)); key.appendChild(it); });
     fnotes.appendChild(key);
@@ -3872,7 +3916,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       const target = () => {   /* where the title's SLATE sits: the folded lockup, or the last word of the open one */
         const el = [...document.querySelectorAll("#brand svg")].find(s => s.getBoundingClientRect().width > 0); if (!el) return null;
         const r = el.getBoundingClientRect(), vb = el.viewBox.baseVal, k = r.width / vb.width;
-        let off = 0; if (el.closest(".wfull")){ const t = app ? (NFL() ? "NFL" : "College") + " Slate" : (NFL() ? "NFL SLATE" : "COLLEGE SLATE"); off = pos(t)[t.lastIndexOf(" ") + 1][1]; }
+        let off = 0; if (el.closest(".wfull") && !bothOn()){ const t = app ? (NFL() ? "NFL" : "College") + " Slate" : (NFL() ? "NFL SLATE" : "COLLEGE SLATE"); off = pos(t)[t.lastIndexOf(" ") + 1][1]; }
         return { x: r.left + off * k, y: r.top - vb.y * k, k };
       };
       let t0 = 0, head = null;
