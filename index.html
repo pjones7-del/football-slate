@@ -216,8 +216,7 @@
   .sttl .sodds{font-family:var(--cond);font-weight:800;font-size:28px;color:var(--accent);flex:none}
   .sttl .sstake{margin-left:auto;font-family:var(--cond);font-weight:700;font-size:15px;color:var(--muted);white-space:nowrap;flex:none}
   .sttl .sstake em{font-style:normal;color:#3ccf8e}
-  .stally{display:flex;gap:14px;font-size:13px;color:var(--muted);margin:0 0 8px}
-  .stally b{color:var(--ink);font-weight:700;margin-right:3px}
+  .scard.cp > .sttl{margin-bottom:10px}   /* the room the tally line gave the legs (11/23) */
   .slegs{border-top:1px solid var(--line)}
   .sleg{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);min-height:40px}
   .sleg .slogo{width:26px;height:26px;flex:none;object-fit:contain}
@@ -1299,8 +1298,10 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         p.views = (o.views || []).filter(v => v && typeof v.name === "string").slice(0, MAX_VIEWS);
         p.slips = (o.slips || []).filter(s => s && typeof s.name === "string" && Array.isArray(s.legs) && Date.now() - (+s.created || 0) < 6 * 86400000)
           .map(s => ({ name: s.name, on: !!s.on, created: +s.created || Date.now(), book: typeof s.book === "string" ? s.book.slice(0, 20) : "", stake: +s.stake || 0, pay: +s.pay || 0, flex: +s.flex || 0, sgp: !!s.sgp, legs: s.legs.filter(l => l && l.id).map(l => { const o = { id: String(l.id), side: l.side || "", kind: ["ml", "spread", "total", "tt", "prop"].includes(l.kind) ? l.kind : "ml", num: l.num == null ? null : +l.num, text: String(l.text || "") };
-            ["ou", "per", "short", "who", "mkt"].forEach(k => { if (typeof l[k] === "string" && l[k]) o[k] = l[k].slice(0, 90); }); return o; }) })).slice(0, 12);   /* slips (Phil, 10/24): kept six days; team totals and props 10/25 */
+            ["ou", "per", "short", "who", "mkt"].forEach(k => { if (typeof l[k] === "string" && l[k]) o[k] = l[k].slice(0, 90); }); if (l.lg === "cfb" || l.lg === "nfl") o.lg = l.lg; return o; }) })).slice(0, 12);   /* slips (Phil, 10/24): kept six days; team totals and props 10/25; a leg's league 11/26 */
       } catch (e) {} });
+      try { const ids = s => s.legs.map(l => l.id).join();   /* a slip with legs in both leagues is in both lists: one object for the two, so a rename or its filter switch is one change (11/26) */
+        S.per.nfl.slips = S.per.nfl.slips.map(s => S.per.cfb.slips.find(x => x.created === s.created && ids(x) === ids(s)) || s); } catch (e) {}
     }
   } catch (e) {}
   if (has(hint)){ S.league = hint; if (!SLATE.lock) remember(); if (location.search || location.hash){ try { history.replaceState(null, "", location.pathname); } catch (e) {} } }   /* the hint becomes the remembered league, then leaves the address */
@@ -2304,19 +2305,19 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const whoOf = l => { const sp = l.kind === "prop" ? propSpec(l) : null; return sp ? sp.who : l.who || ""; };   /* "Gibbs + Gordon", "Walker or Worthy" */
   const propLbl = (g, l) => { const r = propNow(g, l); return r && r.line ? r.line : whoOf(l) || "prop"; };   /* "Gibbs 1 + Gordon 0" once it's on */
   function propTake(g, j){ const box = propBox(j); PSTAT[g.id] = { at: Date.now(), box, key: JSON.stringify(box), sk: g.away.score + "-" + g.home.score, fin: g.state === "post", fail: false }; PNOW.clear(); xboxTake(g.id, j, g.state === "post"); }
-  const propPrint = () => JSON.stringify(P().slips.map(s => s.legs.map(l => { if (l.kind !== "prop") return 0; const g = gameOf(l.id), r = g ? propNow(g, l) : null; return r ? [r.st, r.w, r.line] : 1; })));
+  const propPrint = () => JSON.stringify(P().slips.map(s => s.legs.map(l => { if (l.kind !== "prop") return 0; const g = legGame(l), r = g ? propNow(g, l) : null; return r ? [r.st, r.w, r.line] : 1; })));
   let propBusy = false;
   async function pollProps(){   /* the slips' prop games: a live one about every 45 seconds and right after its score changes, a final once */
     if (propBusy || document.hidden) return;
     propBusy = true;
     try {
       if (awayWeek()) return;
-      const lg = S.league, now = Date.now(), ids = new Set(); S.per[lg].slips.forEach(s => s.legs.forEach(l => { if (l.kind === "prop" && l.id && propSpec(l)) ids.add(l.id); }));
-      const due = [...ids].map(id => gameOf(id, lg)).filter(g => { if (!g || g.state === "pre") return false; const c = PSTAT[g.id]; if (!c) return true; if (c.fin) return false;
+      const now = Date.now(), ids = new Map(); P().slips.forEach(s => s.legs.forEach(l => { if (l.kind === "prop" && l.id && propSpec(l)){ const g = legGame(l); if (g) ids.set(g.id, g); } }));   /* a leg on the other league's game too (11/26) */
+      const due = [...ids.values()].filter(g => { if (g.state === "pre") return false; const c = PSTAT[g.id]; if (!c) return true; if (c.fin) return false;
         const age = now - c.at; return c.fail ? age > 30000 : g.state === "post" ? age > 4000 : age > 45000 || (c.sk !== g.away.score + "-" + g.home.score && age > 8000); });
       if (!due.length) return;
       const before = propPrint();
-      for (const g of due){ try { const r = await fetch(SUMMARY(lg, g.id), { cache: "no-store" }); if (!r.ok) throw new Error(r.status); propTake(g, await r.json()); }
+      for (const g of due){ try { const r = await fetch(SUMMARY(g.league, g.id), { cache: "no-store" }); if (!r.ok) throw new Error(r.status); propTake(g, await r.json()); }
         catch (e) { PSTAT[g.id] = Object.assign({ box: null, key: "", sk: "", fin: false }, PSTAT[g.id] || {}, { at: Date.now(), fail: true }); } }
       if (propPrint() !== before) render();
     } catch (e) {} finally { propBusy = false; }
@@ -2594,7 +2595,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* the side of a leg block's game whose name the pick is a letter or two from, when the OCR garbled it and neither name is in it (11/14) */
   function sideNear(g, text){
     const q = normTeam(text).replace(/ /g, ""); if (q.length < 3) return "";
-    const d = side => Math.min(1, ...[g[side].name, g[side].short, g[side].ab].map(s => normTeam(s).replace(/ /g, "")).filter(Boolean).map(t => lev(q, t) / Math.max(q.length, t.length)));
+    const qs = q.length > 5 && q.endsWith("fl") ? [q, q.slice(0, -2)] : [q];   /* "MamiFL": Miami FL run together and a letter short (11/26) */
+    const d = side => Math.min(1, ...[g[side].name, g[side].short, g[side].ab].map(s => normTeam(s).replace(/ /g, "")).filter(Boolean).map(t => Math.min(...qs.map(q => lev(q, t) / Math.max(q.length, t.length)))));
     const a = d("away"), h = d("home");
     return a <= 0.34 && a < h - 0.2 ? "away" : h <= 0.34 && h < a - 0.2 ? "home" : "";
   }
@@ -2607,7 +2609,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     return top >= 2.5 ? best : null;
   }
   function matchGame(hint, games){ const parts = (hint || "").split(/\s+(?:at|vs\.?|v)\s+|\s*[@\/]\s*/i).map(s => s.trim()).filter(Boolean); for (const p of parts){ const m = matchTeam(p, games); if (m) return m; } return null; }
-  const slipGames = lg => (GAMES[lg] || []).slice().sort((a, b) => a.kick < b.kick ? -1 : 1);
+  const slipGames = lg => weekGames(lg).slice().sort((a, b) => a.kick < b.kick ? -1 : 1);
   let pend = null, pendLg = "";   /* the slips being confirmed, and the board they were found on */
   /* a text may hold several slips (several screenshots read together): one section per slip header */
   const LEGHEAD = /\b\d+\s*[- ]?\s*legs?\b(?!\s+pays)|\bparlay\s*[-(]\s*\d+\s*picks?\b|^\W*same\s*game\s*parlay\W*(?:tm)?\W*[+-]\d{3,}/i;
@@ -2638,31 +2640,40 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function legFit(l, g){ if (!g) return 0;
     if (l.mu) return Math.max(teamHit(l.mu.a, g.away) + teamHit(l.mu.h, g.home), teamHit(l.mu.a, g.home) + teamHit(l.mu.h, g.away) - 0.5);
     return gameOnly(l) ? 0 : Math.max(teamHit(l.team, g.away), teamHit(l.team, g.home)); }
-  function placeLegs(legs, games){
-    const out = [], seen = {};
-    legs.forEach(l => { const bg = l.mu ? blockGame(l.mu, games) : null; let id = "", side = l.kind === "total" ? l.side : "";
-      if (gameOnly(l)){ const g = bg || ((matchGame(l.team, games) || {}).g); if (g) id = g.id; }
-      else { const s = bg ? sideIn(bg, l.team) || sideNear(bg, l.team) : "", hit = s ? null : matchTeam(l.team, games); if (s){ id = bg.id; side = s; } else if (hit){ id = hit.g.id; side = hit.side; } }
-      const o = Object.assign({}, l, { id, side }); o.fit = id ? legFit(l, games.find(g => g.id === id)) : 0; delete o.mu;
+  function placeLegs(legs, games, alt){   /* alt { home, lg, games }: the other league's games too, each placed leg tagged with its league (11/26) */
+    const out = [], seen = {}, all = alt ? games.concat(alt.games) : games;
+    const two = (mu, g) => Math.max(Math.min(teamHit(mu.a, g.away), teamHit(mu.h, g.home)), Math.min(teamHit(mu.a, g.home), teamHit(mu.h, g.away))) >= 2.5;   /* a game line naming both of a game's teams */
+    const one = (l, games) => { const bg = l.mu ? blockGame(l.mu, games) : null; let id = "", side = l.kind === "total" ? l.side : "", g = null;
+      if (gameOnly(l)){ g = bg || ((matchGame(l.team, games) || {}).g) || null; if (g) id = g.id; }
+      else { const s = bg ? sideIn(bg, l.team) || sideNear(bg, l.team) : "", hit = s ? null : matchTeam(l.team, games); if (s){ g = bg; id = bg.id; side = s; } else if (hit){ g = hit.g; id = hit.g.id; side = hit.side; } }
+      const nm = !g || !l.team ? 0 : gameOnly(l) ? Math.max(teamHit(l.team, g.away), teamHit(l.team, g.home)) : teamHit(l.team, g[side] || g.home);
+      return { id, side, fit: g ? legFit(l, g) : 0, sure: !!g && ((!!l.mu && g === bg && two(l.mu, g)) || nm >= 3.5) }; };   /* sure: its game line names both teams, or the pick names the team in full or by nickname (not a city or an abbreviation alone) */
+    /* the other league's game, when it's sure there: none here for it, or here only one team of its game line fits ("BC ... MIA FL" isn't the Dolphins); the legs of one game line go together */
+    const res = legs.map(l => { const p = one(l, games), q = alt ? one(l, alt.games) : null; return { p, q, far: !!q && !!q.id && q.sure && (!p.id || (!!l.mu && !p.sure)) }; }), went = {}, mk = l => l.mu.a + "|" + l.mu.h;
+    legs.forEach((l, i) => { if (res[i].far && l.mu) went[mk(l)] = res[i].q.id; });
+    legs.forEach((l, i) => { const r = res[i]; if (alt && !r.far && l.mu && !r.p.sure && r.q.id && went[mk(l)] === r.q.id) r.far = true; });
+    legs.forEach((l, i) => { const far = res[i].far, p = far ? res[i].q : res[i].p, plg = alt ? (far ? alt.lg : alt.home) : "";
+      const id = p.id, side = p.side, o = Object.assign({}, l, { id, side }); o.fit = p.fit; if (alt && id) o.lg = plg; delete o.mu;
       if (id){ const k = legKey(o); if (seen[k]) return; seen[k] = true;
         if (legs.loose && (o.kind === "ml" || o.kind === "spread")){ const sk = "side:" + id + ":" + side, j = seen[sk];   /* the loose read can catch one pick twice: the spread beats the moneyline */
           if (j != null){ if (out[j].kind === "ml" && o.kind === "spread") out[j] = o; return; } seen[sk] = out.length; } }
       out.push(o); });
     /* a same game parlay's legs share one game: a leg placed by its team lends it to the group's legs that found none (11/7) */
     const grpGame = {}; out.forEach(o => { if (o.grp && o.id) (grpGame[o.grp] = grpGame[o.grp] || new Set()).add(o.id); });
-    out.forEach(o => { const ids = o.grp && !o.id ? grpGame[o.grp] : null; if (!ids || ids.size !== 1) return; const id = [...ids][0], g = games.find(x => x.id === id); if (!g) return;
-      if (gameOnly(o)) o.id = id; else { const s = sideIn(g, o.team); if (s){ o.id = id; o.side = s; } } });
+    out.forEach(o => { const ids = o.grp && !o.id ? grpGame[o.grp] : null; if (!ids || ids.size !== 1) return; const id = [...ids][0], g = all.find(x => x.id === id); if (!g) return;
+      if (gameOnly(o)){ o.id = id; if (alt) o.lg = g.league; } else { const s = sideIn(g, o.team); if (s){ o.id = id; o.side = s; if (alt) o.lg = g.league; } } });
     return out;
   }
   function readSlip(text){
     const secs = slipSections(text).map(sec => ({ sec, legs: slipLegs(sec) })).filter(x => x.legs.length);
-    const tryLg = lg => { const games = slipGames(lg), slips = [];
-      secs.forEach(({ sec, legs }) => { const placed = placeLegs(legs, games); if (!placed.length) return;
+    const tryLg = (lg, both) => { const games = slipGames(lg), slips = [];
+      secs.forEach(({ sec, legs }) => { const placed = placeLegs(legs, games, both ? { home: lg, lg: otherLg(lg), games: slipGames(otherLg(lg)) } : null); if (!placed.length) return;
         const key = slipKey(placed); if (slips.some(x => x.key === key)) return;   /* the same slip read twice */
-        slips.push(Object.assign({ name: slipName(sec, legs), legs: placed, key, dup: S.per[lg].slips.some(x => slipKey(x.legs) === key) }, slipMeta(sec, text))); });
+        slips.push(Object.assign({ name: slipName(sec, legs), legs: placed, key, dup: ["cfb", "nfl"].some(x => S.per[x].slips.some(y => slipKey(y.legs) === key)) }, slipMeta(sec, text))); });
       return { lg, slips, found: slips.reduce((a, x) => a + x.legs.filter(l => l.id).length, 0), all: slips.reduce((a, x) => a + x.legs.length, 0), q: slips.reduce((a, x) => a + x.legs.reduce((b, l) => b + (l.fit || 0), 0), 0) }; };
     let r = tryLg(S.league); const other = S.league === "nfl" ? "cfb" : "nfl";
-    if (has(other)){ const r2 = tryLg(other); if (r2.found > r.found || (r2.found && r2.found === r.found && r2.q > r.q * 1.25)) r = r2; }   /* read on the other league's board: the slip goes to its own (10/25); placed as fully on both, the one that names its games better (11/23: "CIN Bengals @ WAS Commanders" is the Bengals, not Cincinnati's college game) */
+    if (has(other)){ const r2 = tryLg(other); if (r2.found > r.found || (r2.found && r2.found === r.found && r2.q > r.q * 1.25)) r = r2;
+      r = tryLg(r.lg, true); }   /* then leg by leg: one with no game in the slip's league, or a better-named one in the other, goes there (11/26: a ticket with legs in both) */   /* read on the other league's board: the slip goes to its own (10/25); placed as fully on both, the one that names its games better (11/23: "CIN Bengals @ WAS Commanders" is the Bengals, not Cincinnati's college game) */
     if (!r.slips.length){ sheetMsg("No picks found in that. A screenshot of the whole slip reads best, or paste the picks as a list: Indiana, Miami FL -3.5, Over 55.5 (Army at Tulsa)."); return; }
     pend = r.slips; pendLg = r.lg;
     drawConfirm();
@@ -2685,6 +2696,18 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const kindWord = s => s.sgp || (s.legs.length > 1 && s.legs.every(l => l.id && l.id === s.legs[0].id)) ? "same game parlay" : s.flex ? "flex parlay" : s.legs.length > 1 ? "parlay" : "straight";
   const money = n => n >= 1000 ? Math.round(n).toLocaleString("en-US") : (Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, "");
   const gameOf = (id, lg) => (GAMES[lg || S.league] || []).find(g => g.id === id);
+  /* ---- a slip with legs in both leagues (Phil, 11/26: a 13 Pick SGPx, seven college legs and three NFL same game parlays) ----
+     One slip on both boards: it sits in each league's list (the same object while the page is open, matched again on load), each leg
+     carries its league (lg), and a leg's game is looked up in its own league's games for this week. The other league's scoreboard is
+     polled for those legs (pollX), so every leg is tracked from either board. */
+  const otherLg = lg => lg === "nfl" ? "cfb" : "nfl";
+  const weekGames = lg => (S.wk && S.wk[lg] ? WEEKS.base[lg].games : GAMES[lg]) || [];   /* this week's games, whichever week that league's board is on */
+  const legLg = (l, dflt) => { const d = dflt || S.league; if (l.lg === "cfb" || l.lg === "nfl") return l.lg; const o = otherLg(d);
+    return l.id && !weekGames(d).some(g => g.id === l.id) && weekGames(o).some(g => g.id === l.id) ? o : d; };   /* saved without its league (an older page): the league that has its game */
+  const legGame = (l, dflt) => l.id ? weekGames(legLg(l, dflt)).find(g => g.id === l.id) : null;
+  /* a slip's legs by their games' start times, whichever league, wherever a slip lists them (Phil, 11/26: "it should display legs in
+     chronological order, always, by start time, regardless of league"); the legs of one game in the slip's own order, a leg with no game last */
+  const legOrder = (legs, dflt) => { const t = legs.map(l => { const g = legGame(l, dflt); return g ? new Date(g.kick).getTime() || 0 : Infinity; }); return legs.map((l, k) => k).sort((a, b) => t[a] - t[b] || a - b); };
   const whenTxt = g => { if (!g) return ""; if (g.state === "in") return /half/i.test(g.detail || "") ? "Half" : (g.period > 4 ? "OT" : "Q" + g.period) + " " + (g.clock || "");
     if (g.state === "post") return g.detail || "Final"; if (g.tbd) return "TBD";
     const wd = d => new Intl.DateTimeFormat("en-US", { timeZone: TZ[S.tz], weekday: "short" }).format(d), k = new Date(g.kick);
@@ -2759,7 +2782,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     drawSlips();
   }
   setInterval(() => { if (document.hidden || !XOPEN.size) return; const lg = S.league;   /* a live game with a leg open: its numbers every 30 seconds */
-    P().slips.forEach((s, i) => s.legs.forEach((l, k) => { if (!XOPEN.has((s.created || i) + ":" + k)) return; const g = gameOf(l.id, lg); if (g && g.state === "in") xboxGet(lg, g); })); }, 30000);
+    P().slips.forEach((s, i) => s.legs.forEach((l, k) => { if (!XOPEN.has((s.created || i) + ":" + k)) return; const g = legGame(l, lg); if (g && g.state === "in") xboxGet(g.league, g); })); }, 30000);
   const xv = (p, cat, lab) => { const c = p.cats[cat]; if (!c) return ""; const i = c.labels.indexOf(lab); return i < 0 || c.vals[i] == null ? "" : String(c.vals[i]); };
   const XCELLS = { receiving: [["REC", "REC"], ["TGTS", "TGT"], ["YDS", "YDS"], ["LONG", "LONG"], ["TD", "TD"]], rushing: [["CAR", "CAR"], ["YDS", "YDS"], ["AVG", "AVG"], ["LONG", "LONG"], ["TD", "TD"]],
     passing: [["C/ATT", "C/ATT"], ["YDS", "YDS"], ["TD", "TD"], ["INT", "INT"]], defensive: [["TOT", "TKL"], ["SOLO", "SOLO"], ["SACKS", "SACKS"], ["TFL", "TFL"], ["PD", "PD"]],
@@ -2800,8 +2823,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   function openGameBox(g){   /* the game's card on the board, on Box score with the players */
     stripOpen = -1; if (!spanel.hidden) showPanel(spanel);
+    const sw = !!g.league && g.league !== S.league && has(g.league); if (sw){ S.league = g.league; S.day = ""; showPanel(null); remember(); }   /* a game on the other board (11/26) */
     if (g.date && S.day !== g.date) S.day = g.date;
-    S.open = g.id; S.openRow = ""; S.gct = "box"; render(); pollGc(true);
+    S.open = g.id; S.openRow = ""; S.gct = "box"; render(); pollGc(true); if (sw){ poll(true); pollX(true); }
     requestAnimationFrame(() => { const b = document.querySelector(".gbar.open"); if (b) b.scrollIntoView({ block: "center", inline: "nearest", behavior: "smooth" }); });
   }
   function boxPlayers(g){   /* the card's Box score: the passers (one a team), rushers and receivers (two a team), the slips' players first and marked */
@@ -2913,27 +2937,24 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     copyDraw(b, cs ? cs.st : ""); b.addEventListener("click", e => { e.stopPropagation(); copySlip(s, card); }); return b;
   }
   function slipCard(s, i){   /* a saved slip as a card: the strip's and the panel's */
-    const lg = S.league, c = el("div", "scard"), gs = s.legs.map(l => gameOf(l.id, lg)), st = s.legs.map((l, k) => gs[k] ? legNow(gs[k], l) : ["pending", "not on the board"]);
+    const lg = S.league, c = el("div", "scard"), gs = s.legs.map(l => legGame(l, lg)), st = s.legs.map((l, k) => gs[k] ? legNow(gs[k], l) : ["pending", "not on the board"]);
     c.appendChild(el("div", "skick", [s.book, kindWord(s), s.flex ? s.flex + " of " + s.legs.length + " pays" : ""].filter(Boolean).join(" · ")));
     c.appendChild(slipTitle(s, true));
-    const cnt = ks => st.filter(x => ks.includes(x[0])).length, done = gs.length && gs.every(g => g && g.state === "post"), ty = el("div", "stally");
-    (done ? [[cnt(["won"]), "won"], [cnt(["lost"]), "lost"], [cnt(["push"]), "push"]].filter((x, k) => k < 2 || x[0]) : [[cnt(["won", "ahead"]), "winning"], [cnt(["lost", "behind"]), "losing"], [cnt(["pending", "tied", "untracked"]), "to go"]])
-      .forEach(([n, t]) => { const sp = el("span"); sp.appendChild(el("b", null, String(n))); sp.appendChild(document.createTextNode(t)); ty.appendChild(sp); });
-    c.appendChild(ty);
+    /* no tally line under the title (Phil, 11/23: "Don't need this part"): the pills and each leg's standing say it */
     const list = el("div", "slegs");
-    s.legs.forEach((l, k) => { const g = gs[k], r = el("div", "sleg"); legFace(l, g, lg).forEach(x => r.appendChild(x));
+    legOrder(s.legs, lg).forEach(k => { const l = s.legs[k], g = gs[k], ll = (g && g.league) || legLg(l, lg), r = el("div", "sleg"); legFace(l, g, ll).forEach(x => r.appendChild(x));   /* by start time, each leg from its own league's game (11/26) */
       const gm = el("span", "sgm"); if (g){ gm.appendChild(document.createTextNode(scoreTxt(g))); gm.appendChild(el("br")); gm.appendChild(document.createTextNode(whenTxt(g))); } r.appendChild(gm);
       r.appendChild(propFill(el("span", "sst " + st[k][0], st[k][1]), g, l)); list.appendChild(r);
       const pb = propBar(g, l); if (pb){ r.classList.add("hasbar"); list.appendChild(pb); }   /* a prop's progress (11/8) */
-      if (g){ const xk = (s.created || i) + ":" + k, xo = XOPEN.has(xk), tog = () => { if (XOPEN.has(xk)) XOPEN.delete(xk); else { XOPEN.add(xk); xboxGet(lg, g); } drawSlips(); };   /* a tap: its numbers under it (11/15) */
-        r.classList.add("tap"); r.setAttribute("aria-expanded", String(xo)); r.addEventListener("click", tog); if (pb) pb.addEventListener("click", tog); if (xo) list.appendChild(legBox(l, g, lg)); } });
+      if (g){ const xk = (s.created || i) + ":" + k, xo = XOPEN.has(xk), tog = () => { if (XOPEN.has(xk)) XOPEN.delete(xk); else { XOPEN.add(xk); xboxGet(ll, g); } drawSlips(); };   /* a tap: its numbers under it (11/15) */
+        r.classList.add("tap"); r.setAttribute("aria-expanded", String(xo)); r.addEventListener("click", tog); if (pb) pb.addEventListener("click", tog); if (xo) list.appendChild(legBox(l, g, ll)); } });
     c.appendChild(list);
     const btns = el("div", "sbtns"), on = el("button", null, "Only these games"); on.type = "button"; on.setAttribute("aria-pressed", String(s.on)); on.title = "Keep just this slip's games on the board";
     on.addEventListener("click", () => { s.on = !s.on; slipRedraw(); }); btns.appendChild(on);
     const rn = el("button", null, "Rename"); rn.type = "button"; rn.addEventListener("click", () => { const x = c.querySelector("input.sname"); if (x){ x.focus(); x.select(); } }); btns.appendChild(rn);
     const del = el("button", null, "Delete"); del.type = "button";
     del.addEventListener("click", () => { if (!del.classList.contains("warn")){ del.classList.add("warn"); del.textContent = "Tap to delete"; setTimeout(() => { del.classList.remove("warn"); del.textContent = "Delete"; }, 3000); return; }
-      P().slips.splice(i, 1); stripOpen = -1; slipRedraw(); });
+      ["cfb", "nfl"].forEach(x => { const j = S.per[x].slips.indexOf(s); if (j >= 0) S.per[x].slips.splice(j, 1); }); stripOpen = -1; slipRedraw(); });   /* from both boards when it's on both (11/26) */
     btns.appendChild(del); c.appendChild(btns); c.classList.add("cp"); c.insertBefore(copyBtn(s, c), c.children[1] || null); return c;   /* the copy icon (11/21) */
   }
   /* the slipSheet: busy while the screenshot is read, then the slip to confirm, or a note, or the paste box */
@@ -2961,15 +2982,17 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       c.appendChild(el("div", "skick", [sp.book, kindWord(sp), got === sp.legs.length ? "read from your screenshot" : got + " of " + sp.legs.length + " matched"].filter(Boolean).join(" · ")));
       c.appendChild(slipTitle(sp, false));
       if (sp.dup) c.appendChild(el("div", "ssdup", "You're already tracking this one"));
-      if (lg !== S.league) c.appendChild(el("div", "ssdup", "These are " + (lg === "nfl" ? "NFL games, so this slip goes on the NFL board" : "college games, so this slip goes on the college board")));   /* 11/23 */
-      const list = el("div", "slegs"); sp.legs.forEach((l, k) => list.appendChild(confirmRow(sp, l, k, lg))); c.appendChild(list); b.appendChild(c); });
-    const n = pend.filter(sp => !sp.dup && sp.legs.some(l => l.id)).length;
-    const go = el("button", "ssgo", lg !== S.league ? (n > 1 ? "Track these " + n + " on the " : "Track on the ") + (lg === "nfl" ? "NFL" : "college") + " board" : n > 1 ? "Track these " + n + " slips" : "Track this slip"); go.type = "button"; go.disabled = !n; go.addEventListener("click", trackPending); b.appendChild(go);
+      const nl = x => sp.legs.filter(l => l.id && legLg(l, lg) === x).length, nc = nl("cfb"), nn = nl("nfl"), its = nn ? "nfl" : "cfb";
+      if (nc && nn) c.appendChild(el("div", "ssdup", nc + " college leg" + (nc > 1 ? "s" : "") + " and " + nn + " NFL leg" + (nn > 1 ? "s" : "") + ": this slip shows on both boards"));   /* 11/26 */
+      else if ((nc || nn) && its !== S.league) c.appendChild(el("div", "ssdup", "These are " + (its === "nfl" ? "NFL games, so this slip goes on the NFL board" : "college games, so this slip goes on the college board")));   /* 11/23 */
+      const list = el("div", "slegs"); legOrder(sp.legs, lg).forEach(k => list.appendChild(confirmRow(sp, sp.legs[k], k, lg))); c.appendChild(list); b.appendChild(c); });
+    const live = pend.filter(sp => !sp.dup && sp.legs.some(l => l.id)), n = live.length, away = n > 0 && !live.some(sp => sp.legs.some(l => l.id && legLg(l, lg) === S.league)), to = away ? legLg(live[0].legs.find(l => l.id), lg) : lg;   /* nothing of it on this board: it goes to the other */
+    const go = el("button", "ssgo", away ? (n > 1 ? "Track these " + n + " on the " : "Track on the ") + (to === "nfl" ? "NFL" : "college") + " board" : n > 1 ? "Track these " + n + " slips" : "Track this slip"); go.type = "button"; go.disabled = !n; go.addEventListener("click", trackPending); b.appendChild(go);
     sheetLinks(b, [["Rename", () => { const x = b.querySelector("input.sname"); if (x){ x.focus(); x.select(); } }], ["Paste picks instead", pasteMode], ["Cancel", sheetClose]]);
   }
   function confirmRow(sp, l, k, lg){
-    const g = l.id ? gameOf(l.id, lg) : null, r = el("div", "sleg tap");
-    legFace(l, g, lg).forEach(x => r.appendChild(x));
+    const g = legGame(l, lg), r = el("div", "sleg tap");
+    legFace(l, g, g ? g.league : lg).forEach(x => r.appendChild(x));
     if (g){ r.appendChild(el("span", "sgm", g.away.ab + " at " + g.home.ab + " · " + whenTxt(g))); r.appendChild(el("span", "sok", "✓")); }
     else { r.appendChild(el("span", "sgm ask", "which game?")); const f = el("button", "sfix", "PICK"); f.type = "button"; r.appendChild(f); }
     r.addEventListener("click", () => openPicker(sp, l, k, lg, r));
@@ -2977,7 +3000,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   function openPicker(sp, l, k, lg, row){   /* under a leg: search the week's games for it, or drop it */
     const was = row.nextSibling && row.nextSibling.classList && row.nextSibling.classList.contains("spick"); row.parentNode.querySelectorAll(".spick").forEach(x => x.remove()); if (was) return;
-    const box = el("div", "spick"), q = el("input"), opts = el("div", "sopts"), games = slipGames(lg), one = gameOnly(l);
+    const box = el("div", "spick"), q = el("input"), opts = el("div", "sopts"), games = slipGames(lg).concat(has(otherLg(lg)) ? slipGames(otherLg(lg)) : []), one = gameOnly(l);   /* either league's games (11/26) */
     q.type = "search"; q.placeholder = one ? "Search a team in the game" : "Search the team"; q.setAttribute("enterkeyhint", "search"); box.appendChild(q); box.appendChild(opts);
     const list = () => { opts.textContent = ""; const t = q.value.trim(), lt = t.toLowerCase(), cand = [];
       games.forEach(g => (one ? ["home"] : ["away", "home"]).forEach(side => {
@@ -2986,7 +3009,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       cand.sort((a, b) => b.sc - a.sc || (a.g.kick < b.g.kick ? -1 : 1));
       cand.slice(0, 8).forEach(({ g, side }) => { const o = el("button", "sopt", one ? g.away.name + " at " + g.home.name : g[side].name); o.type = "button";
         o.appendChild(el("small", null, (one ? "" : g.away.ab + " at " + g.home.ab + " · ") + whenTxt(g)));
-        o.addEventListener("click", e => { e.stopPropagation(); l.id = g.id; if (!one) l.side = side; drawConfirm(); }); opts.appendChild(o); });
+        o.addEventListener("click", e => { e.stopPropagation(); l.id = g.id; l.lg = g.league; if (!one) l.side = side; drawConfirm(); }); opts.appendChild(o); });
       if (!cand.length) opts.appendChild(el("div", "ssmsg", t ? "No game this week with that name" : "Type a team to find its game")); };
     q.addEventListener("input", list); box.addEventListener("click", e => e.stopPropagation()); list();
     const drop = el("button", "sopt drop", "Drop this leg"); drop.type = "button";
@@ -2994,15 +3017,16 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     box.appendChild(drop); row.after(box); setTimeout(() => q.focus(), 60);
   }
   function trackPending(){
-    const lg = pendLg, ps = S.per[lg].slips; let n = 0;
+    const lg = pendLg, ps = S.per[lg].slips; let n = 0, here = false, mixed = false, to = "";
     pend.forEach(sp => { const legs = sp.legs.filter(l => l.id); if (!legs.length || sp.dup) return; n++;
-      const o = { name: (sp.name || "").trim().slice(0, 24) || "Slip " + (ps.length + 1), on: true, created: Date.now(),
-        legs: legs.map(l => { const o = { id: l.id, side: l.side, kind: l.kind, num: l.num == null ? null : l.num, text: l.text }; ["ou", "per", "short", "who", "mkt"].forEach(k => { if (l[k]) o[k] = l[k]; }); return o; }) };
-      ["book", "stake", "pay", "flex", "sgp"].forEach(k => { if (sp[k]) o[k] = sp[k]; }); ps.push(o); });
+      const o = { name: (sp.name || "").trim().slice(0, 24) || "Slip " + (ps.length + 1), on: true, created: Date.now() + n,
+        legs: legs.map(l => { const o = { id: l.id, side: l.side, kind: l.kind, num: l.num == null ? null : l.num, text: l.text }; ["ou", "per", "short", "who", "mkt"].forEach(k => { if (l[k]) o[k] = l[k]; }); o.lg = legLg(l, lg); return o; }) };
+      ["book", "stake", "pay", "flex", "sgp"].forEach(k => { if (sp[k]) o[k] = sp[k]; });
+      const lgs = new Set(o.legs.map(l => l.lg)); lgs.forEach(x => S.per[x].slips.push(o)); if (lgs.has(S.league)) here = true; if (lgs.size > 1) mixed = true; to = to || o.legs[0].lg; });   /* legs in both leagues: the one slip in both lists (11/26) */
     if (!n) return;
-    sheetClose(); stext.value = ""; snote.textContent = ""; tally("slip", "Slip saved");
-    if (lg !== S.league){ S.league = lg; S.day = ""; S.open = ""; remember(); render(); poll(true); return; }   /* to the board the slip is on */
-    slipRedraw();
+    sheetClose(); stext.value = ""; snote.textContent = ""; tally(mixed ? "slip-both" : "slip", mixed ? "Slip saved, both leagues" : "Slip saved");
+    if (!here){ S.league = to || lg; S.day = ""; S.open = ""; remember(); render(); poll(true); return; }   /* to the board the slip is on */
+    slipRedraw(); if (mixed) pollX(true);
   }
   /* the slips in the panel and under the bar, and the slip buttons beside FBS / Top 25 / All */
   let stripOpen = -1;   /* the slip whose card is open under the bar */
@@ -3019,7 +3043,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       nm.type = "button"; nm.setAttribute("aria-pressed", String(s.on)); nm.title = s.name + ": only its games";
       nm.addEventListener("click", () => { s.on = !s.on; slipRedraw(); });   /* the name is the slip's filter switch (Phil, 11/7) */
       body.type = "button"; body.setAttribute("aria-expanded", String(stripOpen === i)); body.title = "Open the slip";
-      s.legs.forEach(l => { const g = gameOf(l.id); pills.appendChild(propFill(el("span", "spill " + (g ? legStatus(g, l) : "pending"), pillTxt(l, g)), g, l)); });
+      legOrder(s.legs).forEach(k => { const l = s.legs[k], g = legGame(l); pills.appendChild(propFill(el("span", "spill " + (g ? legStatus(g, l) : "pending"), pillTxt(l, g)), g, l)); });   /* by start time, each leg's game from its own league (11/26) */
       body.appendChild(pills); body.appendChild(el("span", "scar", "▾"));
       body.addEventListener("click", () => { stripOpen = stripOpen === i ? -1 : i; drawStrip(); if (stripOpen === i) tally("slip-card", "Slip card opened"); });
       line.appendChild(nm); line.appendChild(body);
@@ -3500,7 +3524,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   let trimTick = false;
   wrap.addEventListener("scroll", () => { if (S.view !== "timeline" || !wrap._trim || trimTick) return; trimTick = true; requestAnimationFrame(() => { trimTick = false; wrap._trim(); }); }, { passive: true });
-  document.querySelectorAll("#leagueSeg button").forEach(b => b.addEventListener("click", () => { if (S.league === b.dataset.v || !has(b.dataset.v)) return; S.league = b.dataset.v; S.day = ""; S.open = ""; showPanel(null); tally("league-" + S.league, "League: " + S.league); remember(); render(); poll(true); }));
+  document.querySelectorAll("#leagueSeg button").forEach(b => b.addEventListener("click", () => { if (S.league === b.dataset.v || !has(b.dataset.v)) return; S.league = b.dataset.v; S.day = ""; S.open = ""; showPanel(null); tally("league-" + S.league, "League: " + S.league); remember(); render(); poll(true); pollX(true); }));
   document.querySelectorAll(".seg button[data-key=view]").forEach(b => b.addEventListener("click", () => { S.view = b.dataset.v; remember(); render(); }));
   /* time zone: the five-zone picker shows until a zone has been tapped once on this device (that first pick is needed), then folds
      to a chip with the zone on it; the chip opens the picker again. Any tap, the current zone included, counts as the pick. */
@@ -3606,20 +3630,10 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
      every play), once a minute otherwise, every 10 minutes after three failures in a row */
   const pollEvery = () => { if (pollFails >= 3) return 600000; const now = Date.now();
     return pollGames().some(g => { if (g.state === "in") return true; if (g.state !== "pre" || g.tbd) return false; const dt = new Date(g.kick).getTime() - now; return dt < 300000 && dt > -1800000; }) ? 15000 : 60000; };   /* a game still "pre" half an hour past its kickoff is postponed or stuck, not about to start */
-  async function poll(force){
-    ticks++;
-    if (document.hidden || pollBusy) return;
-    if (!wanted()){ pollAt = Date.now() + 60000; return; }
-    if (!force && Date.now() < pollAt) return;
-    const lg = S.league, urls = pollUrls(), started = Date.now();
-    pollKey = urls.join("|"); pollAt = started + 60000;
-    if (!urls.length) return;
-    pollBusy = true;
-    try {
-      const seen = new Map();
-      for (const u of urls){ const r = await fetch(u, { cache: "no-store" }); if (!r.ok) throw new Error(r.status); const j = await r.json(); calFrom(j, lg); (j.events || []).forEach(e => { const g = fromEspn(e, lg); if (g && !seen.has(g.id)) seen.set(g.id, g); }); }
-      let changed = false; const asItHappens = lastPoll && Date.now() - lastPoll < 180000, stored = keepStore();   /* the previous poll landed within three minutes */
-      GAMES[lg] = GAMES[lg].map(old => { const n = seen.get(old.id); if (!n) return old; const p = prepGame(n, lg);
+  /* a scoreboard answer into a league's games: the poll's merge, shared with the other league's poll for a slip's legs there (11/26) */
+  function feedMerge(list, seen, lg, asItHappens, stored){
+    let changed = false;
+    const out = list.map(old => { const n = seen.get(old.id); if (!n) return old; const p = prepGame(n, lg);
         if (!p.keep && p.state === "in"){   /* ESPN blanked the down: keep the last real one (Phil, 10/18), or the one this device saw just before a reload (10/23) */
           const sv = stored[old.id];
           if (!(old.keep && KEEP_AT[old.id]) && sv && sv.k && Date.now() - sv.t < KEEP_RELOAD){ p.keep = sv.k; KEEP_AT[old.id] = sv.t; }
@@ -3640,6 +3654,44 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         if (sc) p.sched = sc; else delete p.sched;
         if (asItHappens && p.away.score !== old.away.score) FLASH.add(p.id + "away"); if (asItHappens && p.home.score !== old.home.score) FLASH.add(p.id + "home");   /* a score flashes only when the change is seen as it happens (Phil, 10/11) */
         if (JSON.stringify(p) !== JSON.stringify(old)) changed = true; return p; });
+    return { list: out, changed };
+  }
+  /* a slip with legs on the other league's games (Phil, 11/26): that league's scoreboard too, for the Eastern dates of those games still
+     to finish (today's and yesterday's only), every 30 seconds while one is live or about to start and once a minute otherwise */
+  let xpollAt = 0, xpollBusy = false;
+  const xGames = () => { if (awayWeek()) return []; const here = S.league, t = etNow().date, y = shiftDate(t, -1), m = new Map();
+    P().slips.forEach(s => s.legs.forEach(l => { if (!l.id || legLg(l) === here) return; const g = legGame(l); if (g && g.state !== "post" && (g.date === t || g.date === y)) m.set(g.id, g); }));
+    return [...m.values()]; };
+  const xSoon = () => { const now = Date.now(); return xGames().some(g => { if (g.state === "in") return true; if (g.state !== "pre" || g.tbd) return false; const dt = new Date(g.kick).getTime() - now; return dt < 300000 && dt > -1800000; }); };
+  async function pollX(force){
+    if (document.hidden || xpollBusy || (!force && Date.now() < xpollAt)) return;
+    const gs = xGames(), lg = otherLg(S.league), started = Date.now(); xpollAt = started + 60000;
+    if (!gs.length || !has(lg)) return;
+    xpollBusy = true;
+    try {
+      const dates = new Set(), fbs = new Set(((LG.cfb || {}).confs || []).filter(c => c[2] === "fbs").map(c => c[0])), seen = new Map();
+      gs.forEach(g => { dates.add(g.date); const d = partsIn(g.kick, TZ.ET).date; if (d > g.date) dates.add(d); });
+      const feeds = lg === "cfb" ? [API.cfb("80")].concat(gs.some(g => !fbs.has(g.home.conf) && !fbs.has(g.away.conf)) ? [API.cfb("81")] : []) : [API.nfl()];
+      for (const d of [...dates].sort()) for (const u of feeds){ const r = await fetch(u.replace("{d}", d.replace(/-/g, "")), { cache: "no-store" }); if (!r.ok) throw new Error(r.status);
+        ((await r.json()).events || []).forEach(e => { const g = fromEspn(e, lg); if (g && !seen.has(g.id)) seen.set(g.id, g); }); }
+      const mg = feedMerge(weekGames(lg), seen, lg, false, {});
+      if (mg.changed){ if (S.wk[lg]) WEEKS.base[lg].games = mg.list; else { GAMES[lg] = mg.list; recount(lg); } pollProps(); drawSlips(); }
+    } catch (e) {} finally { xpollBusy = false; xpollAt = started + (xSoon() ? 30000 : 60000); }
+  }
+  async function poll(force){
+    ticks++;
+    if (document.hidden || pollBusy) return;
+    if (!wanted()){ pollAt = Date.now() + 60000; return; }
+    if (!force && Date.now() < pollAt) return;
+    const lg = S.league, urls = pollUrls(), started = Date.now();
+    pollKey = urls.join("|"); pollAt = started + 60000;
+    if (!urls.length) return;
+    pollBusy = true;
+    try {
+      const seen = new Map();
+      for (const u of urls){ const r = await fetch(u, { cache: "no-store" }); if (!r.ok) throw new Error(r.status); const j = await r.json(); calFrom(j, lg); (j.events || []).forEach(e => { const g = fromEspn(e, lg); if (g && !seen.has(g.id)) seen.set(g.id, g); }); }
+      const asItHappens = lastPoll && Date.now() - lastPoll < 180000, stored = keepStore();   /* the previous poll landed within three minutes */
+      const mg = feedMerge(GAMES[lg], seen, lg, asItHappens, stored); let changed = mg.changed; GAMES[lg] = mg.list;
       pollFails = 0; pollStamp = nowText(); lastPoll = Date.now(); keepSave(lg);
       if (changed){ const before = [...PRESENT[lg].keys()].sort().join("|"); recount(lg); if ([...PRESENT[lg].keys()].sort().join("|") !== before) builtFor = ""; }   /* a new channel gets its chip */
       if (changed) render(); else footer();
@@ -3650,13 +3702,13 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   /* the schedule: a 5-second tick polls when one is due, and right away when the view needs a different set of feeds (another day,
      a filter that brings FCS games on screen) */
-  setInterval(() => { pollProps(); if (document.hidden || pollBusy) return; const k = wanted() ? pollUrls().join("|") : ""; if (k && k !== pollKey) poll(true); else poll(); }, 5000);
+  setInterval(() => { pollProps(); pollX(); if (document.hidden || pollBusy) return; const k = wanted() ? pollUrls().join("|") : ""; if (k && k !== pollKey) poll(true); else poll(); }, 5000);
   /* a home-screen app (or a tab) coming back after hours resumes the old page: past six hours, reload for the newest build (settings are saved) */
   const loadedAt = Date.now();
   let hiddenAt = 0;
   document.addEventListener("visibilitychange", () => { if (document.hidden){ hiddenAt = Date.now(); return; }
     if (hiddenAt && Date.now() - hiddenAt > 60000){ Object.keys(KEEP_AT).forEach(k => { delete KEEP_AT[k]; }); try { localStorage.removeItem("slate-keep"); } catch (e) {} }   /* polls stopped while hidden: the downs it knew can't vouch for anything now */
-    if (Date.now() - loadedAt > 6 * 3600000 && navigator.onLine !== false) location.reload(); else poll(true); });
+    if (Date.now() - loadedAt > 6 * 3600000 && navigator.onLine !== false) location.reload(); else { poll(true); pollX(true); } });
   /* live odds: DraftKings' in-game line per live game from ESPN's core odds endpoint (cross-origin allowed). One request per live game
      per poll, with the minute in the address: ESPN's edge hands out one copy of a plain address for up to 15 minutes (Phil, 11/13:
      Illinois at UCLA's Live column had a total from before the last score and nothing else; the plain address served a copy 8 minutes
