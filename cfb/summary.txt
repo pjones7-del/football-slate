@@ -1,4 +1,4 @@
-College Football Week 13 (79 games, pulled Thu 11/26, 6:40 PM ET, lines DraftKings via ESPN)
+College Football Week 13 (79 games, pulled Fri 11/27, 3:02 AM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week13.html
   cfb/ forwards to the one page
   Tue 11/24: 1 on TV, 1 not
@@ -7,17 +7,17 @@ College Football Week 13 (79 games, pulled Thu 11/26, 6:40 PM ET, lines DraftKin
   Sat 11/28: 37 on TV, 25 not
   ranked matchups:
     Thu 20:00 ET  TCU at #11 Texas Tech  [ESPN]  TTU -14.0, o/u 46.5
-    Fri 12:00 ET  Mississippi State at #22 Ole Miss  [ABC]  MISS -18.5, o/u 56.5
-    Fri 12:00 ET  #25 Nebraska at #13 Iowa  [CBS]  IOWA -3.5, o/u 40.5
+    Fri 12:00 ET  Mississippi State at #22 Ole Miss  [ABC]  MISS -17.5, o/u 56.5
+    Fri 12:08 ET  #25 Nebraska at #13 Iowa  [CBS]  IOWA -3.5, o/u 40.5
     Fri 15:30 ET  #20 Florida at Florida State  [ABC]  FLA -6.5, o/u 53.5
-    Fri 19:30 ET  #3 Texas at Texas A&M  [ABC]  TEX -11.5, o/u 40.5
-    Fri 21:00 ET  West Virginia at #2 Utah  [FOX]  UTAH -26.5, o/u 66.5
+    Fri 19:30 ET  #3 Texas at Texas A&M  [ABC]  TEX -10.5, o/u 40.5
+    Fri 21:00 ET  West Virginia at #2 Utah  [FOX]  UTAH -25.5, o/u 66.5
     Sat 12:00 ET  #4 Notre Dame at Syracuse  [ABC]  ND -25.5, o/u 53.5
-    Sat 12:00 ET  Boston College at #7 Miami (FL)  [ESPN]  MIA -24.5, o/u 53.5
+    Sat 12:00 ET  Boston College at #7 Miami (FL)  [ESPN]  MIA -25.5, o/u 53.5
     Sat 12:00 ET  #19 Louisville at Kentucky  [ESPN2]  LOU -3.0, o/u 53.5
     Sat 12:00 ET  Michigan at #21 Ohio State  [FOX]  OSU -10.0, o/u 37.5
     Sat 15:30 ET  Georgia Tech at #1 Georgia  [ABC]  UGA -35.5, o/u 55.5
-    Sat 15:30 ET  #15 USC at #9 UCLA  [CBS]  USC -6.5, o/u 45.5
+    Sat 15:30 ET  #15 USC at #9 UCLA  [CBS]  USC -6.5, o/u 46.5
     Sat 15:30 ET  Duke at #8 Wake Forest  [ESPN]  WAKE -14.5, o/u 55.5
     Sat 15:30 ET  Cincinnati at #10 BYU  [FOX]  BYU -15.5, o/u 56.5
     Sat 16:15 ET  #17 Oklahoma at #23 Missouri  [SECN]  MIZ -2.5, o/u 41.5
