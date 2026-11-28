@@ -1216,6 +1216,14 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* the visitor counter's events (GoatCounter; nothing personal, no cookies): what gets used, not who */
   const tally = (path, title) => { try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "ev/" + path, title: title || path, event: true }); } catch (e) {} };
   const openNew = url => { const w = window.open(url, "_blank"); if (w) w.opener = null; else location.href = url; };
+  /* ---- a leg in another sport (Phil, 11/27: an NBA prop on a football parlay; "Don't need an NBA board but it would be cool if it was
+     smart enough to track that leg's progress on the slip") ----
+     XS: the leagues a slip's leg can be in without a board. Such a leg carries its league (lg) and its game's day, teams and start (d,
+     ga, gh, gk: enough to draw it before the feed answers); its game comes from that league's scoreboard for the day (pollS; kept in
+     XG), its player's numbers from the game's summary, like a football prop's. */
+  const XS = { nba: { name: "NBA", path: "basketball/nba", logo: "nba", web: "nba" } }, XG = { nba: [] };
+  const isX = lg => typeof lg === "string" && Object.prototype.hasOwnProperty.call(XS, lg);
+  const SPORT = lg => isX(lg) ? XS[lg].path : "football/" + (lg === "nfl" ? "nfl" : "college-football");
 
   /* ============================ state ============================ */
   const LG = SLATE.leagues || {};
@@ -1305,7 +1313,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         p.views = (o.views || []).filter(v => v && typeof v.name === "string").slice(0, MAX_VIEWS);
         p.slips = (o.slips || []).filter(s => s && typeof s.name === "string" && Array.isArray(s.legs) && Date.now() - (+s.created || 0) < 6 * 86400000)
           .map(s => ({ name: s.name, on: !!s.on, created: +s.created || Date.now(), book: typeof s.book === "string" ? s.book.slice(0, 20) : "", stake: +s.stake || 0, pay: +s.pay || 0, flex: +s.flex || 0, sgp: !!s.sgp, legs: s.legs.filter(l => l && l.id).map(l => { const o = { id: String(l.id), side: l.side || "", kind: ["ml", "spread", "total", "tt", "prop"].includes(l.kind) ? l.kind : "ml", num: l.num == null ? null : +l.num, text: String(l.text || "") };
-            ["ou", "per", "short", "who", "mkt"].forEach(k => { if (typeof l[k] === "string" && l[k]) o[k] = l[k].slice(0, 90); }); if (l.lg === "cfb" || l.lg === "nfl") o.lg = l.lg; return o; }) })).slice(0, 12);   /* slips (Phil, 10/24): kept six days; team totals and props 10/25; a leg's league 11/26 */
+            ["ou", "per", "short", "who", "mkt"].forEach(k => { if (typeof l[k] === "string" && l[k]) o[k] = l[k].slice(0, 90); }); if (l.lg === "cfb" || l.lg === "nfl") o.lg = l.lg; else if (isX(l.lg)){ o.lg = l.lg; ["d", "ga", "gh", "gk"].forEach(k => { if (typeof l[k] === "string" && l[k]) o[k] = l[k].slice(0, 30); }); }   /* another sport's leg: its game's day, teams and start (11/27) */
+            return o; }) })).slice(0, 12);   /* slips (Phil, 10/24): kept six days; team totals and props 10/25; a leg's league 11/26 */
       } catch (e) {} });
       try { const ids = s => s.legs.map(l => l.id).join();   /* a slip with legs in both leagues is in both lists: one object for the two, so a rename or its filter switch is one change (11/26) */
         S.per.nfl.slips = S.per.nfl.slips.map(s => S.per.cfb.slips.find(x => x.created === s.created && ids(x) === ids(s)) || s); } catch (e) {}
@@ -1355,7 +1364,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const baseColor = t => { let c = t.color || "3b4560"; if (lum(c) > 0.8 && t.alt && lum(t.alt) < lum(c)) c = t.alt; return "#" + c; };
   /* the home half switches to its alternate color when both teams wear the same one */
   const colors = g => { const a = baseColor(g.away); let h = baseColor(g.home); if (dist(a, h) < 70 && g.home.alt && g.home.alt.length === 6 && dist("#" + g.home.alt, a) >= 70) h = "#" + g.home.alt; return [a, h]; };
-  const LOGO = (league, id) => (SLATE.logos && SLATE.logos[league + ":" + id]) || "https://a.espncdn.com/combiner/i?img=" + (league === "nfl" ? "/i/teamlogos/nfl/500/" : "/i/teamlogos/ncaa/500/") + id + ".png&h=96&w=96";
+  const LOGO = (league, id) => (SLATE.logos && SLATE.logos[league + ":" + id]) || "https://a.espncdn.com/combiner/i?img=" + (isX(league) ? "/i/teamlogos/" + XS[league].logo + "/500/" : league === "nfl" ? "/i/teamlogos/nfl/500/" : "/i/teamlogos/ncaa/500/") + id + ".png&h=96&w=96";
   /* when each game's last real down was seen (the feed blanks the down in breaks). A down older than this can't vouch for the kept
      down or for "who kicks off", and the board shows just the spot and the ball. Kept across a reload in slate-keep for the same few
      minutes, so a page Safari reloaded during a timeout still knows the down (Phil, 10/23). */
@@ -1401,7 +1410,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const TEAMS = {};
   Object.keys(LG).forEach(lg => { const m = {}; GAMES[lg].forEach(g => ["away", "home"].forEach(s => { const t = g[s]; if (!m[t.name]) m[t.name] = { ab: t.ab, short: t.short, conf: t.conf, rank: t.rank }; else if (t.rank && (!m[t.name].rank || t.rank < m[t.name].rank)) m[t.name].rank = t.rank; })); TEAMS[lg] = m; });
   const starred = g => { const st = P().stars; return st.has(g.home.name) || st.has(g.away.name); };
-  const gamecast = g => "https://www.espn.com/" + (g.league === "nfl" ? "nfl" : "college-football") + "/game/_/gameId/" + g.id;
+  const gamecast = g => "https://www.espn.com/" + (isX(g.league) ? XS[g.league].web : g.league === "nfl" ? "nfl" : "college-football") + "/game/_/gameId/" + g.id;
 
   /* ---- the current filters: which channel a game files under, whether it's watchable, market tags, stars ---- */
   const isReg = g => NFL() && g.carriers.length && (g.carriers[0] === "CBS" || g.carriers[0] === "FOX") && !g.tbd && dayLabel(g.date).long === "Sunday" && g.kickMin >= 720 && g.kickMin < 1140;
@@ -1794,7 +1803,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
      live game's card is open (a final's once). Opens on Win % the first time, then on the tab left open; the open tab closes on a second
      tap. Only the strip and the open tab are redrawn, in place. */
   const GCTABS = [["box", "Box score"], ["plays", "Plays"], ["drives", "Drives"], ["scoring", "Scoring"], ["wp", "Win %"]];
-  const SUMMARY = (league, id) => "https://site.api.espn.com/apis/site/v2/sports/football/" + (league === "nfl" ? "nfl" : "college-football") + "/summary?event=" + id;
+  const SUMMARY = (league, id) => "https://site.api.espn.com/apis/site/v2/sports/" + SPORT(league) + "/summary?event=" + id;
   const GCD = {};   /* id -> { at, d } the parsed summary */
   let gcBusy = false, gcSel = -1, gcSelGame = "";   /* gcSel: the win-probability point under the finger, -1 for the latest */
   const gcPlay = (p, team) => { const st = p.start || {}; return { id: p.id, q: (p.period || {}).number, clock: (p.clock || {}).displayValue || "", dd: st.downDistanceText || st.shortDownDistanceText || "", type: ((p.type || {}).text) || "",
@@ -2178,7 +2187,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
      A slip is a parlay: legs (a game, a side, moneyline / spread / total / team total / player prop, the number) kept for the week, a
      button beside FBS / Top 25 / All, and the legs' standing on the bars. Read from pasted text or a screenshot (OCR on the phone),
      confirmed against the board. */
-  const slipsOn = () => SL().filter(s => s.on);
+  const slipsOn = () => SL().filter(s => s.on && s.legs.some(l => !isX(l.lg)));   /* a slip with only another sport's legs has no games here to keep (11/27) */
   const slipOk = g => { if (awayWeek()) return true; const on = slipsOn(); return !on.length || on.some(s => s.legs.some(l => l.id === g.id)); };   /* another week: the slips are this week's games (11/2) */
   const slipHas = g => !awayWeek() && slipsOn().some(s => s.legs.some(l => l.id === g.id));   /* a slip that's on has this game: it shows whatever the level, the conferences and the teams filter say (11/26) */
   const gameLegs = g => { const out = []; slipsOn().forEach(s => s.legs.forEach(l => { if (l.id === g.id) out.push(l); })); return out; };
@@ -2190,7 +2199,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* a prop's tag says its stat (Phil, 11/15: "Jefferson 6+" ... "6+ what?"): one with no stat word gets the one the engine read from the market */
   const STATTAG = { td: "TD", rushtd: "RUSH TD", rectd: "REC TD", passtd: "PASS TD", passyd: "PASS YDS", rushyd: "RUSH YDS", recyd: "REC YDS", rryd: "RUSH+REC YDS",
     pryd: "PASS+RUSH YDS", rec: "REC", rushatt: "CARRIES", comp: "COMP", patt: "PASS ATT", int: "INT", longrush: "LONG RUSH", longrec: "LONG REC", sacks: "SACKS",
-    solo: "SOLO TKL", tackles: "TKL", kpts: "KICK PTS", xpm: "XP", fgm: "FG" };
+    solo: "SOLO TKL", tackles: "TKL", kpts: "KICK PTS", xpm: "XP", fgm: "FG",
+    pts: "PTS", reb: "REB", ast: "AST", tpm: "3PM", stl: "STL", blk: "BLK", tov: "TO", pra: "PTS+REB+AST", pr: "PTS+REB", pa: "PTS+AST", ra: "REB+AST", stocks: "STL+BLK" };
   function propTag(l){ const t = l.short || "PROP", sp = propSpec(l); return !sp || !STATTAG[sp.stat] || /[a-z]{2}/i.test(t.replace(/^[OU]\s/i, "")) ? t : t + " " + STATTAG[sp.stat]; }
   /* ---- player props (Phil, 11/8: "very common to do player props ... Would be great if the app could track it") ----
      A prop leg is read into players, a stat and a line from its market ("Jahmyr Gibbs & Ollie Gordon II - Combined Total Touchdowns",
@@ -2208,26 +2218,39 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     ["passyd", /pass(?:ing)?\s*(?:yards|yds)/i], ["rushyd", /rush(?:ing)?\s*(?:yards|yds)/i], ["recyd", /rec(?:eiving)?\s*(?:yards|yds)/i],
     ["comp", /completions/i], ["patt", /pass(?:ing)?\s*attempts/i], ["rushatt", /rush(?:ing)?\s*attempts|carries/i], ["int", /interceptions?/i], ["rec", /receptions|catches/i],
     ["sacks", /\bsacks?\b/i], ["solo", /solo\s+tackles/i], ["tackles", /tackles/i], ["kpts", /kicking\s*points/i], ["xpm", /extra\s*points?/i], ["fgm", /field\s*goals?/i],
+    /* basketball's (11/27), after the kicker's points and ahead of "to score" */
+    ["pra", /(?:points|pts)\s*(?:\+|&|,|and|plus|\/)\s*(?:rebounds|rebs?)\s*(?:\+|&|,|and|plus|\/)\s*(?:assists|asts?)|\bpra\b/i], ["pr", /(?:points|pts)\s*(?:\+|&|and|plus|\/)\s*(?:rebounds|rebs?)/i],
+    ["pa", /(?:points|pts)\s*(?:\+|&|and|plus|\/)\s*(?:assists|asts?)/i], ["ra", /(?:rebounds|rebs?)\s*(?:\+|&|and|plus|\/)\s*(?:assists|asts?)/i], ["stocks", /steals?\s*(?:\+|&|and|plus|\/)\s*blocks?|\bstocks\b/i],
+    ["tpm", /\bthrees\b|\b(?:3|three)[- ]?pointers?\b|\b3[- ]?pt\b|\b3pm\b/i], ["reb", /\brebounds?\b|\brebs\b/i], ["ast", /\bassists?\b|\basts\b/i], ["stl", /\bsteals?\b/i], ["blk", /\bblocks\b|\bblocked\s+shots\b/i],
+    ["tov", /\bturnovers?\b/i], ["pts", /\bpoints\b|\bpts\b/i],
     ["td", /touchdowns?|\btds?\b|to\s+score|scorer|anytime/i]];
+  const HOOP = new Set(["pts", "reb", "ast", "tpm", "stl", "blk", "tov", "pra", "pr", "pa", "ra", "stocks"]);   /* a basketball number: read only from a basketball game */
   const PV = { td: s => (s.rtd || 0) + (s.ctd || 0) + (s.ktd || 0) + (s.utd || 0) + Math.max(s.itd || 0, s.dtd || 0), rushtd: s => s.rtd || 0, rectd: s => s.ctd || 0,
     passtd: s => s.ptd || 0, passyd: s => s.pyd || 0, rushyd: s => s.ryd || 0, recyd: s => s.cyd || 0, rryd: s => (s.ryd || 0) + (s.cyd || 0), pryd: s => (s.pyd || 0) + (s.ryd || 0),
     rec: s => s.rec || 0, rushatt: s => s.ratt || 0, comp: s => s.comp || 0, patt: s => s.patt || 0, int: s => "pyd" in s ? s.pint || 0 : s.dint || 0,
-    longrush: s => s.rlong || 0, longrec: s => s.clong || 0, sacks: s => s.sk || 0, solo: s => s.solo || 0, tackles: s => s.tk || 0, kpts: s => s.kp || 0, xpm: s => s.xpm || 0, fgm: s => s.fgm || 0 };
+    longrush: s => s.rlong || 0, longrec: s => s.clong || 0, sacks: s => s.sk || 0, solo: s => s.solo || 0, tackles: s => s.tk || 0, kpts: s => s.kp || 0, xpm: s => s.xpm || 0, fgm: s => s.fgm || 0,
+    pts: s => s.pts || 0, reb: s => s.reb || 0, ast: s => s.ast || 0, tpm: s => s.tpm || 0, stl: s => s.stl || 0, blk: s => s.blk || 0, tov: s => s.tov || 0, pra: s => (s.pts || 0) + (s.reb || 0) + (s.ast || 0),
+    pr: s => (s.pts || 0) + (s.reb || 0), pa: s => (s.pts || 0) + (s.ast || 0), ra: s => (s.reb || 0) + (s.ast || 0), stocks: s => (s.stl || 0) + (s.blk || 0) };
   const PKEYS = { "passing.passingYards": "pyd", "passing.passingTouchdowns": "ptd", "passing.interceptions": "pint", "passing.completions/passingAttempts": "comp/patt",
     "rushing.rushingAttempts": "ratt", "rushing.rushingYards": "ryd", "rushing.rushingTouchdowns": "rtd", "rushing.longRushing": "rlong", "receiving.receptions": "rec",
     "receiving.receivingYards": "cyd", "receiving.receivingTouchdowns": "ctd", "receiving.longReception": "clong", "kickReturns.kickReturnTouchdowns": "ktd",
     "puntReturns.puntReturnTouchdowns": "utd", "interceptions.interceptions": "dint", "interceptions.interceptionTouchdowns": "itd", "defensive.defensiveTouchdowns": "dtd",
     "defensive.sacks": "sk", "defensive.totalTackles": "tk", "defensive.soloTackles": "solo", "kicking.totalKickingPoints": "kp",
-    "kicking.fieldGoalsMade/fieldGoalAttempts": "fgm/", "kicking.extraPointsMade/extraPointAttempts": "xpm/" };
+    "kicking.fieldGoalsMade/fieldGoalAttempts": "fgm/", "kicking.extraPointsMade/extraPointAttempts": "xpm/",
+    /* basketball's one stat group has no name ("hoops" here); made-attempted in one value */
+    "hoops.points": "pts", "hoops.rebounds": "reb", "hoops.assists": "ast", "hoops.steals": "stl", "hoops.blocks": "blk", "hoops.turnovers": "tov", "hoops.minutes": "min",
+    "hoops.threePointFieldGoalsMade-threePointFieldGoalsAttempted": "tpm/", "hoops.fieldGoalsMade-fieldGoalsAttempted": "fgm/" };
   const pnorm = s => { const w = (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[’'`.]/g, "").replace(/[^a-z0-9]+/g, " ").trim().split(" ").filter(Boolean);
     while (w.length > 2 && /^(?:jr|sr|[il1]{2,3}|iv|v)$/.test(w[w.length - 1])) w.pop(); return w.join(" "); };   /* "Ollie Gordon II", read "Gordon Il": ollie gordon */
   function propBox(j){   /* a summary's players (name, team, the numbers props read) and the injury report's outs */
-    const by = {}, outs = [];
+    const by = {}, outs = [], fin = ((((((j || {}).header || {}).competitions || [])[0] || {}).status || {}).type || {}).state === "post";
     (((j || {}).boxscore || {}).players || []).forEach(t => { const ab = ((t.team || {}).abbreviation) || "";
-      (t.statistics || []).forEach(c => { const ks = c.keys || []; (c.athletes || []).forEach(x => { const a = x.athlete || {}, nm = a.displayName || ""; if (!nm) return;
+      (t.statistics || []).forEach(c => { const ks = c.keys || [], hp = !c.name && ks.includes("points"), cn = hp ? "hoops" : c.name;   /* basketball's one group (11/27) */
+        (c.athletes || []).forEach(x => { const a = x.athlete || {}, nm = a.displayName || ""; if (!nm) return;
+        if (hp && !(x.stats || []).length){ if (x.didNotPlay && fin) outs.push({ n: pnorm(nm) }); return; }   /* no numbers: not in yet, or (a final) he sat it out and the book voids the leg */
         const p = by[a.id || nm] = by[a.id || nm] || { nm, n: pnorm(nm), team: ab, s: {} };
-        ks.forEach((k, i) => { const to = PKEYS[c.name + "." + k], v = String((x.stats || [])[i] == null ? "" : x.stats[i]); if (!to) return;
-          to.split("/").forEach((f, q) => { const n = parseFloat(to.includes("/") ? v.split("/")[q] : v); if (f && !isNaN(n)) p.s[f] = n; }); }); }); }); });
+        ks.forEach((k, i) => { const to = PKEYS[cn + "." + k], v = String((x.stats || [])[i] == null ? "" : x.stats[i]); if (!to) return;
+          to.split("/").forEach((f, q) => { const n = parseFloat(to.includes("/") ? v.split(hp ? "-" : "/")[q] : v); if (f && !isNaN(n)) p.s[f] = n; }); }); }); }); });
     ((j || {}).injuries || []).forEach(t => (t.injuries || []).forEach(i => { if (/^(?:out|injured reserve|suspended|inactive)/i.test(i.status || "")) outs.push({ n: pnorm(((i.athlete || {}).displayName) || "") }); }));
     return { players: Object.values(by), outs };
   }
@@ -2248,13 +2271,13 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const k = [l.mkt, l.short, l.text, l.who].join("|"); if (!PSPEC.has(k)){ let sp = null; try { sp = readProp(l); } catch (e) {} PSPEC.set(k, sp); } return PSPEC.get(k);
   }
   const statOf = s => (PROPSTAT.find(x => x[1].test(s)) || [])[0] || "";
-  const STATWORDS = /\b(?:anytime|touchdowns?|tds?|scorer|to\s+score|rushing|receiving|passing|rush|rec|pass|yards|yds|receptions|attempts|completions|alt(?:ernate)?|total|combined|either|player|points)\b.*$/i;
+  const STATWORDS = /\b(?:anytime|touchdowns?|tds?|scorer|to\s+score|rushing|receiving|passing|rush|rec|pass|yards|yds|receptions|attempts|completions|alt(?:ernate)?|total|combined|either|player|points|pts|rebounds?|assists?|threes|steals?|blocks|turnovers?)\b.*$/i;
   function readProp(l){
     const cl = s => (s || "").replace(/[−–—]/g, "-").replace(/\s+/g, " ").trim(), mk = cl(l.mkt), pk = cl(l.text), sh = cl(l.short), parts = mk.split(/\s+-\s+/);
     const nameish = (s, two) => { const t = s.replace(/[^A-Za-z.' &,\/+-]/g, " ").replace(/\s+/g, " ").trim(); return /[A-Za-z]{2}/.test(t) && !/\b(?:over|under)\b|^(?:o|u|alt|yes|no)$/i.test(t) && (!two || /\S\s+\S/.test(t)) ? t : ""; };
     let names = "", stat = "";
     if (parts.length > 1 && !statOf(parts[0]) && /[A-Za-z]{2}/.test(parts[0])){ names = parts[0]; stat = statOf(parts.slice(1).join(" ")); }   /* "Names - Stat" (DraftKings, FanDuel) */
-    else { stat = statOf(mk) || statOf(pk); const at = PROPSTAT.reduce((m, x) => { const i = mk.search(x[1]); return i >= 0 && i < m ? i : m; }, mk.length); names = mk.slice(0, at); }   /* "Name Stat", or the stat alone */
+    else { stat = statOf(mk) || statOf(pk); const at = PROPSTAT.reduce((m, x) => { const i = mk.search(x[1]); return i >= 0 && i < m ? i : m; }, mk.length); names = mk.slice(0, at).replace(/(?:\s*\b(?:\d+\s*\+?|total|alt(?:ernate)?|player|combined|to|record|o\/u))+\s*$/i, " "); }   /* "Name Stat", or the stat alone; "Towns Total Rebounds" is Towns, "To Record 10+ Rebounds" names nobody (the pick does): 11/27 */
     names = nameish(names) || nameish(pk.replace(/(?:^|\s)[0-9IlZSB|]{1,3}\s*\+/g, " ").replace(/\b(?:over|under)\s*\d+(?:\.\d)?/ig, " ").replace(ODDSTAIL, "").replace(STATWORDS, ""), true) || nameish(l.who || "");   /* the pick is the player ("Jahmyr Gibbs", "Jahmyr Gibbs 70+ Yards") */
     const list = names.split(/\s*(?:&|\+|,|\/|\band\b|\bor\b)\s*/i).map(s => s.replace(/^[^A-Za-z]+|[^A-Za-z.]+$/g, "").trim()).filter(s => /[A-Za-z]{2}/.test(s) && s.split(" ").length <= 5);
     if (!list.length || !stat || stat === "first") return null;
@@ -2272,6 +2295,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const PSTAT = {}, PNOW = new Map();   /* game id -> { at, box, key, sk: the score it was read at, fin, fail }; the standings worked out from it */
   function propNow(g, l){   /* a prop's standing { st, w: in words, line: its players' numbers }; null: a prop it can't track */
     const sp = propSpec(l); if (!sp) return null;
+    if (HOOP.has(sp.stat) ? !isX(g.league) : isX(g.league) && sp.stat !== "fgm") return null;   /* a basketball number on a football game, or a football one on a basketball game: not tracked (11/27) */
     if (g.state === "pre") return { st: "pending", w: "not started", line: "" };
     const c = PSTAT[g.id]; if (!c || !c.box) return { st: "pending", w: "checking", line: "" };
     const k = [l.id, l.mkt, l.short, l.text, c.at, g.state].join("|"); if (PNOW.has(k)) return PNOW.get(k);
@@ -2390,15 +2414,19 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (/^\d/.test(t) || t.length < 2 || SLIPWORD.test(t)) return null;
     return { team: t, kind: "ml", text: s.trim(), hint, label };
   }
+  const XCHROME = /earn|reward|bonus|loyalty|crown|fancash|boost|promo|credit|tier|balance|redeem/;   /* the book's own points */
   function mktOf(s){   /* a block's market line: the kind of leg (null: not a market line) */
     const t = s.toLowerCase(); if (/^if\b/.test(t)) return null;   /* the book's fine print under a prop */
     if (/wager|payout|\bstake\b|\bodds\b|\bto\s+pay\b|\$\s?\d/.test(t)) return null;   /* the stake ("Total Cash Wagered", "Max Payout", "To win $46.69", "Total odds +480") */
     if (/[a-z]{2},\s*[a-z]/.test(t)) return null;   /* a summary of picks ("Falcons to Win, Bijan Robinson Anytime Touchdown Scorer,") */
     if (/team\s*total/.test(t)) return "tt";
     if (/to\s+score|touchdown|scorer|passing|rushing|receiving|receptions|\byards\b|\bsacks?\b|interception|field\s*goals?\s*made|player\s+props?/.test(t)) return "prop";
+    /* a basketball prop (11/27: another sport's leg): "Karl-Anthony Towns Rebounds O/U", "Pts + Reb + Ast", "To Record 10+ Rebounds"; not the book's reward points */
+    if (/\b(?:rebounds?|rebs|assists?|asts|threes|(?:3|three)[- ]?pointers?|steals?|blocks|turnovers?|double[- ]double|triple[- ]double|pts)\b/.test(t) && !XCHROME.test(t)) return "prop";
     if (/(?:^|[^a-z])[mnli]?oneyl[il1]ne\b|money\s*line|\bto win\b/.test(t)) return "ml";   /* "Moneyline" read "oneyline" or "loneyline" (11/8) */
     if (/(?:^|[^a-z])s?pread\b|handicap/.test(t)) return "spread";
     if (/(?:^|[^a-z])t?otals?\b|over\s*\/\s*under/.test(t)) return "total";
+    if (/\b(?:points|pts)\b/.test(t) && !XCHROME.test(t)) return "prop";   /* "Landry Shamet Points": after the game total, so "Total Points" stays one */
     return null;
   }
   const perOf = s => { const t = s.toLowerCase(), m = t.match(/\b(1st|2nd|3rd|4th|first|second|third|fourth)\s+(half|quarter)\b/) || t.match(/\b([1-4])(h|q)\b/);   /* a half or quarter market */
@@ -2408,7 +2436,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const ln = lines[i], m = ln.match(/^(.*?)(\d{1,2}):(\d{2})\s*([ap])\.?m\b\.?(.*)$/i);
     if (m && DAYRX.test(m[1])){   /* pregame: "TB Today 10:00 AM CAR"; "SVT" (a logo's edge read as a letter) also tries "VT", "OK ST" also "OKST" */
       const a = (m[1].replace(DAYRX, "").match(/[A-Za-z&]{2,6}/g) || []).pop() || "", hm = m[5].replace(/\bwatch\b/i, " ").match(/^\s*([A-Za-z&]{2,6})\b(?:\s+([A-Za-z&]{2,6})\b)?/) || [];
-      if (a && hm[1]) return { a: a.length > 2 ? a + " " + a.slice(1) : a, h: hm[2] ? hm[1] + " " + hm[2] + " " + hm[1] + hm[2] : hm[1], x: "", end: i };
+      if (a && hm[1]) return { a: a.length > 2 ? a + " " + a.slice(1) : a, h: hm[2] ? hm[1] + " " + hm[2] + " " + hm[1] + hm[2] : hm[1], x: "", end: i, w: ((m[1].match(DAYRX) || [""])[0] + " " + m[2] + ":" + m[3] + " " + m[4] + "m").trim() };   /* w: its day and time, for another sport's game (11/27) */
     }
     if (/Q\s?[234]/.test(ln) && /\bT\s*$/.test(ln)){   /* a mini scoreboard's header ("Q1 13:19 | 2nd & 1, NO 20 Q1 Q2 Q3 Q4 T", "Final Q1 Q2 Q3 Q4 OT T"), then the two teams */
       const tl = []; for (let k = i + 1; k < Math.min(lines.length, i + 4) && tl.length < 2; k++) if (/[A-Za-z]{3}/.test(lines[k])) tl.push(k);
@@ -2435,11 +2463,11 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     return /[A-Za-z]{3}/.test(t) && t.split(/\s+/).length <= 6 && !/[+-]\s?\d|\d\.\d|,|\$|\b(?:over|under|spread|money\s*line|moneyline|total|points|parlay|wager|odds)\b/i.test(t) ? t : ""; };
   function gameLine(lines, i){
     const ln = lines[i]; if (/\|/.test(ln)) return null;   /* Caesars' "Spread | A at B" is read with its market */
-    const g = ln.replace(/^[^A-Za-z0-9(]+/, "").replace(LEAGUE, "").replace(WHEN, "").trim();
+    const g0 = ln.replace(/^[^A-Za-z0-9(]+/, "").replace(LEAGUE, ""), g = g0.replace(WHEN, "").trim(), wh = s => (s.match(WHEN) || [""])[0];   /* the day and time kept (w), for another sport's game (11/27) */
     let m = g.match(/^(.+?)\s+@\s+(.+)$/) || g.match(/^(.+?)\s+(?:at|vs\.?|v)\s+(.+)$/i);
-    if (m){ const a = nameLike(m[1]), h = nameLike(m[2]); return a && h ? { a, h, x: "", end: i } : null; }
+    if (m){ const a = nameLike(m[1]), h = nameLike(m[2]); return a && h ? { a, h, x: "", end: i, w: wh(g0) } : null; }
     if ((m = g.match(/^(.+?)\s*@$/)) && i + 1 < lines.length && !mktOf(lines[i + 1])){   /* BetMGM: "Utah Jazz @" over "Boston Celtics" */
-      const a = nameLike(m[1]), h = nameLike(lines[i + 1].replace(WHEN, "")); if (a && h) return { a, h, x: "", end: i + 1 };
+      const a = nameLike(m[1]), h = nameLike(lines[i + 1].replace(WHEN, "")); if (a && h) return { a, h, x: "", end: i + 1, w: wh(lines[i + 1]) };
     }
     return null;
   }
@@ -2516,7 +2544,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (free.length === 1) pair[i] = free[0]; }
     return pair;
   }
-  const propShort = (p, mk, l) => { const td = /to\s+score|touchdown|\btds?\b/i.test(mk), yd = /yards|yds/i.test(mk), n = (p.match(/(\d+)\s*\+/) || [])[1], o = mk.match(/\b(over|under)\s*(\d+(?:\.\d)?)/i);
+  const propShort = (p, mk, l) => { const hp = HOOP.has(statOf(mk)), td = !hp && /to\s+score|touchdown|\btds?\b/i.test(mk), yd = /yards|yds/i.test(mk), n = (p.match(/(\d+)\s*\+/) || (hp && mk.match(/(\d+)\s*\+/)) || [])[1], o = mk.match(/\b(over|under)\s*(\d+(?:\.\d)?)/i);   /* hp: a basketball market ("To Score 25+ Points" is 25+, not a TD: 11/27) */
     if (n) return n + "+" + (td ? " TD" : yd ? " YDS" : "");
     if (l && l.kind === "total") return ouText(l.side, l.num) + (yd ? " YDS" : "");
     if (o) return ouText(o[1].toLowerCase(), +o[2]) + (yd ? " YDS" : "");   /* the line on the market ("OVER 224.5 PASSING YARDS", FanDuel; 11/8) */
@@ -2524,7 +2552,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const lastName = ws => { const w = ws.slice(); while (w.length > 1 && /^(?:[il1]{1,3}|iv|jr\.?|sr\.?)$/i.test(w[w.length - 1])) w.pop(); return w[w.length - 1] || ""; };   /* "Ollie Gordon II" is Gordon */
   const propWho = (p, mk) => { const pw = p.match(/[A-Za-z][A-Za-z'.-]+/g) || [];
     if (pw.length >= 2 && !/^(over|under)$/i.test(pw[0])) return lastName(pw);   /* the pick is the player ("Christian McCaffrey") */
-    const s = (mk || "").split(/\s+-\s+|:/)[0].replace(/\s+(?:receiving|rushing|passing|receptions?|yards|yds|tds?|touchdowns?|anytime|scorer|points|made|attempts|completions|longest|total)\b.*$/i, "").trim();   /* the stat after the name */
+    const s = (mk || "").split(/\s+-\s+|:/)[0].replace(/\s+(?:receiving|rushing|passing|receptions?|yards|yds|tds?|touchdowns?|anytime|scorer|points|pts|rebounds?|assists?|threes|steals?|blocks|turnovers?|made|attempts|completions|longest|total)\b.*$/i, "").trim();   /* the stat after the name */
     if (!/\s/.test(s) || /score|touchdown|total|yards|player|team/i.test(s)) return "";
     return s.split(/\s+(?:or|and|&)\s+|,\s*/).map(x => lastName(x.trim().split(/\s+/))).filter(Boolean).join(" or ").slice(0, 28); };   /* "McCaffrey or Robinson", "Lamb" */
   /* a pick with its block: the market's kind (a team total, a player prop, a half), the block's game for placing it */
@@ -2589,7 +2617,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   function teamHit0(text, t){
     const q = normTeam(text); if (!q || !t) return 0;
-    const Q = " " + q + " ", nm = normTeam(t.name), sh = normTeam(t.short), ab = normTeam(t.ab), ax = ABX[ab] || "";
+    const Q = " " + q + " ", nm = normTeam(t.name), sh = normTeam(t.short), ab = normTeam(t.ab), ax = t.ax || ABX[ab] || "";   /* t.ax: another sport's team with the book's own abbreviation (11/27) */
     if (q === nm || q === sh || q === ab || (ax && q === ax)) return 5;
     let s = 0;
     if (nm && Q.includes(" " + nm + " ")) s = 4 + nm.length / 100;
@@ -2668,8 +2696,24 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const res = legs.map(l => { const p = one(l, games), q = alt ? one(l, alt.games) : null; return { p, q, far: !!q && !!q.id && q.sure && (!p.id || (!!l.mu && !p.sure)) }; }), went = {}, mk = l => l.mu.a + "|" + l.mu.h;
     legs.forEach((l, i) => { if (res[i].far && l.mu) went[mk(l)] = res[i].q.id; });
     legs.forEach((l, i) => { const r = res[i]; if (alt && !r.far && l.mu && !r.p.sure && r.q.id && went[mk(l)] === r.q.id) r.far = true; });
-    legs.forEach((l, i) => { const far = res[i].far, p = far ? res[i].q : res[i].p, plg = alt ? (far ? alt.lg : alt.home) : "";
-      const id = p.id, side = p.side, o = Object.assign({}, l, { id, side }); o.fit = p.fit; if (alt && id) o.lg = plg; delete o.mu;
+    /* another sport's game (11/27): the leg's game line names both of its teams, within 40 minutes of the line's time. A football game keeps
+       a leg whose line names both of its teams, when its kickoff is the line's time too; a line that doesn't settle it there asks for
+       the other sports' scoreboards of its day (XWANT: the read is done again once they're in) */
+    const xsGame = (l, p0) => { if (!l.mu) return null; try {   /* a fault here must not stop a football read */
+      const w = xsWhen(l.mu.w), near = (g, m, ts) => !w.ts.length || ts.some(t => Math.abs(new Date(g.kick).getTime() - t) <= m * 60000), g0 = p0.id ? all.find(g => g.id === p0.id) : null;
+      const fb = ts => !!g0 && two(l.mu, g0) && near(g0, 90, ts);   /* the football game it's on: both teams, at its kickoff */
+      if (fb(w.ts)) return null;
+      for (const k of Object.keys(XS)) for (const ts of (w.alt.length ? [w.ts, w.alt] : [w.ts])){ w.dates.forEach(d => XWANT.add(k + ":" + d));   /* by this device's clock, then by the other zones' */
+        if (ts === w.alt && fb(ts)) return null;   /* by another zone's clock it's the football game's kickoff: football keeps it */
+        const bg = blockGame(l.mu, XG[k].filter(g => w.ts.length ? near(g, 40, ts) : w.dates.includes(partsIn(g.kick, TZ.ET).date)));
+        if (!bg || !two(l.mu, bg)) continue;
+        const fwd = Math.min(teamHit(l.mu.a, bg.away), teamHit(l.mu.h, bg.home)) >= Math.min(teamHit(l.mu.a, bg.home), teamHit(l.mu.h, bg.away));
+        if (!xsOwn(l.mu.a, fwd ? bg.away : bg.home) || !xsOwn(l.mu.h, fwd ? bg.home : bg.away)) continue;   /* "ATL Falcons" isn't the Hawks */
+        const side = l.kind === "total" ? l.side : gameOnly(l) ? "" : sideIn(bg, l.team) || sideNear(bg, l.team); if (!gameOnly(l) && !side) continue;
+        return { id: bg.id, side, fit: legFit(l, bg), lg: k }; } } catch (e) {}
+      return null; };
+    legs.forEach((l, i) => { const far = res[i].far, xp = xsGame(l, far ? res[i].q : res[i].p), p = xp || (far ? res[i].q : res[i].p), plg = xp ? xp.lg : alt ? (far ? alt.lg : alt.home) : "";
+      const id = p.id, side = p.side, o = Object.assign({}, l, { id, side }); o.fit = p.fit; if ((alt || xp) && id) o.lg = plg; delete o.mu;
       if (id){ const k = legKey(o); if (seen[k]) return; seen[k] = true;
         if (legs.loose && (o.kind === "ml" || o.kind === "spread")){ const sk = "side:" + id + ":" + side, j = seen[sk];   /* the loose read can catch one pick twice: the spread beats the moneyline */
           if (j != null){ if (out[j].kind === "ml" && o.kind === "spread") out[j] = o; return; } seen[sk] = out.length; } }
@@ -2680,7 +2724,44 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (gameOnly(o)){ o.id = id; if (alt) o.lg = g.league; } else { const s = sideIn(g, o.team); if (s){ o.id = id; o.side = s; if (alt) o.lg = g.league; } } });
     return out;
   }
-  function readSlip(text){
+  /* a game line's day and time as the moments it could mean (11/27): "Today 5:10 PM" (today's, or yesterday's on an older screenshot),
+     "Sat 1:30 PM" (the Saturday from yesterday to five days on), "Nov 27 7:10PM ET"; by this device's clock unless the line names a
+     zone (ts), and by the other US zones' clocks (alt: a screenshot read on a device set to another zone). No time (a live or final
+     game's mini scoreboard): no moments, and the days to look at are today's and yesterday's */
+  const XMON = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"], XDOW = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"], XZONE = { e: "ET", c: "CT", m: "MT", p: "PT" };
+  function xsWhen(w){
+    const s = String(w || ""), now = new Date(), y = now.getFullYear(), mo0 = now.getMonth(), d0 = now.getDate(), offs = [], ts = [], alt = [], dates = new Set();
+    const tm = s.match(/(\d{1,2}):(\d{2})\s*([ap])\.?m/i), zn = s.match(/\d\s*[ap]\.?m\.?\s*\(?\s*([ecmp])[sd]?t\b/i), tmw = /\b(?:tomorrow|tmrw)\b/i.test(s);
+    const md = s.match(/\b(\d{1,2})\/(\d{1,2})\b/), mn = s.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})\b/i), wd = s.match(/\b(sun|mon|tue|wed|thu|fri|sat)/i);
+    if (tmw) offs.push(1, 0);
+    else if (md || mn){ const mo = md ? +md[1] - 1 : XMON.indexOf(mn[1].toLowerCase()), dd = +(md ? md[2] : mn[2]);
+      const t = [-1, 0, 1].map(k => new Date(y + k, mo, dd)).sort((a, b) => Math.abs(a - now) - Math.abs(b - now))[0]; offs.push(Math.round((t - new Date(y, mo0, d0)) / 86400000)); }
+    else if (wd && !/\b(?:today|tonight)\b/i.test(s)){ const o = (XDOW.indexOf(wd[1].toLowerCase()) - now.getDay() + 7) % 7; offs.push(o === 6 ? -1 : o); }
+    else offs.push(0, -1);
+    const ymd = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    if (tm){ const h = (+tm[1] % 12) + (/p/i.test(tm[3]) ? 12 : 0), mi = +tm[2], zone = zn ? TZ[XZONE[zn[1].toLowerCase()]] : "";
+      offs.forEach(o => { let t = new Date(y, mo0, d0 + o, h, mi).getTime(); if (isNaN(t)) return;
+        const n = Date.UTC(y, mo0, d0 + o, h, mi), inZone = z => { const p = partsIn(new Date(n).toISOString(), z); return n - (Date.UTC(+p.date.slice(0, 4), +p.date.slice(5, 7) - 1, +p.date.slice(8, 10)) + p.m * 60000 - n); };   /* that wall time in a zone */
+        if (zone) t = inZone(zone); else ["ET", "CT", "MT", "AZ", "PT"].forEach(z => { const a = inZone(TZ[z]); if (Math.abs(a - t) > 60000 && !alt.includes(a)){ alt.push(a); dates.add(partsIn(new Date(a).toISOString(), TZ.ET).date); } });
+        ts.push(t); dates.add(partsIn(new Date(t).toISOString(), TZ.ET).date); }); }
+    else if (tmw || md || mn) offs.forEach(o => dates.add(ymd(new Date(y, mo0, d0 + o))));
+    else { const t = partsIn(now.toISOString(), TZ.ET).date; dates.add(t); dates.add(shiftDate(t, -1)); }
+    return { ts, alt, dates: [...dates] };
+  }
+  /* a team's side of a game line says nothing against it: every word of four letters or more is one of the team's own, a letter or two off at most */
+  const xsOwn = (text, t) => { const own = normTeam([t.name, t.short, t.ab, t.ax || ""].join(" ")).split(" ");
+    return normTeam(text).split(" ").every(w => w.length < 4 || !/^[a-z]+$/.test(w) || own.some(o => o === w || lev(o, w) <= (w.length > 5 ? 2 : 1))); };
+  const XWANT = new Set(), XD = {}, XT = {};   /* "nba:2026-11-27": the days of another sport's scoreboard a read wants; when each was last read, and last asked for */
+  let xsWait = false, xsSeq = 0;   /* a read waiting on those scoreboards (Track holds for it), and which read it is */
+  async function xsLook(want, text, seq){   /* those scoreboards, four seconds at most, then the slip read again with their games in hand */
+    try { await Promise.race([Promise.all(want.map(k => xsFetch(k.split(":")[0], k.split(":")[1]).catch(() => {}))), new Promise(res => setTimeout(res, 4000))]); } catch (e) {}
+    if (seq !== xsSeq) return;   /* another read since */
+    if (!pend || !slipSheet || !slipSheet.querySelector(".scard")){ xsWait = false; return; }   /* closed, tracked or on the paste box meanwhile */
+    try { readSlip(text, true); } catch (e) { xsWait = false; xsGo(); }   /* whatever happens, Track comes back */
+  }
+  const xsGo = () => { const b = slipSheet && slipSheet.querySelector(".ssgo"); if (b && pend) b.disabled = !pend.some(sp => !sp.dup && sp.legs.some(l => l.id)); };   /* Track as it was before the wait */
+  function readSlip(text, again){
+    XWANT.clear(); if (!again) xsSeq++;
     const secs = slipSections(text).map(sec => ({ sec, legs: slipLegs(sec) })).filter(x => x.legs.length);
     const tryLg = (lg, both) => { const games = slipGames(lg), slips = [];
       secs.forEach(({ sec, legs }) => { const placed = placeLegs(legs, games, both ? { home: lg, lg: otherLg(lg), games: slipGames(otherLg(lg)) } : null); if (!placed.length) return;
@@ -2689,10 +2770,15 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       return { lg, slips, found: slips.reduce((a, x) => a + x.legs.filter(l => l.id).length, 0), all: slips.reduce((a, x) => a + x.legs.length, 0), q: slips.reduce((a, x) => a + x.legs.reduce((b, l) => b + (l.fit || 0), 0), 0) }; };
     let r = tryLg(S.league); const other = S.league === "nfl" ? "cfb" : "nfl";
     if (has(other)){ const r2 = tryLg(other); if (r2.found > r.found || (r2.found && r2.found === r.found && r2.q > r.q * 1.25)) r = r2;
-      r = tryLg(r.lg, true); }   /* then leg by leg: one with no game in the slip's league, or a better-named one in the other, goes there (11/26: a ticket with legs in both) */   /* read on the other league's board: the slip goes to its own (10/25); placed as fully on both, the one that names its games better (11/23: "CIN Bengals @ WAS Commanders" is the Bengals, not Cincinnati's college game) */
+      XWANT.clear(); r = tryLg(r.lg, true); }   /* (what the other sports are asked is this last pass's: 11/27) then leg by leg: one with no game in the slip's league, or a better-named one in the other, goes there (11/26: a ticket with legs in both) */   /* read on the other league's board: the slip goes to its own (10/25); placed as fully on both, the one that names its games better (11/23: "CIN Bengals @ WAS Commanders" is the Bengals, not Cincinnati's college game) */
+    if (again){ xsWait = false;   /* read again with the other sports' games: the sheet is drawn again only if a leg went to one of them */
+      if (!r.slips.some(sp => sp.legs.some(l => isX(l.lg)))){ xsGo(); return; } }
     if (!r.slips.length){ sheetMsg("No picks found in that. A screenshot of the whole slip reads best, or paste the picks as a list: Indiana, Miami FL -3.5, Over 55.5 (Army at Tulsa)."); return; }
     pend = r.slips; pendLg = r.lg;
+    const want = again ? [] : [...XWANT].filter(k => !(XD[k] && Date.now() - XD[k] < 60000));   /* another sport's days not just read (11/27) */
+    xsWait = want.length > 0;
     drawConfirm();
+    if (xsWait) xsLook(want, text, xsSeq);
   }
   /* ---- the slip as a card (Phil, 11/7: "a more elegant way to do the whole slip bit"; options 1 and 2) ----
      Adding: the + on the bar opens the photos; the read shows a slipSheet shaped like the slip (logos, picks, games, a check per leg; PICK on
@@ -2717,10 +2803,14 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
      carries its league (lg), and a leg's game is looked up in its own league's games for this week. The other league's scoreboard is
      polled for those legs (pollX), so every leg is tracked from either board. */
   const otherLg = lg => lg === "nfl" ? "cfb" : "nfl";
-  const weekGames = lg => (S.wk && S.wk[lg] ? WEEKS.base[lg].games : GAMES[lg]) || [];   /* this week's games, whichever week that league's board is on */
-  const legLg = (l, dflt) => { const d = dflt || S.league; if (l.lg === "cfb" || l.lg === "nfl") return l.lg; const o = otherLg(d);
+  const weekGames = lg => isX(lg) ? XG[lg] : (S.wk && S.wk[lg] ? WEEKS.base[lg].games : GAMES[lg]) || [];   /* this week's games, whichever week that league's board is on; another sport's: the ones its scoreboard gave (11/27) */
+  const legLg = (l, dflt) => { const d = dflt || S.league; if (l.lg === "cfb" || l.lg === "nfl" || isX(l.lg)) return l.lg; const o = otherLg(d);
     return l.id && !weekGames(d).some(g => g.id === l.id) && weekGames(o).some(g => g.id === l.id) ? o : d; };   /* saved without its league (an older page): the league that has its game */
-  const legGame = (l, dflt) => l.id ? weekGames(legLg(l, dflt)).find(g => g.id === l.id) : null;
+  /* another sport's game before its scoreboard answers (a load, or offline): drawn from what the leg kept, not started */
+  const XSTUB = {}, xsTeam = ab => ({ id: "", ab, name: ab, short: ab, color: "3b4560", alt: "", logo: ab.toLowerCase(), rank: 0, rec: "", conf: "OTHER", score: 0, winner: false, line: [] });
+  const xsStub = l => { if (!l.ga || !l.gh || !l.gk || isNaN(new Date(l.gk).getTime())) return undefined;
+    return XSTUB[l.id] || (XSTUB[l.id] = Object.assign(prepGame({ id: l.id, kick: l.gk, tbd: false, away: xsTeam(l.ga), home: xsTeam(l.gh), neutral: false, venue: "", carriers: [], tv: false, spread: null, ou: null, provider: "", state: "pre", detail: "", period: 0, clock: "", sit: null }, l.lg), { stub: true })); };
+  const legGame = (l, dflt) => { if (!l.id) return null; const lg = legLg(l, dflt); return weekGames(lg).find(g => g.id === l.id) || (isX(lg) ? xsStub(l) : undefined); };
   /* ---- Both: the two leagues on one board (Phil, 11/26: "for days like today where there are both NFL and college games, there should
      be a hybrid option ... that combines both boards") ----
      A third pick in the League picker, offered on a day both leagues play. The board keeps its own league (its days, its week, its
@@ -2757,7 +2847,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   async function rosterGet(lg, id){
     const k = lg + ":" + id, r = ROSTER[k]; if (!id || (r && (r.ps || r.busy || (r.fail && Date.now() - r.at < 600000)))) return;
     ROSTER[k] = { busy: true };
-    try { const res = await fetch("https://site.api.espn.com/apis/site/v2/sports/football/" + (lg === "nfl" ? "nfl" : "college-football") + "/teams/" + id + "/roster"); if (!res.ok) throw new Error(res.status);
+    try { const res = await fetch("https://site.api.espn.com/apis/site/v2/sports/" + SPORT(lg) + "/teams/" + id + "/roster"); if (!res.ok) throw new Error(res.status);
       const j = await res.json(), ps = [];
       (j.athletes || []).forEach(gp => (Array.isArray(gp.items) ? gp.items : [gp]).forEach(a => { const nm = (a && (a.fullName || a.displayName)) || ""; if (nm && a.jersey != null && a.jersey !== "") ps.push({ nm, n: pnorm(nm), num: String(a.jersey) }); }));
       ROSTER[k] = { at: Date.now(), ps }; rosterSave(); rosterDone(); }
@@ -2798,8 +2888,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function xboxParse(j){
     const pl = {}, tm = {}, bx = (j || {}).boxscore || {};
     (bx.players || []).forEach(t => { const ab = ((t.team || {}).abbreviation) || "";
-      (t.statistics || []).forEach(c => (c.athletes || []).forEach(x => { const a = x.athlete || {}, nm = a.displayName || ""; if (!nm || !c.name) return;
-        const p = pl[a.id || nm] = pl[a.id || nm] || { nm, n: pnorm(nm), team: ab, cats: {} }; p.cats[c.name] = { labels: c.labels || [], vals: x.stats || [] }; })); });
+      (t.statistics || []).forEach(c => { const cn = c.name || ((c.keys || []).includes("points") ? "hoops" : "");   /* basketball's one group has no name (11/27) */
+        (c.athletes || []).forEach(x => { const a = x.athlete || {}, nm = a.displayName || ""; if (!nm || !cn || (cn === "hoops" && !(x.stats || []).length)) return;
+        const p = pl[a.id || nm] = pl[a.id || nm] || { nm, n: pnorm(nm), team: ab, cats: {} }; p.cats[cn] = { labels: c.labels || [], vals: x.stats || [] }; }); }); });
     (bx.teams || []).forEach(t => { const m = {}; (t.statistics || []).forEach(s => { m[s.label] = s.displayValue; }); tm[((t.team || {}).abbreviation) || ""] = m; });
     return { pl: Object.values(pl), tm };
   }
@@ -2818,11 +2909,14 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const xv = (p, cat, lab) => { const c = p.cats[cat]; if (!c) return ""; const i = c.labels.indexOf(lab); return i < 0 || c.vals[i] == null ? "" : String(c.vals[i]); };
   const XCELLS = { receiving: [["REC", "REC"], ["TGTS", "TGT"], ["YDS", "YDS"], ["LONG", "LONG"], ["TD", "TD"]], rushing: [["CAR", "CAR"], ["YDS", "YDS"], ["AVG", "AVG"], ["LONG", "LONG"], ["TD", "TD"]],
     passing: [["C/ATT", "C/ATT"], ["YDS", "YDS"], ["TD", "TD"], ["INT", "INT"]], defensive: [["TOT", "TKL"], ["SOLO", "SOLO"], ["SACKS", "SACKS"], ["TFL", "TFL"], ["PD", "PD"]],
-    interceptions: [["INT", "INT"], ["YDS", "YDS"], ["TD", "TD"]], kicking: [["FG", "FG"], ["XP", "XP"], ["PTS", "PTS"], ["LONG", "LONG"]] };
+    interceptions: [["INT", "INT"], ["YDS", "YDS"], ["TD", "TD"]], kicking: [["FG", "FG"], ["XP", "XP"], ["PTS", "PTS"], ["LONG", "LONG"]],
+    hoops: [["PTS", "PTS"], ["REB", "REB"], ["AST", "AST"], ["3PT", "3PT"], ["STL", "STL", 1], ["BLK", "BLK", 1], ["TO", "TO", 1], ["MIN", "MIN"]] };   /* basketball (11/27); a third entry: only when it's the leg's stat */
   const XSTAT = { rec: ["receiving", "REC"], recyd: ["receiving", "YDS"], rectd: ["receiving", "TD"], longrec: ["receiving", "LONG"], rushyd: ["rushing", "YDS"], rushtd: ["rushing", "TD"],
     rushatt: ["rushing", "CAR"], longrush: ["rushing", "LONG"], passyd: ["passing", "YDS"], passtd: ["passing", "TD"], comp: ["passing", "C/ATT"], patt: ["passing", "C/ATT"], int: ["passing", "INT"],
     rryd: ["rushing", "YDS", "receiving", "YDS"], pryd: ["passing", "YDS", "rushing", "YDS"], td: ["rushing", "TD", "receiving", "TD"], sacks: ["defensive", "SACKS"], tackles: ["defensive", "TOT"],
-    solo: ["defensive", "SOLO"], kpts: ["kicking", "PTS"], xpm: ["kicking", "XP"], fgm: ["kicking", "FG"] };
+    solo: ["defensive", "SOLO"], kpts: ["kicking", "PTS"], xpm: ["kicking", "XP"], fgm: ["kicking", "FG"],
+    pts: ["hoops", "PTS"], reb: ["hoops", "REB"], ast: ["hoops", "AST"], tpm: ["hoops", "3PT"], stl: ["hoops", "STL"], blk: ["hoops", "BLK"], tov: ["hoops", "TO"], pra: ["hoops", "PTS", "hoops", "REB", "hoops", "AST"],
+    pr: ["hoops", "PTS", "hoops", "REB"], pa: ["hoops", "PTS", "hoops", "AST"], ra: ["hoops", "REB", "hoops", "AST"], stocks: ["hoops", "STL", "hoops", "BLK"] };
   function legBox(l, g, lg){   /* under a tapped leg: a prop's players' lines, or the game's quarters and team stats; the game's box score a tap away */
     const x = el("div", "lx"), c = XBOX[g.id], d = c && c.d;
     const head = (a, b) => { const h = el("div", "lx-h"); h.appendChild(el("span", null, a)); if (b) h.appendChild(el("span", null, b)); x.appendChild(h); };
@@ -2833,9 +2927,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       names.forEach((nm, i) => { const p = d ? pmatch(nm, d.pl) : null, ro = rosterPlayer(lg, g, nm), w = el("div", "lx-p");
         const h = el("div", "lx-h"); h.appendChild(el("span", null, (p ? p.nm : nm).split(" ").filter(t => !/^(jr|sr|ii|iii|iv)\.?$/i.test(t)).pop() + (p ? " · " + p.team : "") + (ro ? " #" + ro.num : ""))); if (!i) h.appendChild(el("span", null, whenTxt(g))); w.appendChild(h);
         if (!p) w.appendChild(el("div", "lx-n", d ? "No numbers for him in the box score yet." : "Getting the box score..."));
-        else { const cats = []; for (let k = 0; k < hot.length; k += 2) if (!cats.includes(hot[k])) cats.push(hot[k]); ["passing", "rushing", "receiving"].forEach(k => { if (!cats.includes(k)) cats.push(k); });
-          cats.filter(k => p.cats[k] && XCELLS[k]).slice(0, 2).forEach(k => { w.appendChild(el("div", "lx-c", k)); const row = el("div", "lx-s");
-            XCELLS[k].forEach(([lab, show]) => { const v = xv(p, k, lab); if (v === "") return; let on = false; for (let q = 0; q < hot.length; q += 2) if (hot[q] === k && hot[q + 1] === lab) on = true;
+        else { const cats = []; for (let k = 0; k < hot.length; k += 2) if (!cats.includes(hot[k])) cats.push(hot[k]); ["passing", "rushing", "receiving", "hoops"].forEach(k => { if (!cats.includes(k)) cats.push(k); });
+          cats.filter(k => p.cats[k] && XCELLS[k]).slice(0, 2).forEach(k => { if (k !== "hoops") w.appendChild(el("div", "lx-c", k)); const row = el("div", "lx-s");
+            XCELLS[k].forEach(([lab, show, opt]) => { const v = xv(p, k, lab); if (v === "") return; let on = false; for (let q = 0; q < hot.length; q += 2) if (hot[q] === k && hot[q + 1] === lab) on = true; if (opt && !on) return;
               const cell = el("span", on ? "hi" : null); cell.appendChild(el("b", null, v)); cell.appendChild(el("i", null, show)); row.appendChild(cell); }); w.appendChild(row); }); }
         x.appendChild(w); });
     } else {
@@ -2846,14 +2940,15 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         tr.appendChild(el("td", null, String(g[side].score == null ? "" : g[side].score))); bd.appendChild(tr); });
       t.appendChild(bd); x.appendChild(t);
       const A = d && d.tm[g.away.ab], H = d && d.tm[g.home.ab];
-      if (A && H){ const bits = [["Total Yards", "Yards", "-"], ["3rd down efficiency", "3rd down", ", "], ["Turnovers", "Turnovers", "-"]].filter(([k]) => A[k] != null && H[k] != null).map(([k, lab, sep]) => lab + " " + A[k] + sep + H[k]);
+      if (A && H){ const bits = [["Total Yards", "Yards", "-"], ["3rd down efficiency", "3rd down", ", "], ["FG", "FG", ", "], ["Rebounds", "Rebounds", "-"], ["Turnovers", "Turnovers", "-"]].filter(([k]) => A[k] != null && H[k] != null).map(([k, lab, sep]) => lab + " " + A[k] + sep + H[k]);
         if (bits.length) x.appendChild(el("div", "lx-t", bits.join(" · "))); }
       else if (!d) x.appendChild(el("div", "lx-n", "Getting the box score..."));
     }
-    const lk = el("button", "lx-k", "Game box score ›"); lk.type = "button"; lk.addEventListener("click", e => { e.stopPropagation(); openGameBox(g); }); x.appendChild(lk);
+    const lk = el("button", "lx-k", isX(g.league) ? "Box score on ESPN ›" : "Game box score ›"); lk.type = "button"; lk.addEventListener("click", e => { e.stopPropagation(); openGameBox(g); }); x.appendChild(lk);
     return x;
   }
   function openGameBox(g){   /* the game's card on the board, on Box score with the players */
+    if (isX(g.league)){ openNew(gamecast(g)); return; }   /* another sport's game has no board: ESPN's page for it (11/27) */
     stripOpen = -1; if (!spanel.hidden) showPanel(spanel);
     const sw = !!g.league && g.league !== S.league && has(g.league) && !(S.mix && mixDay(g.date)); /* with Both on, a day both play has the game on this board (11/26) */ if (sw){ S.league = g.league; S.day = ""; showPanel(null); remember(); }   /* a game on the other board (11/26) */
     if (g.date && S.day !== g.date) S.day = g.date;
@@ -3018,8 +3113,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (nc && nn) c.appendChild(el("div", "ssdup", nc + " college leg" + (nc > 1 ? "s" : "") + " and " + nn + " NFL leg" + (nn > 1 ? "s" : "") + ": this slip shows on both boards"));   /* 11/26 */
       else if ((nc || nn) && its !== S.league && !bothOn()) c.appendChild(el("div", "ssdup", "These are " + (its === "nfl" ? "NFL games, so this slip goes on the NFL board" : "college games, so this slip goes on the college board")));   /* 11/23 */
       const list = el("div", "slegs"); legOrder(sp.legs, lg).forEach(k => list.appendChild(confirmRow(sp, sp.legs[k], k, lg))); c.appendChild(list); b.appendChild(c); });
-    const live = pend.filter(sp => !sp.dup && sp.legs.some(l => l.id)), n = live.length, away = n > 0 && !bothOn() && !live.some(sp => sp.legs.some(l => l.id && legLg(l, lg) === S.league)), to = away ? legLg(live[0].legs.find(l => l.id), lg) : lg;   /* nothing of it on this board: it goes to the other */
-    const go = el("button", "ssgo", away ? (n > 1 ? "Track these " + n + " on the " : "Track on the ") + (to === "nfl" ? "NFL" : "college") + " board" : n > 1 ? "Track these " + n + " slips" : "Track this slip"); go.type = "button"; go.disabled = !n; go.addEventListener("click", trackPending); b.appendChild(go);
+    const live = pend.filter(sp => !sp.dup && sp.legs.some(l => l.id)), n = live.length, bl = live.reduce((a, sp) => a.concat(sp.legs.filter(l => l.id && !isX(legLg(l, lg)))), []);   /* bl: the legs on a board (another sport's have none: 11/27) */
+    const away = bl.length > 0 && !bothOn() && !bl.some(l => legLg(l, lg) === S.league), to = away ? legLg(bl[0], lg) : lg;   /* nothing of it on this board: it goes to the other */
+    const go = el("button", "ssgo", away ? (n > 1 ? "Track these " + n + " on the " : "Track on the ") + (to === "nfl" ? "NFL" : "college") + " board" : n > 1 ? "Track these " + n + " slips" : "Track this slip"); go.type = "button"; go.disabled = !n || xsWait; go.addEventListener("click", trackPending); b.appendChild(go);
     sheetLinks(b, [["Rename", () => { const x = b.querySelector("input.sname"); if (x){ x.focus(); x.select(); } }], ["Paste picks instead", pasteMode], ["Cancel", sheetClose]]);
   }
   function confirmRow(sp, l, k, lg){
@@ -3032,7 +3128,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   function openPicker(sp, l, k, lg, row){   /* under a leg: search the week's games for it, or drop it */
     const was = row.nextSibling && row.nextSibling.classList && row.nextSibling.classList.contains("spick"); row.parentNode.querySelectorAll(".spick").forEach(x => x.remove()); if (was) return;
-    const box = el("div", "spick"), q = el("input"), opts = el("div", "sopts"), games = slipGames(lg).concat(has(otherLg(lg)) ? slipGames(otherLg(lg)) : []), one = gameOnly(l);   /* either league's games (11/26) */
+    const xs = isX(l.lg) || (l.kind === "prop" && HOOP.has((propSpec(l) || {}).stat)), box = el("div", "spick"), q = el("input"), opts = el("div", "sopts"), games = slipGames(lg).concat(has(otherLg(lg)) ? slipGames(otherLg(lg)) : [], xs ? Object.keys(XS).reduce((a, k) => a.concat(XG[k]), []) : []), one = gameOnly(l);   /* either league's games (11/26); another sport's it has read, for a leg of that sport (11/27) */
     q.type = "search"; q.placeholder = one ? "Search a team in the game" : "Search the team"; q.setAttribute("enterkeyhint", "search"); box.appendChild(q); box.appendChild(opts);
     const list = () => { opts.textContent = ""; const t = q.value.trim(), lt = t.toLowerCase(), cand = [];
       games.forEach(g => (one ? ["home"] : ["away", "home"]).forEach(side => {
@@ -3052,13 +3148,16 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const lg = pendLg, ps = S.per[lg].slips; let n = 0, here = false, mixed = false, to = "";
     pend.forEach(sp => { const legs = sp.legs.filter(l => l.id); if (!legs.length || sp.dup) return; n++;
       const o = { name: (sp.name || "").trim().slice(0, 24) || "Slip " + (ps.length + 1), on: true, created: Date.now() + n,
-        legs: legs.map(l => { const o = { id: l.id, side: l.side, kind: l.kind, num: l.num == null ? null : l.num, text: l.text }; ["ou", "per", "short", "who", "mkt"].forEach(k => { if (l[k]) o[k] = l[k]; }); o.lg = legLg(l, lg); return o; }) };
+        legs: legs.map(l => { const o = { id: l.id, side: l.side, kind: l.kind, num: l.num == null ? null : l.num, text: l.text }; ["ou", "per", "short", "who", "mkt"].forEach(k => { if (l[k]) o[k] = l[k]; }); o.lg = legLg(l, lg);
+          if (isX(o.lg)){ const g = legGame(l, lg); if (g){ o.d = partsIn(g.kick, TZ.ET).date; o.ga = g.away.ab; o.gh = g.home.ab; o.gk = g.kick; } }   /* another sport's leg keeps its game's day, teams and start (11/27) */
+          return o; }) };
       ["book", "stake", "pay", "flex", "sgp"].forEach(k => { if (sp[k]) o[k] = sp[k]; });
-      const lgs = new Set(o.legs.map(l => l.lg)); lgs.forEach(x => S.per[x].slips.push(o)); if (lgs.has(S.league)) here = true; if (lgs.size > 1) mixed = true; to = to || o.legs[0].lg; });   /* legs in both leagues: the one slip in both lists (11/26) */
+      const lgs = new Set(o.legs.map(l => l.lg).filter(x => !isX(x))); if (!lgs.size) lgs.add(S.league);   /* a slip with only another sport's legs stays on this board (11/27) */
+      lgs.forEach(x => S.per[x].slips.push(o)); if (lgs.has(S.league)) here = true; if (lgs.size > 1) mixed = true; to = to || [...lgs][0]; });   /* legs in both leagues: the one slip in both lists (11/26) */
     if (!n) return;
     sheetClose(); stext.value = ""; snote.textContent = ""; tally(mixed ? "slip-both" : "slip", mixed ? "Slip saved, both leagues" : "Slip saved");
-    if (!here && !bothOn()){ S.league = to || lg; S.day = ""; S.open = ""; remember(); render(); poll(true); return; }   /* to the board the slip is on (with Both on it shows here) */
-    slipRedraw(); if (mixed || bothOn()) pollX(true);
+    if (!here && !bothOn()){ S.league = to || lg; S.day = ""; S.open = ""; remember(); render(); poll(true); pollS(true); return; }   /* to the board the slip is on (with Both on it shows here) */
+    slipRedraw(); if (mixed || bothOn()) pollX(true); pollS(true);
   }
   /* the slips in the panel and under the bar, and the slip buttons beside FBS / Top 25 / All */
   let stripOpen = -1;   /* the slip whose card is open under the bar */
@@ -3633,12 +3732,12 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function fromEspn(e, league){
     const c = (e.competitions || [])[0] || {}; const sides = {}; (c.competitors || []).forEach(x => sides[x.homeAway] = x);
     if (!sides.home || !sides.away) return null;
-    const nfl = league === "nfl", alias = SLATE.nameAlias || {};
+    const xs = isX(league), nfl = league === "nfl" || xs, alias = SLATE.nameAlias || {};   /* another sport's teams are named like the NFL's: the city and the nickname (11/27) */
     const team = x => { const t = x.team || {}; const rank = ((x.curatedRank || {}).current) || 0; const rec = ((x.records || [{}])[0] || {}).summary || "";
       const name = nfl ? t.displayName : (alias[t.location] || t.location);
       return { id: String(t.id), ab: t.abbreviation || "", name, short: nfl ? (t.name || t.shortDisplayName || t.displayName) : name, color: (t.color || "3b4560").toLowerCase(), alt: (t.alternateColor || "").toLowerCase(),
                logo: nfl ? (t.abbreviation || "").toLowerCase() : String(t.id), rank: rank > 0 && rank <= 25 ? rank : 0, rec: rec && rec !== "0-0" ? rec : "",
-               conf: nfl ? ((SLATE.nflDiv || {})[t.abbreviation] || "OTHER") : ((SLATE.confIds || {})[String(t.conferenceId || "")] || "OTHER"),
+               conf: xs ? "OTHER" : nfl ? ((SLATE.nflDiv || {})[t.abbreviation] || "OTHER") : ((SLATE.confIds || {})[String(t.conferenceId || "")] || "OTHER"),
                score: parseInt(x.score, 10) || 0, winner: !!x.winner, line: (x.linescores || []).map(l => +l.value || 0) }; };
     const tvn = [], stn = [], other = [];
     (c.geoBroadcasts || []).forEach(gb => { const n = normNet(gb.media.shortName), ty = gb.type.shortName, mk = gb.market.type; if (ty === "Radio") return; if (ty === "TV" && mk === "National") tvn.push(n); else if (STREAM_TYPES.has(ty) && mk === "National") stn.push(n); else other.push(n); });
@@ -3704,7 +3803,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const xNear = g => { if (g.state === "in") return true; if (g.state !== "pre" || g.tbd) return false; const dt = new Date(g.kick).getTime() - Date.now(); return dt < 300000 && dt > -1800000; };
   const xBoard = () => { const t = etNow().date; return bothOn() && (S.day === t || S.day === shiftDate(t, -1)) ? dayList().filter(g => g.league !== S.league && g.state !== "post" && passes(g, true)) : []; };
   const xGames = () => { if (awayWeek()) return []; const here = S.league, t = etNow().date, y = shiftDate(t, -1), m = new Map();
-    SL().forEach(s => s.legs.forEach(l => { if (!l.id || legLg(l) === here) return; const g = legGame(l); if (g && g.state !== "post" && (g.date === t || g.date === y)) m.set(g.id, g); }));
+    SL().forEach(s => s.legs.forEach(l => { if (!l.id || isX(legLg(l)) || legLg(l) === here) return; const g = legGame(l); if (g && g.state !== "post" && (g.date === t || g.date === y)) m.set(g.id, g); }));   /* another sport's legs are pollS's (11/27) */
     xBoard().forEach(g => m.set(g.id, g));
     return [...m.values()]; };
   const xSoon = () => { const now = Date.now(); return xGames().some(g => { if (g.state === "in") return true; if (g.state !== "pre" || g.tbd) return false; const dt = new Date(g.kick).getTime() - now; return dt < 300000 && dt > -1800000; }); };
@@ -3723,6 +3822,32 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       if (mg.changed){ if (S.wk[lg]) WEEKS.base[lg].games = mg.list; else { GAMES[lg] = mg.list; recount(lg); } pollProps(); if (!mx) drawSlips(); }
       if (mx){ xLast = Date.now(); pollStamp = nowText(); keepSave(lg); if (mg.changed) render(); else footer(); if (xOdds && !oddsBusy){ xOdds = false; oddsAt = 0; } pollOdds(false); }   /* those games are on the board: drawn, stamped and priced like its own (11/26) */
     } catch (e) {} finally { xpollBusy = false; xpollAt = started + (xBoard().some(xNear) ? 15000 : xSoon() ? 30000 : 60000); }
+  }
+  /* another sport's legs (11/27): its scoreboard for each leg's day. Once on a load (the leg draws from what it kept until then), every
+     30 seconds while a leg's game is live or about to start, every ten minutes before that, once a minute for a game past its start
+     that hasn't begun, and not again once it's final. A scoreboard is about 20 KB on the wire */
+  const XAB = { PHX: "pho", UTAH: "uta", NO: "nop", NY: "nyk", GS: "gsw", SA: "sas" };   /* a book's abbreviation where it differs from ESPN's (WSH is ABX's) */
+  async function xsFetch(lg, d){
+    XT[lg + ":" + d] = Date.now();
+    const r = await fetch("https://site.api.espn.com/apis/site/v2/sports/" + XS[lg].path + "/scoreboard?dates=" + d.replace(/-/g, "") + "&limit=100", { cache: "no-store" }); if (!r.ok) throw new Error(r.status);
+    const seen = new Map(); ((await r.json()).events || []).forEach(e => { try { const g = fromEspn(e, lg); if (!g) return; ["away", "home"].forEach(s => { if (XAB[g[s].ab]) g[s].ax = XAB[g[s].ab]; }); seen.set(g.id, prepGame(g, lg)); } catch (x) {} });
+    XG[lg] = XG[lg].filter(g => !seen.has(g.id)).concat([...seen.values()]); XD[lg + ":" + d] = Date.now();
+  }
+  let xsBusy = false;
+  async function pollS(force){
+    if (document.hidden || xsBusy || awayWeek()) return;
+    const legs = [], due = new Set(), now = Date.now(); SL().forEach(s => s.legs.forEach(l => { if (l.id && l.d && isX(l.lg)) legs.push(l); })); if (!legs.length) return;
+    legs.forEach(l => { const k = l.lg + ":" + l.d, at = XT[k] || 0, g = legGame(l), real = !!g && !g.stub; let every;
+      if (!real) every = !at ? 0 : now - new Date(l.gk || 0).getTime() > 12 * 3600000 ? 3600000 : 60000;   /* not in what the scoreboard gave: a minute on (an hour on, half a day past its start) */
+      else if (g.state === "post") return;
+      else { const dt = new Date(g.kick).getTime() - now; every = g.state === "in" || (dt < 300000 && dt > -1800000) ? 30000 : dt >= 300000 ? 600000 : 60000; }
+      if (now - at >= (force && every <= 60000 ? Math.min(every, 5000) : every)) due.add(k); });
+    if (!due.size) return;
+    xsBusy = true;
+    try { const print = () => JSON.stringify(legs.map(l => { const g = legGame(l); return g ? [g.stub ? 1 : 0, g.state, g.detail, g.period, g.clock, g.kick, g.away.score, g.home.score] : 0; })), before = print();
+      for (const k of due){ try { await xsFetch(k.split(":")[0], k.split(":")[1]); } catch (e) {} }
+      pollProps(); if (print() !== before) drawSlips(); }
+    finally { xsBusy = false; }
   }
   async function poll(force){
     ticks++;
@@ -3748,13 +3873,14 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   /* the schedule: a 5-second tick polls when one is due, and right away when the view needs a different set of feeds (another day,
      a filter that brings FCS games on screen) */
-  setInterval(() => { pollProps(); pollX(); if (document.hidden || pollBusy) return; const k = wanted() ? pollUrls().join("|") : ""; if (k && k !== pollKey) poll(true); else poll(); }, 5000);
+  setTimeout(() => pollS(), 0);   /* another sport's legs: their games on a load (11/27) */
+  setInterval(() => { pollProps(); pollX(); pollS(); if (document.hidden || pollBusy) return; const k = wanted() ? pollUrls().join("|") : ""; if (k && k !== pollKey) poll(true); else poll(); }, 5000);
   /* a home-screen app (or a tab) coming back after hours resumes the old page: past six hours, reload for the newest build (settings are saved) */
   const loadedAt = Date.now();
   let hiddenAt = 0;
   document.addEventListener("visibilitychange", () => { if (document.hidden){ hiddenAt = Date.now(); return; }
     if (hiddenAt && Date.now() - hiddenAt > 60000){ Object.keys(KEEP_AT).forEach(k => { delete KEEP_AT[k]; }); try { localStorage.removeItem("slate-keep"); } catch (e) {} }   /* polls stopped while hidden: the downs it knew can't vouch for anything now */
-    if (Date.now() - loadedAt > 6 * 3600000 && navigator.onLine !== false) location.reload(); else { poll(true); pollX(true); } });
+    if (Date.now() - loadedAt > 6 * 3600000 && navigator.onLine !== false) location.reload(); else { poll(true); pollX(true); pollS(true); } });
   /* live odds: DraftKings' in-game line per live game from ESPN's core odds endpoint (cross-origin allowed). One request per live game
      per poll, with the minute in the address: ESPN's edge hands out one copy of a plain address for up to 15 minutes (Phil, 11/13:
      Illinois at UCLA's Live column had a total from before the last score and nothing else; the plain address served a copy 8 minutes
