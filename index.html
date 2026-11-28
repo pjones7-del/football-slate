@@ -1221,7 +1221,13 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
      XS: the leagues a slip's leg can be in without a board. Such a leg carries its league (lg) and its game's day, teams and start (d,
      ga, gh, gk: enough to draw it before the feed answers); its game comes from that league's scoreboard for the day (pollS; kept in
      XG), its player's numbers from the game's summary, like a football prop's. */
-  const XS = { nba: { name: "NBA", path: "basketball/nba", logo: "nba", web: "nba" } }, XG = { nba: [] };
+  /* sport: the family of numbers and markets; per: the regulation periods (two make a half for college basketball and soccer); q: the
+     day scoreboard's extra terms; byId: logos by team id; college: named like the college board; noRoster: no team roster to ask (11/28) */
+  const XS = { nba: { name: "NBA", path: "basketball/nba", logo: "nba", web: "nba/game", sport: "hoop", per: 4 },
+    ncaab: { name: "College basketball", path: "basketball/mens-college-basketball", q: "&groups=50&limit=400", logo: "ncaa", byId: true, college: true, web: "mens-college-basketball/game", sport: "hoop", per: 2 },
+    nhl: { name: "NHL", path: "hockey/nhl", logo: "nhl", web: "nhl/game", sport: "puck", per: 3 },
+    soc: { name: "Soccer", path: "soccer/all", q: "&limit=1000", logo: "soccer", byId: true, noRoster: true, web: "soccer/match", sport: "soc", per: 2 } },
+    XG = { nba: [], ncaab: [], nhl: [], soc: [] };
   const isX = lg => typeof lg === "string" && Object.prototype.hasOwnProperty.call(XS, lg);
   const SPORT = lg => isX(lg) ? XS[lg].path : "football/" + (lg === "nfl" ? "nfl" : "college-football");
 
@@ -1312,7 +1318,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
         p.now = !!o.now; p.stars = new Set((o.stars || []).filter(n => typeof n === "string")); if (typeof o.mkt === "string") p.mkt = o.mkt; if (/^\d{5}$/.test(o.zip || "")) p.zip = o.zip;
         p.views = (o.views || []).filter(v => v && typeof v.name === "string").slice(0, MAX_VIEWS);
         p.slips = (o.slips || []).filter(s => s && typeof s.name === "string" && Array.isArray(s.legs) && Date.now() - (+s.created || 0) < 6 * 86400000)
-          .map(s => ({ name: s.name, on: !!s.on, created: +s.created || Date.now(), book: typeof s.book === "string" ? s.book.slice(0, 20) : "", stake: +s.stake || 0, pay: +s.pay || 0, flex: +s.flex || 0, sgp: !!s.sgp, legs: s.legs.filter(l => l && l.id).map(l => { const o = { id: String(l.id), side: l.side || "", kind: ["ml", "spread", "total", "tt", "prop"].includes(l.kind) ? l.kind : "ml", num: l.num == null ? null : +l.num, text: String(l.text || "") };
+          .map(s => ({ name: s.name, on: !!s.on, created: +s.created || Date.now(), book: typeof s.book === "string" ? s.book.slice(0, 20) : "", stake: +s.stake || 0, pay: +s.pay || 0, flex: +s.flex || 0, sgp: !!s.sgp, legs: s.legs.filter(l => l && l.id).map(l => { const o = { id: String(l.id), side: l.side || "", kind: ["ml", "spread", "total", "tt", "prop", "draw", "btts"].includes(l.kind) ? l.kind : "ml", num: l.num == null ? null : +l.num, text: String(l.text || "") };
             ["ou", "per", "short", "who", "mkt"].forEach(k => { if (typeof l[k] === "string" && l[k]) o[k] = l[k].slice(0, 90); }); if (l.lg === "cfb" || l.lg === "nfl") o.lg = l.lg; else if (isX(l.lg)){ o.lg = l.lg; ["d", "ga", "gh", "gk"].forEach(k => { if (typeof l[k] === "string" && l[k]) o[k] = l[k].slice(0, 30); }); }   /* another sport's leg: its game's day, teams and start (11/27) */
             return o; }) })).slice(0, 12);   /* slips (Phil, 10/24): kept six days; team totals and props 10/25; a leg's league 11/26 */
       } catch (e) {} });
@@ -1410,7 +1416,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const TEAMS = {};
   Object.keys(LG).forEach(lg => { const m = {}; GAMES[lg].forEach(g => ["away", "home"].forEach(s => { const t = g[s]; if (!m[t.name]) m[t.name] = { ab: t.ab, short: t.short, conf: t.conf, rank: t.rank }; else if (t.rank && (!m[t.name].rank || t.rank < m[t.name].rank)) m[t.name].rank = t.rank; })); TEAMS[lg] = m; });
   const starred = g => { const st = P().stars; return st.has(g.home.name) || st.has(g.away.name); };
-  const gamecast = g => "https://www.espn.com/" + (isX(g.league) ? XS[g.league].web : g.league === "nfl" ? "nfl" : "college-football") + "/game/_/gameId/" + g.id;
+  const gamecast = g => "https://www.espn.com/" + (isX(g.league) ? XS[g.league].web : (g.league === "nfl" ? "nfl" : "college-football") + "/game") + "/_/gameId/" + g.id;
 
   /* ---- the current filters: which channel a game files under, whether it's watchable, market tags, stars ---- */
   const isReg = g => NFL() && g.carriers.length && (g.carriers[0] === "CBS" || g.carriers[0] === "FOX") && !g.tbd && dayLabel(g.date).long === "Sunday" && g.kickMin >= 720 && g.kickMin < 1140;
@@ -2191,17 +2197,21 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const slipOk = g => { if (awayWeek()) return true; const on = slipsOn(); return !on.length || on.some(s => s.legs.some(l => l.id === g.id)); };   /* another week: the slips are this week's games (11/2) */
   const slipHas = g => !awayWeek() && slipsOn().some(s => s.legs.some(l => l.id === g.id));   /* a slip that's on has this game: it shows whatever the level, the conferences and the teams filter say (11/26) */
   const gameLegs = g => { const out = []; slipsOn().forEach(s => s.legs.forEach(l => { if (l.id === g.id) out.push(l); })); return out; };
-  const gameOnly = l => l.kind === "total" || l.kind === "prop";   /* a leg on the game rather than on a team: a total, a player prop (10/25) */
+  const gameOnly = l => l.kind === "total" || l.kind === "prop" || l.kind === "draw" || l.kind === "btts";   /* a leg on the game rather than on a team: a total, a player prop (10/25) */
   const legSide = (l, side) => gameOnly(l) ? side === "home" : l.side === side;   /* the row or plate a leg's marker sits on */
   const ouText = (ou, n) => (ou === "under" ? "U " : "O ") + n;
   const legText = l => (l.per ? l.per + " " : "") + (l.kind === "ml" ? "ML" : l.kind === "spread" ? (l.num > 0 ? "+" : "") + l.num : l.kind === "total" ? ouText(l.side, l.num)
-    : l.kind === "tt" ? "TT " + ouText(l.ou, l.num) : propTag(l));
+    : l.kind === "tt" ? "TT " + ouText(l.ou, l.num) : l.kind === "draw" ? (l.side === "no" ? "NO DRAW" : "DRAW") : l.kind === "btts" ? "BTTS " + (l.side === "no" ? "NO" : "YES") : propTag(l));
+  const legPick = l => l.kind === "spread" && /double\s*chance/i.test(l.mkt || "") ? "OR DRAW" : l.kind === "spread" && /draw\s*no\s*bet/i.test(l.mkt || "") ? "DNB" : legText(l);   /* soccer's (11/28) */
   /* a prop's tag says its stat (Phil, 11/15: "Jefferson 6+" ... "6+ what?"): one with no stat word gets the one the engine read from the market */
   const STATTAG = { td: "TD", rushtd: "RUSH TD", rectd: "REC TD", passtd: "PASS TD", passyd: "PASS YDS", rushyd: "RUSH YDS", recyd: "REC YDS", rryd: "RUSH+REC YDS",
     pryd: "PASS+RUSH YDS", rec: "REC", rushatt: "CARRIES", comp: "COMP", patt: "PASS ATT", int: "INT", longrush: "LONG RUSH", longrec: "LONG REC", sacks: "SACKS",
     solo: "SOLO TKL", tackles: "TKL", kpts: "KICK PTS", xpm: "XP", fgm: "FG",
-    pts: "PTS", reb: "REB", ast: "AST", tpm: "3PM", stl: "STL", blk: "BLK", tov: "TO", pra: "PTS+REB+AST", pr: "PTS+REB", pa: "PTS+AST", ra: "REB+AST", stocks: "STL+BLK" };
-  function propTag(l){ const t = l.short || "PROP", sp = propSpec(l); return !sp || !STATTAG[sp.stat] || /[a-z]{2}/i.test(t.replace(/^[OU]\s/i, "")) ? t : t + " " + STATTAG[sp.stat]; }
+    pts: "PTS", reb: "REB", ast: "AST", tpm: "3PM", stl: "STL", blk: "BLK", tov: "TO", pra: "PTS+REB+AST", pr: "PTS+REB", pa: "PTS+AST", ra: "REB+AST", stocks: "STL+BLK",
+    goals: "GOALS", gpa: "G+A", sog: "SOG", sot: "SOT", shots: "SHOTS", saves: "SAVES", hits: "HITS" };
+  function propTag(l, g){ const t = l.short || "PROP", sp = propSpec(l), x = g && isX(g.league) ? XS[g.league].sport : "";
+    if (sp && (x === "puck" || x === "soc") && (sp.stat === "td" || sp.stat === "goals")){ const n = sp.line + 0.5; return sp.ou === "under" ? "U " + sp.line + " GOALS" : n > 1 ? n + "+ GOALS" : "GOAL"; }   /* an anytime goal, not a touchdown (11/28) */
+    return !sp || !STATTAG[sp.stat] || /[a-z]{2}/i.test(t.replace(/^[OU]\s/i, "")) ? t : t + " " + STATTAG[sp.stat]; }
   /* ---- player props (Phil, 11/8: "very common to do player props ... Would be great if the app could track it") ----
      A prop leg is read into players, a stat and a line from its market ("Jahmyr Gibbs & Ollie Gordon II - Combined Total Touchdowns",
      "Kenneth Walker III or Xavier Worthy - Either Player to Score X TD's", "Jahmyr Gibbs - Rushing Yards") and its pick ("2+", "Over
@@ -2211,18 +2221,20 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
      game's injury report has out, with no numbers, makes the leg void. A first touchdown scorer, or a market it can't read, stays
      outlined as before. Nothing new is stored: a slip saved before this reads the same way. */
   const PROPSTAT = [   /* the stat a market names, the most specific first */
-    ["first", /\b(?:first|1st|last)\s+(?:td|touchdown)|\bfirst\s+(?:td\s+)?scorer/i],
+    ["first", /\b(?:first|1st|last)\s+(?:td|touchdown|goal\b)|\bfirst\s+(?:td\s+|goal\s*)?scorer/i],
     ["rryd", /rush(?:ing)?\s*(?:\+|&|and|plus|\/)\s*rec|rec(?:eiving)?\s*(?:\+|&|and|plus|\/)\s*rush|scrimmage/i], ["pryd", /pass(?:ing)?\s*(?:\+|&|and|plus|\/)\s*rush/i],
     ["passtd", /pass(?:ing)?\s*(?:touchdowns?|tds?)\b/i], ["rushtd", /rush(?:ing)?\s*(?:touchdowns?|tds?)\b/i], ["rectd", /rec(?:eiving)?\s*(?:touchdowns?|tds?)\b/i],
     ["longrush", /longest\s+rush/i], ["longrec", /longest\s+(?:reception|catch)/i],
     ["passyd", /pass(?:ing)?\s*(?:yards|yds)/i], ["rushyd", /rush(?:ing)?\s*(?:yards|yds)/i], ["recyd", /rec(?:eiving)?\s*(?:yards|yds)/i],
     ["comp", /completions/i], ["patt", /pass(?:ing)?\s*attempts/i], ["rushatt", /rush(?:ing)?\s*attempts|carries/i], ["int", /interceptions?/i], ["rec", /receptions|catches/i],
     ["sacks", /\bsacks?\b/i], ["solo", /solo\s+tackles/i], ["tackles", /tackles/i], ["kpts", /kicking\s*points/i], ["xpm", /extra\s*points?/i], ["fgm", /field\s*goals?/i],
+    ["gpa", /goals?\s*(?:\+|&|and|or)\s*assists?|score\s+or\s+assist/i],   /* soccer's and hockey's goals and assists together (11/28) */
     /* basketball's (11/27), after the kicker's points and ahead of "to score" */
     ["pra", /(?:points|pts)\s*(?:\+|&|,|and|plus|\/)\s*(?:rebounds|rebs?)\s*(?:\+|&|,|and|plus|\/)\s*(?:assists|asts?)|\bpra\b/i], ["pr", /(?:points|pts)\s*(?:\+|&|and|plus|\/)\s*(?:rebounds|rebs?)/i],
     ["pa", /(?:points|pts)\s*(?:\+|&|and|plus|\/)\s*(?:assists|asts?)/i], ["ra", /(?:rebounds|rebs?)\s*(?:\+|&|and|plus|\/)\s*(?:assists|asts?)/i], ["stocks", /steals?\s*(?:\+|&|and|plus|\/)\s*blocks?|\bstocks\b/i],
     ["tpm", /\bthrees\b|\b(?:3|three)[- ]?pointers?\b|\b3[- ]?pt\b|\b3pm\b/i], ["reb", /\brebounds?\b|\brebs\b/i], ["ast", /\bassists?\b|\basts\b/i], ["stl", /\bsteals?\b/i], ["blk", /\bblocks\b|\bblocked\s+shots\b/i],
     ["tov", /\bturnovers?\b/i], ["pts", /\bpoints\b|\bpts\b/i],
+    ["sot", /shots?\s+on\s+target|\bsot\b/i], ["sog", /shots?\s+on\s+goal|\bsog\b/i], ["saves", /\bsaves\b/i], ["shots", /\bshots?\b/i], ["hits", /\bhits\b/i], ["goals", /\bgoals?\b/i],   /* hockey's and soccer's (11/28) */
     ["td", /touchdowns?|\btds?\b|to\s+score|scorer|anytime/i]];
   const HOOP = new Set(["pts", "reb", "ast", "tpm", "stl", "blk", "tov", "pra", "pr", "pa", "ra", "stocks"]);   /* a basketball number: read only from a basketball game */
   const PV = { td: s => (s.rtd || 0) + (s.ctd || 0) + (s.ktd || 0) + (s.utd || 0) + Math.max(s.itd || 0, s.dtd || 0), rushtd: s => s.rtd || 0, rectd: s => s.ctd || 0,
@@ -2231,6 +2243,17 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     longrush: s => s.rlong || 0, longrec: s => s.clong || 0, sacks: s => s.sk || 0, solo: s => s.solo || 0, tackles: s => s.tk || 0, kpts: s => s.kp || 0, xpm: s => s.xpm || 0, fgm: s => s.fgm || 0,
     pts: s => s.pts || 0, reb: s => s.reb || 0, ast: s => s.ast || 0, tpm: s => s.tpm || 0, stl: s => s.stl || 0, blk: s => s.blk || 0, tov: s => s.tov || 0, pra: s => (s.pts || 0) + (s.reb || 0) + (s.ast || 0),
     pr: s => (s.pts || 0) + (s.reb || 0), pa: s => (s.pts || 0) + (s.ast || 0), ra: s => (s.reb || 0) + (s.ast || 0), stocks: s => (s.stl || 0) + (s.blk || 0) };
+  /* the numbers by sport (11/28): a stat reads only from a game of a sport that has it; hockey's points are goals and assists */
+  const PVS = { puck: { td: s => s.g || 0, goals: s => s.g || 0, ast: s => s.a || 0, pts: s => (s.g || 0) + (s.a || 0), gpa: s => (s.g || 0) + (s.a || 0), sog: s => s.sog || 0, sot: s => s.sog || 0,
+      shots: s => s.sog || 0, blk: s => s.bs || 0, hits: s => s.hit || 0, saves: s => s.sv || 0 },
+    soc: { td: s => s.g || 0, goals: s => s.g || 0, ast: s => s.a || 0, gpa: s => (s.g || 0) + (s.a || 0), sot: s => s.sot || 0, sog: s => s.sot || 0, shots: s => s.sh || 0, saves: s => s.sv || 0 } };
+  const XSTATS = new Set(["goals", "gpa", "sot", "sog", "saves", "shots", "hits"]);   /* not football's */
+  const pvOf = (g, st) => { const sp = isX(g.league) ? XS[g.league].sport : "foot";
+    return sp === "foot" ? (HOOP.has(st) || XSTATS.has(st) ? null : PV[st] || null) : sp === "hoop" ? (HOOP.has(st) || st === "fgm" ? PV[st] : null) : (PVS[sp] || {})[st] || null; };
+  /* a half's or a period's points: football and the NBA have two periods a half, college basketball and soccer one (11/28) */
+  const HP = g => isX(g.league) ? Math.max(1, Math.floor((XS[g.league].per || 4) / 2)) : 2;
+  const perPts = (g, side, per) => { const t = g[side], ln = t.line || [], q = +per.charAt(0) || 0, hp = HP(g);
+    return !per ? t.score : per.charAt(1) === "H" ? (q === 1 ? ln.slice(0, hp) : ln.slice(hp)).reduce((x, y) => x + (y || 0), 0) : (ln[q - 1] || 0); };
   const PKEYS = { "passing.passingYards": "pyd", "passing.passingTouchdowns": "ptd", "passing.interceptions": "pint", "passing.completions/passingAttempts": "comp/patt",
     "rushing.rushingAttempts": "ratt", "rushing.rushingYards": "ryd", "rushing.rushingTouchdowns": "rtd", "rushing.longRushing": "rlong", "receiving.receptions": "rec",
     "receiving.receivingYards": "cyd", "receiving.receivingTouchdowns": "ctd", "receiving.longReception": "clong", "kickReturns.kickReturnTouchdowns": "ktd",
@@ -2239,19 +2262,25 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     "kicking.fieldGoalsMade/fieldGoalAttempts": "fgm/", "kicking.extraPointsMade/extraPointAttempts": "xpm/",
     /* basketball's one stat group has no name ("hoops" here); made-attempted in one value */
     "hoops.points": "pts", "hoops.rebounds": "reb", "hoops.assists": "ast", "hoops.steals": "stl", "hoops.blocks": "blk", "hoops.turnovers": "tov", "hoops.minutes": "min",
-    "hoops.threePointFieldGoalsMade-threePointFieldGoalsAttempted": "tpm/", "hoops.fieldGoalsMade-fieldGoalsAttempted": "fgm/" };
+    "hoops.threePointFieldGoalsMade-threePointFieldGoalsAttempted": "tpm/", "hoops.fieldGoalsMade-fieldGoalsAttempted": "fgm/",
+    "hockey.goals": "g", "hockey.assists": "a", "hockey.shotsTotal": "sog", "hockey.blockedShots": "bs", "hockey.hits": "hit", "hockey.saves": "sv" };   /* the NHL's skaters and goalies (11/28) */
   const pnorm = s => { const w = (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[’'`.]/g, "").replace(/[^a-z0-9]+/g, " ").trim().split(" ").filter(Boolean);
     while (w.length > 2 && /^(?:jr|sr|[il1]{2,3}|iv|v)$/.test(w[w.length - 1])) w.pop(); return w.join(" "); };   /* "Ollie Gordon II", read "Gordon Il": ollie gordon */
   function propBox(j){   /* a summary's players (name, team, the numbers props read) and the injury report's outs */
     const by = {}, outs = [], fin = ((((((j || {}).header || {}).competitions || [])[0] || {}).status || {}).type || {}).state === "post";
     (((j || {}).boxscore || {}).players || []).forEach(t => { const ab = ((t.team || {}).abbreviation) || "";
-      (t.statistics || []).forEach(c => { const ks = c.keys || [], hp = !c.name && ks.includes("points"), cn = hp ? "hoops" : c.name;   /* basketball's one group (11/27) */
+      (t.statistics || []).forEach(c => { const ks = c.keys || [], hp = !c.name && ks.includes("points"), cn = hp ? "hoops" : /^(?:forwards|defenses|defensemen|skaters|goalies)$/.test(c.name || "") ? "hockey" : c.name;   /* basketball's one group (11/27); hockey's (11/28) */
         (c.athletes || []).forEach(x => { const a = x.athlete || {}, nm = a.displayName || ""; if (!nm) return;
         if (hp && !(x.stats || []).length){ if (x.didNotPlay && fin) outs.push({ n: pnorm(nm) }); return; }   /* no numbers: not in yet, or (a final) he sat it out and the book voids the leg */
-        const p = by[a.id || nm] = by[a.id || nm] || { nm, n: pnorm(nm), team: ab, s: {} };
+        const p = by[a.id || nm] = by[a.id || nm] || { nm, n: pnorm(nm), team: ab, s: {}, num: a.jersey == null ? "" : String(a.jersey) };
         ks.forEach((k, i) => { const to = PKEYS[cn + "." + k], v = String((x.stats || [])[i] == null ? "" : x.stats[i]); if (!to) return;
           to.split("/").forEach((f, q) => { const n = parseFloat(to.includes("/") ? v.split(hp ? "-" : "/")[q] : v); if (f && !isNaN(n)) p.s[f] = n; }); }); }); }); });
     ((j || {}).injuries || []).forEach(t => (t.injuries || []).forEach(i => { if (/^(?:out|injured reserve|suspended|inactive)/i.test(i.status || "")) outs.push({ n: pnorm(((i.athlete || {}).displayName) || "") }); }));
+    /* soccer's players are in its line-ups (11/28): goals, assists, shots, shots on target, saves; one who never came on voids at the end */
+    ((j || {}).rosters || []).forEach(t => { const ab = ((t.team || {}).abbreviation) || ""; (t.roster || []).forEach(x => { const a = x.athlete || {}, nm = a.displayName || ""; if (!nm) return;
+      const st = {}; (x.stats || []).forEach(v => { st[v.name] = +v.value || 0; });
+      if (!x.starter && !x.subbedIn && !st.appearances){ if (fin) outs.push({ n: pnorm(nm) }); return; }
+      by[a.id || nm] = { nm, n: pnorm(nm), team: ab, num: x.jersey == null ? "" : String(x.jersey), s: { g: st.totalGoals || 0, a: st.goalAssists || 0, sh: st.totalShots || 0, sot: st.shotsOnTarget || 0, sv: st.saves || 0 } }; }); });
     return { players: Object.values(by), outs };
   }
   const lev = (a, b) => { if (Math.abs(a.length - b.length) > 2) return 9; let p = [...Array(b.length + 1).keys()];
@@ -2271,7 +2300,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const k = [l.mkt, l.short, l.text, l.who].join("|"); if (!PSPEC.has(k)){ let sp = null; try { sp = readProp(l); } catch (e) {} PSPEC.set(k, sp); } return PSPEC.get(k);
   }
   const statOf = s => (PROPSTAT.find(x => x[1].test(s)) || [])[0] || "";
-  const STATWORDS = /\b(?:anytime|touchdowns?|tds?|scorer|to\s+score|rushing|receiving|passing|rush|rec|pass|yards|yds|receptions|attempts|completions|alt(?:ernate)?|total|combined|either|player|points|pts|rebounds?|assists?|threes|steals?|blocks|turnovers?)\b.*$/i;
+  const STATWORDS = /\b(?:anytime|touchdowns?|tds?|scorer|to\s+score|rushing|receiving|passing|rush|rec|pass|yards|yds|receptions|attempts|completions|alt(?:ernate)?|total|combined|either|player|points|pts|rebounds?|assists?|threes|steals?|blocks|turnovers?|goals?|goalscorer|shots?|saves|hits)\b.*$/i;
   function readProp(l){
     const cl = s => (s || "").replace(/[−–—]/g, "-").replace(/\s+/g, " ").trim(), mk = cl(l.mkt), pk = cl(l.text), sh = cl(l.short), parts = mk.split(/\s+-\s+/);
     const nameish = (s, two) => { const t = s.replace(/[^A-Za-z.' &,\/+-]/g, " ").replace(/\s+/g, " ").trim(); return /[A-Za-z]{2}/.test(t) && !/\b(?:over|under)\b|^(?:o|u|alt|yes|no)$/i.test(t) && (!two || /\S\s+\S/.test(t)) ? t : ""; };
@@ -2287,7 +2316,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if ((m = (pk + " " + sh).match(/(?:^|\s)([0-9IlZSB|]{1,3})\s*\+/))) line = +m[1].replace(/[Il|]/g, "1").replace(/Z/g, "2").replace(/S/g, "5").replace(/B/g, "8") - 0.5;   /* "2+" (read "Z+", "I+") */
     else if ((m = (pk + " " + mk).match(/\b(over|under)\s*(\d+(?:\.\d)?)/i) || sh.match(/^([OU])\s+(\d+(?:\.\d)?)/))){ ou = /^u/i.test(m[1]) ? "under" : "over"; line = fix(m[2]); }
     else if ((m = mk.match(/(\d+)\s*\+/))) line = +m[1] - 0.5;
-    else if (/td/.test(stat) && /to\s+score|scorer|anytime|either|both|\bany\b/i.test(mk + " " + pk)) line = 0.5;   /* "to score", its number lost: 1+ */
+    else if ((/td/.test(stat) || stat === "goals" || stat === "gpa") && /to\s+score|scorer|anytime|either|both|\bany\b/i.test(mk + " " + pk)) line = 0.5;   /* "to score", its number lost: 1+ */
     if (line == null || isNaN(line)) return null;
     const lasts = list.map(s => { const w = s.split(/\s+/), ln = lastName(w), i = w.lastIndexOf(ln); return i > 0 && /^(?:st\.?|van|von|de|del|da|di|la|le)$/i.test(w[i - 1]) ? w[i - 1] + " " + ln : ln; });   /* "St. Brown" */
     return { names: list, lasts, stat, mode, ou, line, who: lasts.join(mode === "sum" ? " + " : mode === "all" ? " & " : " or ").slice(0, 28) };
@@ -2295,12 +2324,12 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const PSTAT = {}, PNOW = new Map();   /* game id -> { at, box, key, sk: the score it was read at, fin, fail }; the standings worked out from it */
   function propNow(g, l){   /* a prop's standing { st, w: in words, line: its players' numbers }; null: a prop it can't track */
     const sp = propSpec(l); if (!sp) return null;
-    if (HOOP.has(sp.stat) ? !isX(g.league) : isX(g.league) && sp.stat !== "fgm") return null;   /* a basketball number on a football game, or a football one on a basketball game: not tracked (11/27) */
+    const pv = pvOf(g, sp.stat); if (!pv) return null;   /* a number the game's sport doesn't have (a basketball one on a football game ...): not tracked (11/27, 11/28) */
     if (g.state === "pre") return { st: "pending", w: "not started", line: "" };
     const c = PSTAT[g.id]; if (!c || !c.box) return { st: "pending", w: "checking", line: "" };
     const k = [l.id, l.mkt, l.short, l.text, c.at, g.state].join("|"); if (PNOW.has(k)) return PNOW.get(k);
     const fin = g.state === "post", n = x => String(Math.round(x * 10) / 10), over = sp.ou === "over";
-    const ps = sp.names.map((nm, i) => { const p = pmatch(nm, c.box.players); return { last: sp.lasts[i], p, v: p ? PV[sp.stat](p.s) : 0, out: !p && !!pmatch(nm, c.box.outs, 0.65) }; });   /* an out needs more than a shared last name */
+    const ps = sp.names.map((nm, i) => { const p = pmatch(nm, c.box.players); return { last: sp.lasts[i], p, v: p ? pv(p.s) : 0, out: !p && !!pmatch(nm, c.box.outs, 0.65) }; });   /* an out needs more than a shared last name */
     const vs = ps.map(x => x.v), v = sp.mode === "any" || sp.mode === "all" ? ((sp.mode === "any") === over ? Math.max(...vs) : Math.min(...vs)) : vs.reduce((a, b) => a + b, 0);
     let r;
     if (ps.some(x => x.out)) r = { st: "push", w: "void" };   /* a player ruled out: the book voids the leg */
@@ -2322,7 +2351,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (l.kind !== "total" && l.kind !== "tt") return null;
     const st = legStatus(g, l); if (st === "untracked" || st === "pending") return { st };
     const per = l.per || "", q = +per.charAt(0) || 0, half = per.charAt(1) === "H";
-    const pts = side => { const t = g[side], ln = t.line || []; return !per ? t.score : half ? (q === 1 ? (ln[0] || 0) + (ln[1] || 0) : ln.slice(2).reduce((x, y) => x + y, 0)) : (ln[q - 1] || 0); };
+    const pts = side => perPts(g, side, per);
     const ou = l.kind === "total" ? l.side : l.ou, v = l.kind === "total" ? pts("away") + pts("home") : pts(l.side);
     return { st, v, goal: ou === "under" ? l.num : Math.floor(l.num) + 1, ou, num: l.num };
   }
@@ -2368,19 +2397,23 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
      (the scoreboard's quarters). A player prop reads its players' numbers (above, 11/8); one it can't read stays outlined (10/25). */
   function legStatus(g, l){
     if (l.kind === "prop"){ const r = propNow(g, l); return r ? r.st : "untracked"; }
+    if (l.kind === "draw" || l.kind === "btts"){ if (g.state === "pre") return "pending"; const a = g.away.score || 0, h = g.home.score || 0, fin = g.state === "post", yes = l.side !== "no";   /* soccer's (11/28) */
+      if (l.kind === "draw"){ const lv = a === h; return fin ? (lv === yes ? "won" : "lost") : lv === yes ? "ahead" : "behind"; }
+      const bt = a > 0 && h > 0; return bt ? (yes ? "won" : "lost") : fin ? (yes ? "lost" : "won") : yes ? "behind" : "ahead"; }
+    if (l.per && isX(g.league) && XS[g.league].sport === "soc") return "untracked";   /* ESPN's soccer scoreboard has no halves */
     if (l.kind === "tt" && !l.side) return "untracked";
     const per = l.per || "", q = +per.charAt(0) || 0, pd = g.period || 0, half = per.charAt(1) === "H";
-    if (g.state === "pre" || (per && (half ? q === 2 && pd < 3 : pd < q))) return "pending";
-    const pts = side => { const t = g[side], ln = t.line || []; return !per ? t.score : half ? (q === 1 ? (ln[0] || 0) + (ln[1] || 0) : ln.slice(2).reduce((x, y) => x + y, 0)) : (ln[q - 1] || 0); };
+    if (g.state === "pre" || (per && (half ? q === 2 && pd < HP(g) + 1 : pd < q))) return "pending";
+    const pts = side => perPts(g, side, per);
     const a = pts("away"), h = pts("home");
-    let m, done = g.state === "post" || (!!per && (half ? q === 1 && pd >= 3 : pd > q));
+    let m, done = g.state === "post" || (!!per && (half ? q === 1 && pd >= HP(g) + 1 : pd > q));
     if (l.kind === "total" || l.kind === "tt"){
       const ou = l.kind === "total" ? l.side : l.ou, t = l.kind === "total" ? a + h : (l.side === "home" ? h : a);
       m = ou === "under" ? l.num - t : t - l.num;
       if (ou === "under" ? m < 0 : m > 0) done = true;
     } else { const me = l.side === "home" ? h : a, op = l.side === "home" ? a : h; m = me - op + (l.kind === "spread" ? l.num : 0); }
     if (!done) return m > 0 ? "ahead" : m < 0 ? "behind" : "tied";
-    return m > 0 ? "won" : m < 0 ? "lost" : "push";
+    return m > 0 ? "won" : m < 0 || (l.kind === "ml" && !per && isX(g.league) && XS[g.league].sport === "soc") ? "lost" : "push";   /* a soccer moneyline is three-way: a draw loses it (11/28) */
   }
   const LEGWORD = { pending: "not started", ahead: "covering", behind: "not covering", tied: "on the number", won: "won", lost: "lost", push: "push", untracked: "not tracked here" };
   const legWord = (g, l) => { const r = l.kind === "prop" ? propNow(g, l) : null; return r ? r.w + (r.line ? " (" + r.line + ")" : "") : LEGWORD[legStatus(g, l)]; };   /* a prop in its own words: needs 1 (Gibbs 1 + Gordon 0) */
@@ -2411,6 +2444,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       return { team: hint, kind: "total", side: /^o/i.test(m[1]) ? "over" : "under", num: n, text: s.trim(), label }; }
     if ((m = t.match(/^(\d+)\s*\+(?:\s*[^A-Za-z0-9\s]+)*$/))) return { team: "", kind: "prop", num: null, short: m[1] + "+", text: s.trim(), label };   /* a player prop's pick ("1+"); its market line says the rest */
     if ((m = t.match(/^(.+?)\s*([+-]\s?\d+(?:\.\d)?)$/))) return { team: m[1].trim(), kind: "spread", num: parseFloat(m[2].replace(/\s/, "")), text: s.trim(), hint, label };
+    if (/^(?:the\s+)?(?:draw|tie)\W*$/i.test(t)) return { team: "", kind: "draw", side: "yes", num: null, text: s.trim(), label };   /* soccer's draw; a yes or a no is its market's (11/28) */
+    if ((m = t.match(/^(yes|no)\b\W*$/i))) return { team: "", kind: "yn", side: m[1].toLowerCase(), num: null, text: s.trim(), label };
     if (/^\d/.test(t) || t.length < 2 || SLIPWORD.test(t)) return null;
     return { team: t, kind: "ml", text: s.trim(), hint, label };
   }
@@ -2420,17 +2455,23 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (/wager|payout|\bstake\b|\bodds\b|\bto\s+pay\b|\$\s?\d/.test(t)) return null;   /* the stake ("Total Cash Wagered", "Max Payout", "To win $46.69", "Total odds +480") */
     if (/[a-z]{2},\s*[a-z]/.test(t)) return null;   /* a summary of picks ("Falcons to Win, Bijan Robinson Anytime Touchdown Scorer,") */
     if (/team\s*total/.test(t)) return "tt";
+    /* soccer's and hockey's markets (11/28): both teams to score; double chance, draw no bet and the puck line read as spreads; corners and cards aren't tracked */
+    if (/both\s*teams?\s*(?:to\s*)?score|\bbtts\b/.test(t)) return "btts";
+    if (/double\s*chance|draw\s*no\s*bet|puck\s*line|run\s*line/.test(t)) return "spread";
+    if (/\b(?:corners?|cards?|bookings?)\b/.test(t) && /total|over|under|team|player|match|\d/.test(t) && !XCHROME.test(t)) return "prop";
     if (/to\s+score|touchdown|scorer|passing|rushing|receiving|receptions|\byards\b|\bsacks?\b|interception|field\s*goals?\s*made|player\s+props?/.test(t)) return "prop";
     /* a basketball prop (11/27: another sport's leg): "Karl-Anthony Towns Rebounds O/U", "Pts + Reb + Ast", "To Record 10+ Rebounds"; not the book's reward points */
-    if (/\b(?:rebounds?|rebs|assists?|asts|threes|(?:3|three)[- ]?pointers?|steals?|blocks|turnovers?|double[- ]double|triple[- ]double|pts)\b/.test(t) && !XCHROME.test(t)) return "prop";
+    if (/\b(?:rebounds?|rebs|assists?|asts|threes|(?:3|three)[- ]?pointers?|steals?|blocks|turnovers?|double[- ]double|triple[- ]double|pts|shots?\s+on\s+(?:goal|target)|blocked\s+shots|saves|shots|hits)\b/.test(t) && !XCHROME.test(t)) return "prop";
+    if (/match\s*result|full[- ]?time\s*result|\b1x2\b|win[- ]draw[- ]win|three[- ]way|3[- ]way/.test(t)) return "ml";   /* soccer's moneyline (11/28) */
     if (/(?:^|[^a-z])[mnli]?oneyl[il1]ne\b|money\s*line|\bto win\b/.test(t)) return "ml";   /* "Moneyline" read "oneyline" or "loneyline" (11/8) */
     if (/(?:^|[^a-z])s?pread\b|handicap/.test(t)) return "spread";
     if (/(?:^|[^a-z])t?otals?\b|over\s*\/\s*under/.test(t)) return "total";
     if (/\b(?:points|pts)\b/.test(t) && !XCHROME.test(t)) return "prop";   /* "Landry Shamet Points": after the game total, so "Total Points" stays one */
+    if (/\bgoals?\b/.test(t) && !/field\s*goal/.test(t) && !XCHROME.test(t)) return "prop";   /* "Auston Matthews Goals"; "Total Goals" stays a total (11/28) */
     return null;
   }
-  const perOf = s => { const t = s.toLowerCase(), m = t.match(/\b(1st|2nd|3rd|4th|first|second|third|fourth)\s+(half|quarter)\b/) || t.match(/\b([1-4])(h|q)\b/);   /* a half or quarter market */
-    if (!m) return ""; const n = { first: 1, second: 2, third: 3, fourth: 4 }[m[1]] || parseInt(m[1], 10), k = m[2].charAt(0) === "h" ? "H" : "Q"; return k === "H" && n > 2 ? "" : n + k; };
+  const perOf = s => { const t = s.toLowerCase(), m = t.match(/\b(1st|2nd|3rd|4th|first|second|third|fourth)\s+(half|quarter|period)\b/) || t.match(/\b([1-4])(h|q)\b/);   /* a half or quarter market; a hockey period (11/28) */
+    if (!m) return ""; const n = { first: 1, second: 2, third: 3, fourth: 4 }[m[1]] || parseInt(m[1], 10), k = m[2].charAt(0) === "h" ? "H" : m[2].charAt(0) === "p" ? "P" : "Q"; return (k === "H" && n > 2) || (k === "P" && n > 3) ? "" : n + k; };
   const DAYRX = /\b(?:today|tonight|tomorrow|tmrw|mon|tue|wed|thu|fri|sat|sun)[a-z]*\.?\s*$|\b\d{1,2}\/\d{1,2}\s*$|\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{1,2}\s*$/i;
   function matchupAt(lines, i){   /* the game named at line i: { a: the away team's text, h: the home team's, x: the live spot's team, end: its last line } */
     const ln = lines[i], m = ln.match(/^(.*?)(\d{1,2}):(\d{2})\s*([ap])\.?m\b\.?(.*)$/i);
@@ -2438,7 +2479,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       const a = (m[1].replace(DAYRX, "").match(/[A-Za-z&]{2,6}/g) || []).pop() || "", hm = m[5].replace(/\bwatch\b/i, " ").match(/^\s*([A-Za-z&]{2,6})\b(?:\s+([A-Za-z&]{2,6})\b)?/) || [];
       if (a && hm[1]) return { a: a.length > 2 ? a + " " + a.slice(1) : a, h: hm[2] ? hm[1] + " " + hm[2] + " " + hm[1] + hm[2] : hm[1], x: "", end: i, w: ((m[1].match(DAYRX) || [""])[0] + " " + m[2] + ":" + m[3] + " " + m[4] + "m").trim() };   /* w: its day and time, for another sport's game (11/27) */
     }
-    if (/Q\s?[234]/.test(ln) && /\bT\s*$/.test(ln)){   /* a mini scoreboard's header ("Q1 13:19 | 2nd & 1, NO 20 Q1 Q2 Q3 Q4 T", "Final Q1 Q2 Q3 Q4 OT T"), then the two teams */
+    if (/Q\s?[234]|\bP\s?[23]\b|\b2H\b|\bH2\b/.test(ln) && /\bT\s*$/.test(ln)){   /* hockey's periods and a half's header too (11/28) */   /* a mini scoreboard's header ("Q1 13:19 | 2nd & 1, NO 20 Q1 Q2 Q3 Q4 T", "Final Q1 Q2 Q3 Q4 OT T"), then the two teams */
       const tl = []; for (let k = i + 1; k < Math.min(lines.length, i + 4) && tl.length < 2; k++) if (/[A-Za-z]{3}/.test(lines[k])) tl.push(k);
       if (tl.length === 2) return { a: lines[tl[0]], h: lines[tl[1]], x: (ln.match(/,\s*([A-Za-z&]{2,5})\s+\d{1,2}\b/) || [])[1] || "", end: tl[1] };
     }
@@ -2515,7 +2556,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     const t = (ls.pop() || "").replace(/[−–]/g, "-").replace(/^(?:[^A-Za-z0-9+]+|[A-Za-z0-9]{1,2}[^A-Za-z0-9\s+]*\s+)+/, "").replace(ODDSTAIL, "").replace(/(\d)s\b/g, "$1.5");   /* the icon's specks ("i.", "oO"), the odds; "Over41s": the OCR's ".5" */
     const m = t.match(/^(.*?[+-]\s?\d{1,2}(?:\.\d)?)(?![\d.])/) || t.match(/((?:over|under)\s*\d+(?:\.\d)?)/i);
     return (m ? m[1] : t).trim(); };
-  const KINDFIT = { total: ["total", "tt", "prop"], ml: ["ml", "spread", "prop"], spread: ["spread", "ml"], prop: ["prop"] };   /* the market kinds a pick's text can sit under */
+  const KINDFIT = { total: ["total", "tt", "prop"], ml: ["ml", "spread", "prop"], spread: ["spread", "ml"], prop: ["prop"], draw: ["ml"], yn: ["btts", "prop"] };   /* the market kinds a pick's text can sit under */
   const slipToks = s => normTeam(s).split(" ").filter(w => w.length > 1 && !/^\d+$/.test(w));
   /* the summary's picks with the leg blocks, in order. The same count pairs them in order unless the text says otherwise; otherwise a
      pick takes a block only on its words or its number (a block the screenshot cut off leaves its pick to the summary alone) */
@@ -2552,7 +2593,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const lastName = ws => { const w = ws.slice(); while (w.length > 1 && /^(?:[il1]{1,3}|iv|jr\.?|sr\.?)$/i.test(w[w.length - 1])) w.pop(); return w[w.length - 1] || ""; };   /* "Ollie Gordon II" is Gordon */
   const propWho = (p, mk) => { const pw = p.match(/[A-Za-z][A-Za-z'.-]+/g) || [];
     if (pw.length >= 2 && !/^(over|under)$/i.test(pw[0])) return lastName(pw);   /* the pick is the player ("Christian McCaffrey") */
-    const s = (mk || "").split(/\s+-\s+|:/)[0].replace(/\s+(?:receiving|rushing|passing|receptions?|yards|yds|tds?|touchdowns?|anytime|scorer|points|pts|rebounds?|assists?|threes|steals?|blocks|turnovers?|made|attempts|completions|longest|total)\b.*$/i, "").trim();   /* the stat after the name */
+    const s = (mk || "").split(/\s+-\s+|:/)[0].replace(/\s+(?:receiving|rushing|passing|receptions?|yards|yds|tds?|touchdowns?|anytime|scorer|points|pts|rebounds?|assists?|threes|steals?|blocks|turnovers?|goals?|goalscorer|shots?|saves|hits|made|attempts|completions|longest|total)\b.*$/i, "").trim();   /* the stat after the name */
     if (!/\s/.test(s) || /score|touchdown|total|yards|player|team/i.test(s)) return "";
     return s.split(/\s+(?:or|and|&)\s+|,\s*/).map(x => lastName(x.trim().split(/\s+/))).filter(Boolean).join(" or ").slice(0, 28); };   /* "McCaffrey or Robinson", "Lamb" */
   /* a pick with its block: the market's kind (a team total, a player prop, a half), the block's game for placing it */
@@ -2566,13 +2607,19 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
       : k === "ml" ? "Moneyline" : k === "spread" ? "Spread" + alt : k === "total" ? "Total" + alt : "").replace(/(?:\s+[^A-Za-z0-9\s]+)+$/, "").slice(0, 90);
     const ou = l && l.kind === "total" ? l.side : /\bunder\b|^\s*u\b/i.test(p) ? "under" : "over";
     const numOf = x => { const d = (x.match(/\d+(?:\.\d)?/) || [])[0]; if (!d) return NaN; let n = +d; if (n >= 100 && !/\./.test(d) && /5$/.test(d)) n = n / 10; return n; };   /* "Over275": the lost point */
-    if (k === "tt"){ const num = l && l.num != null ? l.num : numOf(p); if (isNaN(num)) return l;
+    let mkX = "";   /* soccer's markets with their own words (11/28) */
+    const dc = k === "spread" && /double\s*chance/i.test(b.mkt) ? p.replace(ODDSTAIL, "").replace(/^\W+|\W+$/g, "").match(/^(.+?)\s*(?:\bor\b|\/)\s*(.+)$/i) : null;
+    if (k === "btts"){ leg = { team: "", kind: "btts", side: /^\W*no\b/i.test(p) ? "no" : "yes", num: null, text: p, label: l ? l.label : "" }; mkX = "Both Teams To Score"; }
+    else if (dc){ const d1 = /^draw$/i.test(dc[1].trim()), d2 = /^draw$/i.test(dc[2].trim()); mkX = "Double Chance";   /* a team or the draw: that team +0.5; either team: no draw */
+      leg = d1 || d2 ? { team: (d1 ? dc[2] : dc[1]).trim(), kind: "spread", num: 0.5, text: p, hint: "", label: l ? l.label : "" } : { team: "", kind: "draw", side: "no", num: null, text: p, label: l ? l.label : "" }; }
+    else if (k === "spread" && /draw\s*no\s*bet/i.test(b.mkt) && leg && leg.kind === "ml"){ Object.assign(leg, { kind: "spread", num: 0 }); mkX = "Draw No Bet"; }
+    else if (k === "tt"){ const num = l && l.num != null ? l.num : numOf(p); if (isNaN(num)) return l;
       leg = { team: (b.mkt.split(":")[0] || "").trim() || (l && l.team) || "", kind: "tt", ou, num, text: p, label: l ? l.label : "" }; }
     else if (k === "prop") leg = { team: "", kind: "prop", num: null, short: propShort(p, mk, l), who: propWho(p, mk), text: p, label: l ? l.label : "" };
     else if (!leg) return null;
     else if (k === "spread" && leg.kind === "ml"){ const sm = b.headText.replace(/[−–]/g, "-").match(/[+-]\s?\d{1,2}(?:\.\d)?(?![\d.])/); if (sm) Object.assign(leg, { kind: "spread", num: parseFloat(sm[0].replace(/\s/, "")) }); }
     if (per) leg.per = per;
-    if (mk) leg.mkt = mk;
+    if (mkX) leg.mkt = mkX; else if (mk) leg.mkt = mk;
     leg.mu = b.mu; if (b.grp) leg.grp = b.grp;
     return leg;
   }
@@ -2606,7 +2653,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
 
 
-  const normTeam = s => (s || "").toLowerCase().replace(/[’'.]/g, "").replace(/\(.*?\)/g, " ").replace(/\bfl\b/g, " ").replace(/\bst\b/g, "state").replace(/&/g, " and ").replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
+  const normTeam = s => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[’'.]/g, "").replace(/\(.*?\)/g, " ").replace(/\bfl\b/g, " ").replace(/\bst\b/g, "state").replace(/&/g, " and ").replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
   const ABX = { wsh: "was", jax: "jac", lar: "la" };   /* the book's abbreviation where it differs from ESPN's */
   /* how well a bit of slip text names team t: 5 exactly (name, nickname or abbreviation), 4 and up the full name inside it (the longer
      name wins: "North Texas" over "Texas"), 3.8 all its words, 3.5 the nickname ("NY Jets"), 3 the abbreviation (2.5 a two-letter
@@ -2687,7 +2734,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function placeLegs(legs, games, alt){   /* alt { home, lg, games }: the other league's games too, each placed leg tagged with its league (11/26) */
     const out = [], seen = {}, all = alt ? games.concat(alt.games) : games;
     const two = (mu, g) => Math.max(Math.min(teamHit(mu.a, g.away), teamHit(mu.h, g.home)), Math.min(teamHit(mu.a, g.home), teamHit(mu.h, g.away))) >= 2.5;   /* a game line naming both of a game's teams */
-    const one = (l, games) => { const bg = l.mu ? blockGame(l.mu, games) : null; let id = "", side = l.kind === "total" ? l.side : "", g = null;
+    const one = (l, games) => { const bg = l.mu ? blockGame(l.mu, games) : null; let id = "", side = l.kind === "total" || l.kind === "draw" || l.kind === "btts" ? l.side : "", g = null;
       if (gameOnly(l)){ g = bg || ((matchGame(l.team, games) || {}).g) || null; if (g) id = g.id; }
       else { const s = bg ? sideIn(bg, l.team) || sideNear(bg, l.team) : "", hit = s ? null : matchTeam(l.team, games); if (s){ g = bg; id = bg.id; side = s; } else if (hit){ g = hit.g; id = hit.g.id; side = hit.side; } }
       const nm = !g || !l.team ? 0 : gameOnly(l) ? Math.max(teamHit(l.team, g.away), teamHit(l.team, g.home)) : teamHit(l.team, g[side] || g.home);
@@ -2699,17 +2746,23 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     /* another sport's game (11/27): the leg's game line names both of its teams, within 40 minutes of the line's time. A football game keeps
        a leg whose line names both of its teams, when its kickoff is the line's time too; a line that doesn't settle it there asks for
        the other sports' scoreboards of its day (XWANT: the read is done again once they're in) */
+    /* the legs of one game line are one sport: a puck line makes its total the NHL's; a touchdown makes the line football's (11/28) */
+    const XLINE = {}, xsKey = l => [l.mu.a, l.mu.h, l.mu.w || ""].join("|"), nX = Object.keys(XS).length;
+    legs.forEach(l => { if (!l.mu) return; const k = xsKey(l), c = xsCand(l), was = XLINE[k]; if (c.length === nX && !was) return;
+      if (!was || c.length === nX) { if (!was) XLINE[k] = c; return; } if (!was.length || !c.length){ XLINE[k] = []; return; }
+      const both = was.filter(x => c.includes(x)); XLINE[k] = both.length ? both : [...new Set(was.concat(c))]; });
     const xsGame = (l, p0) => { if (!l.mu) return null; try {   /* a fault here must not stop a football read */
       const w = xsWhen(l.mu.w), near = (g, m, ts) => !w.ts.length || ts.some(t => Math.abs(new Date(g.kick).getTime() - t) <= m * 60000), g0 = p0.id ? all.find(g => g.id === p0.id) : null;
-      const fb = ts => !!g0 && two(l.mu, g0) && near(g0, 90, ts);   /* the football game it's on: both teams, at its kickoff */
-      if (fb(w.ts)) return null;
-      for (const k of Object.keys(XS)) for (const ts of (w.alt.length ? [w.ts, w.alt] : [w.ts])){ w.dates.forEach(d => XWANT.add(k + ":" + d));   /* by this device's clock, then by the other zones' */
+      const cand = (l.mu && XLINE[xsKey(l)]) || xsCand(l), anyX = cand.length === Object.keys(XS).length;   /* the sports the market could be, by every leg of its game line (11/28) */
+      const fb = ts => !!g0 && ((two(l.mu, g0) && near(g0, 90, ts)) || ((!cand.length || anyX) && xsBoth(l.mu, g0) && near(g0, 15, ts)));   /* the football game it's on: both teams at its kickoff, or both read loosely ("TAMU", "wwu", "MIAFL") right at it (11/28) */
+      if (fb(w.ts) || !cand.length) return null;
+      for (const k of cand) for (const ts of (w.alt.length ? [w.ts, w.alt] : [w.ts])){ w.dates.forEach(d => XWANT.add(k + ":" + d));   /* by this device's clock, then by the other zones' */
         if (ts === w.alt && fb(ts)) return null;   /* by another zone's clock it's the football game's kickoff: football keeps it */
         const bg = blockGame(l.mu, XG[k].filter(g => w.ts.length ? near(g, 40, ts) : w.dates.includes(partsIn(g.kick, TZ.ET).date)));
         if (!bg || !two(l.mu, bg)) continue;
         const fwd = Math.min(teamHit(l.mu.a, bg.away), teamHit(l.mu.h, bg.home)) >= Math.min(teamHit(l.mu.a, bg.home), teamHit(l.mu.h, bg.away));
         if (!xsOwn(l.mu.a, fwd ? bg.away : bg.home) || !xsOwn(l.mu.h, fwd ? bg.home : bg.away)) continue;   /* "ATL Falcons" isn't the Hawks */
-        const side = l.kind === "total" ? l.side : gameOnly(l) ? "" : sideIn(bg, l.team) || sideNear(bg, l.team); if (!gameOnly(l) && !side) continue;
+        const side = l.kind === "total" || l.kind === "draw" || l.kind === "btts" ? l.side : gameOnly(l) ? "" : sideIn(bg, l.team) || sideNear(bg, l.team); if (!gameOnly(l) && !side) continue;
         return { id: bg.id, side, fit: legFit(l, bg), lg: k }; } } catch (e) {}
       return null; };
     legs.forEach((l, i) => { const far = res[i].far, xp = xsGame(l, far ? res[i].q : res[i].p), p = xp || (far ? res[i].q : res[i].p), plg = xp ? xp.lg : alt ? (far ? alt.lg : alt.home) : "";
@@ -2751,6 +2804,23 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* a team's side of a game line says nothing against it: every word of four letters or more is one of the team's own, a letter or two off at most */
   const xsOwn = (text, t) => { const own = normTeam([t.name, t.short, t.ab, t.ax || ""].join(" ")).split(" ");
     return normTeam(text).split(" ").every(w => w.length < 4 || !/^[a-z]+$/.test(w) || own.some(o => o === w || lev(o, w) <= (w.length > 5 ? 2 : 1))); };
+  /* a side of a game line read loosely: the name, or a letter or two off its abbreviation or name ("TAMU" for TA&M, "wwu" for WVU) (11/28) */
+  const xsLw = s => normTeam(s).replace(/\band\b/g, "").replace(/[^a-z]/g, "");
+  const xsLoose = (x, t) => { if (teamHit(x, t) >= 2.5) return true; const names = [t.ab, t.short, t.name].map(xsLw).filter(s => s.length >= 2);   /* word by word: "wwu wu" is wwu */
+    return String(x || "").split(/\s+/).map(xsLw).filter(q => q.length >= 2).some(q => names.some(s => s.startsWith(q) || q.startsWith(s) || (q.length >= 3 && s.length >= 3 && lev(q, s) <= (q.length >= 5 ? 2 : 1)))); };
+  const xsBoth = (mu, g) => (xsLoose(mu.a, g.away) && xsLoose(mu.h, g.home)) || (xsLoose(mu.a, g.home) && xsLoose(mu.h, g.away));
+  /* the sports a leg's market could be: none for football's own (a touchdown, yards ...), soccer for the draw, both teams to score or a
+     goalscorer, basketball for rebounds or threes, every one for a side or a total (11/28) */
+  function xsCand(l){
+    const st = l.kind === "prop" ? ((propSpec(l) || {}).stat || statOf(l.mkt || "")) : "", mk = ((l.mkt || "") + " " + (l.kind === "prop" ? l.text || "" : "")).toLowerCase();
+    if (/touchdown|\btds?\b|yards|passing|rushing|receiving|receptions|\bsacks?\b|interception|field\s*goal|kicking|tackles/.test(mk)) return [];
+    if (l.kind === "draw" || l.kind === "btts" || /double\s*chance|draw\s*no\s*bet|match\s*result|1x2|\bcorners?\b|\bcards?\b/.test(mk) || st === "sot") return ["soc"];
+    if (/puck\s*line|power\s*play/.test(mk) || st === "hits") return ["nhl"];
+    if (["reb", "tpm", "stl", "tov", "pra", "pr", "pa", "ra", "stocks", "fgm"].includes(st)) return ["nba", "ncaab"];
+    if (["goals", "td", "gpa", "saves", "shots", "sog"].includes(st)) return ["nhl", "soc"];
+    if (["pts", "ast", "blk"].includes(st)) return ["nba", "ncaab", "nhl"];
+    return Object.keys(XS);
+  }
   const XWANT = new Set(), XD = {}, XT = {};   /* "nba:2026-11-27": the days of another sport's scoreboard a read wants; when each was last read, and last asked for */
   let xsWait = false, xsSeq = 0;   /* a read waiting on those scoreboards (Track holds for it), and which read it is */
   async function xsLook(want, text, seq){   /* those scoreboards, four seconds at most, then the slip read again with their games in hand */
@@ -2807,9 +2877,9 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const legLg = (l, dflt) => { const d = dflt || S.league; if (l.lg === "cfb" || l.lg === "nfl" || isX(l.lg)) return l.lg; const o = otherLg(d);
     return l.id && !weekGames(d).some(g => g.id === l.id) && weekGames(o).some(g => g.id === l.id) ? o : d; };   /* saved without its league (an older page): the league that has its game */
   /* another sport's game before its scoreboard answers (a load, or offline): drawn from what the leg kept, not started */
-  const XSTUB = {}, xsTeam = ab => ({ id: "", ab, name: ab, short: ab, color: "3b4560", alt: "", logo: ab.toLowerCase(), rank: 0, rec: "", conf: "OTHER", score: 0, winner: false, line: [] });
+  const XSTUB = {}, xsTeam = (ab, lg) => ({ id: "", ab, name: ab, short: ab, color: "3b4560", alt: "", logo: isX(lg) && XS[lg].byId ? "" : ab.toLowerCase(), rank: 0, rec: "", conf: "OTHER", score: 0, winner: false, line: [] });
   const xsStub = l => { if (!l.ga || !l.gh || !l.gk || isNaN(new Date(l.gk).getTime())) return undefined;
-    return XSTUB[l.id] || (XSTUB[l.id] = Object.assign(prepGame({ id: l.id, kick: l.gk, tbd: false, away: xsTeam(l.ga), home: xsTeam(l.gh), neutral: false, venue: "", carriers: [], tv: false, spread: null, ou: null, provider: "", state: "pre", detail: "", period: 0, clock: "", sit: null }, l.lg), { stub: true })); };
+    return XSTUB[l.id] || (XSTUB[l.id] = Object.assign(prepGame({ id: l.id, kick: l.gk, tbd: false, away: xsTeam(l.ga, l.lg), home: xsTeam(l.gh, l.lg), neutral: false, venue: "", carriers: [], tv: false, spread: null, ou: null, provider: "", state: "pre", detail: "", period: 0, clock: "", sit: null }, l.lg), { stub: true })); };
   const legGame = (l, dflt) => { if (!l.id) return null; const lg = legLg(l, dflt); return weekGames(lg).find(g => g.id === l.id) || (isX(lg) ? xsStub(l) : undefined); };
   /* ---- Both: the two leagues on one board (Phil, 11/26: "for days like today where there are both NFL and college games, there should
      be a hybrid option ... that combines both boards") ----
@@ -2830,7 +2900,12 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* a slip's legs by their games' start times, whichever league, wherever a slip lists them (Phil, 11/26: "it should display legs in
      chronological order, always, by start time, regardless of league"); the legs of one game in the slip's own order, a leg with no game last */
   const legOrder = (legs, dflt) => { const t = legs.map(l => { const g = legGame(l, dflt); return g ? new Date(g.kick).getTime() || 0 : Infinity; }); return legs.map((l, k) => k).sort((a, b) => t[a] - t[b] || a - b); };
-  const whenTxt = g => { if (!g) return ""; if (g.state === "in") return /half/i.test(g.detail || "") ? "Half" : (g.period > 4 ? "OT" : "Q" + g.period) + " " + (g.clock || "");
+  const xsClock = g => { const x = XS[g.league], d = g.detail || "", p = g.period || 0, c = g.clock || "", n = x.per;   /* Q2 4:10, End Q1, 2H 7:21, Half, P2 12:34, End P1, OT, SO, 67', HT (11/28) */
+    if (x.sport === "soc") return /^ht$|half/i.test(d) ? "HT" : c || d;
+    if (/halftime/i.test(d)) return "Half";
+    const lab = p <= n ? (x.sport === "puck" ? "P" + p : n === 2 ? (p === 1 ? "1H" : "2H") : "Q" + p) : x.sport === "puck" ? (/shootout|\bso\b/i.test(d) ? "SO" : p > n + 1 ? (p - n) + "OT" : "OT") : "OT" + (p - n > 1 ? p - n : "");
+    return /^end|intermission/i.test(d) ? "End " + lab : lab === "SO" ? lab : (lab + " " + c).trim(); };
+  const whenTxt = g => { if (!g) return ""; if (g.state === "in" && isX(g.league)) return xsClock(g); if (g.state === "in") return /half/i.test(g.detail || "") ? "Half" : (g.period > 4 ? "OT" : "Q" + g.period) + " " + (g.clock || "");
     if (g.state === "post") return g.detail || "Final"; if (g.tbd) return "TBD";
     const wd = d => new Intl.DateTimeFormat("en-US", { timeZone: TZ[S.tz], weekday: "short" }).format(d), k = new Date(g.kick);
     return (wd(k) !== wd(new Date()) ? wd(k) + " " : "") + fmtTime(g.kick); };
@@ -2854,6 +2929,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     catch (e) { ROSTER[k] = { at: Date.now(), fail: true }; }
   }
   function rosterPlayer(lg, g, name){   /* { side, num } of a prop's player on either team's roster; asks for a roster not yet in */
+    if (isX(lg) && XS[lg].noRoster) return null;   /* soccer: the line-ups' numbers (propBadge) (11/28) */
     const all = []; ["away", "home"].forEach(side => { const r = ROSTER[lg + ":" + g[side].id]; if (!r || !r.ps){ rosterGet(lg, g[side].id); return; } r.ps.forEach(p => all.push(Object.assign({ side }, p))); });
     const p = all.length ? pmatch(name, all, 0.55) : null; return p ? { side: p.side, num: p.num } : null;
   }
@@ -2872,7 +2948,8 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function propBadge(l, g, lg){   /* the jersey(s) of a prop's player(s); the team's logo when only the box score knows the team; null: the P badge */
     const sp = propSpec(l); if (!sp || !sp.names.length) return null;
     const c = PSTAT[g.id], ps = sp.names.map(nm => { const r = rosterPlayer(lg, g, nm); if (r) return { num: r.num, color: baseColor(g[r.side]) };
-      const b = c && c.box ? pmatch(nm, c.box.players) : null; return b ? { team: b.team } : null; });
+      const b = c && c.box ? pmatch(nm, c.box.players) : null, bs = b ? (g.away.ab === b.team ? "away" : g.home.ab === b.team ? "home" : "") : "";
+      return b ? (isX(g.league) && b.num && bs ? { num: b.num, color: baseColor(g[bs]) } : { team: b.team }) : null; });   /* another sport's game: the box score's number (11/28) */
     if (ps.every(p => p && p.num != null)) return jerseyBadge(ps);
     const ab = (ps.find(p => p && p.team) || {}).team, side = ab ? (g.away.ab === ab ? "away" : g.home.ab === ab ? "home" : "") : "";
     if (!side) return null;
@@ -2888,10 +2965,13 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function xboxParse(j){
     const pl = {}, tm = {}, bx = (j || {}).boxscore || {};
     (bx.players || []).forEach(t => { const ab = ((t.team || {}).abbreviation) || "";
-      (t.statistics || []).forEach(c => { const cn = c.name || ((c.keys || []).includes("points") ? "hoops" : "");   /* basketball's one group has no name (11/27) */
+      (t.statistics || []).forEach(c => { const cn = /^(?:forwards|defenses|defensemen|skaters)$/.test(c.name || "") ? "hockey" : c.name === "goalies" ? "goalie" : c.name || ((c.keys || []).includes("points") ? "hoops" : "");   /* basketball's one group has no name (11/27); hockey's (11/28) */
         (c.athletes || []).forEach(x => { const a = x.athlete || {}, nm = a.displayName || ""; if (!nm || !cn || (cn === "hoops" && !(x.stats || []).length)) return;
         const p = pl[a.id || nm] = pl[a.id || nm] || { nm, n: pnorm(nm), team: ab, cats: {} }; p.cats[cn] = { labels: c.labels || [], vals: x.stats || [] }; }); }); });
     (bx.teams || []).forEach(t => { const m = {}; (t.statistics || []).forEach(s => { m[s.label] = s.displayValue; }); tm[((t.team || {}).abbreviation) || ""] = m; });
+    ((j || {}).rosters || []).forEach(t => { const ab = ((t.team || {}).abbreviation) || ""; (t.roster || []).forEach(x => { const a = x.athlete || {}, nm = a.displayName || ""; if (!nm) return;   /* soccer's line-ups (11/28) */
+      const st = {}; (x.stats || []).forEach(v => { st[v.name] = v.value; }); if (!x.starter && !x.subbedIn && !st.appearances) return;
+      pl[a.id || nm] = { nm, n: pnorm(nm), team: ab, cats: { soccer: { labels: ["G", "A", "SH", "SOT", "SV"], vals: [st.totalGoals, st.goalAssists, st.totalShots, st.shotsOnTarget, st.saves].map(v => v == null ? null : String(Math.round(+v || 0))) } } }; }); });
     return { pl: Object.values(pl), tm };
   }
   function xboxTake(id, j, fin){ try { XBOX[id] = { at: Date.now(), d: xboxParse(j), fin: !!fin }; } catch (e) {} }
@@ -2910,37 +2990,46 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   const XCELLS = { receiving: [["REC", "REC"], ["TGTS", "TGT"], ["YDS", "YDS"], ["LONG", "LONG"], ["TD", "TD"]], rushing: [["CAR", "CAR"], ["YDS", "YDS"], ["AVG", "AVG"], ["LONG", "LONG"], ["TD", "TD"]],
     passing: [["C/ATT", "C/ATT"], ["YDS", "YDS"], ["TD", "TD"], ["INT", "INT"]], defensive: [["TOT", "TKL"], ["SOLO", "SOLO"], ["SACKS", "SACKS"], ["TFL", "TFL"], ["PD", "PD"]],
     interceptions: [["INT", "INT"], ["YDS", "YDS"], ["TD", "TD"]], kicking: [["FG", "FG"], ["XP", "XP"], ["PTS", "PTS"], ["LONG", "LONG"]],
-    hoops: [["PTS", "PTS"], ["REB", "REB"], ["AST", "AST"], ["3PT", "3PT"], ["STL", "STL", 1], ["BLK", "BLK", 1], ["TO", "TO", 1], ["MIN", "MIN"]] };   /* basketball (11/27); a third entry: only when it's the leg's stat */
+    hoops: [["PTS", "PTS"], ["REB", "REB"], ["AST", "AST"], ["3PT", "3PT"], ["STL", "STL", 1], ["BLK", "BLK", 1], ["TO", "TO", 1], ["MIN", "MIN"]],
+    hockey: [["G", "G"], ["A", "A"], ["S", "SOG"], ["BS", "BLK", 1], ["HT", "HITS", 1], ["+/-", "+/-"], ["TOI", "TOI"]], goalie: [["SV", "SV"], ["SA", "SA"], ["GA", "GA"], ["SV%", "SV%"]],
+    soccer: [["G", "G"], ["A", "A"], ["SH", "SH"], ["SOT", "SOT"], ["SV", "SV", 1]] };   /* hockey and soccer (11/28) */   /* basketball (11/27); a third entry: only when it's the leg's stat */
   const XSTAT = { rec: ["receiving", "REC"], recyd: ["receiving", "YDS"], rectd: ["receiving", "TD"], longrec: ["receiving", "LONG"], rushyd: ["rushing", "YDS"], rushtd: ["rushing", "TD"],
     rushatt: ["rushing", "CAR"], longrush: ["rushing", "LONG"], passyd: ["passing", "YDS"], passtd: ["passing", "TD"], comp: ["passing", "C/ATT"], patt: ["passing", "C/ATT"], int: ["passing", "INT"],
     rryd: ["rushing", "YDS", "receiving", "YDS"], pryd: ["passing", "YDS", "rushing", "YDS"], td: ["rushing", "TD", "receiving", "TD"], sacks: ["defensive", "SACKS"], tackles: ["defensive", "TOT"],
     solo: ["defensive", "SOLO"], kpts: ["kicking", "PTS"], xpm: ["kicking", "XP"], fgm: ["kicking", "FG"],
     pts: ["hoops", "PTS"], reb: ["hoops", "REB"], ast: ["hoops", "AST"], tpm: ["hoops", "3PT"], stl: ["hoops", "STL"], blk: ["hoops", "BLK"], tov: ["hoops", "TO"], pra: ["hoops", "PTS", "hoops", "REB", "hoops", "AST"],
     pr: ["hoops", "PTS", "hoops", "REB"], pa: ["hoops", "PTS", "hoops", "AST"], ra: ["hoops", "REB", "hoops", "AST"], stocks: ["hoops", "STL", "hoops", "BLK"] };
+  const XSTATX = { puck: { td: ["hockey", "G"], goals: ["hockey", "G"], ast: ["hockey", "A"], pts: ["hockey", "G", "hockey", "A"], gpa: ["hockey", "G", "hockey", "A"], sog: ["hockey", "S"], sot: ["hockey", "S"],
+      shots: ["hockey", "S"], blk: ["hockey", "BS"], hits: ["hockey", "HT"], saves: ["goalie", "SV"] },
+    soc: { td: ["soccer", "G"], goals: ["soccer", "G"], ast: ["soccer", "A"], gpa: ["soccer", "G", "soccer", "A"], sot: ["soccer", "SOT"], sog: ["soccer", "SOT"], shots: ["soccer", "SH"], saves: ["soccer", "SV"] } };   /* the cells a stat lights, by sport (11/28) */
+  const PERN = g => isX(g.league) ? XS[g.league].per : 4;
+  const perLab = (g, q, n) => { const x = isX(g.league) ? XS[g.league].sport : "", per = PERN(g);   /* a period's column: Q1, 1H, 1 ... OT, SO */
+    if (q < per) return x === "puck" ? String(q + 1) : per === 2 ? (q ? "2H" : "1H") : "Q" + (q + 1);
+    return x === "puck" ? (q === per ? "OT" : "SO") : n > per + 1 ? "OT" + (q - per + 1) : "OT"; };
   function legBox(l, g, lg){   /* under a tapped leg: a prop's players' lines, or the game's quarters and team stats; the game's box score a tap away */
     const x = el("div", "lx"), c = XBOX[g.id], d = c && c.d;
     const head = (a, b) => { const h = el("div", "lx-h"); h.appendChild(el("span", null, a)); if (b) h.appendChild(el("span", null, b)); x.appendChild(h); };
     if (g.state === "pre"){ head(g.away.ab + " at " + g.home.ab, whenTxt(g)); x.appendChild(el("div", "lx-n", "The box score fills in once it starts.")); }
     else if (l.kind === "prop"){
-      const sp = propSpec(l), names = sp ? sp.names : [], hot = sp && XSTAT[sp.stat] ? XSTAT[sp.stat] : [];
+      const sp = propSpec(l), names = sp ? sp.names : [], xst = (isX(g.league) && XSTATX[XS[g.league].sport]) || XSTAT, hot = sp && xst[sp.stat] ? xst[sp.stat] : [];
       if (!names.length) head(g.away.ab + " at " + g.home.ab, whenTxt(g));
       names.forEach((nm, i) => { const p = d ? pmatch(nm, d.pl) : null, ro = rosterPlayer(lg, g, nm), w = el("div", "lx-p");
         const h = el("div", "lx-h"); h.appendChild(el("span", null, (p ? p.nm : nm).split(" ").filter(t => !/^(jr|sr|ii|iii|iv)\.?$/i.test(t)).pop() + (p ? " · " + p.team : "") + (ro ? " #" + ro.num : ""))); if (!i) h.appendChild(el("span", null, whenTxt(g))); w.appendChild(h);
         if (!p) w.appendChild(el("div", "lx-n", d ? "No numbers for him in the box score yet." : "Getting the box score..."));
-        else { const cats = []; for (let k = 0; k < hot.length; k += 2) if (!cats.includes(hot[k])) cats.push(hot[k]); ["passing", "rushing", "receiving", "hoops"].forEach(k => { if (!cats.includes(k)) cats.push(k); });
-          cats.filter(k => p.cats[k] && XCELLS[k]).slice(0, 2).forEach(k => { if (k !== "hoops") w.appendChild(el("div", "lx-c", k)); const row = el("div", "lx-s");
+        else { const cats = []; for (let k = 0; k < hot.length; k += 2) if (!cats.includes(hot[k])) cats.push(hot[k]); ["passing", "rushing", "receiving", "hoops", "hockey", "goalie", "soccer"].forEach(k => { if (!cats.includes(k)) cats.push(k); });
+          cats.filter(k => p.cats[k] && XCELLS[k]).slice(0, 2).forEach(k => { if (!/^(?:hoops|hockey|goalie|soccer)$/.test(k)) w.appendChild(el("div", "lx-c", k)); const row = el("div", "lx-s");
             XCELLS[k].forEach(([lab, show, opt]) => { const v = xv(p, k, lab); if (v === "") return; let on = false; for (let q = 0; q < hot.length; q += 2) if (hot[q] === k && hot[q + 1] === lab) on = true; if (opt && !on) return;
               const cell = el("span", on ? "hi" : null); cell.appendChild(el("b", null, v)); cell.appendChild(el("i", null, show)); row.appendChild(cell); }); w.appendChild(row); }); }
         x.appendChild(w); });
     } else {
       head(g.away.ab + " at " + g.home.ab, whenTxt(g));
-      const t = el("table"), hd = el("thead"), hr = el("tr"), n = Math.max(4, (g.away.line || []).length, (g.home.line || []).length), bd = el("tbody");
-      hr.appendChild(el("td")); for (let q = 0; q < n; q++) hr.appendChild(el("td", null, q < 4 ? "Q" + (q + 1) : n > 5 ? "OT" + (q - 3) : "OT")); hr.appendChild(el("td", null, "T")); hd.appendChild(hr); t.appendChild(hd);
+      const t = el("table"), hd = el("thead"), hr = el("tr"), n = Math.max(PERN(g), (g.away.line || []).length, (g.home.line || []).length), bd = el("tbody");
+      hr.appendChild(el("td")); for (let q = 0; q < n; q++) hr.appendChild(el("td", null, perLab(g, q, n))); hr.appendChild(el("td", null, "T")); hd.appendChild(hr); t.appendChild(hd);
       ["away", "home"].forEach(side => { const tr = el("tr"), ln = g[side].line || []; tr.appendChild(el("td", null, g[side].ab)); for (let q = 0; q < n; q++) tr.appendChild(el("td", null, ln[q] == null ? "" : String(ln[q])));
         tr.appendChild(el("td", null, String(g[side].score == null ? "" : g[side].score))); bd.appendChild(tr); });
-      t.appendChild(bd); x.appendChild(t);
+      t.appendChild(bd); if ((g.away.line || []).length || !isX(g.league) || XS[g.league].sport !== "soc") x.appendChild(t);   /* ESPN's soccer scoreboard has no halves: no empty table (11/28) */
       const A = d && d.tm[g.away.ab], H = d && d.tm[g.home.ab];
-      if (A && H){ const bits = [["Total Yards", "Yards", "-"], ["3rd down efficiency", "3rd down", ", "], ["FG", "FG", ", "], ["Rebounds", "Rebounds", "-"], ["Turnovers", "Turnovers", "-"]].filter(([k]) => A[k] != null && H[k] != null).map(([k, lab, sep]) => lab + " " + A[k] + sep + H[k]);
+      if (A && H){ const bits = [["Total Yards", "Yards", "-"], ["3rd down efficiency", "3rd down", ", "], ["FG", "FG", ", "], ["Rebounds", "Rebounds", "-"], ["Turnovers", "Turnovers", "-"], ["Shots", "Shots", "-"], ["SHOTS", "Shots", "-"], ["ON GOAL", "On target", "-"], ["Corner Kicks", "Corners", "-"]].filter(([k]) => A[k] != null && H[k] != null).map(([k, lab, sep]) => lab + " " + A[k] + sep + H[k]);
         if (bits.length) x.appendChild(el("div", "lx-t", bits.join(" · "))); }
       else if (!d) x.appendChild(el("div", "lx-n", "Getting the box score..."));
     }
@@ -2972,10 +3061,10 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function legFace(l, g, lg){   /* the team's logo (a badge for a total or a prop), its name and the pick */
     const t = g && !gameOnly(l) && l.side ? g[l.side] : null;
     let img; if (t){ img = el("img", "slogo"); img.alt = ""; img.src = LOGO(lg, t.logo); }
-    else img = (g && l.kind === "total" ? pairBadge(lg, g) : g && l.kind === "prop" ? propBadge(l, g, lg) : null)
-      || el("span", "sbadge", l.kind === "total" ? (l.side === "under" ? "U" : "O") : l.kind === "prop" ? "P" : "?");   /* the jersey or the two logos (11/15); the letter until they're known */
-    const nm = t ? (t.short || t.name) : l.kind === "total" ? (g ? g.away.ab + " / " + g.home.ab : "Total") : l.kind === "prop" ? (whoOf(l) || "Prop") : (l.team || l.text || "");
-    const pk = l.kind === "total" ? (l.per ? l.per + " " : "") + (l.side === "under" ? "Under " : "Over ") + l.num : l.kind === "prop" ? propTag(l) : legText(l);
+    else img = (g && (l.kind === "total" || l.kind === "draw" || l.kind === "btts") ? pairBadge(lg, g) : g && l.kind === "prop" ? propBadge(l, g, lg) : null)
+      || el("span", "sbadge", l.kind === "total" ? (l.side === "under" ? "U" : "O") : l.kind === "prop" ? "P" : l.kind === "draw" ? "D" : l.kind === "btts" ? "B" : "?");   /* the jersey or the two logos (11/15); the letter until they're known */
+    const nm = t ? (t.short || t.name) : l.kind === "total" || l.kind === "draw" || l.kind === "btts" ? (g ? g.away.ab + " / " + g.home.ab : l.kind === "total" ? "Total" : "Game") : l.kind === "prop" ? (whoOf(l) || "Prop") : (l.team || l.text || "");
+    const pk = l.kind === "total" ? (l.per ? l.per + " " : "") + (l.side === "under" ? "Under " : "Over ") + l.num : l.kind === "prop" ? propTag(l, g) : legPick(l);
     if (l.kind === "prop"){ const r = g ? propNow(g, l) : null, s = el("span", "spk pp"), a = el("span", "spl"); a.appendChild(el("span", "spn", nm)); a.appendChild(el("i", null, pk)); s.appendChild(a);
       if (r && r.line) s.appendChild(el("small", "spv", r.line)); return [img, s]; }   /* a prop: the pick whole, its players' numbers under it (11/8) */
     const s = el("span", "spk", nm); s.appendChild(el("i", null, pk)); return [img, s];
@@ -2987,8 +3076,10 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
     if (st === "pending") return [st, "not started"];
     if (st === "won") return [st, l.kind === "spread" ? "covered" : "won"];
     if (st === "lost" || st === "push") return [st, st];
+    if (l.kind === "draw") return [st, (g.away.score || 0) === (g.home.score || 0) ? "level" : "not level"];   /* soccer's (11/28) */
+    if (l.kind === "btts"){ const a = g.away.score || 0, h = g.home.score || 0; return [st, l.side === "no" ? "holding" : a || h ? "needs " + (a ? g.home.ab : g.away.ab) + " to score" : "needs both to score"]; }
     const per = l.per || "", q = +per.charAt(0) || 0, half = per.charAt(1) === "H";
-    const pts = side => { const t = g[side], ln = t.line || []; return !per ? t.score : half ? (q === 1 ? (ln[0] || 0) + (ln[1] || 0) : ln.slice(2).reduce((x, y) => x + y, 0)) : (ln[q - 1] || 0); };
+    const pts = side => perPts(g, side, per);
     const a = pts("away"), h = pts("home"), n = x => String(Math.round(x * 10) / 10);
     if (l.kind === "total" || l.kind === "tt"){ const ou = l.kind === "total" ? l.side : l.ou, t = l.kind === "total" ? a + h : (l.side === "home" ? h : a);
       return [st, ou === "under" ? (Math.ceil(l.num) - 1 - t) + " to spare" : "needs " + (Math.floor(l.num) + 1 - t)]; }
@@ -3128,7 +3219,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   }
   function openPicker(sp, l, k, lg, row){   /* under a leg: search the week's games for it, or drop it */
     const was = row.nextSibling && row.nextSibling.classList && row.nextSibling.classList.contains("spick"); row.parentNode.querySelectorAll(".spick").forEach(x => x.remove()); if (was) return;
-    const xs = isX(l.lg) || (l.kind === "prop" && HOOP.has((propSpec(l) || {}).stat)), box = el("div", "spick"), q = el("input"), opts = el("div", "sopts"), games = slipGames(lg).concat(has(otherLg(lg)) ? slipGames(otherLg(lg)) : [], xs ? Object.keys(XS).reduce((a, k) => a.concat(XG[k]), []) : []), one = gameOnly(l);   /* either league's games (11/26); another sport's it has read, for a leg of that sport (11/27) */
+    const xs = isX(l.lg) ? [l.lg] : xsCand(l), box = el("div", "spick"), q = el("input"), opts = el("div", "sopts"), games = slipGames(lg).concat(has(otherLg(lg)) ? slipGames(otherLg(lg)) : [], xs.reduce((a, k) => a.concat(XG[k] || []), [])), one = gameOnly(l);   /* either league's games (11/26); another sport's it has read, for a leg of that sport (11/27) */
     q.type = "search"; q.placeholder = one ? "Search a team in the game" : "Search the team"; q.setAttribute("enterkeyhint", "search"); box.appendChild(q); box.appendChild(opts);
     const list = () => { opts.textContent = ""; const t = q.value.trim(), lt = t.toLowerCase(), cand = [];
       games.forEach(g => (one ? ["home"] : ["away", "home"]).forEach(side => {
@@ -3162,7 +3253,7 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* the slips in the panel and under the bar, and the slip buttons beside FBS / Top 25 / All */
   let stripOpen = -1;   /* the slip whose card is open under the bar */
   const shortName = s => { const m = (s.name || "").match(/^(.*?)\s*[+-]\d{3,5}\s*$/); return ((m ? m[1] : s.name) || "Slip").slice(0, 12); };
-  const pillTxt = (l, g) => l.kind === "total" ? (l.side === "under" ? "U" : "O") + l.num : l.kind === "prop" ? ((whoOf(l) || "prop").split(/\s+(?:or|\+|&)\s+/)[0]).slice(0, 7).toUpperCase() : (g && g[l.side] ? g[l.side].ab : (l.team || "?").slice(0, 4).toUpperCase());
+  const pillTxt = (l, g) => l.kind === "total" ? (l.side === "under" ? "U" : "O") + l.num : l.kind === "draw" ? (l.side === "no" ? "NO DRAW" : "DRAW") : l.kind === "btts" ? (l.side === "no" ? "BTTS N" : "BTTS") : l.kind === "prop" ? ((whoOf(l) || "prop").split(/\s+(?:or|\+|&)\s+/)[0]).slice(0, 7).toUpperCase() : (g && g[l.side] ? g[l.side].ab : (l.team || "?").slice(0, 4).toUpperCase());
   function drawStrip(){
     const box = document.getElementById("sstrip"), p = { slips: SL() };   /* both leagues' slips with Both on (11/26) */
     if (box.contains(document.activeElement) && document.activeElement.tagName === "INPUT") return;   /* a rename in progress */
@@ -3732,11 +3823,11 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   function fromEspn(e, league){
     const c = (e.competitions || [])[0] || {}; const sides = {}; (c.competitors || []).forEach(x => sides[x.homeAway] = x);
     if (!sides.home || !sides.away) return null;
-    const xs = isX(league), nfl = league === "nfl" || xs, alias = SLATE.nameAlias || {};   /* another sport's teams are named like the NFL's: the city and the nickname (11/27) */
+    const xs = isX(league), nfl = league === "nfl" || (xs && !XS[league].college), alias = SLATE.nameAlias || {};   /* another sport's teams are named like the NFL's: the city and the nickname (11/27) */
     const team = x => { const t = x.team || {}; const rank = ((x.curatedRank || {}).current) || 0; const rec = ((x.records || [{}])[0] || {}).summary || "";
       const name = nfl ? t.displayName : (alias[t.location] || t.location);
-      return { id: String(t.id), ab: t.abbreviation || "", name, short: nfl ? (t.name || t.shortDisplayName || t.displayName) : name, color: (t.color || "3b4560").toLowerCase(), alt: (t.alternateColor || "").toLowerCase(),
-               logo: nfl ? (t.abbreviation || "").toLowerCase() : String(t.id), rank: rank > 0 && rank <= 25 ? rank : 0, rec: rec && rec !== "0-0" ? rec : "",
+      return { id: String(t.id), ab: t.abbreviation || "", name, short: nfl ? ((xs && XS[league].byId ? t.shortDisplayName : t.name) || t.shortDisplayName || t.displayName) : name, color: (t.color || "3b4560").toLowerCase(), alt: (t.alternateColor || "").toLowerCase(),
+               logo: nfl && !(xs && XS[league].byId) ? (t.abbreviation || "").toLowerCase() : String(t.id), rank: rank > 0 && rank <= 25 ? rank : 0, rec: rec && rec !== "0-0" ? rec : "",
                conf: xs ? "OTHER" : nfl ? ((SLATE.nflDiv || {})[t.abbreviation] || "OTHER") : ((SLATE.confIds || {})[String(t.conferenceId || "")] || "OTHER"),
                score: parseInt(x.score, 10) || 0, winner: !!x.winner, line: (x.linescores || []).map(l => +l.value || 0) }; };
     const tvn = [], stn = [], other = [];
@@ -3826,26 +3917,30 @@ const NETLOGOS = {"ACCN":{"l":"https://a.espncdn.com/guid/8936b3f6-e2cb-3924-807
   /* another sport's legs (11/27): its scoreboard for each leg's day. Once on a load (the leg draws from what it kept until then), every
      30 seconds while a leg's game is live or about to start, every ten minutes before that, once a minute for a game past its start
      that hasn't begun, and not again once it's final. A scoreboard is about 20 KB on the wire */
-  const XAB = { PHX: "pho", UTAH: "uta", NO: "nop", NY: "nyk", GS: "gsw", SA: "sas" };   /* a book's abbreviation where it differs from ESPN's (WSH is ABX's) */
-  async function xsFetch(lg, d){
+  const XAB = { nba: { PHX: "pho", UTAH: "uta", NO: "nop", NY: "nyk", GS: "gsw", SA: "sas" }, nhl: { NJ: "njd", TB: "tbl", LA: "lak", SJ: "sjs" } };   /* a book's abbreviation where it differs from ESPN's (WSH is ABX's) */
+  const xsPrep = (e, lg) => { const g = fromEspn(e, lg); if (!g) return null; const xa = XAB[lg] || {}; ["away", "home"].forEach(s => { if (xa[g[s].ab]) g[s].ax = xa[g[s].ab]; }); return prepGame(g, lg); };
+  async function xsFetch(lg, d){   /* a day's games of a sport, for reading a slip */
     XT[lg + ":" + d] = Date.now();
-    const r = await fetch("https://site.api.espn.com/apis/site/v2/sports/" + XS[lg].path + "/scoreboard?dates=" + d.replace(/-/g, "") + "&limit=100", { cache: "no-store" }); if (!r.ok) throw new Error(r.status);
-    const seen = new Map(); ((await r.json()).events || []).forEach(e => { try { const g = fromEspn(e, lg); if (!g) return; ["away", "home"].forEach(s => { if (XAB[g[s].ab]) g[s].ax = XAB[g[s].ab]; }); seen.set(g.id, prepGame(g, lg)); } catch (x) {} });
+    const r = await fetch("https://site.api.espn.com/apis/site/v2/sports/" + XS[lg].path + "/scoreboard?dates=" + d.replace(/-/g, "") + (XS[lg].q || "&limit=100"), { cache: "no-store" }); if (!r.ok) throw new Error(r.status);
+    const seen = new Map(); ((await r.json()).events || []).forEach(e => { try { const g = xsPrep(e, lg); if (g) seen.set(g.id, g); } catch (x) {} });
     XG[lg] = XG[lg].filter(g => !seen.has(g.id)).concat([...seen.values()]); XD[lg + ":" + d] = Date.now();
   }
-  let xsBusy = false;
+  /* a leg's game (11/28): ESPN's one-game scoreboard, about 3 KB, in place of the day's (20 KB for the NBA, 140 for soccer) */
+  let xsBusy = false; const XP = {};   /* game id -> when its one-game scoreboard was last asked for */
   async function pollS(force){
     if (document.hidden || xsBusy || awayWeek()) return;
-    const legs = [], due = new Set(), now = Date.now(); SL().forEach(s => s.legs.forEach(l => { if (l.id && l.d && isX(l.lg)) legs.push(l); })); if (!legs.length) return;
-    legs.forEach(l => { const k = l.lg + ":" + l.d, at = XT[k] || 0, g = legGame(l), real = !!g && !g.stub; let every;
-      if (!real) every = !at ? 0 : now - new Date(l.gk || 0).getTime() > 12 * 3600000 ? 3600000 : 60000;   /* not in what the scoreboard gave: a minute on (an hour on, half a day past its start) */
+    const legs = [], due = new Map(), now = Date.now(); SL().forEach(s => s.legs.forEach(l => { if (l.id && isX(l.lg)) legs.push(l); })); if (!legs.length) return;
+    legs.forEach(l => { if (due.has(l.id)) return; const g = legGame(l), at = XP[l.id] || 0, kick = new Date((g && g.kick) || l.gk || 0).getTime(); let every;
+      if (!g || g.stub) every = !at ? 0 : now - kick > 12 * 3600000 ? 3600000 : 60000;   /* not read yet: at once, then a minute on (an hour on, half a day past its start) */
       else if (g.state === "post") return;
-      else { const dt = new Date(g.kick).getTime() - now; every = g.state === "in" || (dt < 300000 && dt > -1800000) ? 30000 : dt >= 300000 ? 600000 : 60000; }
-      if (now - at >= (force && every <= 60000 ? Math.min(every, 5000) : every)) due.add(k); });
+      else { const dt = kick - now; every = g.state === "in" || (dt < 300000 && dt > -1800000) ? 30000 : dt >= 300000 ? 600000 : now - kick > 12 * 3600000 ? 3600000 : 60000; }
+      if (now - at >= (force && every <= 60000 ? Math.min(every, 5000) : every)) due.set(l.id, l.lg); });
     if (!due.size) return;
     xsBusy = true;
-    try { const print = () => JSON.stringify(legs.map(l => { const g = legGame(l); return g ? [g.stub ? 1 : 0, g.state, g.detail, g.period, g.clock, g.kick, g.away.score, g.home.score] : 0; })), before = print();
-      for (const k of due){ try { await xsFetch(k.split(":")[0], k.split(":")[1]); } catch (e) {} }
+    try { const print = () => JSON.stringify(legs.map(l => { const g = legGame(l); return g ? [g.stub ? 1 : 0, g.state, g.detail, g.period, g.clock, g.kick, g.away.score, g.home.score, g.away.line, g.home.line] : 0; })), before = print();
+      await Promise.all([...due].map(async ([id, lg]) => { XP[id] = Date.now();
+        try { const r = await fetch("https://site.api.espn.com/apis/site/v2/sports/" + XS[lg].path + "/scoreboard/" + id, { cache: "no-store" }); if (!r.ok) throw new Error(r.status);
+          const g = xsPrep(await r.json(), lg); if (g && g.id === id){ XG[lg] = XG[lg].filter(x => x.id !== id).concat([g]); delete XSTUB[id]; } } catch (e) {} }));
       pollProps(); if (print() !== before) drawSlips(); }
     finally { xsBusy = false; }
   }
