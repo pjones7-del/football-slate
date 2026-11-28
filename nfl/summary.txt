@@ -1,4 +1,4 @@
-NFL Week 12 (16 games, pulled Fri 11/27, 7:39 PM ET, lines DraftKings via ESPN)
+NFL Week 12 (16 games, pulled Fri 11/27, 8:21 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week12.html
   nfl/ forwards to the one page
   Wed 11/25: 0 on TV, 1 not

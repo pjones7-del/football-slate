@@ -1,4 +1,4 @@
-College Football Week 13 (79 games, pulled Fri 11/27, 7:39 PM ET, lines DraftKings via ESPN)
+College Football Week 13 (79 games, pulled Fri 11/27, 8:21 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week13.html
   cfb/ forwards to the one page
   Tue 11/24: 1 on TV, 1 not
@@ -25,13 +25,13 @@ College Football Week 13 (79 games, pulled Fri 11/27, 7:39 PM ET, lines DraftKin
     Sat 19:00 ET  Purdue at #14 Indiana  [FS1]  IU -23.5, o/u 52.5
     Sat 19:30 ET  Auburn at #6 Alabama  [ABC]  ALA -14.5, o/u 49.5
     Sat 19:30 ET  #24 Washington at #12 Oregon  [NBC]  ORE -13.5, o/u 51.5
-    Sat 21:00 ET  Arizona State at #16 Arizona  [FOX]  ARIZ -9.5, o/u 53.5
+    Sat 21:00 ET  Arizona State at #16 Arizona  [FOX]  ARIZ -8.5, o/u 53.5
     Sat 21:30 ET  Baylor at #18 Houston  [ESPN2]  HOU -3.5, o/u 55.5
   TV games without a line: 0
   time TBD: 0
   non-Division I or unknown conference ids: none: Tuskegee
 
-NFL Week 12 (16 games, pulled Fri 11/27, 7:39 PM ET, lines DraftKings via ESPN)
+NFL Week 12 (16 games, pulled Fri 11/27, 8:21 PM ET, lines DraftKings via ESPN)
   weekly file written to nfl-slate-week12.html
   nfl/ forwards to the one page
   Wed 11/25: 0 on TV, 1 not
