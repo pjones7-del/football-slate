@@ -1,4 +1,4 @@
-College Football Week 13 (79 games, pulled Fri 11/27, 8:21 PM ET, lines DraftKings via ESPN)
+College Football Week 13 (79 games, pulled Fri 11/27, 9:10 PM ET, lines DraftKings via ESPN)
   weekly file written to cfb-slate-week13.html
   cfb/ forwards to the one page
   Tue 11/24: 1 on TV, 1 not
@@ -11,7 +11,7 @@ College Football Week 13 (79 games, pulled Fri 11/27, 8:21 PM ET, lines DraftKin
     Fri 12:08 ET  #25 Nebraska at #13 Iowa  [CBS]  IOWA -3.5, o/u 40.5
     Fri 15:30 ET  #20 Florida at Florida State  [ABC]  FLA -6.5, o/u 54.5
     Fri 19:30 ET  #3 Texas at Texas A&M  [ABC]  TEX -10.0, o/u 41.5
-    Fri 21:00 ET  West Virginia at #2 Utah  [FOX]  UTAH -25.5, o/u 65.5
+    Fri 21:00 ET  West Virginia at #2 Utah  [FOX]  UTAH -23.5, o/u 65.5
     Sat 12:00 ET  #4 Notre Dame at Syracuse  [ABC]  ND -25.5, o/u 53.5
     Sat 12:00 ET  Boston College at #7 Miami (FL)  [ESPN]  MIA -24.5, o/u 53.5
     Sat 12:00 ET  #19 Louisville at Kentucky  [ESPN2]  LOU -3.0, o/u 53.5
@@ -23,7 +23,7 @@ College Football Week 13 (79 games, pulled Fri 11/27, 8:21 PM ET, lines DraftKin
     Sat 16:15 ET  #17 Oklahoma at #23 Missouri  [SECN]  MIZ -1.5, o/u 41.5
     Sat 19:00 ET  #5 Tennessee at Vanderbilt  [ESPN]  TENN -13.5, o/u 43.5
     Sat 19:00 ET  Purdue at #14 Indiana  [FS1]  IU -23.5, o/u 52.5
-    Sat 19:30 ET  Auburn at #6 Alabama  [ABC]  ALA -14.5, o/u 49.5
+    Sat 19:30 ET  Auburn at #6 Alabama  [ABC]  ALA -14.5, o/u 50.5
     Sat 19:30 ET  #24 Washington at #12 Oregon  [NBC]  ORE -13.5, o/u 51.5
     Sat 21:00 ET  Arizona State at #16 Arizona  [FOX]  ARIZ -8.5, o/u 53.5
     Sat 21:30 ET  Baylor at #18 Houston  [ESPN2]  HOU -3.5, o/u 55.5
